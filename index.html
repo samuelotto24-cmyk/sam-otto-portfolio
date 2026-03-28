@@ -1320,14 +1320,69 @@
       font-size: 16px; color: var(--text-muted);
       margin-bottom: 36px; max-width: 500px;
     }
-    /* Work + Features merged two-column layout */
+    /* Work + Features merged layout */
     .wf-layout {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 0 56px; align-items: start;
+      display: grid; grid-template-columns: 1fr;
+      gap: 0; align-items: start;
     }
-    .wf-phone-col { position: sticky; top: 90px; }
     .wf-content-col { display: flex; flex-direction: column; }
     .wf-section-break { height: 1px; background: var(--border-mid); margin: 28px 0; }
+
+    /* ── Showcase split layout ── */
+    .showcase-split {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 24px; padding: 24px; margin-bottom: 20px;
+    }
+    .showcase-col { text-align: center; position: relative; }
+    .showcase-col-label {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--text-muted); margin-bottom: 16px;
+    }
+    .showcase-col-label-accent { color: var(--rose); }
+    .showcase-domain {
+      font-size: 12px; font-weight: 600; color: var(--text-muted); margin-top: 12px;
+    }
+    .showcase-domain-accent { color: var(--rose); }
+    .demo-phone-wrap-sm { display: flex; justify-content: center; }
+    .demo-phone-wrap-sm .phone-shell { width: 140px; }
+    .demo-phone-wrap-sm .demo-phone-screen { height: 280px; }
+    .demo-phone-wrap-sm .demo-video-phone {
+      width: 390px; height: 844px;
+      transform: scale(0.359); transform-origin: top left;
+    }
+    .showcase-hub-frame {
+      background: #08090D; border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 10px; overflow: hidden;
+      box-shadow: 0 12px 36px rgba(0,0,0,0.5);
+    }
+    .showcase-hub-chrome {
+      display: flex; gap: 5px; padding: 8px 10px;
+      background: #060A10; border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .showcase-hub-body { padding: 16px; }
+    .showcase-desktop-toggle {
+      position: absolute; top: 0; right: 0;
+      font-size: 11px; font-weight: 600; color: var(--text-muted);
+      cursor: pointer; transition: color var(--ease);
+    }
+    .showcase-desktop-toggle:hover { color: var(--rose); }
+
+    /* Desktop overlay */
+    .desktop-overlay {
+      position: relative; margin: 0 24px 20px;
+      background: var(--dark-card); border: 1px solid var(--border);
+      border-radius: 12px; overflow: hidden;
+    }
+    .desktop-overlay-close {
+      position: absolute; top: 8px; right: 12px;
+      font-size: 16px; color: var(--text-muted); cursor: pointer;
+      z-index: 5; transition: color var(--ease);
+    }
+    .desktop-overlay-close:hover { color: var(--text); }
+
+    @media (max-width: 600px) {
+      .showcase-split { grid-template-columns: 1fr; }
+    }
 
     /* What I Build — horizontal layout */
     .what-i-build {
@@ -1950,7 +2005,6 @@
 
       /* ── Work: heavily condensed ── */
       .wf-layout { grid-template-columns: 1fr; gap: 0; }
-      .wf-phone-col { display: none; }
       .wf-content-col { padding-top: 0; }
       .work-domain-pill {
         display: inline-flex; align-items: center; gap: 6px;
@@ -3039,28 +3093,7 @@
 
       <div class="wf-layout">
 
-        <!-- LEFT: Phone video recording (sticky) -->
-        <div class="wf-phone-col fade-up">
-          <div class="work-demo">
-            <div class="demo-real-badge" aria-hidden="true">
-              <span class="demo-real-badge-dot"></span>
-              Real screen recording
-            </div>
-            <div class="demo-phone-wrap">
-              <div class="phone-shell">
-                <div class="phone-notch"></div>
-                <div class="demo-phone-screen">
-                  <video class="demo-video-phone" autoplay muted loop playsinline>
-                    <source src="assets/mandi-phone.mp4" type="video/mp4">
-                  </video>
-                </div>
-              </div>
-            </div>
-            <div class="demo-glow"></div>
-          </div>
-        </div>
-
-        <!-- RIGHT: Work info + features -->
+        <!-- Work info + features -->
         <div class="wf-content-col fade-up">
 
           <!-- Mobile-only domain pill (phone demo hidden on mobile) -->
@@ -3068,29 +3101,75 @@
 
           <div class="work-featured-badge"><span class="work-featured-dot"></span>Featured Client Work</div>
           <span class="work-label">Live Work</span>
-          <h2 class="work-title">One creator.<br>One custom page.</h2>
+          <h2 class="work-title">One creator.<br>One complete platform.</h2>
           <p class="work-sub">Built around her brand, her audience, and what she wants them to do.</p>
 
           <div class="client-showcase">
             <div class="showcase-shimmer"></div>
-            <div class="work-info">
-              <p class="work-client">Fitness &amp; Lifestyle Creator · 1M+ Followers</p>
-              <h3 class="work-name">Mandi Bagley</h3>
-              <p class="work-desc">Mandi had a million followers and a generic link page. Her audience deserved something better. I built a custom page around her programs, her affiliate partnerships, her YouTube channel, and her brand — structured to convert, styled to her aesthetic, and live on her own domain.</p>
-              <div class="work-tags">
-                <span class="work-tag">Custom Identity</span>
-                <span class="work-tag">Program Sales</span>
-                <span class="work-tag">Affiliate Revenue</span>
-                <span class="work-tag">Content Hub</span>
-                <span class="work-tag">Mobile-first</span>
+
+            <!-- Two-column: audience view vs. creator view -->
+            <div class="showcase-split">
+              <div class="showcase-col showcase-audience">
+                <div class="showcase-col-label">What her audience sees</div>
+                <div class="showcase-desktop-toggle" id="desktopToggle" onclick="toggleDesktopView()">
+                  View desktop <i class="fa-solid fa-arrow-right"></i>
+                </div>
+                <div class="demo-phone-wrap-sm">
+                  <div class="phone-shell">
+                    <div class="phone-notch"></div>
+                    <div class="demo-phone-screen">
+                      <video class="demo-video-phone" autoplay muted loop playsinline>
+                        <source src="assets/mandi-phone.mp4" type="video/mp4">
+                      </video>
+                    </div>
+                  </div>
+                </div>
+                <div class="showcase-domain">mandibagley.com</div>
               </div>
-              <a class="work-link" href="https://mandibagley.com" target="_blank" rel="noopener noreferrer">
-                See it live <i class="fa-solid fa-arrow-right"></i>
-              </a>
+
+              <div class="showcase-col showcase-creator">
+                <div class="showcase-col-label showcase-col-label-accent">What she sees</div>
+                <div class="showcase-hub-frame">
+                  <div class="showcase-hub-chrome">
+                    <span style="width:6px;height:6px;border-radius:50%;background:#ff5f57"></span>
+                    <span style="width:6px;height:6px;border-radius:50%;background:#febc2e"></span>
+                    <span style="width:6px;height:6px;border-radius:50%;background:#28c840"></span>
+                  </div>
+                  <div class="showcase-hub-body">
+                    <div style="font-family:var(--serif);font-size:18px;font-weight:500;color:#EEF2FF;margin-bottom:4px;">Hey, Mandi</div>
+                    <div style="font-size:9px;color:#10B981;display:flex;align-items:center;gap:4px;margin-bottom:12px;"><span style="width:5px;height:5px;border-radius:50%;background:#10B981;box-shadow:0 0 4px #10B981;"></span> Your page is performing well</div>
+                    <div style="display:flex;gap:6px;margin-bottom:10px;">
+                      <div style="flex:1;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:8px;text-align:center;">
+                        <div style="font-size:16px;font-weight:700;color:#EEF2FF;">24</div>
+                        <div style="font-size:7px;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.4);margin-top:2px;">today</div>
+                      </div>
+                      <div style="flex:1;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:8px;text-align:center;">
+                        <div style="font-size:16px;font-weight:700;color:#10B981;">187</div>
+                        <div style="font-size:7px;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.4);margin-top:2px;">this week</div>
+                      </div>
+                      <div style="flex:1;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:8px;text-align:center;">
+                        <div style="font-size:16px;font-weight:700;color:#EEF2FF;">842</div>
+                        <div style="font-size:7px;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.4);margin-top:2px;">total</div>
+                      </div>
+                    </div>
+                    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:10px;margin-bottom:8px;">
+                      <div style="font-size:9px;font-weight:600;color:#EEF2FF;margin-bottom:6px;">Weekly Briefing</div>
+                      <div style="height:6px;background:rgba(255,255,255,0.06);border-radius:3px;margin-bottom:4px;width:85%;"></div>
+                      <div style="height:6px;background:rgba(255,255,255,0.06);border-radius:3px;width:55%;"></div>
+                    </div>
+                    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:10px;">
+                      <div style="font-size:9px;font-weight:600;color:#EEF2FF;margin-bottom:6px;">Ask Your Advisor</div>
+                      <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);border-radius:6px;padding:7px 10px;font-size:9px;color:rgba(255,255,255,0.25);">Ask about your data…</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="showcase-domain showcase-domain-accent">Her private platform</div>
+              </div>
             </div>
 
-            <!-- Desktop screen recording -->
-            <div class="showcase-desktop-video">
+            <!-- Desktop video overlay (hidden by default) -->
+            <div class="desktop-overlay" id="desktopOverlay" style="display:none">
+              <div class="desktop-overlay-close" onclick="toggleDesktopView()">✕</div>
               <div class="desktop-video-chrome">
                 <div class="desktop-video-dots"><span></span><span></span><span></span></div>
                 <div class="desktop-video-url"><span class="desktop-video-lock">🔒</span> mandibagley.com</div>
@@ -3098,6 +3177,24 @@
               <video class="desktop-video" autoplay muted loop playsinline>
                 <source src="assets/mandi-desktop.mp4" type="video/mp4">
               </video>
+            </div>
+
+            <div class="work-info">
+              <p class="work-client">Fitness &amp; Lifestyle Creator · 1M+ Followers</p>
+              <h3 class="work-name">Mandi Bagley</h3>
+              <p class="work-desc">Mandi had a million followers and a scattered set of tools. I built her a complete platform — a custom website, private analytics, an AI strategist that reads her real data, and a Hub that gives her everything at a glance.</p>
+              <div class="work-tags">
+                <span class="work-tag">Custom Design</span>
+                <span class="work-tag">Affiliate Codes</span>
+                <span class="work-tag">Program Showcases</span>
+                <span class="work-tag">Private Analytics</span>
+                <span class="work-tag">AI Strategy</span>
+                <span class="work-tag">Weekly Briefings</span>
+                <span class="work-tag">Link Tracking</span>
+              </div>
+              <a class="work-link" href="https://mandibagley.com" target="_blank" rel="noopener noreferrer">
+                See it live <i class="fa-solid fa-arrow-right"></i>
+              </a>
             </div>
           </div>
 
@@ -3748,6 +3845,13 @@
       var sec = document.getElementById('compare');
       if (sec) impactObs.observe(sec);
     })();
+
+    // Desktop overlay toggle for showcase split
+    function toggleDesktopView() {
+      var overlay = document.getElementById('desktopOverlay');
+      if (!overlay) return;
+      overlay.style.display = overlay.style.display === 'none' ? 'block' : 'none';
+    }
 
     // Contact form
     async function handleSubmit(e) {
