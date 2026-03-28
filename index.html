@@ -558,6 +558,31 @@
       color: var(--text); border-bottom-left-radius: 3px;
     }
 
+    /* Platform layer video frames */
+    .pl-video-frame {
+      border-radius: 10px; overflow: hidden;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+      border: 1px solid var(--border);
+    }
+    .pl-video-browser {
+      background: var(--dark);
+    }
+    .pl-browser-chrome-bar {
+      display: flex; gap: 4px; padding: 6px 8px;
+      background: var(--surface-hi); border-bottom: 1px solid var(--border);
+    }
+    .pl-hub-video {
+      width: 100%; height: 100px; display: block;
+      object-fit: cover;
+    }
+    .pl-hub-video-top { object-position: center top; }
+    .pl-hub-video-bottom { object-position: center bottom; }
+    .pl-phone-video {
+      width: 390px; height: 844px;
+      transform: scale(0.205); transform-origin: top left;
+    }
+    .pl-video-phone .pl-phone-screen { height: 110px; overflow: hidden; }
+
     .pl-copy { flex: 1; }
     .pl-name {
       font-family: var(--serif); font-size: 26px; font-weight: 500;
@@ -2720,11 +2745,15 @@
       <div class="platform-stack">
         <div class="platform-layer platform-layer-1 fade-up">
           <div class="pl-visual">
-            <div class="pl-phone-mini">
-              <div class="pl-phone-shell">
-                <div class="pl-phone-notch"></div>
-                <div class="pl-phone-screen" style="background:linear-gradient(135deg, #1a0f0b 0%, #2d1810 100%); display:flex; align-items:center; justify-content:center;">
-                  <span style="font-family:var(--serif); font-size:14px; color:rgba(255,255,255,0.5);">mandibagley.com</span>
+            <div class="pl-video-frame pl-video-phone">
+              <div class="pl-phone-mini">
+                <div class="pl-phone-shell">
+                  <div class="pl-phone-notch"></div>
+                  <div class="pl-phone-screen">
+                    <video class="pl-phone-video" autoplay muted loop playsinline>
+                      <source src="assets/mandi-phone.mp4" type="video/mp4">
+                    </video>
+                  </div>
                 </div>
               </div>
             </div>
@@ -2737,27 +2766,15 @@
 
         <div class="platform-layer platform-layer-2 fade-up">
           <div class="pl-visual">
-            <div class="pl-browser-mini">
-              <div class="pl-browser-chrome">
+            <div class="pl-video-frame pl-video-browser">
+              <div class="pl-browser-chrome-bar">
                 <span class="pl-dot" style="background:#ff5f57"></span>
                 <span class="pl-dot" style="background:#febc2e"></span>
                 <span class="pl-dot" style="background:#28c840"></span>
               </div>
-              <div class="pl-browser-body" style="padding:10px;">
-                <div style="display:flex; gap:6px; margin-bottom:6px;">
-                  <div style="flex:1; background:rgba(16,185,129,0.15); border-radius:6px; padding:6px; text-align:center;">
-                    <div style="font-size:14px; font-weight:700; color:#10B981;">842</div>
-                    <div style="font-size:8px; color:rgba(255,255,255,0.4);">views</div>
-                  </div>
-                  <div style="flex:1; background:rgba(255,255,255,0.04); border-radius:6px; padding:6px; text-align:center;">
-                    <div style="font-size:14px; font-weight:700; color:var(--text);">187</div>
-                    <div style="font-size:8px; color:rgba(255,255,255,0.4);">this week</div>
-                  </div>
-                </div>
-                <svg viewBox="0 0 120 30" style="width:100%;height:30px;" fill="none">
-                  <polyline points="0,25 15,20 30,22 45,14 60,16 75,8 90,12 105,6 120,4" stroke="#10B981" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-                </svg>
-              </div>
+              <video class="pl-hub-video pl-hub-video-top" autoplay muted loop playsinline>
+                <source src="assets/hub-recording.mp4" type="video/mp4">
+              </video>
             </div>
           </div>
           <div class="pl-copy">
@@ -2768,9 +2785,15 @@
 
         <div class="platform-layer platform-layer-3 fade-up">
           <div class="pl-visual">
-            <div class="pl-chat-mini">
-              <div class="pl-chat-msg pl-chat-user">When should I post this week?</div>
-              <div class="pl-chat-msg pl-chat-ai">Based on your traffic data, your audience is most active at <span style="color:#10B981; font-weight:600;">2pm</span> and <span style="color:#10B981; font-weight:600;">8pm EST</span>…</div>
+            <div class="pl-video-frame pl-video-browser">
+              <div class="pl-browser-chrome-bar">
+                <span class="pl-dot" style="background:#ff5f57"></span>
+                <span class="pl-dot" style="background:#febc2e"></span>
+                <span class="pl-dot" style="background:#28c840"></span>
+              </div>
+              <video class="pl-hub-video pl-hub-video-bottom" autoplay muted loop playsinline>
+                <source src="assets/hub-recording.mp4" type="video/mp4">
+              </video>
             </div>
           </div>
           <div class="pl-copy">
