@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Inter:wght@400;500;600&display=swap');
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: #FAF7F2;
+      color: #2D1810;
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 20px 32px;
+      color: #8B7B74;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .back-link:hover { color: #2D1810; }
+
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 20px 32px 80px;
+    }
+
+    h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.4rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #2D1810;
+    }
+
+    .last-updated {
+      color: #8B7B74;
+      font-size: 14px;
+      margin-bottom: 48px;
+    }
+
+    h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      font-weight: 600;
+      margin-top: 40px;
+      margin-bottom: 12px;
+      color: #2D1810;
+    }
+
+    p, li {
+      color: #4A3A32;
+      font-size: 15px;
+      margin-bottom: 12px;
+    }
+
+    ul {
+      padding-left: 24px;
+      margin-bottom: 16px;
+    }
+    li { margin-bottom: 6px; }
+
+    a { color: #B76E79; }
+
+    .divider {
+      width: 48px;
+      height: 2px;
+      background: #E8DDD7;
+      margin: 48px 0 24px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0 24px;
+      font-size: 14px;
+    }
+    th, td {
+      text-align: left;
+      padding: 10px 14px;
+      border-bottom: 1px solid #E8DDD7;
+      color: #4A3A32;
+    }
+    th {
+      font-weight: 600;
+      color: #2D1810;
+      background: rgba(0,0,0,0.02);
+    }
+  </style>
+</head>
+<body>
+  <a href="/" class="back-link"><i class="fa-solid fa-arrow-left"></i> Back to site</a>
+
+  <div class="container">
+    <h1>Privacy Policy</h1>
+    <p class="last-updated">Last updated: March 28, 2026</p>
+
+    <h2>1. Overview</h2>
+    <p>This Privacy Policy describes how this website and its associated services (the "Platform") collect, use, and protect your information. We respect your privacy and are committed to transparency about our data practices.</p>
+
+    <h2>2. Information We Collect</h2>
+
+    <p><strong>Automatically collected (website visitors):</strong></p>
+    <ul>
+      <li>Page views and pages visited</li>
+      <li>Referring platform (e.g., TikTok, Instagram, YouTube, direct)</li>
+      <li>Link clicks and scroll depth</li>
+      <li>Session duration</li>
+      <li>Device type, browser, and operating system</li>
+      <li>Approximate location (city/country level, from IP)</li>
+      <li>New vs. returning visitor status</li>
+    </ul>
+    <p>We do <strong>not</strong> collect names, email addresses (except via the newsletter signup), or other personally identifiable information from casual visitors.</p>
+
+    <p><strong>Third-party platform data (authenticated creators):</strong></p>
+    <p>If you connect a third-party account (such as TikTok), we may access:</p>
+    <ul>
+      <li>Basic profile information (username, display name, avatar)</li>
+      <li>Video/post performance metrics (views, likes, shares, comments)</li>
+      <li>Follower counts and audience demographics (where available)</li>
+    </ul>
+
+    <p><strong>Newsletter signups:</strong></p>
+    <ul>
+      <li>Email address (submitted voluntarily via the signup form)</li>
+    </ul>
+
+    <h2>3. How We Use Your Information</h2>
+    <table>
+      <tr><th>Data</th><th>Purpose</th></tr>
+      <tr><td>Website analytics</td><td>Display traffic trends and engagement metrics in the private analytics dashboard</td></tr>
+      <tr><td>Referrer data</td><td>Show which social platforms drive the most traffic and conversions</td></tr>
+      <tr><td>TikTok / social data</td><td>Display video performance metrics in the creator hub dashboard</td></tr>
+      <tr><td>Email addresses</td><td>Send newsletter updates via Beehiiv (third-party email service)</td></tr>
+      <tr><td>Aggregated analytics</td><td>Generate AI-powered weekly performance briefings for the creator</td></tr>
+    </table>
+
+    <h2>4. Third-Party Services</h2>
+    <p>The Platform integrates with the following third-party services:</p>
+    <ul>
+      <li><strong>TikTok for Developers</strong> — to retrieve video analytics via the Display API. Subject to <a href="https://www.tiktok.com/legal/terms-of-service" target="_blank">TikTok's Terms of Service</a>.</li>
+      <li><strong>Upstash Redis</strong> — for storing aggregated analytics data (no personally identifiable information).</li>
+      <li><strong>Vercel</strong> — for hosting and serverless function execution.</li>
+      <li><strong>Beehiiv</strong> — for newsletter email delivery (if enabled).</li>
+      <li><strong>Anthropic (Claude)</strong> — for AI-generated performance briefings using aggregated, anonymized analytics data.</li>
+    </ul>
+
+    <h2>5. Data Storage and Retention</h2>
+    <p>Analytics data is stored in Upstash Redis as aggregated counters and summaries — not as individual user profiles. Data is retained for up to 90 days on a rolling basis. No raw IP addresses are stored.</p>
+    <p>Third-party platform data (e.g., TikTok metrics) is cached temporarily and refreshed periodically. We do not permanently store copies of third-party data.</p>
+
+    <h2>6. Data Sharing</h2>
+    <p>We do <strong>not</strong> sell, rent, or share your personal information with third parties for marketing purposes. Data is only shared with the third-party service providers listed above, solely for the purposes described in this policy.</p>
+
+    <h2>7. Cookies</h2>
+    <p>This Platform uses minimal cookies or local storage solely to distinguish new and returning visitors. We do not use advertising cookies or third-party tracking pixels.</p>
+
+    <h2>8. Your Rights</h2>
+    <p>You have the right to:</p>
+    <ul>
+      <li>Request deletion of any data associated with your visit</li>
+      <li>Disconnect your third-party accounts at any time (which stops data retrieval)</li>
+      <li>Unsubscribe from the newsletter via the link in any email</li>
+      <li>Request a copy of any data we hold about you</li>
+    </ul>
+
+    <h2>9. Children's Privacy</h2>
+    <p>The Platform is not directed at children under 13. We do not knowingly collect information from children.</p>
+
+    <h2>10. Changes to This Policy</h2>
+    <p>We may update this Privacy Policy periodically. Changes will be reflected in the "Last updated" date above.</p>
+
+    <h2>11. Contact</h2>
+    <p>For privacy-related questions or data requests, contact the site administrator via the contact form on the main site.</p>
+
+    <div class="divider"></div>
+  </div>
+</body>
+</html>
