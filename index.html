@@ -200,7 +200,7 @@
       border-radius: 50px;
       margin-bottom: 24px;
       opacity: 0;
-      animation: heroFadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 1.8s forwards;
+      animation: heroFadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 2.7s forwards;
     }
     .hero-title {
       font-family: var(--serif);
@@ -210,7 +210,7 @@
       margin-bottom: 24px;
       color: var(--text);
       opacity: 0;
-      animation: heroFadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 1.85s forwards;
+      animation: heroFadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 2.75s forwards;
     }
     .hero-title em { font-style: italic; color: var(--rose); }
     .hero-sub {
@@ -220,7 +220,7 @@
       max-width: 460px;
       line-height: 1.65;
       opacity: 0;
-      animation: heroFadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 2.0s forwards;
+      animation: heroFadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 2.9s forwards;
     }
     .hero-actions {
       display: flex;
@@ -228,13 +228,13 @@
       flex-wrap: wrap;
       align-items: center;
       opacity: 0;
-      animation: heroFadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 2.15s forwards;
+      animation: heroFadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 3.05s forwards;
     }
     .hero-trust {
       display: flex; align-items: center; gap: 14px;
       margin-top: 22px; flex-wrap: wrap;
       opacity: 0;
-      animation: heroFadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 2.25s forwards;
+      animation: heroFadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 3.15s forwards;
     }
     .hero-trust-item {
       font-size: 11px; font-weight: 600; letter-spacing: 0.09em;
@@ -296,7 +296,7 @@
       align-items: center;
       gap: 14px;
       opacity: 0;
-      animation: sysPhoneLand 0.9s cubic-bezier(0.16, 1, 0.3, 1) 1.9s forwards;
+      animation: sysPhoneLand 0.9s cubic-bezier(0.16, 1, 0.3, 1) 2.8s forwards;
     }
     .hero-phone-shell {
       width: 172px;
@@ -382,7 +382,7 @@
       top: 50%;
       transform: translateY(-70%);
       opacity: 0;
-      animation: sysCardLeft 0.8s cubic-bezier(0.16, 1, 0.3, 1) 2.35s forwards;
+      animation: sysCardLeft 0.8s cubic-bezier(0.16, 1, 0.3, 1) 3.25s forwards;
     }
     .sys-card-metrics {
       display: flex;
@@ -413,7 +413,7 @@
       height: 100%;
       background: linear-gradient(90deg, var(--rose), var(--rose-light));
       border-radius: 4px;
-      animation: barGrow 1.2s cubic-bezier(0.16, 1, 0.3, 1) 2.9s forwards;
+      animation: barGrow 1.2s cubic-bezier(0.16, 1, 0.3, 1) 3.8s forwards;
     }
 
     /* AI card specifics */
@@ -422,7 +422,7 @@
       top: 50%;
       transform: translateY(-35%);
       opacity: 0;
-      animation: sysCardRight 0.8s cubic-bezier(0.16, 1, 0.3, 1) 2.55s forwards;
+      animation: sysCardRight 0.8s cubic-bezier(0.16, 1, 0.3, 1) 3.45s forwards;
     }
     .sys-card-body {
       display: flex;
@@ -454,7 +454,7 @@
       z-index: 1;
       pointer-events: none;
       opacity: 0;
-      animation: heroFadeIn 0.6s ease 2.8s forwards;
+      animation: heroFadeIn 0.6s ease 3.7s forwards;
     }
 
     /* ── Hero entrance keyframes ── */
@@ -486,16 +486,16 @@
     /* ── Idle float after entrance ── */
     @media (prefers-reduced-motion: no-preference) {
       .hero-sys-phone {
-        animation: sysPhoneLand 0.9s cubic-bezier(0.16, 1, 0.3, 1) 1.9s forwards,
-                   sysIdleFloat 4s ease-in-out 3.2s infinite;
+        animation: sysPhoneLand 0.9s cubic-bezier(0.16, 1, 0.3, 1) 2.8s forwards,
+                   sysIdleFloat 4s ease-in-out 4.1s infinite;
       }
       .hero-sys-analytics {
-        animation: sysCardLeft 0.8s cubic-bezier(0.16, 1, 0.3, 1) 2.35s forwards,
-                   sysIdleCardL 5s ease-in-out 3.5s infinite;
+        animation: sysCardLeft 0.8s cubic-bezier(0.16, 1, 0.3, 1) 3.25s forwards,
+                   sysIdleCardL 5s ease-in-out 4.4s infinite;
       }
       .hero-sys-ai {
-        animation: sysCardRight 0.8s cubic-bezier(0.16, 1, 0.3, 1) 2.55s forwards,
-                   sysIdleCardR 4.5s ease-in-out 3.7s infinite;
+        animation: sysCardRight 0.8s cubic-bezier(0.16, 1, 0.3, 1) 3.45s forwards,
+                   sysIdleCardR 4.5s ease-in-out 4.6s infinite;
       }
     }
     @keyframes sysIdleFloat {
@@ -3599,7 +3599,7 @@
           alpha: 0.3 + Math.random() * 0.7,
           delay: Math.random() * 0.35,
           swirlAngle: angle,
-          swirlSpeed: 1.5 + Math.random() * 2.5
+          swirlSpeed: 2.5 + Math.random() * 3.5
         });
       }
 
@@ -3618,7 +3618,7 @@
       }
 
       var startTime = performance.now();
-      var SWIRL = 800, FORM = 500, HOLD = 400;
+      var SWIRL = 1500, FORM = 600, HOLD = 500;
       var TOTAL = SWIRL + FORM + HOLD;
       var done = false;
 
@@ -3648,7 +3648,7 @@
             t = Math.min(t, 1);
             var e = easeInOutQuad(t);
             var startDist = Math.sqrt(Math.pow(p.sx - cx, 2) + Math.pow(p.sy - cy, 2));
-            var curDist = startDist * (1 - e * 0.85);
+            var curDist = startDist * (1 - e * e * 0.85);
             var curAngle = p.swirlAngle + e * p.swirlSpeed * Math.PI;
             p.x = cx + Math.cos(curAngle) * curDist;
             p.y = cy + Math.sin(curAngle) * curDist;
