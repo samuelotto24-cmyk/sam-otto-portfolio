@@ -3208,6 +3208,67 @@
       });
     })();
 
+    // ── Hero auto-play narrated sequence ──
+    (function() {
+      // Wait for intro animation to finish (it takes ~3.5s)
+      var introDelay = document.getElementById('intro-overlay') ? 4000 : 500;
+
+      function reveal(el) {
+        if (!el) return;
+        el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        el.style.opacity = '1';
+        el.style.transform = 'translate(0, 0)';
+      }
+
+      function settle(el) {
+        if (!el) return;
+        el.classList.add('settled');
+      }
+
+      setTimeout(function() {
+        var phone = document.querySelector('.hero-phone-solo');
+        var line1 = document.querySelector('.hero-line-1');
+        var line2 = document.querySelector('.hero-line-2');
+        var line3 = document.querySelector('.hero-line-3');
+        var final = document.querySelector('.hero-final');
+        var cardAnalytics = document.querySelector('.hero-card-analytics');
+        var cardHub = document.querySelector('.hero-card-hub');
+        var cardAi = document.querySelector('.hero-card-ai');
+
+        // 0s — Phone slides in
+        reveal(phone);
+
+        // 1s — "Your website."
+        setTimeout(function() { reveal(line1); }, 1000);
+
+        // 2.5s — "Your data." + analytics card
+        setTimeout(function() {
+          reveal(line2);
+          reveal(cardAnalytics);
+        }, 2500);
+
+        // 4s — "Your AI strategist." + AI card
+        setTimeout(function() {
+          reveal(line3);
+          reveal(cardAi);
+        }, 4000);
+
+        // 5.5s — Hub card
+        setTimeout(function() {
+          reveal(cardHub);
+        }, 5500);
+
+        // 6.5s — Sub + CTAs + trust bar, cards start floating
+        setTimeout(function() {
+          reveal(final);
+          settle(cardAnalytics);
+          settle(cardHub);
+          settle(cardAi);
+        }, 6500);
+
+      }, introDelay);
+    })();
+
     // ── Hero orbiting rings ──
     (function() {
       var c = document.getElementById('hero-orbits');
