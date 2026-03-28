@@ -2595,11 +2595,38 @@
     100% { transform: translateX(-50%); }
   }
 
-  /* ── AI showcase (inside platform breakdown) ── */
-  .ai-showcase {
-    margin-top: 28px;
-    max-width: 480px;
+  /* ── AI Strategist spotlight ── */
+  .ai-spotlight {
+    padding: clamp(40px, 5vw, 80px) 0;
+    background: var(--dark);
+    border-top: 1px solid var(--border);
   }
+  .ai-spotlight-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: center;
+  }
+  .ai-spotlight-title {
+    font-family: var(--serif);
+    font-size: clamp(28px, 4vw, 44px);
+    font-weight: 500;
+    line-height: 1.15;
+    color: var(--text);
+    margin-bottom: 16px;
+  }
+  .ai-spotlight-title em { color: var(--rose); font-style: italic; }
+  .ai-spotlight-sub {
+    font-size: 15px;
+    color: var(--text-sub);
+    line-height: 1.65;
+    margin-bottom: 24px;
+    max-width: 440px;
+  }
+  @media (max-width: 768px) {
+    .ai-spotlight-inner { grid-template-columns: 1fr; gap: 28px; }
+  }
+
   .ai-chat-mockup {
     background: var(--dark-card);
     border: 1px solid var(--border);
@@ -2671,7 +2698,6 @@
     opacity: 0.7;
   }
   @media (max-width: 768px) {
-    .ai-showcase { max-width: 100%; }
     .ai-caps { grid-template-columns: 1fr; }
     .ai-chat-msg { max-width: 95%; font-size: 12px; }
   }
@@ -3219,21 +3245,32 @@
             <h3 class="pl-name">Your AI Strategist</h3>
             <p class="pl-desc">Reads your real data and tells you what to do next.</p>
           </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-          <!-- AI capabilities showcase -->
-          <div class="ai-showcase">
-            <div class="ai-chat-mockup">
-              <div class="ai-chat-msg ai-chat-user">Write me a caption for my new reel</div>
-              <div class="ai-chat-msg ai-chat-bot"><span class="ai-chat-label"><i class="fa-solid fa-brain"></i> AI Strategist</span>"Your mornings don't have to be perfect to be powerful. Here's what actually changed my energy this month." <span class="ai-chat-hashtags">#morningroutine #wellnesstips #realresults</span></div>
-              <div class="ai-chat-msg ai-chat-user">When should I post this week?</div>
-              <div class="ai-chat-msg ai-chat-bot"><span class="ai-chat-label"><i class="fa-solid fa-brain"></i> AI Strategist</span>Based on your engagement data: <strong>Tuesday 7pm</strong> and <strong>Thursday 12pm</strong> — those are your highest click windows this month.</div>
-            </div>
-            <div class="ai-caps">
-              <div class="ai-cap"><i class="fa-solid fa-pen-fancy"></i> Writes captions that hit the algorithm</div>
-              <div class="ai-cap"><i class="fa-solid fa-clock"></i> Best times to post from your data</div>
-              <div class="ai-cap"><i class="fa-solid fa-lightbulb"></i> Content ideas based on what's working</div>
-              <div class="ai-cap"><i class="fa-solid fa-calendar"></i> Helps you plan and schedule posts</div>
-            </div>
+  <!-- AI STRATEGIST SPOTLIGHT -->
+  <section class="ai-spotlight">
+    <div class="inner">
+      <div class="ai-spotlight-inner fade-up">
+        <div class="ai-spotlight-copy">
+          <span class="platform-label">AI Strategist</span>
+          <h2 class="ai-spotlight-title">Ask it anything.<br><em>It knows your data.</em></h2>
+          <p class="ai-spotlight-sub">Not generic advice. Not ChatGPT guessing. An AI trained on your actual analytics — your views, your engagement, your audience — telling you exactly what to post, when, and why.</p>
+          <div class="ai-caps">
+            <div class="ai-cap"><i class="fa-solid fa-pen-fancy"></i> Writes captions that hit the algorithm</div>
+            <div class="ai-cap"><i class="fa-solid fa-clock"></i> Best times to post from your data</div>
+            <div class="ai-cap"><i class="fa-solid fa-lightbulb"></i> Content ideas based on what's working</div>
+            <div class="ai-cap"><i class="fa-solid fa-calendar"></i> Helps you plan and schedule posts</div>
+          </div>
+        </div>
+        <div class="ai-spotlight-visual">
+          <div class="ai-chat-mockup">
+            <div class="ai-chat-msg ai-chat-user">Write me a caption for my new reel</div>
+            <div class="ai-chat-msg ai-chat-bot"><span class="ai-chat-label"><i class="fa-solid fa-brain"></i> AI Strategist</span>"Your mornings don't have to be perfect to be powerful. Here's what actually changed my energy this month." <span class="ai-chat-hashtags">#morningroutine #wellnesstips #realresults</span></div>
+            <div class="ai-chat-msg ai-chat-user">When should I post this week?</div>
+            <div class="ai-chat-msg ai-chat-bot"><span class="ai-chat-label"><i class="fa-solid fa-brain"></i> AI Strategist</span>Based on your engagement data: <strong>Tuesday 7pm</strong> and <strong>Thursday 12pm</strong> — those are your highest click windows this month.</div>
           </div>
         </div>
       </div>
