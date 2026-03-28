@@ -347,6 +347,82 @@
       50%      { transform: translateX(100%) translateY(-6px); }
     }
 
+    /* ── HERO NARRATION ── */
+    .hero-left { max-width: 520px; }
+    .hero-line { margin-bottom: 8px; transition: opacity 0.6s ease, transform 0.6s ease; }
+    .hero-title-word {
+      font-family: var(--serif);
+      font-size: clamp(40px, 5vw, 68px);
+      font-weight: 500;
+      line-height: 1.1;
+      color: var(--text);
+      margin: 0;
+    }
+    .hero-title-accent { color: var(--rose); font-style: italic; }
+    .hero-desc {
+      font-size: 15px;
+      color: var(--text-sub);
+      margin: 4px 0 16px;
+      line-height: 1.5;
+    }
+    .hero-final { transition: opacity 0.6s ease, transform 0.6s ease; }
+
+    /* ── HERO PHONE (single, centered) ── */
+    .hero-phone-solo { transition: opacity 0.8s ease, transform 0.8s ease; }
+
+    /* ── HERO FLOATING CARDS ── */
+    .hero-float-card {
+      position: absolute;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(20, 20, 16, 0.95);
+      border: 1px solid rgba(255, 248, 220, 0.12);
+      border-radius: 14px;
+      padding: 12px 16px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+      pointer-events: none;
+      z-index: 10;
+    }
+    .hfc-icon { font-size: 20px; flex-shrink: 0; }
+    .hfc-title { font-size: 13px; font-weight: 600; color: var(--text); white-space: nowrap; }
+    .hfc-sub { font-size: 11px; color: var(--rose); margin-top: 2px; }
+    .hfc-sparkline { margin-top: 4px; }
+
+    /* Card positions */
+    .hero-card-analytics { top: 15%; left: -10px; }
+    .hero-card-hub { top: 55%; right: -10px; }
+    .hero-card-ai { bottom: 15%; left: -10px; }
+
+    /* Typing dots animation */
+    .hfc-typing { display: flex; gap: 4px; margin-top: 4px; }
+    .hfc-typing span {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: var(--rose); opacity: 0.4;
+      animation: typingDot 1.2s ease-in-out infinite;
+    }
+    .hfc-typing span:nth-child(2) { animation-delay: 0.2s; }
+    .hfc-typing span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes typingDot {
+      0%, 100% { opacity: 0.3; transform: translateY(0); }
+      50% { opacity: 1; transform: translateY(-3px); }
+    }
+
+    /* Settled state — floating animation after auto-play completes */
+    .hero-float-card.settled { pointer-events: auto; }
+    .hero-card-analytics.settled { animation: floatL 3.5s ease-in-out infinite; }
+    .hero-card-hub.settled { animation: floatR 3.5s ease-in-out infinite; animation-delay: 0.5s; }
+    .hero-card-ai.settled { animation: floatL 3.5s ease-in-out infinite; animation-delay: 1s; }
+    @keyframes floatL {
+      0%, 100% { transform: translate(0, 0); }
+      50% { transform: translate(0, -6px); }
+    }
+    @keyframes floatR {
+      0%, 100% { transform: translate(0, 0); }
+      50% { transform: translate(0, -6px); }
+    }
+
     /* ── STATS BAR ── */
     #stats {
       padding: 28px 0;
@@ -1628,10 +1704,15 @@
     /* ── RESPONSIVE ── */
     @media (max-width: 768px) {
       /* ── Hero ── */
-      .hero-inner { grid-template-columns: 1fr; gap: 40px; }
-      .hero-preview { display: none; }
+      .hero-inner { grid-template-columns: 1fr; text-align: center; }
+      .hero-left { max-width: 100%; }
+      .hero-preview { position: relative; min-height: 360px; display: flex; align-items: center; justify-content: center; }
+      .hero-card-analytics { top: auto; bottom: -10px; left: 50%; transform: translateX(-50%) translateY(20px); }
+      .hero-card-hub { top: 10px; right: 10px; }
+      .hero-card-ai { bottom: auto; top: 10px; left: 10px; }
+      .hero-desc { margin-left: auto; margin-right: auto; }
       .hero-sub { font-size: 15px; }
-      .hero-trust { flex-wrap: wrap; gap: 6px 10px; justify-content: flex-start; }
+      .hero-trust { flex-wrap: wrap; gap: 6px 10px; justify-content: center; }
       .hero-trust-item { font-size: 10px; }
       .trust-sep { display: none; }
       .stats-row { flex-wrap: wrap; }
@@ -2261,9 +2342,22 @@
     <canvas id="hero-orbits" aria-hidden="true"></canvas>
     <div class="inner hero-inner">
 
-      <div class="fade-up">
-        <h1 class="hero-title">Your brand doesn't fit a template.<br><em>Your page shouldn't either.</em></h1>
-        <p class="hero-sub">Built from scratch around your brand, your audience, and what you want people to do — not a template, not a builder, not like anyone else's page.</p>
+    <div class="hero-left" id="hero-narration">
+      <div class="hero-line hero-line-1" style="opacity:0; transform:translateY(16px)">
+        <h1 class="hero-title-word">Your website.</h1>
+        <p class="hero-desc">Custom-built around your brand.</p>
+      </div>
+      <div class="hero-line hero-line-2" style="opacity:0; transform:translateY(16px)">
+        <h1 class="hero-title-word">Your data.</h1>
+        <p class="hero-desc">Every click, every visitor, every conversion.</p>
+      </div>
+      <div class="hero-line hero-line-3" style="opacity:0; transform:translateY(16px)">
+        <h1 class="hero-title-word hero-title-accent">Your AI strategist.</h1>
+        <p class="hero-desc">Tells you what to post and what's making you money.</p>
+      </div>
+
+      <div class="hero-final" style="opacity:0; transform:translateY(16px)">
+        <p class="hero-sub">Not a template. Not a link-in-bio. The entire platform behind your brand — custom-built, done for you, live in 72 hours.</p>
         <div class="hero-actions">
           <a href="#contact" class="btn-rose btn-hero-cta"><span class="btn-rose-outline" aria-hidden="true"></span><i class="fa-solid fa-paper-plane"></i> Let's Build Yours</a>
           <a href="#work" class="btn-ghost">See live work <i class="fa-solid fa-arrow-right"></i></a>
@@ -2271,52 +2365,57 @@
         <div class="hero-trust">
           <span class="hero-trust-item">Built for your brand</span>
           <span class="trust-sep"></span>
-          <span class="hero-trust-item">Live in 72 hours</span>
+          <span class="hero-trust-item">Private analytics</span>
           <span class="trust-sep"></span>
-          <span class="hero-trust-item">Your domain</span>
+          <span class="hero-trust-item">AI-powered strategy</span>
+          <span class="trust-sep"></span>
+          <span class="hero-trust-item">Live in 72 hours</span>
           <span class="trust-sep"></span>
           <span class="hero-trust-item">Done for you</span>
         </div>
       </div>
+    </div>
 
-      <div class="hero-preview fade-up">
-        <!-- Callout badges -->
-        <div class="callout c1"><span class="callout-dot"></span>Custom Branding</div>
-        <div class="callout c2"><span class="callout-dot"></span>Auto YouTube</div>
-        <div class="callout c3"><span class="callout-dot"></span>Countdown Timer</div>
-        <div class="callout c4"><span class="callout-dot"></span>Discount Codes</div>
-
-        <div class="hero-phones">
-          <!-- Phone 1: Mandi Bagley (real screen recording) -->
-          <div class="hero-phone">
-            <div class="hero-phone-shell">
-              <div class="hero-phone-notch"></div>
-              <div class="hero-phone-screen">
-                <video class="hero-phone-iframe" autoplay muted loop playsinline>
-                  <source src="assets/mandi-phone.mp4" type="video/mp4">
-                </video>
-              </div>
-            </div>
-            <div class="hero-phone-badge">
-              <span class="hero-phone-dot"></span>mandibagley.com
-            </div>
-          </div>
-          <!-- Phone 2: Gabe McKenney (real screen recording) -->
-          <div class="hero-phone">
-            <div class="hero-phone-shell">
-              <div class="hero-phone-notch"></div>
-              <div class="hero-phone-screen">
-                <video class="hero-phone-iframe" autoplay muted loop playsinline>
-                  <source src="assets/gabe-phone.mp4" type="video/mp4">
-                </video>
-              </div>
-            </div>
-            <div class="hero-phone-badge">
-              <span class="hero-phone-dot"></span>coachgabemckenney.com
-            </div>
+    <div class="hero-preview" id="hero-visuals">
+      <div class="hero-phone-solo" style="opacity:0; transform:translateY(40px)">
+        <div class="hero-phone-shell">
+          <div class="hero-phone-notch"></div>
+          <div class="hero-phone-screen">
+            <video class="hero-phone-iframe" autoplay muted loop playsinline>
+              <source src="assets/mandi-phone.mp4" type="video/mp4">
+            </video>
           </div>
         </div>
       </div>
+
+      <div class="hero-float-card hero-card-analytics" style="opacity:0; transform:translate(-20px, 20px)">
+        <div class="hfc-icon">📊</div>
+        <div class="hfc-body">
+          <div class="hfc-title">842 views this week</div>
+          <div class="hfc-sparkline">
+            <svg viewBox="0 0 80 24" fill="none" style="width:80px;height:24px">
+              <polyline points="0,20 12,16 24,18 36,10 48,12 60,6 72,8 80,4" stroke="#10B981" stroke-width="2" fill="none" stroke-linecap="round"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-float-card hero-card-hub" style="opacity:0; transform:translate(20px, 20px)">
+        <div class="hfc-icon">👋</div>
+        <div class="hfc-body">
+          <div class="hfc-title">Hey, Mandi</div>
+          <div class="hfc-sub">Your page is performing well</div>
+        </div>
+      </div>
+
+      <div class="hero-float-card hero-card-ai" style="opacity:0; transform:translate(20px, -20px)">
+        <div class="hfc-icon">🤖</div>
+        <div class="hfc-body">
+          <div class="hfc-title">Your best posting time is…</div>
+          <div class="hfc-typing"><span></span><span></span><span></span></div>
+        </div>
+      </div>
+    </div>
 
     </div>
   </section>
