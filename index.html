@@ -416,6 +416,35 @@
       animation: barGrow 1.2s cubic-bezier(0.16, 1, 0.3, 1) 3.8s forwards;
     }
 
+    /* Connected platform badges */
+    .sys-platforms {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+      justify-content: center;
+    }
+    .sys-platform-badge {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px;
+      color: var(--text-sub);
+      opacity: 0;
+      transform: scale(0.6);
+    }
+    .sys-p1 { animation: platformPop 0.5s cubic-bezier(0.16, 1, 0.3, 1) 3.55s forwards; }
+    .sys-p2 { animation: platformPop 0.5s cubic-bezier(0.16, 1, 0.3, 1) 3.7s forwards; }
+    .sys-p3 { animation: platformPop 0.5s cubic-bezier(0.16, 1, 0.3, 1) 3.85s forwards; }
+    .sys-p1 i { color: #FF0000; }
+    .sys-p2 i { color: #E1306C; }
+    .sys-p3 i { color: #fff; }
+    @keyframes platformPop {
+      from { opacity: 0; transform: scale(0.6); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+
     /* AI card specifics */
     .hero-sys-ai {
       right: -30px;
@@ -2195,6 +2224,8 @@
       .sys-metric-val { font-size: 15px; }
       .sys-metric-label { font-size: 9px; }
       .sys-ai-line { font-size: 10px; }
+      .sys-platforms { margin-top: 8px; gap: 6px; }
+      .sys-platform-badge { width: 24px; height: 24px; font-size: 11px; }
       .hero-sys-lines { display: none; }
       @media (prefers-reduced-motion: no-preference) {
         .hero-sys-analytics {
@@ -2862,7 +2893,7 @@
       <div class="hero-copy">
         <div class="hero-label">The complete creator package</div>
         <h1 class="hero-title">Your site. Your data.<br><em>Your AI strategist.</em></h1>
-        <p class="hero-sub">A custom-built page, private analytics, and an AI growth strategist — one integrated system designed around your brand and your goals.</p>
+        <p class="hero-sub">A custom-built page, live analytics from YouTube, Instagram, and TikTok, and an AI strategist that tells you what to do next — one system, built around your brand.</p>
         <div class="hero-actions">
           <a href="#contact" class="btn-rose btn-hero-cta"><span class="btn-rose-outline" aria-hidden="true"></span><i class="fa-solid fa-paper-plane"></i> Let's Build Yours</a>
           <a href="#work" class="btn-ghost">See live work <i class="fa-solid fa-arrow-right"></i></a>
@@ -2870,7 +2901,7 @@
         <div class="hero-trust">
           <span class="hero-trust-item">Done for you</span>
           <span class="trust-sep"></span>
-          <span class="hero-trust-item">Private analytics</span>
+          <span class="hero-trust-item">YouTube + IG + TikTok data</span>
           <span class="trust-sep"></span>
           <span class="hero-trust-item">AI-powered strategy</span>
           <span class="trust-sep"></span>
@@ -2899,19 +2930,25 @@
         <!-- Analytics module — appears left -->
         <div class="hero-sys-card hero-sys-analytics">
           <div class="sys-card-icon"><i class="fa-solid fa-chart-line"></i></div>
-          <div class="sys-card-label">Private Analytics</div>
+          <div class="sys-card-label">Live Analytics</div>
           <div class="sys-card-metrics">
             <div class="sys-metric">
-              <span class="sys-metric-val">2.4k</span>
-              <span class="sys-metric-label">Visitors</span>
+              <span class="sys-metric-val">12.4k</span>
+              <span class="sys-metric-label">Views</span>
             </div>
             <div class="sys-metric">
-              <span class="sys-metric-val">18%</span>
-              <span class="sys-metric-label">Conv. rate</span>
+              <span class="sys-metric-val">+8.2%</span>
+              <span class="sys-metric-label">Engagement</span>
             </div>
           </div>
           <div class="sys-card-bar">
             <div class="sys-bar-fill"></div>
+          </div>
+          <!-- Connected platforms -->
+          <div class="sys-platforms">
+            <div class="sys-platform-badge sys-p1"><i class="fa-brands fa-youtube"></i></div>
+            <div class="sys-platform-badge sys-p2"><i class="fa-brands fa-instagram"></i></div>
+            <div class="sys-platform-badge sys-p3"><i class="fa-brands fa-tiktok"></i></div>
           </div>
         </div>
 
@@ -2979,7 +3016,7 @@
           </div>
           <div class="pl-copy">
             <h3 class="pl-name">Your Analytics</h3>
-            <p class="pl-desc">Analytics that actually make sense.</p>
+            <p class="pl-desc">YouTube, Instagram, TikTok &amp; your website — one dashboard.</p>
           </div>
         </div>
 
@@ -2998,7 +3035,7 @@
           </div>
           <div class="pl-copy">
             <h3 class="pl-name">Your AI Strategist</h3>
-            <p class="pl-desc">An AI that tells you what's working.</p>
+            <p class="pl-desc">Reads your real data and tells you what to do next.</p>
           </div>
         </div>
       </div>
@@ -3011,7 +3048,7 @@
       <div class="fade-up">
         <span class="compare-label">The Difference</span>
         <h2 class="compare-title">Other tools give you pieces.<br>I build the whole platform.</h2>
-        <p class="compare-sub">Linktree gives you links. Google Analytics gives you numbers you never check. ChatGPT gives you generic advice. I give you one system that does all of it — designed around your brand, fed by your actual data, and smart enough to tell you what to do next.</p>
+        <p class="compare-sub">Linktree gives you links. YouTube Studio, Instagram Insights, TikTok Analytics — three apps, three dashboards, none of them talking to each other. I give you one system that pulls it all together and tells you what to do next.</p>
       </div>
 
       <div class="laptop-wrap fade-up">
@@ -3063,7 +3100,7 @@
         <div class="ccm-card ccm-bad">
           <div class="ccm-label">Your Tools Now</div>
           <ul class="ccm-list">
-            <li>Linktree for links, GA for numbers, ChatGPT for advice</li>
+            <li>YouTube Studio, IG Insights, TikTok Analytics — separate apps</li>
             <li>Nothing talks to anything else</li>
             <li>You're guessing what works</li>
           </ul>
@@ -3071,9 +3108,9 @@
         <div class="ccm-card ccm-good">
           <div class="ccm-label">Your Platform</div>
           <ul class="ccm-list">
-            <li>One system — website, analytics, AI strategy</li>
-            <li>Your data feeds your strategy automatically</li>
-            <li>You know exactly what's working</li>
+            <li>YouTube, IG, TikTok + website — one dashboard</li>
+            <li>AI reads your data and tells you what to do</li>
+            <li>You know exactly what's working, everywhere</li>
           </ul>
         </div>
       </div>
@@ -3170,29 +3207,29 @@
 
         <!-- Left: headline + 4 benefit cards -->
         <div class="analytics-left">
-          <span class="work-label">Built-In Analytics</span>
-          <h2 class="analytics-title">Your audience is global.<br>Now you can <em>see</em> it.</h2>
-          <p class="analytics-sub">Every platform I build includes private, password-protected analytics. No third-party trackers. No shared data. Your numbers, visible only to you.</p>
+          <span class="work-label">Cross-Platform Analytics</span>
+          <h2 class="analytics-title">YouTube. Instagram. TikTok.<br><em>All in one dashboard.</em></h2>
+          <p class="analytics-sub">Real data from every platform you're on — views, engagement, follower growth, and conversions — pulled live into a private dashboard only you can see.</p>
           <div class="analytics-cards">
             <div class="analytics-card">
-              <div class="analytics-card-icon">🔒</div>
-              <div class="analytics-card-title">Password protected</div>
-              <div class="analytics-card-body">Your dashboard is completely private — public visitors can't access it.</div>
+              <div class="analytics-card-icon"><i class="fa-brands fa-youtube" style="color:#FF0000"></i></div>
+              <div class="analytics-card-title">YouTube analytics</div>
+              <div class="analytics-card-body">Views, watch time, subscriber growth, and top-performing videos — updated live.</div>
             </div>
             <div class="analytics-card">
-              <div class="analytics-card-icon">💰</div>
-              <div class="analytics-card-title">Know what converts</div>
-              <div class="analytics-card-body">See exactly which links drive program sales and where buyers come from.</div>
+              <div class="analytics-card-icon"><i class="fa-brands fa-instagram" style="color:#E1306C"></i></div>
+              <div class="analytics-card-title">Instagram analytics</div>
+              <div class="analytics-card-body">Reach, engagement rate, story performance, and follower trends across posts and reels.</div>
             </div>
             <div class="analytics-card">
-              <div class="analytics-card-icon">📈</div>
-              <div class="analytics-card-title">30-day trend charts</div>
-              <div class="analytics-card-body">Daily pageviews, visitor counts, and link clicks — all in one view.</div>
+              <div class="analytics-card-icon"><i class="fa-brands fa-tiktok"></i></div>
+              <div class="analytics-card-title">TikTok analytics</div>
+              <div class="analytics-card-body">Video views, profile visits, likes, and shares — see what's gaining traction.</div>
             </div>
             <div class="analytics-card">
               <div class="analytics-card-icon">🌍</div>
-              <div class="analytics-card-title">Live world audience map</div>
-              <div class="analytics-card-body">Country-by-country breakdown of who is on your page, right now.</div>
+              <div class="analytics-card-title">Website + audience map</div>
+              <div class="analytics-card-body">Pageviews, conversions, traffic sources, and a live world map of your audience.</div>
             </div>
           </div>
 
@@ -3450,14 +3487,14 @@
       <div class="cap-cat-title analytics">Your Analytics</div>
     </div>
     <div class="cap-cat-items">
-      <span class="cap-cat-item analytics">Private password-protected dashboard</span>
-      <span class="cap-cat-item analytics">30-day pageview &amp; visitor trends</span>
-      <span class="cap-cat-item analytics">Link click tracking by platform</span>
+      <span class="cap-cat-item analytics">YouTube, Instagram &amp; TikTok data</span>
+      <span class="cap-cat-item analytics">Views, engagement &amp; follower trends</span>
+      <span class="cap-cat-item analytics">Website pageviews &amp; conversions</span>
       <span class="cap-cat-item analytics">Traffic sources &amp; world map</span>
-      <span class="cap-cat-item analytics">Scroll depth &amp; session duration</span>
-      <span class="cap-cat-item analytics">New vs. returning visitors</span>
-      <span class="cap-cat-item analytics">Geographic data (country + city)</span>
-      <span class="cap-cat-item analytics">Referrer-to-action conversions</span>
+      <span class="cap-cat-item analytics">Top-performing content breakdown</span>
+      <span class="cap-cat-item analytics">Private password-protected dashboard</span>
+      <span class="cap-cat-item analytics">Cross-platform comparison</span>
+      <span class="cap-cat-item analytics">Live data — not yesterday's numbers</span>
     </div>
   </div>
   <div class="cap-cat">
@@ -3468,11 +3505,11 @@
     <div class="cap-cat-items">
       <span class="cap-cat-item commerce">AI-generated weekly briefings</span>
       <span class="cap-cat-item commerce">Real-time strategy chat</span>
-      <span class="cap-cat-item commerce">"When should I post?" — answers from your data</span>
-      <span class="cap-cat-item commerce">"What should I promote?" — based on conversions</span>
-      <span class="cap-cat-item commerce">Platform performance recommendations</span>
-      <span class="cap-cat-item commerce">Content strategy insights</span>
-      <span class="cap-cat-item commerce">Streaming responses, not canned advice</span>
+      <span class="cap-cat-item commerce">"When should I post?" — from your actual data</span>
+      <span class="cap-cat-item commerce">"What's working?" — across YouTube, IG &amp; TikTok</span>
+      <span class="cap-cat-item commerce">Content format recommendations</span>
+      <span class="cap-cat-item commerce">Cross-platform performance insights</span>
+      <span class="cap-cat-item commerce">Powered by your real analytics, not generic tips</span>
     </div>
   </div>
           </div><!-- end .cap-cats -->
