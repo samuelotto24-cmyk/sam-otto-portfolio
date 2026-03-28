@@ -630,6 +630,8 @@
     .laptop-pane {
       flex: 1; overflow: hidden; position: relative;
     }
+    .good-pane { flex: 1.6; }
+    .bad-pane { flex: 1; }
     .laptop-pane iframe,
     .laptop-pane video {
       width: 760px; height: 960px;
@@ -734,43 +736,34 @@
     .verdict-bad  { color: rgba(255,255,255,0.2); text-decoration: line-through; }
     .verdict-good { color: var(--rose); }
 
-    /* ── Scattered tools mockup (compare bad pane) ── */
-    .scattered-tools-mock {
-      width: 760px; height: 960px;
-      transform: scale(0.592); transform-origin: top left;
-      padding: 20px;
-      display: flex; flex-direction: column; gap: 12px;
+    /* ── Boring Linktree mockup (compare bad pane) ── */
+    .linktree-boring {
+      width: 100%; height: 100%;
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; gap: 8px;
+      padding: 30px 40px;
+      background: #f3f3f1;
     }
-    .stm-tab {
-      background: rgba(30, 30, 30, 0.9); border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 8px; overflow: hidden;
+    .lt-avatar {
+      width: 64px; height: 64px; border-radius: 50%;
+      background: #d4d4d0; margin-bottom: 4px;
     }
-    .stm-tab-bar {
-      padding: 6px 12px; font-size: 10px; font-family: monospace;
-      color: rgba(255,255,255,0.35); background: rgba(255,255,255,0.03);
-      border-bottom: 1px solid rgba(255,255,255,0.06);
+    .lt-name {
+      font-size: 13px; font-weight: 600; color: #333;
+      margin-bottom: 0;
     }
-    .stm-tab-body { padding: 12px; }
-    .stm-link {
-      height: 28px; background: rgba(255,255,255,0.06);
-      border-radius: 14px; margin-bottom: 8px;
+    .lt-bio {
+      font-size: 10px; color: #888; margin-bottom: 10px;
     }
-    .stm-chart {
-      height: 60px; background: rgba(255,255,255,0.04);
-      border-radius: 6px;
+    .lt-btn {
+      width: 100%; max-width: 220px; padding: 10px 0;
+      background: #fff; border: 1px solid #e0e0e0;
+      border-radius: 6px; text-align: center;
+      font-size: 11px; font-weight: 500; color: #444;
     }
-    .stm-stat {
-      flex: 1; height: 30px; background: rgba(255,255,255,0.04);
-      border-radius: 6px;
+    .lt-logo {
+      font-size: 10px; color: #bbb; margin-top: 12px;
     }
-    .stm-msg {
-      height: 24px; background: rgba(255,255,255,0.05);
-      border-radius: 12px; margin-bottom: 8px; width: 80%;
-    }
-    .stm-msg-short { width: 55%; }
-    .stm-tab-1 { flex: 1.2; }
-    .stm-tab-2 { flex: 1; }
-    .stm-tab-3 { flex: 0.8; }
 
     /* ── Hub mockup (compare good pane) ── */
     .hub-mock {
@@ -1367,9 +1360,45 @@
       background: #060A10; border-bottom: 1px solid rgba(255,255,255,0.06);
     }
     .showcase-hub-body { padding: 16px; }
+    /* ── Showcase: audience devices row ── */
+    .showcase-audience-row { padding: 24px 24px 16px; }
+    .showcase-creator-row { padding: 0 24px 24px; }
+    .showcase-devices {
+      display: flex; align-items: flex-end; gap: 24px;
+      margin-top: 16px;
+    }
+    .showcase-phone-col { flex-shrink: 0; }
+    .showcase-desktop-col { flex: 1; min-width: 0; }
+    .showcase-desktop-frame {
+      background: var(--dark-card); border: 1px solid var(--border);
+      border-radius: 10px; overflow: hidden;
+      box-shadow: 0 12px 36px rgba(0,0,0,0.5);
+    }
+    .showcase-desktop-chrome {
+      display: flex; align-items: center; gap: 8px;
+      padding: 8px 12px;
+      background: var(--surface-hi); border-bottom: 1px solid var(--border);
+    }
+    .showcase-desktop-video {
+      width: 100%; height: 260px; object-fit: cover; object-position: top;
+      display: block;
+    }
+
+    /* ── Showcase: Hub wide row ── */
+    .showcase-hub-wide {
+      background: #08090D; border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 10px; overflow: hidden;
+      box-shadow: 0 12px 36px rgba(0,0,0,0.5);
+      margin-top: 16px;
+    }
     .showcase-hub-video {
-      width: 100%; height: 380px; object-fit: cover; object-position: center top;
-      display: block; background: #08090D;
+      width: 100%; display: block;
+      background: #08090D;
+    }
+
+    @media (max-width: 600px) {
+      .showcase-devices { flex-direction: column; align-items: center; }
+      .showcase-desktop-col { width: 100%; }
     }
     .showcase-desktop-toggle {
       position: absolute; top: 0; right: 0;
@@ -2772,31 +2801,19 @@
           </div>
           <div class="laptop-content">
             <div class="laptop-pane bad-pane">
-              <div class="scattered-tools-mock">
-                <div class="stm-tab stm-tab-1">
-                  <div class="stm-tab-bar">linktr.ee/you</div>
-                  <div class="stm-tab-body">
-                    <div class="stm-link"></div><div class="stm-link"></div><div class="stm-link"></div>
-                    <div class="stm-link"></div><div class="stm-link"></div>
-                  </div>
-                </div>
-                <div class="stm-tab stm-tab-2">
-                  <div class="stm-tab-bar">analytics.google.com</div>
-                  <div class="stm-tab-body">
-                    <div class="stm-chart"></div>
-                    <div style="display:flex;gap:4px;margin-top:6px;">
-                      <div class="stm-stat"></div><div class="stm-stat"></div><div class="stm-stat"></div>
-                    </div>
-                  </div>
-                </div>
-                <div class="stm-tab stm-tab-3">
-                  <div class="stm-tab-bar">chatgpt.com</div>
-                  <div class="stm-tab-body">
-                    <div class="stm-msg"></div><div class="stm-msg stm-msg-short"></div>
-                  </div>
-                </div>
+              <div class="linktree-boring">
+                <div class="lt-avatar"></div>
+                <div class="lt-name">@fitnessinfluencer</div>
+                <div class="lt-bio">Fitness · Faith · Food</div>
+                <div class="lt-btn">My YouTube</div>
+                <div class="lt-btn">My Programs</div>
+                <div class="lt-btn">Shop My Favorites</div>
+                <div class="lt-btn">DFYNE Code: MANDI</div>
+                <div class="lt-btn">Gymshark Code: MANDI</div>
+                <div class="lt-btn">Contact Me</div>
+                <div class="lt-logo">🌳 Linktree</div>
               </div>
-              <div class="pane-label">Your Tools Now</div>
+              <div class="pane-label">Generic Link Page</div>
             </div>
             <div class="laptop-divider"><div class="divider-vs">VS</div></div>
             <div class="laptop-pane good-pane">
@@ -3101,52 +3118,51 @@
           <div class="client-showcase">
             <div class="showcase-shimmer"></div>
 
-            <!-- Two-column: audience view vs. creator view -->
-            <div class="showcase-split">
-              <div class="showcase-col showcase-audience">
-                <div class="showcase-col-label">What her audience sees</div>
-                <div class="showcase-desktop-toggle" id="desktopToggle" onclick="toggleDesktopView()">
-                  View desktop <i class="fa-solid fa-arrow-right"></i>
-                </div>
-                <div class="demo-phone-wrap-sm">
-                  <div class="phone-shell">
-                    <div class="phone-notch"></div>
-                    <div class="demo-phone-screen">
-                      <video class="demo-video-phone" autoplay muted loop playsinline>
-                        <source src="assets/mandi-phone.mp4" type="video/mp4">
-                      </video>
+            <!-- Top row: what her audience sees — phone + desktop side by side -->
+            <div class="showcase-audience-row">
+              <div class="showcase-col-label">What her audience sees</div>
+              <div class="showcase-devices">
+                <div class="showcase-phone-col">
+                  <div class="demo-phone-wrap-sm">
+                    <div class="phone-shell">
+                      <div class="phone-notch"></div>
+                      <div class="demo-phone-screen">
+                        <video class="demo-video-phone" autoplay muted loop playsinline>
+                          <source src="assets/mandi-phone.mp4" type="video/mp4">
+                        </video>
+                      </div>
                     </div>
                   </div>
                 </div>
-                <div class="showcase-domain">mandibagley.com</div>
-              </div>
-
-              <div class="showcase-col showcase-creator">
-                <div class="showcase-col-label showcase-col-label-accent">What she sees</div>
-                <div class="showcase-hub-frame">
-                  <div class="showcase-hub-chrome">
-                    <span style="width:6px;height:6px;border-radius:50%;background:#ff5f57"></span>
-                    <span style="width:6px;height:6px;border-radius:50%;background:#febc2e"></span>
-                    <span style="width:6px;height:6px;border-radius:50%;background:#28c840"></span>
+                <div class="showcase-desktop-col">
+                  <div class="showcase-desktop-frame">
+                    <div class="showcase-desktop-chrome">
+                      <div class="desktop-video-dots"><span></span><span></span><span></span></div>
+                      <div class="desktop-video-url"><span class="desktop-video-lock">🔒</span> mandibagley.com</div>
+                    </div>
+                    <video class="showcase-desktop-video" autoplay muted loop playsinline>
+                      <source src="assets/mandi-desktop.mp4" type="video/mp4">
+                    </video>
                   </div>
-                  <video class="showcase-hub-video" autoplay muted loop playsinline>
-                    <source src="assets/hub-recording.mp4" type="video/mp4">
-                  </video>
                 </div>
-                <div class="showcase-domain showcase-domain-accent">Her private platform</div>
               </div>
+              <div class="showcase-domain">mandibagley.com</div>
             </div>
 
-            <!-- Desktop video overlay (hidden by default) -->
-            <div class="desktop-overlay" id="desktopOverlay" style="display:none">
-              <div class="desktop-overlay-close" onclick="toggleDesktopView()">✕</div>
-              <div class="desktop-video-chrome">
-                <div class="desktop-video-dots"><span></span><span></span><span></span></div>
-                <div class="desktop-video-url"><span class="desktop-video-lock">🔒</span> mandibagley.com</div>
+            <!-- Bottom row: what she sees — full-width Hub recording -->
+            <div class="showcase-creator-row">
+              <div class="showcase-col-label showcase-col-label-accent">What she sees</div>
+              <div class="showcase-hub-wide">
+                <div class="showcase-hub-chrome">
+                  <span style="width:6px;height:6px;border-radius:50%;background:#ff5f57"></span>
+                  <span style="width:6px;height:6px;border-radius:50%;background:#febc2e"></span>
+                  <span style="width:6px;height:6px;border-radius:50%;background:#28c840"></span>
+                </div>
+                <video class="showcase-hub-video" autoplay muted loop playsinline>
+                  <source src="assets/hub-recording.mp4" type="video/mp4">
+                </video>
               </div>
-              <video class="desktop-video" autoplay muted loop playsinline>
-                <source src="assets/mandi-desktop.mp4" type="video/mp4">
-              </video>
+              <div class="showcase-domain showcase-domain-accent">Her private platform</div>
             </div>
 
             <div class="work-info">
