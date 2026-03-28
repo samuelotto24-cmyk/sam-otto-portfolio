@@ -2595,6 +2595,87 @@
     100% { transform: translateX(-50%); }
   }
 
+  /* ── AI showcase (inside platform breakdown) ── */
+  .ai-showcase {
+    margin-top: 28px;
+    max-width: 480px;
+  }
+  .ai-chat-mockup {
+    background: var(--dark-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+  .ai-chat-msg {
+    font-size: 13px;
+    line-height: 1.5;
+    padding: 10px 14px;
+    border-radius: 12px;
+    max-width: 90%;
+  }
+  .ai-chat-user {
+    background: rgba(16,185,129,0.12);
+    border: 1px solid rgba(16,185,129,0.2);
+    color: var(--text);
+    align-self: flex-end;
+    font-weight: 500;
+  }
+  .ai-chat-bot {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    color: var(--text-sub);
+    align-self: flex-start;
+  }
+  .ai-chat-label {
+    display: block;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--rose);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .ai-chat-label i { margin-right: 4px; }
+  .ai-chat-hashtags {
+    display: block;
+    margin-top: 6px;
+    font-size: 11px;
+    color: var(--rose);
+    opacity: 0.7;
+  }
+  .ai-caps {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .ai-cap {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-sub);
+    background: rgba(16,185,129,0.06);
+    border: 1px solid rgba(16,185,129,0.12);
+    border-radius: 10px;
+    padding: 10px 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .ai-cap i {
+    color: var(--rose);
+    font-size: 13px;
+    flex-shrink: 0;
+    opacity: 0.7;
+  }
+  @media (max-width: 768px) {
+    .ai-showcase { max-width: 100%; }
+    .ai-caps { grid-template-columns: 1fr; }
+    .ai-chat-msg { max-width: 95%; font-size: 12px; }
+  }
+
   /* ── Growth interrupt ── */
   .growth-interrupt {
     position: relative;
@@ -3137,6 +3218,22 @@
           <div class="pl-copy">
             <h3 class="pl-name">Your AI Strategist</h3>
             <p class="pl-desc">Reads your real data and tells you what to do next.</p>
+          </div>
+
+          <!-- AI capabilities showcase -->
+          <div class="ai-showcase">
+            <div class="ai-chat-mockup">
+              <div class="ai-chat-msg ai-chat-user">Write me a caption for my new reel</div>
+              <div class="ai-chat-msg ai-chat-bot"><span class="ai-chat-label"><i class="fa-solid fa-brain"></i> AI Strategist</span>"Your mornings don't have to be perfect to be powerful. Here's what actually changed my energy this month." <span class="ai-chat-hashtags">#morningroutine #wellnesstips #realresults</span></div>
+              <div class="ai-chat-msg ai-chat-user">When should I post this week?</div>
+              <div class="ai-chat-msg ai-chat-bot"><span class="ai-chat-label"><i class="fa-solid fa-brain"></i> AI Strategist</span>Based on your engagement data: <strong>Tuesday 7pm</strong> and <strong>Thursday 12pm</strong> — those are your highest click windows this month.</div>
+            </div>
+            <div class="ai-caps">
+              <div class="ai-cap"><i class="fa-solid fa-pen-fancy"></i> Writes captions that hit the algorithm</div>
+              <div class="ai-cap"><i class="fa-solid fa-clock"></i> Best times to post from your data</div>
+              <div class="ai-cap"><i class="fa-solid fa-lightbulb"></i> Content ideas based on what's working</div>
+              <div class="ai-cap"><i class="fa-solid fa-calendar"></i> Helps you plan and schedule posts</div>
+            </div>
           </div>
         </div>
       </div>
