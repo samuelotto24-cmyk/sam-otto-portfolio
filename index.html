@@ -181,6 +181,12 @@
       gap: 60px;
       align-items: center;
     }
+
+    /* ── Hero copy — left side ── */
+    .hero-copy {
+      position: relative;
+      z-index: 2;
+    }
     .hero-label {
       display: inline-block;
       font-size: 11px;
@@ -193,6 +199,8 @@
       padding: 5px 14px;
       border-radius: 50px;
       margin-bottom: 24px;
+      opacity: 0;
+      animation: heroFadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards;
     }
     .hero-title {
       font-family: var(--serif);
@@ -201,6 +209,8 @@
       line-height: 1.1;
       margin-bottom: 24px;
       color: var(--text);
+      opacity: 0;
+      animation: heroFadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards;
     }
     .hero-title em { font-style: italic; color: var(--rose); }
     .hero-sub {
@@ -209,13 +219,32 @@
       margin-bottom: 36px;
       max-width: 460px;
       line-height: 1.65;
+      opacity: 0;
+      animation: heroFadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
     }
     .hero-actions {
       display: flex;
       gap: 14px;
       flex-wrap: wrap;
       align-items: center;
+      opacity: 0;
+      animation: heroFadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.45s forwards;
     }
+    .hero-trust {
+      display: flex; align-items: center; gap: 14px;
+      margin-top: 22px; flex-wrap: wrap;
+      opacity: 0;
+      animation: heroFadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.55s forwards;
+    }
+    .hero-trust-item {
+      font-size: 11px; font-weight: 600; letter-spacing: 0.09em;
+      text-transform: uppercase; color: var(--text-muted);
+    }
+    .trust-sep {
+      width: 3px; height: 3px; border-radius: 50%;
+      background: rgba(255,255,255,0.2); flex-shrink: 0;
+    }
+
     .btn-rose {
       display: inline-flex;
       align-items: center;
@@ -248,23 +277,29 @@
     }
     .btn-ghost:hover { color: var(--text); border-bottom-color: var(--rose); }
 
-    /* Hero preview — two phones side by side */
-    .hero-preview { position: relative; overflow: visible; }
-    .hero-phones {
+    /* ── Hero system assembly — right side ── */
+    .hero-system {
+      position: relative;
       display: flex;
-      gap: 16px;
-      align-items: flex-end;
+      align-items: center;
       justify-content: center;
+      min-height: 420px;
+      z-index: 1;
     }
-    .hero-phone {
+
+    /* Central phone */
+    .hero-sys-phone {
+      position: relative;
+      z-index: 3;
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 14px;
+      opacity: 0;
+      animation: sysPhoneLand 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
     }
-    .hero-phone:first-child { transform: translateY(-24px); }
     .hero-phone-shell {
-      width: 162px;
+      width: 172px;
       background: #1c1916;
       border-radius: 38px;
       border: 1px solid rgba(255,248,220,0.13);
@@ -281,14 +316,14 @@
     .hero-phone-screen {
       border-radius: 28px;
       overflow: hidden;
-      height: 322px;
+      height: 342px;
       background: #000;
     }
     .hero-phone-iframe {
       width: 390px;
       height: 785px;
       border: none;
-      transform: scale(0.4154); /* 162/390 */
+      transform: scale(0.441); /* 172/390 */
       transform-origin: top left;
       pointer-events: none;
     }
@@ -310,118 +345,173 @@
       flex-shrink: 0;
     }
 
-    /* Floating callout badges */
-    .callout {
+    /* System cards — analytics + AI modules */
+    .hero-sys-card {
       position: absolute;
-      display: flex; align-items: center; gap: 8px;
-      background: rgba(20,20,20,0.96);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 50px;
-      padding: 8px 14px 8px 10px;
-      font-size: 11px; font-weight: 600; color: var(--text);
-      white-space: nowrap;
-      box-shadow: 0 8px 28px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.03);
-      pointer-events: none;
-      z-index: 10;
-      opacity: 0;
-      transition: opacity 0.5s ease;
+      z-index: 2;
+      background: rgba(23,21,18,0.92);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255,248,220,0.1);
+      border-radius: 16px;
+      padding: 18px 20px;
+      width: 180px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.03);
     }
-    .callout.show { opacity: 1; }
-    .callout-dot {
-      width: 7px; height: 7px; border-radius: 50%;
-      background: var(--rose); box-shadow: 0 0 6px var(--rose);
-      flex-shrink: 0;
+    .sys-card-icon {
+      width: 32px; height: 32px;
+      border-radius: 10px;
+      background: rgba(16,185,129,0.12);
+      border: 1px solid rgba(16,185,129,0.25);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--rose);
+      font-size: 14px;
+      margin-bottom: 12px;
     }
-    .c1 { top: 28%;    left: -18px;  transform: translateX(-100%); animation-delay: 0s;   }
-    .c2 { top: 42%;    right: -18px; transform: translateX(100%);  animation-delay: 0.8s; }
-    .c3 { bottom: 28%; left: -18px;  transform: translateX(-100%); animation-delay: 1.4s; }
-    .c4 { bottom: 14%; right: -18px; transform: translateX(100%);  animation-delay: 0.4s; }
-    .callout.show.c1, .callout.show.c3 { animation: callout-float-l 3.5s ease-in-out infinite; }
-    .callout.show.c2, .callout.show.c4 { animation: callout-float-r 3.5s ease-in-out infinite; }
-    @keyframes callout-float-l {
-      0%, 100% { transform: translateX(-100%) translateY(0);   }
-      50%      { transform: translateX(-100%) translateY(-6px); }
-    }
-    @keyframes callout-float-r {
-      0%, 100% { transform: translateX(100%) translateY(0);   }
-      50%      { transform: translateX(100%) translateY(-6px); }
-    }
-
-    /* ── HERO NARRATION ── */
-    .hero-left { max-width: 520px; }
-    .hero-line { margin-bottom: 8px; transition: opacity 0.6s ease, transform 0.6s ease; }
-    .hero-title-word {
-      font-family: var(--serif);
-      font-size: clamp(40px, 5vw, 68px);
-      font-weight: 500;
-      line-height: 1.1;
+    .sys-card-label {
+      font-size: 13px;
+      font-weight: 700;
       color: var(--text);
-      margin: 0;
+      margin-bottom: 12px;
+      letter-spacing: 0.01em;
     }
-    .hero-title-accent { color: var(--rose); font-style: italic; }
-    .hero-desc {
-      font-size: 15px;
-      color: var(--text-sub);
-      margin: 4px 0 16px;
-      line-height: 1.5;
+
+    /* Analytics card specifics */
+    .hero-sys-analytics {
+      left: -30px;
+      top: 50%;
+      transform: translateY(-70%);
+      opacity: 0;
+      animation: sysCardLeft 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.65s forwards;
     }
-    .hero-final { transition: opacity 0.6s ease, transform 0.6s ease; }
+    .sys-card-metrics {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 12px;
+    }
+    .sys-metric-val {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--cream);
+      display: block;
+      font-family: var(--sans);
+    }
+    .sys-metric-label {
+      font-size: 10px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .sys-card-bar {
+      height: 4px;
+      background: rgba(255,255,255,0.06);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .sys-bar-fill {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, var(--rose), var(--rose-light));
+      border-radius: 4px;
+      animation: barGrow 1.2s cubic-bezier(0.16, 1, 0.3, 1) 1.2s forwards;
+    }
 
-    /* ── HERO PHONE (single, centered) ── */
-    .hero-phone-solo { transition: opacity 0.8s ease, transform 0.8s ease; }
-
-    /* ── HERO FLOATING CARDS ── */
-    .hero-float-card {
-      position: absolute;
+    /* AI card specifics */
+    .hero-sys-ai {
+      right: -30px;
+      top: 50%;
+      transform: translateY(-35%);
+      opacity: 0;
+      animation: sysCardRight 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.85s forwards;
+    }
+    .sys-card-body {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .sys-ai-line {
       display: flex;
       align-items: center;
-      gap: 10px;
-      background: rgba(20, 20, 16, 0.95);
-      border: 1px solid rgba(255, 248, 220, 0.12);
-      border-radius: 14px;
-      padding: 12px 16px;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-      transition: opacity 0.6s ease, transform 0.6s ease;
+      gap: 8px;
+      font-size: 11px;
+      color: var(--text-sub);
+      line-height: 1.4;
+    }
+    .sys-ai-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--rose);
+      box-shadow: 0 0 6px var(--rose);
+      flex-shrink: 0;
+    }
+
+    /* Connection lines */
+    .hero-sys-lines {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
       pointer-events: none;
-      z-index: 10;
-    }
-    .hfc-icon { font-size: 20px; flex-shrink: 0; }
-    .hfc-title { font-size: 13px; font-weight: 600; color: var(--text); white-space: nowrap; }
-    .hfc-sub { font-size: 11px; color: var(--rose); margin-top: 2px; }
-    .hfc-sparkline { margin-top: 4px; }
-
-    /* Card positions */
-    .hero-card-analytics { top: 15%; left: -10px; }
-    .hero-card-hub { top: 55%; right: -10px; }
-    .hero-card-ai { bottom: 15%; left: -10px; }
-
-    /* Typing dots animation */
-    .hfc-typing { display: flex; gap: 4px; margin-top: 4px; }
-    .hfc-typing span {
-      width: 5px; height: 5px; border-radius: 50%;
-      background: var(--rose); opacity: 0.4;
-      animation: typingDot 1.2s ease-in-out infinite;
-    }
-    .hfc-typing span:nth-child(2) { animation-delay: 0.2s; }
-    .hfc-typing span:nth-child(3) { animation-delay: 0.4s; }
-    @keyframes typingDot {
-      0%, 100% { opacity: 0.3; transform: translateY(0); }
-      50% { opacity: 1; transform: translateY(-3px); }
+      opacity: 0;
+      animation: heroFadeIn 0.6s ease 1.1s forwards;
     }
 
-    /* Settled state — floating animation after auto-play completes */
-    .hero-float-card.settled { pointer-events: auto; }
-    .hero-card-analytics.settled { animation: floatL 3.5s ease-in-out infinite; }
-    .hero-card-hub.settled { animation: floatR 3.5s ease-in-out infinite; animation-delay: 0.5s; }
-    .hero-card-ai.settled { animation: floatL 3.5s ease-in-out infinite; animation-delay: 1s; }
-    @keyframes floatL {
-      0%, 100% { transform: translate(0, 0); }
-      50% { transform: translate(0, -6px); }
+    /* ── Hero entrance keyframes ── */
+    @keyframes heroFadeUp {
+      from { opacity: 0; transform: translateY(22px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
-    @keyframes floatR {
-      0%, 100% { transform: translate(0, 0); }
-      50% { transform: translate(0, -6px); }
+    @keyframes heroFadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
     }
+    @keyframes sysPhoneLand {
+      from { opacity: 0; transform: translateY(40px) scale(0.92); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    @keyframes sysCardLeft {
+      from { opacity: 0; transform: translateY(-70%) translateX(-30px) scale(0.9); }
+      to   { opacity: 1; transform: translateY(-70%) translateX(0) scale(1); }
+    }
+    @keyframes sysCardRight {
+      from { opacity: 0; transform: translateY(-35%) translateX(30px) scale(0.9); }
+      to   { opacity: 1; transform: translateY(-35%) translateX(0) scale(1); }
+    }
+    @keyframes barGrow {
+      from { width: 0%; }
+      to   { width: 72%; }
+    }
+
+    /* ── Idle float after entrance ── */
+    @media (prefers-reduced-motion: no-preference) {
+      .hero-sys-phone {
+        animation: sysPhoneLand 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards,
+                   sysIdleFloat 4s ease-in-out 1.5s infinite;
+      }
+      .hero-sys-analytics {
+        animation: sysCardLeft 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.65s forwards,
+                   sysIdleCardL 5s ease-in-out 1.8s infinite;
+      }
+      .hero-sys-ai {
+        animation: sysCardRight 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.85s forwards,
+                   sysIdleCardR 4.5s ease-in-out 2s infinite;
+      }
+    }
+    @keyframes sysIdleFloat {
+      0%, 100% { transform: translateY(0); }
+      50%      { transform: translateY(-8px); }
+    }
+    @keyframes sysIdleCardL {
+      0%, 100% { transform: translateY(-70%) translateX(0); }
+      50%      { transform: translateY(calc(-70% - 6px)) translateX(2px); }
+    }
+    @keyframes sysIdleCardR {
+      0%, 100% { transform: translateY(-35%) translateX(0); }
+      50%      { transform: translateY(calc(-35% - 7px)) translateX(-2px); }
+    }
+
+
 
     /* ── STATS BAR ── */
     #stats {
@@ -2018,17 +2108,42 @@
     /* ── RESPONSIVE ── */
     @media (max-width: 768px) {
       /* ── Hero ── */
-      .hero-inner { grid-template-columns: 1fr; text-align: center; }
-      .hero-left { max-width: 100%; }
-      .hero-preview { position: relative; min-height: 360px; display: flex; align-items: center; justify-content: center; }
-      .hero-card-analytics { top: auto; bottom: -10px; left: 50%; transform: translateX(-50%) translateY(20px); }
-      .hero-card-hub { top: 10px; right: 10px; }
-      .hero-card-ai { bottom: auto; top: 10px; left: 10px; }
-      .hero-desc { margin-left: auto; margin-right: auto; }
+      .hero-inner { grid-template-columns: 1fr; gap: 28px; }
       .hero-sub { font-size: 15px; }
       .hero-trust { flex-wrap: wrap; gap: 6px 10px; justify-content: center; }
       .hero-trust-item { font-size: 10px; }
       .trust-sep { display: none; }
+
+      /* Mobile system assembly — compact, stacked */
+      .hero-system { min-height: 320px; }
+      .hero-phone-shell { width: 140px; }
+      .hero-phone-screen { height: 278px; }
+      .hero-phone-iframe { transform: scale(0.359); /* 140/390 */ }
+      .hero-sys-card { width: 150px; padding: 14px 16px; }
+      .hero-sys-analytics {
+        left: -10px;
+        animation: sysCardLeftMob 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.65s forwards;
+      }
+      .hero-sys-ai {
+        right: -10px;
+        animation: sysCardRightMob 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.85s forwards;
+      }
+      .sys-card-icon { width: 26px; height: 26px; font-size: 12px; margin-bottom: 8px; }
+      .sys-card-label { font-size: 11px; margin-bottom: 8px; }
+      .sys-metric-val { font-size: 15px; }
+      .sys-metric-label { font-size: 9px; }
+      .sys-ai-line { font-size: 10px; }
+      .hero-sys-lines { display: none; }
+      @media (prefers-reduced-motion: no-preference) {
+        .hero-sys-analytics {
+          animation: sysCardLeftMob 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.65s forwards,
+                     sysIdleCardLMob 5s ease-in-out 1.8s infinite;
+        }
+        .hero-sys-ai {
+          animation: sysCardRightMob 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.85s forwards,
+                     sysIdleCardRMob 4.5s ease-in-out 2s infinite;
+        }
+      }
       .stats-row { flex-wrap: wrap; }
       .stat-div { display: none; }
       .stat-item { flex: 0 0 50%; padding: 12px; }
@@ -2168,6 +2283,14 @@
     }
 
     /* ── 380px: very small phones (iPhone SE, Galaxy A) ── */
+    @media (max-width: 420px) {
+      .hero-sys-card { width: 130px; padding: 12px 14px; }
+      .sys-card-metrics { gap: 10px; }
+      .sys-metric-val { font-size: 14px; }
+      .sys-ai-line { font-size: 9px; }
+      .hero-sys-analytics { left: -5px; }
+      .hero-sys-ai { right: -5px; }
+    }
     @media (max-width: 380px) {
       /* Ownership: stack back to 1-col but make each item a compact row */
       .ownership-row { grid-template-columns: 1fr; }
@@ -2181,6 +2304,24 @@
       /* Ensure no horizontal overflow */
       #analytics, #compare, #work, #process, #contact { overflow-x: hidden; }
     }
+  /* ── Mobile hero assembly keyframes (must be outside @media) ── */
+  @keyframes sysCardLeftMob {
+    from { opacity: 0; transform: translateY(-70%) translateX(-20px) scale(0.9); }
+    to   { opacity: 1; transform: translateY(-70%) translateX(0) scale(1); }
+  }
+  @keyframes sysCardRightMob {
+    from { opacity: 0; transform: translateY(-35%) translateX(20px) scale(0.9); }
+    to   { opacity: 1; transform: translateY(-35%) translateX(0) scale(1); }
+  }
+  @keyframes sysIdleCardLMob {
+    0%, 100% { transform: translateY(-70%) translateX(0); }
+    50%      { transform: translateY(calc(-70% - 5px)) translateX(2px); }
+  }
+  @keyframes sysIdleCardRMob {
+    0%, 100% { transform: translateY(-35%) translateX(0); }
+    50%      { transform: translateY(calc(-35% - 5px)) translateX(-2px); }
+  }
+
   /* ── Cinematic effects ── */
 
   /* 1. Cursor glow */
@@ -2509,21 +2650,6 @@
     flex-shrink: 0;
   }
 
-  /* ── Intro particle constellation overlay ── */
-  #intro-overlay {
-    position: fixed;
-    inset: 0;
-    z-index: 10000;
-    background: #090907;
-    transition: opacity 1.2s ease;
-  }
-  #intro-overlay.fade-out {
-    opacity: 0;
-    pointer-events: none;
-  }
-  #intro-canvas {
-    width: 100%; height: 100%;
-  }
 
   /* ── Side gutter orbs (desktop only, ≥1260px) ── */
   #side-orbs {
@@ -2619,9 +2745,6 @@
 </head>
 <body>
 
-<div id="intro-overlay" aria-hidden="true">
-  <canvas id="intro-canvas"></canvas>
-</div>
 
 <div id="side-orbs" aria-hidden="true">
   <div class="orb orb-l1"></div>
@@ -2655,28 +2778,16 @@
     <canvas id="hero-orbits" aria-hidden="true"></canvas>
     <div class="inner hero-inner">
 
-    <div class="hero-left" id="hero-narration">
-      <div class="hero-line hero-line-1" style="opacity:0; transform:translateY(16px)">
-        <h1 class="hero-title-word">Your website.</h1>
-        <p class="hero-desc">Custom-built around your brand.</p>
-      </div>
-      <div class="hero-line hero-line-2" style="opacity:0; transform:translateY(16px)">
-        <h1 class="hero-title-word">Your data.</h1>
-        <p class="hero-desc">Every click, every visitor, every conversion.</p>
-      </div>
-      <div class="hero-line hero-line-3" style="opacity:0; transform:translateY(16px)">
-        <h1 class="hero-title-word hero-title-accent">Your AI strategist.</h1>
-        <p class="hero-desc">Tells you what to post and what's making you money.</p>
-      </div>
-
-      <div class="hero-final" style="opacity:0; transform:translateY(16px)">
-        <p class="hero-sub">Not a template. Not a link-in-bio. The entire platform behind your brand — custom-built, done for you, live in 72 hours.</p>
+      <div class="hero-copy">
+        <div class="hero-label">The complete creator package</div>
+        <h1 class="hero-title">Your site. Your data.<br><em>Your AI strategist.</em></h1>
+        <p class="hero-sub">A custom-built page, private analytics, and an AI growth strategist — one integrated system designed around your brand and your goals.</p>
         <div class="hero-actions">
           <a href="#contact" class="btn-rose btn-hero-cta"><span class="btn-rose-outline" aria-hidden="true"></span><i class="fa-solid fa-paper-plane"></i> Let's Build Yours</a>
           <a href="#work" class="btn-ghost">See live work <i class="fa-solid fa-arrow-right"></i></a>
         </div>
         <div class="hero-trust">
-          <span class="hero-trust-item">Built for your brand</span>
+          <span class="hero-trust-item">Done for you</span>
           <span class="trust-sep"></span>
           <span class="hero-trust-item">Private analytics</span>
           <span class="trust-sep"></span>
@@ -2684,51 +2795,61 @@
           <span class="trust-sep"></span>
           <span class="hero-trust-item">Live in 72 hours</span>
           <span class="trust-sep"></span>
-          <span class="hero-trust-item">Done for you</span>
+          <span class="hero-trust-item">One flat price</span>
         </div>
       </div>
-    </div>
 
-    <div class="hero-preview" id="hero-visuals">
-      <div class="hero-phone-solo" style="opacity:0; transform:translateY(40px)">
-        <div class="hero-phone-shell">
-          <div class="hero-phone-notch"></div>
-          <div class="hero-phone-screen">
-            <video class="hero-phone-iframe" autoplay muted loop playsinline>
-              <source src="assets/mandi-phone.mp4" type="video/mp4">
-            </video>
+      <div class="hero-system">
+        <!-- Central phone mockup — lands first -->
+        <div class="hero-sys-phone">
+          <div class="hero-phone-shell">
+            <div class="hero-phone-notch"></div>
+            <div class="hero-phone-screen">
+              <video class="hero-phone-iframe" autoplay muted loop playsinline>
+                <source src="assets/mandi-phone-hero.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>
+          <div class="hero-phone-badge">
+            <span class="hero-phone-dot"></span>mandibagley.com
           </div>
         </div>
-      </div>
 
-      <div class="hero-float-card hero-card-analytics" style="opacity:0; transform:translate(-20px, 20px)">
-        <div class="hfc-icon">📊</div>
-        <div class="hfc-body">
-          <div class="hfc-title">842 views this week</div>
-          <div class="hfc-sparkline">
-            <svg viewBox="0 0 80 24" fill="none" style="width:80px;height:24px">
-              <polyline points="0,20 12,16 24,18 36,10 48,12 60,6 72,8 80,4" stroke="#10B981" stroke-width="2" fill="none" stroke-linecap="round"/>
-            </svg>
+        <!-- Analytics module — appears left -->
+        <div class="hero-sys-card hero-sys-analytics">
+          <div class="sys-card-icon"><i class="fa-solid fa-chart-line"></i></div>
+          <div class="sys-card-label">Private Analytics</div>
+          <div class="sys-card-metrics">
+            <div class="sys-metric">
+              <span class="sys-metric-val">2.4k</span>
+              <span class="sys-metric-label">Visitors</span>
+            </div>
+            <div class="sys-metric">
+              <span class="sys-metric-val">18%</span>
+              <span class="sys-metric-label">Conv. rate</span>
+            </div>
+          </div>
+          <div class="sys-card-bar">
+            <div class="sys-bar-fill"></div>
           </div>
         </div>
-      </div>
 
-      <div class="hero-float-card hero-card-hub" style="opacity:0; transform:translate(20px, 20px)">
-        <div class="hfc-icon">👋</div>
-        <div class="hfc-body">
-          <div class="hfc-title">Hey, Mandi</div>
-          <div class="hfc-sub">Your page is performing well</div>
+        <!-- AI module — appears right -->
+        <div class="hero-sys-card hero-sys-ai">
+          <div class="sys-card-icon"><i class="fa-solid fa-brain"></i></div>
+          <div class="sys-card-label">AI Strategist</div>
+          <div class="sys-card-body">
+            <div class="sys-ai-line"><span class="sys-ai-dot"></span>Move CTA above the fold</div>
+            <div class="sys-ai-line"><span class="sys-ai-dot"></span>Add urgency to headline</div>
+          </div>
         </div>
-      </div>
 
-      <div class="hero-float-card hero-card-ai" style="opacity:0; transform:translate(20px, -20px)">
-        <div class="hfc-icon">🤖</div>
-        <div class="hfc-body">
-          <div class="hfc-title">Your best posting time is…</div>
-          <div class="hfc-typing"><span></span><span></span><span></span></div>
-        </div>
+        <!-- Connection lines (decorative SVG) -->
+        <svg class="hero-sys-lines" viewBox="0 0 500 400" fill="none" aria-hidden="true">
+          <path class="sys-line sys-line-l" d="M130,200 Q180,200 200,200" stroke="rgba(16,185,129,0.3)" stroke-width="1" stroke-dasharray="4 4"/>
+          <path class="sys-line sys-line-r" d="M300,200 Q320,200 370,200" stroke="rgba(16,185,129,0.3)" stroke-width="1" stroke-dasharray="4 4"/>
+        </svg>
       </div>
-    </div>
 
     </div>
   </section>
@@ -3390,273 +3511,7 @@
   </footer>
 
   <script>
-    // ── Intro: particles swirl from edges, form slogan at center, then reveal page ──
-    (function() {
-      var overlay = document.getElementById('intro-overlay');
-      var c = document.getElementById('intro-canvas');
-      if (!c || !overlay) return;
-      var ctx = c.getContext('2d');
-      var dpr = Math.min(window.devicePixelRatio || 1, 2);
-      var W = window.innerWidth, H = window.innerHeight;
-      c.width = W * dpr; c.height = H * dpr;
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
-      // ── Render slogan to offscreen canvas, sample pixel positions ──
-      var offscreen = document.createElement('canvas');
-      offscreen.width = W; offscreen.height = H;
-      var octx = offscreen.getContext('2d');
-      var isMobile = W < 768;
-      var sloganLine1 = 'Sam Otto';
-      var sloganLine2 = 'Creator Platforms';
-      var fs1 = isMobile ? Math.min(W * 0.15, 60) : Math.min(W * 0.08, 110);
-      var fs2 = isMobile ? Math.min(W * 0.075, 32) : Math.min(W * 0.032, 42);
-
-      function renderSlogan() {
-        octx.clearRect(0, 0, W, H);
-        octx.fillStyle = '#fff';
-        octx.textAlign = 'center';
-        octx.textBaseline = 'middle';
-        octx.font = '500 ' + fs1 + 'px "Cormorant Garamond", Georgia, serif';
-        octx.fillText(sloganLine1, W / 2, H / 2 - fs1 * 0.4);
-        octx.font = '700 ' + fs2 + 'px "DM Sans", system-ui, sans-serif';
-        octx.letterSpacing = '0.18em';
-        octx.fillText(sloganLine2, W / 2, H / 2 + fs1 * 0.55);
-      }
-
-      function sampleTargets() {
-        var imgData = octx.getImageData(0, 0, W, H);
-        var px = imgData.data;
-        var t = [];
-        var step = isMobile ? 2 : 1;
-        for (var y = 0; y < H; y += step) {
-          for (var x = 0; x < W; x += step) {
-            if (px[(y * W + x) * 4 + 3] > 128) t.push({ x: x, y: y });
-          }
-        }
-        // Cap at 8000
-        if (t.length > 8000) {
-          var k = []; var s = t.length / 8000;
-          for (var i = 0; i < 8000; i++) k.push(t[Math.floor(i * s)]);
-          return k;
-        }
-        return t;
-      }
-
-      renderSlogan();
-      var targets = sampleTargets();
-
-      // ── Create text-forming particles ──
-      var NUM = targets.length;
-      var particles = [];
-      var cx = W / 2, cy = H / 2;
-      for (var i = 0; i < NUM; i++) {
-        // Start from random edge with a swirl offset
-        var angle = Math.random() * Math.PI * 2;
-        var dist = Math.max(W, H) * 0.7 + Math.random() * 200;
-        var sx = cx + Math.cos(angle) * dist;
-        var sy = cy + Math.sin(angle) * dist;
-        // Swirl: give each particle an angular velocity for spiral motion
-        particles.push({
-          sx: sx, sy: sy,
-          tx: targets[i].x, ty: targets[i].y,
-          x: sx, y: sy,
-          size: 0.4 + Math.random() * 0.8,
-          alpha: 0.3 + Math.random() * 0.7,
-          delay: Math.random() * 0.35,
-          swirlAngle: angle,
-          swirlSpeed: 1.5 + Math.random() * 2.5,
-          swirlDecay: 0.3 + Math.random() * 0.4
-        });
-      }
-
-      // ── Ambient particles (just float, never settle) ──
-      var AMBIENT = 200;
-      var ambient = [];
-      for (var i = 0; i < AMBIENT; i++) {
-        var a = Math.random() * Math.PI * 2;
-        var r = 100 + Math.random() * Math.max(W, H) * 0.6;
-        ambient.push({
-          x: cx + Math.cos(a) * r,
-          y: cy + Math.sin(a) * r,
-          size: 0.4 + Math.random() * 1.2,
-          alpha: 0.1 + Math.random() * 0.2,
-          vx: (Math.random() - 0.5) * 0.6,
-          vy: (Math.random() - 0.5) * 0.6
-        });
-      }
-
-      var startTime = performance.now();
-      var SWIRL_DURATION = 1200;  // particles spiral inward
-      var FORM_DURATION = 800;    // settle into text
-      var HOLD_DURATION = 600;    // hold visible
-      var TOTAL = SWIRL_DURATION + FORM_DURATION + HOLD_DURATION;
-      var done = false;
-
-      function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
-      function easeInOutQuad(t) { return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2; }
-
-      function draw(ts) {
-        var elapsed = ts - startTime;
-        ctx.clearRect(0, 0, W, H);
-
-        // Ambient particles
-        for (var i = 0; i < AMBIENT; i++) {
-          var a = ambient[i];
-          a.x += a.vx; a.y += a.vy;
-          if (a.x < -20) a.x = W + 20; if (a.x > W + 20) a.x = -20;
-          if (a.y < -20) a.y = H + 20; if (a.y > H + 20) a.y = -20;
-          ctx.beginPath();
-          ctx.arc(a.x, a.y, a.size, 0, Math.PI * 2);
-          ctx.fillStyle = 'rgba(16,185,129,' + a.alpha.toFixed(3) + ')';
-          ctx.fill();
-        }
-
-        // Text-forming particles — two phases: swirl then settle
-        for (var i = 0; i < NUM; i++) {
-          var p = particles[i];
-          var pDelay = p.delay * SWIRL_DURATION;
-
-          if (elapsed < SWIRL_DURATION) {
-            // Phase 1: Spiral inward toward center
-            var t = Math.max(0, elapsed - pDelay) / (SWIRL_DURATION - pDelay);
-            t = Math.min(t, 1);
-            var e = easeInOutQuad(t);
-            // Spiral: shrinking radius + rotating angle
-            var startDist = Math.sqrt(Math.pow(p.sx - cx, 2) + Math.pow(p.sy - cy, 2));
-            var curDist = startDist * (1 - e * 0.85);
-            var curAngle = p.swirlAngle + e * p.swirlSpeed * Math.PI;
-            p.x = cx + Math.cos(curAngle) * curDist;
-            p.y = cy + Math.sin(curAngle) * curDist;
-          } else {
-            // Phase 2: Settle from swirl position into text position
-            var t2 = Math.min((elapsed - SWIRL_DURATION) / FORM_DURATION, 1);
-            var e2 = easeOutCubic(t2);
-            // Where the particle was at end of swirl
-            var startDist = Math.sqrt(Math.pow(p.sx - cx, 2) + Math.pow(p.sy - cy, 2));
-            var swirlDist = startDist * 0.15;
-            var swirlAngleEnd = p.swirlAngle + p.swirlSpeed * Math.PI;
-            var swirlX = cx + Math.cos(swirlAngleEnd) * swirlDist;
-            var swirlY = cy + Math.sin(swirlAngleEnd) * swirlDist;
-            p.x = swirlX + (p.tx - swirlX) * e2;
-            p.y = swirlY + (p.ty - swirlY) * e2;
-          }
-
-          var vis = Math.min(elapsed / 600, 1);
-          var dotAlpha = p.alpha * vis;
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-          ctx.fillStyle = 'rgba(52,211,153,' + dotAlpha.toFixed(3) + ')';
-          ctx.fill();
-        }
-
-        // Connection lines during swirl phase (sparse for performance)
-        if (elapsed < SWIRL_DURATION + FORM_DURATION * 0.5) {
-          ctx.lineWidth = 0.3;
-          for (var i = 0; i < NUM; i += 16) {
-            for (var j = i + 16; j < NUM; j += 16) {
-              var dx = particles[i].x - particles[j].x;
-              var dy = particles[i].y - particles[j].y;
-              var d2 = dx * dx + dy * dy;
-              if (d2 < 3600) { // 60px
-                var la = (1 - Math.sqrt(d2) / 60) * 0.18;
-                ctx.beginPath();
-                ctx.moveTo(particles[i].x, particles[i].y);
-                ctx.lineTo(particles[j].x, particles[j].y);
-                ctx.strokeStyle = 'rgba(16,185,129,' + la.toFixed(3) + ')';
-                ctx.stroke();
-              }
-            }
-          }
-        }
-
-        // Fade out overlay after hold
-        if (elapsed >= TOTAL && !done) {
-          done = true;
-          overlay.classList.add('fade-out');
-          setTimeout(function() { overlay.remove(); }, 1400);
-        }
-
-        if (!done || elapsed < TOTAL + 1400) {
-          requestAnimationFrame(draw);
-        }
-      }
-
-      // Wait for fonts then start
-      document.fonts.ready.then(function() {
-        renderSlogan();
-        targets = sampleTargets();
-        // Re-assign targets (font may have changed glyph widths)
-        NUM = Math.min(particles.length, targets.length);
-        for (var i = 0; i < NUM; i++) {
-          particles[i].tx = targets[i].x;
-          particles[i].ty = targets[i].y;
-        }
-        startTime = performance.now();
-        requestAnimationFrame(draw);
-      });
-    })();
-
-    // ── Hero auto-play narrated sequence ──
-    (function() {
-      // Wait for intro animation to finish (it takes ~3.5s)
-      var introDelay = document.getElementById('intro-overlay') ? 4000 : 500;
-
-      function reveal(el) {
-        if (!el) return;
-        el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-        el.style.opacity = '1';
-        el.style.transform = 'translate(0, 0)';
-      }
-
-      function settle(el) {
-        if (!el) return;
-        el.classList.add('settled');
-      }
-
-      setTimeout(function() {
-        var phone = document.querySelector('.hero-phone-solo');
-        var line1 = document.querySelector('.hero-line-1');
-        var line2 = document.querySelector('.hero-line-2');
-        var line3 = document.querySelector('.hero-line-3');
-        var final = document.querySelector('.hero-final');
-        var cardAnalytics = document.querySelector('.hero-card-analytics');
-        var cardHub = document.querySelector('.hero-card-hub');
-        var cardAi = document.querySelector('.hero-card-ai');
-
-        // 0s — Phone slides in
-        reveal(phone);
-
-        // 1s — "Your website."
-        setTimeout(function() { reveal(line1); }, 1000);
-
-        // 2.5s — "Your data." + analytics card
-        setTimeout(function() {
-          reveal(line2);
-          reveal(cardAnalytics);
-        }, 2500);
-
-        // 4s — "Your AI strategist." + AI card
-        setTimeout(function() {
-          reveal(line3);
-          reveal(cardAi);
-        }, 4000);
-
-        // 5.5s — Hub card
-        setTimeout(function() {
-          reveal(cardHub);
-        }, 5500);
-
-        // 6.5s — Sub + CTAs + trust bar, cards start floating
-        setTimeout(function() {
-          reveal(final);
-          settle(cardAnalytics);
-          settle(cardHub);
-          settle(cardAi);
-        }, 6500);
-
-      }, introDelay);
-    })();
-
+    // ── (Intro overlay removed — hero uses CSS-only entrance animation) ──
     // ── Hero orbiting rings ──
     (function() {
       var c = document.getElementById('hero-orbits');
@@ -3891,31 +3746,6 @@
       }, 3000);
     }
 
-    // Hero callout reveal
-    (function() {
-      var callouts = document.querySelectorAll('.callout');
-      var started  = false;
-
-      function revealCallouts() {
-        if (started) return;
-        started = true;
-        var delays = [400, 900, 1300, 650];
-        callouts.forEach(function(c, idx) {
-          setTimeout(function() { c.classList.add('show'); }, delays[idx]);
-        });
-      }
-
-      var previewEl = document.querySelector('.hero-preview');
-      if (previewEl) {
-        var mo = new MutationObserver(function(mutations) {
-          mutations.forEach(function(m) {
-            if (m.target.classList.contains('visible')) setTimeout(revealCallouts, 400);
-          });
-        });
-        mo.observe(previewEl, { attributes: true, attributeFilter: ['class'] });
-        if (previewEl.classList.contains('visible')) setTimeout(revealCallouts, 400);
-      }
-    })();
 
     // ── (Old demo animation removed — replaced with real screen recordings) ──
 
