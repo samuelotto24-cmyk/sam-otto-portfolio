@@ -167,6 +167,27 @@
         radial-gradient(ellipse 35% 45% at 18% 72%, rgba(180,120,30,0.07) 0%, transparent 55%);
       pointer-events: none;
     }
+    .hero-ghost-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: var(--serif);
+      font-size: clamp(80px, 12vw, 180px);
+      font-weight: 600;
+      color: rgba(16,185,129,0.04);
+      white-space: nowrap;
+      pointer-events: none;
+      z-index: 0;
+      letter-spacing: 0.04em;
+      animation: ghostDrift 20s ease-in-out infinite;
+      user-select: none;
+    }
+    @keyframes ghostDrift {
+      0%, 100% { transform: translate(-50%, -50%) translateX(0); }
+      50%      { transform: translate(-50%, -50%) translateX(30px); }
+    }
+
     #hero-orbits {
       position: absolute;
       inset: 0;
@@ -2538,6 +2559,83 @@
   }
 
 
+  /* ── Pain ticker ── */
+  .pain-ticker {
+    overflow: hidden;
+    padding: 14px 0;
+    background: rgba(16,185,129,0.05);
+    border-top: 1px solid rgba(16,185,129,0.12);
+    border-bottom: 1px solid rgba(16,185,129,0.12);
+  }
+  .pain-ticker-track {
+    display: flex;
+    white-space: nowrap;
+    animation: tickerScroll 35s linear infinite;
+    gap: 0;
+  }
+  .pain-ticker-item {
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-sub);
+    letter-spacing: 0.02em;
+    flex-shrink: 0;
+    padding: 0 8px;
+  }
+  .pain-ticker-sep {
+    color: var(--rose);
+    opacity: 0.4;
+    flex-shrink: 0;
+    padding: 0 8px;
+    font-size: 13px;
+  }
+  @keyframes tickerScroll {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* ── Growth interrupt ── */
+  .growth-interrupt {
+    position: relative;
+    padding: clamp(60px, 10vh, 120px) 0;
+    background: var(--black);
+    text-align: center;
+    overflow: hidden;
+  }
+  .growth-interrupt::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 60% 50% at 50% 50%, rgba(16,185,129,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .growth-interrupt-inner {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 var(--px);
+    position: relative;
+    z-index: 1;
+  }
+  .growth-interrupt-headline {
+    font-family: var(--serif);
+    font-size: clamp(32px, 5vw, 56px);
+    font-weight: 500;
+    line-height: 1.15;
+    color: var(--text);
+    margin-bottom: 20px;
+  }
+  .growth-interrupt-headline em {
+    color: var(--rose);
+    font-style: italic;
+  }
+  .growth-interrupt-sub {
+    font-size: clamp(15px, 1.8vw, 18px);
+    color: var(--text-sub);
+    line-height: 1.65;
+    max-width: 560px;
+    margin: 0 auto;
+  }
+
   /* ── Analytics showcase section ── */
   #analytics {
     position: relative;
@@ -2887,6 +2985,7 @@
   <!-- HERO -->
   <section id="hero">
     <div class="hero-bg"></div>
+    <div class="hero-ghost-text" aria-hidden="true">ARE YOU GROWING</div>
     <canvas id="hero-orbits" aria-hidden="true"></canvas>
     <div class="inner hero-inner">
 
@@ -3195,6 +3294,14 @@
           <div class="ownership-body">Every tap on a Linktree is Linktree's data — not yours. <em>A custom page means no middleman</em> between you and your audience.</div>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- GROWTH INTERRUPT -->
+  <section class="growth-interrupt" aria-label="Growth question">
+    <div class="growth-interrupt-inner">
+      <h2 class="growth-interrupt-headline fade-up">You're creating every day.<br><em>But are you growing?</em></h2>
+      <p class="growth-interrupt-sub fade-up">Most creators are posting blind — checking three apps, hoping something sticks, and never knowing what's actually working. This system ends that.</p>
     </div>
   </section>
 
@@ -3508,6 +3615,37 @@
       </div>
     </div>
   </section>
+
+  <!-- PAIN TICKER -->
+  <div class="pain-ticker" aria-hidden="true">
+    <div class="pain-ticker-track">
+      <span class="pain-ticker-item">Posting every day but followers are flat</span>
+      <span class="pain-ticker-sep">·</span>
+      <span class="pain-ticker-item">Checking 3 apps and still guessing</span>
+      <span class="pain-ticker-sep">·</span>
+      <span class="pain-ticker-item">Your best content is buried and you don't know it</span>
+      <span class="pain-ticker-sep">·</span>
+      <span class="pain-ticker-item">No idea which platform is actually growing</span>
+      <span class="pain-ticker-sep">·</span>
+      <span class="pain-ticker-item">Making content but not making money</span>
+      <span class="pain-ticker-sep">·</span>
+      <span class="pain-ticker-item">Your audience is growing somewhere — do you know where?</span>
+      <span class="pain-ticker-sep">·</span>
+      <!-- duplicate for seamless loop -->
+      <span class="pain-ticker-item">Posting every day but followers are flat</span>
+      <span class="pain-ticker-sep">·</span>
+      <span class="pain-ticker-item">Checking 3 apps and still guessing</span>
+      <span class="pain-ticker-sep">·</span>
+      <span class="pain-ticker-item">Your best content is buried and you don't know it</span>
+      <span class="pain-ticker-sep">·</span>
+      <span class="pain-ticker-item">No idea which platform is actually growing</span>
+      <span class="pain-ticker-sep">·</span>
+      <span class="pain-ticker-item">Making content but not making money</span>
+      <span class="pain-ticker-sep">·</span>
+      <span class="pain-ticker-item">Your audience is growing somewhere — do you know where?</span>
+      <span class="pain-ticker-sep">·</span>
+    </div>
+  </div>
 
   <!-- CONTACT -->
   <section id="contact">
