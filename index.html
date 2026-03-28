@@ -168,7 +168,7 @@
       pointer-events: none;
     }
     .hero-ghost-text {
-      position: absolute;
+      position: fixed;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
@@ -182,6 +182,7 @@
       letter-spacing: 0.04em;
       animation: ghostDrift 20s ease-in-out infinite;
       user-select: none;
+      transition: opacity 0.3s ease;
     }
     @keyframes ghostDrift {
       0%, 100% { transform: translate(-50%, -50%) translateX(0); }
@@ -2983,9 +2984,10 @@
   </nav>
 
   <!-- HERO -->
+  <div class="hero-ghost-text" aria-hidden="true">ARE YOU GROWING?</div>
+
   <section id="hero">
     <div class="hero-bg"></div>
-    <div class="hero-ghost-text" aria-hidden="true">ARE YOU GROWING?</div>
     <canvas id="hero-orbits" aria-hidden="true"></canvas>
     <div class="inner hero-inner">
 
@@ -4006,13 +4008,21 @@
       requestAnimationFrame(draw);
     })();
 
-    // Scroll progress bar
-    window.addEventListener('scroll', function() {
-      const scrolled = document.documentElement.scrollTop;
-      const total    = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-      document.getElementById('scroll-progress').style.width =
-        (total > 0 ? (scrolled / total) * 100 : 0) + '%';
-    }, { passive: true });
+    // Scroll progress bar + ghost text fade
+    (function() {
+      var ghost = document.querySelector('.hero-ghost-text');
+      var fadeOutAt = window.innerHeight * 1.8; // fade out after ~1.8 viewports of scrolling
+      window.addEventListener('scroll', function() {
+        var scrolled = document.documentElement.scrollTop;
+        var total    = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        document.getElementById('scroll-progress').style.width =
+          (total > 0 ? (scrolled / total) * 100 : 0) + '%';
+        if (ghost) {
+          var opacity = Math.max(0, 1 - scrolled / fadeOutAt);
+          ghost.style.opacity = opacity;
+        }
+      }, { passive: true });
+    })();
 
     // Fade-up on scroll
     const observer = new IntersectionObserver(entries => {
