@@ -644,8 +644,9 @@
     .good-pane video {
       width: 100%; height: 100%;
       transform: none;
-      object-fit: cover;
-      object-position: center top;
+      object-fit: contain;
+      object-position: center center;
+      background: #0D0B08;
     }
     .bad-pane  {
       background: #111;
@@ -1450,6 +1451,9 @@
       border: 1px solid var(--border);
       border-radius: var(--r);
       overflow: hidden;
+    }
+    .cap-cats .cap-cat:last-child {
+      grid-column: 1 / -1;
     }
     .cap-cat { padding: 18px 16px; background: var(--dark-card); border-bottom: none; }
     .cap-cat:first-child { padding-top: 18px; }
