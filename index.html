@@ -1360,6 +1360,10 @@
       background: #060A10; border-bottom: 1px solid rgba(255,255,255,0.06);
     }
     .showcase-hub-body { padding: 16px; }
+    .showcase-hub-video {
+      width: 100%; height: 300px; object-fit: cover; object-position: top;
+      display: block;
+    }
     .showcase-desktop-toggle {
       position: absolute; top: 0; right: 0;
       font-size: 11px; font-weight: 600; color: var(--text-muted);
@@ -2789,26 +2793,9 @@
             </div>
             <div class="laptop-divider"><div class="divider-vs">VS</div></div>
             <div class="laptop-pane good-pane">
-              <div class="hub-mock">
-                <div class="hm-header">
-                  <div class="hm-greeting">Hey, Mandi</div>
-                  <div class="hm-status"><span class="hm-status-dot"></span> Your page is performing well</div>
-                </div>
-                <div class="hm-stats">
-                  <div class="hm-stat"><div class="hm-stat-num">24</div><div class="hm-stat-label">today</div></div>
-                  <div class="hm-stat"><div class="hm-stat-num" style="color:#10B981">187</div><div class="hm-stat-label">this week</div></div>
-                  <div class="hm-stat"><div class="hm-stat-num">842</div><div class="hm-stat-label">total</div></div>
-                </div>
-                <div class="hm-briefing">
-                  <div class="hm-briefing-title">Weekly Briefing</div>
-                  <div class="hm-briefing-line"></div>
-                  <div class="hm-briefing-line hm-briefing-short"></div>
-                </div>
-                <div class="hm-chat">
-                  <div class="hm-chat-title">Ask Your Advisor</div>
-                  <div class="hm-chat-input">Ask about your data…</div>
-                </div>
-              </div>
+              <video class="compare-hub-video" autoplay muted loop playsinline>
+                <source src="assets/hub-recording.mp4" type="video/mp4">
+              </video>
               <div class="pane-label">Your Platform</div>
             </div>
           </div>
@@ -3135,33 +3122,9 @@
                     <span style="width:6px;height:6px;border-radius:50%;background:#febc2e"></span>
                     <span style="width:6px;height:6px;border-radius:50%;background:#28c840"></span>
                   </div>
-                  <div class="showcase-hub-body">
-                    <div style="font-family:var(--serif);font-size:18px;font-weight:500;color:#EEF2FF;margin-bottom:4px;">Hey, Mandi</div>
-                    <div style="font-size:9px;color:#10B981;display:flex;align-items:center;gap:4px;margin-bottom:12px;"><span style="width:5px;height:5px;border-radius:50%;background:#10B981;box-shadow:0 0 4px #10B981;"></span> Your page is performing well</div>
-                    <div style="display:flex;gap:6px;margin-bottom:10px;">
-                      <div style="flex:1;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:8px;text-align:center;">
-                        <div style="font-size:16px;font-weight:700;color:#EEF2FF;">24</div>
-                        <div style="font-size:7px;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.4);margin-top:2px;">today</div>
-                      </div>
-                      <div style="flex:1;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:8px;text-align:center;">
-                        <div style="font-size:16px;font-weight:700;color:#10B981;">187</div>
-                        <div style="font-size:7px;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.4);margin-top:2px;">this week</div>
-                      </div>
-                      <div style="flex:1;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:8px;text-align:center;">
-                        <div style="font-size:16px;font-weight:700;color:#EEF2FF;">842</div>
-                        <div style="font-size:7px;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.4);margin-top:2px;">total</div>
-                      </div>
-                    </div>
-                    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:10px;margin-bottom:8px;">
-                      <div style="font-size:9px;font-weight:600;color:#EEF2FF;margin-bottom:6px;">Weekly Briefing</div>
-                      <div style="height:6px;background:rgba(255,255,255,0.06);border-radius:3px;margin-bottom:4px;width:85%;"></div>
-                      <div style="height:6px;background:rgba(255,255,255,0.06);border-radius:3px;width:55%;"></div>
-                    </div>
-                    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:10px;">
-                      <div style="font-size:9px;font-weight:600;color:#EEF2FF;margin-bottom:6px;">Ask Your Advisor</div>
-                      <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);border-radius:6px;padding:7px 10px;font-size:9px;color:rgba(255,255,255,0.25);">Ask about your data…</div>
-                    </div>
-                  </div>
+                  <video class="showcase-hub-video" autoplay muted loop playsinline>
+                    <source src="assets/hub-recording.mp4" type="video/mp4">
+                  </video>
                 </div>
                 <div class="showcase-domain showcase-domain-accent">Her private platform</div>
               </div>
