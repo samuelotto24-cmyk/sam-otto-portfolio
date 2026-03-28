@@ -587,13 +587,14 @@
     .platform-stack {
       display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px;
       position: relative;
+      max-width: 1400px; margin: 0 auto;
     }
     .platform-layer {
       display: flex; flex-direction: column; gap: 16px;
       background: var(--dark-card);
       border: 1px solid var(--border);
       border-radius: 18px;
-      padding: 20px;
+      padding: 16px;
       transition: transform 0.4s ease, box-shadow 0.4s ease;
     }
     .platform-layer:hover {
