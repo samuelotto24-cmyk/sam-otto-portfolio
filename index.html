@@ -727,6 +727,108 @@
     .verdict-bad  { color: rgba(255,255,255,0.2); text-decoration: line-through; }
     .verdict-good { color: var(--rose); }
 
+    /* ── Scattered tools mockup (compare bad pane) ── */
+    .scattered-tools-mock {
+      width: 760px; height: 960px;
+      transform: scale(0.592); transform-origin: top left;
+      padding: 20px;
+      display: flex; flex-direction: column; gap: 12px;
+    }
+    .stm-tab {
+      background: rgba(30, 30, 30, 0.9); border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 8px; overflow: hidden;
+    }
+    .stm-tab-bar {
+      padding: 6px 12px; font-size: 10px; font-family: monospace;
+      color: rgba(255,255,255,0.35); background: rgba(255,255,255,0.03);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .stm-tab-body { padding: 12px; }
+    .stm-link {
+      height: 28px; background: rgba(255,255,255,0.06);
+      border-radius: 14px; margin-bottom: 8px;
+    }
+    .stm-chart {
+      height: 60px; background: rgba(255,255,255,0.04);
+      border-radius: 6px;
+    }
+    .stm-stat {
+      flex: 1; height: 30px; background: rgba(255,255,255,0.04);
+      border-radius: 6px;
+    }
+    .stm-msg {
+      height: 24px; background: rgba(255,255,255,0.05);
+      border-radius: 12px; margin-bottom: 8px; width: 80%;
+    }
+    .stm-msg-short { width: 55%; }
+    .stm-tab-1 { flex: 1.2; }
+    .stm-tab-2 { flex: 1; }
+    .stm-tab-3 { flex: 0.8; }
+
+    /* ── Hub mockup (compare good pane) ── */
+    .hub-mock {
+      width: 760px; height: 960px;
+      transform: scale(0.592); transform-origin: top left;
+      padding: 30px;
+      display: flex; flex-direction: column; gap: 16px;
+      background: #08090D;
+    }
+    .hm-header { margin-bottom: 8px; }
+    .hm-greeting {
+      font-family: var(--serif); font-size: 32px; font-weight: 500;
+      color: #EEF2FF;
+    }
+    .hm-status {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 11px; color: #10B981; margin-top: 6px;
+    }
+    .hm-status-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: #10B981; box-shadow: 0 0 6px #10B981;
+    }
+    .hm-stats {
+      display: flex; gap: 10px;
+    }
+    .hm-stat {
+      flex: 1; background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 10px; padding: 12px; text-align: center;
+    }
+    .hm-stat-num {
+      font-size: 22px; font-weight: 700; color: #EEF2FF;
+    }
+    .hm-stat-label {
+      font-size: 9px; text-transform: uppercase; letter-spacing: 0.1em;
+      color: rgba(255,255,255,0.4); margin-top: 4px;
+    }
+    .hm-briefing {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 10px; padding: 16px;
+    }
+    .hm-briefing-title {
+      font-size: 12px; font-weight: 600; color: #EEF2FF; margin-bottom: 10px;
+    }
+    .hm-briefing-line {
+      height: 8px; background: rgba(255,255,255,0.06);
+      border-radius: 4px; margin-bottom: 6px; width: 90%;
+    }
+    .hm-briefing-short { width: 60%; }
+    .hm-chat {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 10px; padding: 16px;
+    }
+    .hm-chat-title {
+      font-size: 12px; font-weight: 600; color: #EEF2FF; margin-bottom: 10px;
+    }
+    .hm-chat-input {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 8px; padding: 10px 14px;
+      font-size: 11px; color: rgba(255,255,255,0.3);
+    }
+
     /* ── WORK — full section standout ── */
     #work {
       position: relative;
@@ -2588,8 +2690,8 @@
     <div class="inner">
       <div class="fade-up">
         <span class="compare-label">The Difference</span>
-        <h2 class="compare-title">Other templates give you pieces.<br>I build the whole page.</h2>
-        <p class="compare-sub">Linktree, Beacons, Stan — they give you blocks to fill in. Every page ends up looking like every other page. Yours should look, feel, and convert like it was built specifically for you. Because it was.</p>
+        <h2 class="compare-title">Other tools give you pieces.<br>I build the whole platform.</h2>
+        <p class="compare-sub">Linktree gives you links. Google Analytics gives you numbers you never check. ChatGPT gives you generic advice. I give you one system that does all of it — designed around your brand, fed by your actual data, and smart enough to tell you what to do next.</p>
       </div>
 
       <div class="laptop-wrap fade-up">
@@ -2598,22 +2700,62 @@
           <div class="laptop-chrome">
             <div class="laptop-dots"><span></span><span></span><span></span></div>
             <div class="laptop-url">
-              <span class="url-bad">linktr.ee/fitnessinfluencer</span>
+              <span class="url-bad">your scattered tools</span>
               <span class="url-sep">vs</span>
-              <span class="url-good">coachgabemckenney.com</span>
+              <span class="url-good">your platform</span>
             </div>
           </div>
           <div class="laptop-content">
             <div class="laptop-pane bad-pane">
-              <iframe id="linktree-mock" title="Generic link page" scrolling="no" tabindex="-1" aria-hidden="true"></iframe>
-              <div class="pane-label">Generic Template</div>
+              <div class="scattered-tools-mock">
+                <div class="stm-tab stm-tab-1">
+                  <div class="stm-tab-bar">linktr.ee/you</div>
+                  <div class="stm-tab-body">
+                    <div class="stm-link"></div><div class="stm-link"></div><div class="stm-link"></div>
+                    <div class="stm-link"></div><div class="stm-link"></div>
+                  </div>
+                </div>
+                <div class="stm-tab stm-tab-2">
+                  <div class="stm-tab-bar">analytics.google.com</div>
+                  <div class="stm-tab-body">
+                    <div class="stm-chart"></div>
+                    <div style="display:flex;gap:4px;margin-top:6px;">
+                      <div class="stm-stat"></div><div class="stm-stat"></div><div class="stm-stat"></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="stm-tab stm-tab-3">
+                  <div class="stm-tab-bar">chatgpt.com</div>
+                  <div class="stm-tab-body">
+                    <div class="stm-msg"></div><div class="stm-msg stm-msg-short"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="pane-label">Your Tools Now</div>
             </div>
             <div class="laptop-divider"><div class="divider-vs">VS</div></div>
             <div class="laptop-pane good-pane">
-              <video class="compare-gabe-video" autoplay muted loop playsinline>
-                <source src="assets/gabe-desktop.mp4" type="video/mp4">
-              </video>
-              <div class="pane-label">Built by Sam Otto</div>
+              <div class="hub-mock">
+                <div class="hm-header">
+                  <div class="hm-greeting">Hey, Mandi</div>
+                  <div class="hm-status"><span class="hm-status-dot"></span> Your page is performing well</div>
+                </div>
+                <div class="hm-stats">
+                  <div class="hm-stat"><div class="hm-stat-num">24</div><div class="hm-stat-label">today</div></div>
+                  <div class="hm-stat"><div class="hm-stat-num" style="color:#10B981">187</div><div class="hm-stat-label">this week</div></div>
+                  <div class="hm-stat"><div class="hm-stat-num">842</div><div class="hm-stat-label">total</div></div>
+                </div>
+                <div class="hm-briefing">
+                  <div class="hm-briefing-title">Weekly Briefing</div>
+                  <div class="hm-briefing-line"></div>
+                  <div class="hm-briefing-line hm-briefing-short"></div>
+                </div>
+                <div class="hm-chat">
+                  <div class="hm-chat-title">Ask Your Advisor</div>
+                  <div class="hm-chat-input">Ask about your data…</div>
+                </div>
+              </div>
+              <div class="pane-label">Your Platform</div>
             </div>
           </div>
         </div>
@@ -2628,26 +2770,26 @@
       <!-- Mobile-only comparison cards (laptop hidden on mobile) -->
       <div class="compare-cards-mobile fade-up">
         <div class="ccm-card ccm-bad">
-          <div class="ccm-label">Generic Template</div>
+          <div class="ccm-label">Your Tools Now</div>
           <ul class="ccm-list">
-            <li>Looks like everyone else</li>
-            <li>No real data or analytics</li>
-            <li>Platform owns your traffic</li>
+            <li>Linktree for links, GA for numbers, ChatGPT for advice</li>
+            <li>Nothing talks to anything else</li>
+            <li>You're guessing what works</li>
           </ul>
         </div>
         <div class="ccm-card ccm-good">
-          <div class="ccm-label">Built by Sam Otto</div>
+          <div class="ccm-label">Your Platform</div>
           <ul class="ccm-list">
-            <li>Your brand, your domain</li>
-            <li>Built-in analytics dashboard</li>
-            <li>Designed to convert</li>
+            <li>One system — website, analytics, AI strategy</li>
+            <li>Your data feeds your strategy automatically</li>
+            <li>You know exactly what's working</li>
           </ul>
         </div>
       </div>
 
       <div class="compare-verdicts fade-up">
-        <div class="verdict-item verdict-bad">Built for everyone.</div>
-        <div class="verdict-item verdict-good">Built for you.</div>
+        <div class="verdict-item verdict-bad">Scattered · Manual</div>
+        <div class="verdict-item verdict-good">Unified · Intelligent</div>
       </div>
 
       <div class="compare-metrics fade-up">
@@ -3686,8 +3828,7 @@
 
     // ── (Old demo animation removed — replaced with real screen recordings) ──
 
-    // Linktree mockup (desktop, ~760px wide) — set via JS to avoid attribute quote escaping
-    document.getElementById('linktree-mock').srcdoc = '<!DOCTYPE html><html><head><style>*{box-sizing:border-box;margin:0;padding:0}body{background:linear-gradient(160deg,#1a3828,#2a5e38);font-family:system-ui,sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:60px 24px 40px}main{width:100%;max-width:400px;display:flex;flex-direction:column;align-items:center}.av{width:80px;height:80px;border-radius:50%;background:rgba(255,255,255,0.18);border:2px solid rgba(255,255,255,0.3);margin-bottom:14px;flex-shrink:0}.name{color:#fff;font-size:17px;font-weight:700;margin-bottom:5px}.bio{color:rgba(255,255,255,0.55);font-size:12px;margin-bottom:32px;text-align:center;line-height:1.5}.btn{display:flex;align-items:center;justify-content:center;width:100%;background:rgba(255,255,255,0.14);border:1px solid rgba(255,255,255,0.22);border-radius:10px;padding:15px 20px;text-align:center;color:#fff;font-size:13px;font-weight:600;margin-bottom:12px;cursor:default}.icons{display:flex;gap:16px;margin-top:8px}.icon{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,0.14);border:1px solid rgba(255,255,255,0.2)}.badge{margin-top:36px;font-size:10px;color:rgba(255,255,255,0.28);letter-spacing:0.08em}</style></head><body><main><div class="av"></div><div class="name">@fitnessinfluencer</div><div class="bio">Fitness · Lifestyle · Wellness<br>New program dropping soon 🌿</div><div class="btn">My Programs</div><div class="btn">Shop My Favourites</div><div class="btn">Watch on YouTube</div><div class="btn">Follow on Instagram</div><div class="btn">My Cookbook</div><div class="icons"><div class="icon"></div><div class="icon"></div><div class="icon"></div></div><div class="badge">POWERED BY LINKTREE</div></main></body></html>';
+    // Linktree mock removed — replaced with CSS scattered-tools-mock div
 
     // (Gabe srcdoc mockups removed — replaced with real screen recordings)
 
