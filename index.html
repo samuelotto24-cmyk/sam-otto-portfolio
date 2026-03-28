@@ -2597,9 +2597,10 @@
 
   /* ── AI Strategist spotlight ── */
   .ai-spotlight {
-    padding: clamp(40px, 5vw, 80px) 0;
-    background: linear-gradient(180deg, rgba(16,185,129,0.08) 0%, var(--dark) 100%);
-    border-top: 1px solid rgba(16,185,129,0.25);
+    padding: clamp(50px, 6vw, 100px) 0;
+    background: linear-gradient(180deg, rgba(16,185,129,0.14) 0%, rgba(16,185,129,0.03) 50%, var(--dark) 100%);
+    border-top: 2px solid rgba(16,185,129,0.35);
+    border-bottom: 1px solid rgba(16,185,129,0.12);
     position: relative;
     overflow: hidden;
   }
@@ -2607,7 +2608,9 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: radial-gradient(ellipse 50% 60% at 50% 0%, rgba(16,185,129,0.12) 0%, transparent 70%);
+    background:
+      radial-gradient(ellipse 60% 70% at 50% 0%, rgba(16,185,129,0.18) 0%, transparent 65%),
+      radial-gradient(ellipse 40% 50% at 70% 30%, rgba(52,211,153,0.08) 0%, transparent 60%);
     pointer-events: none;
   }
   .ai-spotlight-inner {
@@ -2638,14 +2641,15 @@
 
   .ai-chat-mockup {
     background: var(--dark-card);
-    border: 1px solid rgba(16,185,129,0.2);
+    border: 1px solid rgba(16,185,129,0.25);
+    border-left: 3px solid rgba(16,185,129,0.6);
     border-radius: 14px;
-    padding: 16px;
+    padding: 18px;
     display: flex;
     flex-direction: column;
     gap: 10px;
     margin-bottom: 18px;
-    box-shadow: 0 0 40px rgba(16,185,129,0.08), 0 8px 32px rgba(0,0,0,0.4);
+    box-shadow: 0 0 60px rgba(16,185,129,0.12), 0 0 120px rgba(16,185,129,0.06), 0 8px 32px rgba(0,0,0,0.4);
   }
   .ai-chat-msg {
     font-size: 13px;
@@ -2693,19 +2697,19 @@
     font-size: 12px;
     font-weight: 600;
     color: var(--text);
-    background: rgba(16,185,129,0.10);
-    border: 1px solid rgba(16,185,129,0.25);
+    background: rgba(16,185,129,0.14);
+    border: 1px solid rgba(16,185,129,0.35);
     border-radius: 10px;
-    padding: 10px 12px;
+    padding: 11px 14px;
     display: flex;
     align-items: center;
     gap: 8px;
+    box-shadow: 0 0 20px rgba(16,185,129,0.06);
   }
   .ai-cap i {
-    color: var(--rose);
+    color: var(--rose-light);
     font-size: 13px;
     flex-shrink: 0;
-    opacity: 0.7;
   }
   @media (max-width: 768px) {
     .ai-caps { grid-template-columns: 1fr; }
