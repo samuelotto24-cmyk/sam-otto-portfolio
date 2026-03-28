@@ -2598,8 +2598,17 @@
   /* ── AI Strategist spotlight ── */
   .ai-spotlight {
     padding: clamp(40px, 5vw, 80px) 0;
-    background: var(--dark);
-    border-top: 1px solid var(--border);
+    background: linear-gradient(180deg, rgba(16,185,129,0.08) 0%, var(--dark) 100%);
+    border-top: 1px solid rgba(16,185,129,0.25);
+    position: relative;
+    overflow: hidden;
+  }
+  .ai-spotlight::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 50% 60% at 50% 0%, rgba(16,185,129,0.12) 0%, transparent 70%);
+    pointer-events: none;
   }
   .ai-spotlight-inner {
     display: grid;
@@ -2615,7 +2624,7 @@
     color: var(--text);
     margin-bottom: 16px;
   }
-  .ai-spotlight-title em { color: var(--rose); font-style: italic; }
+  .ai-spotlight-title em { color: var(--rose-light); font-style: italic; text-shadow: 0 0 30px rgba(16,185,129,0.3); }
   .ai-spotlight-sub {
     font-size: 15px;
     color: var(--text-sub);
@@ -2629,13 +2638,14 @@
 
   .ai-chat-mockup {
     background: var(--dark-card);
-    border: 1px solid var(--border);
+    border: 1px solid rgba(16,185,129,0.2);
     border-radius: 14px;
     padding: 16px;
     display: flex;
     flex-direction: column;
     gap: 10px;
     margin-bottom: 18px;
+    box-shadow: 0 0 40px rgba(16,185,129,0.08), 0 8px 32px rgba(0,0,0,0.4);
   }
   .ai-chat-msg {
     font-size: 13px;
@@ -2681,10 +2691,10 @@
   }
   .ai-cap {
     font-size: 12px;
-    font-weight: 500;
-    color: var(--text-sub);
-    background: rgba(16,185,129,0.06);
-    border: 1px solid rgba(16,185,129,0.12);
+    font-weight: 600;
+    color: var(--text);
+    background: rgba(16,185,129,0.10);
+    border: 1px solid rgba(16,185,129,0.25);
     border-radius: 10px;
     padding: 10px 12px;
     display: flex;
