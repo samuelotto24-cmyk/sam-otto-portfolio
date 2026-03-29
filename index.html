@@ -4971,20 +4971,9 @@
 
       if (!icons[0] || !heroTitle) return;
 
-      // ── Lock scroll during animation — prevent displacement ──
-      var scrollLocked = true;
-      document.documentElement.style.overflow = 'hidden';
-      document.body.style.overflow = 'hidden';
-
-      function unlockScroll() {
-        if (!scrollLocked) return;
-        scrollLocked = false;
-        document.documentElement.style.overflow = '';
-        document.body.style.overflow = '';
-      }
-
-      // Safety net: guarantee scroll unlocks even if animation chain breaks
-      setTimeout(unlockScroll, 8000);
+      // Scroll is never locked — animation plays while user retains full control
+      var scrollLocked = false;
+      function unlockScroll() { scrollLocked = false; }
 
       // Hide hero content — override CSS animations
       var heroEls = [heroLabel, heroTitle, heroSub, heroActions, heroTrust, heroPhone, heroAnalytics, heroAi, heroLines, navEl];
