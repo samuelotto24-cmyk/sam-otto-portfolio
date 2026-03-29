@@ -5173,20 +5173,7 @@
 
       if (!icons[0] || !heroTitle) return;
 
-      // Lock scroll during animation
-      document.documentElement.style.overflow = 'hidden';
-      document.body.style.overflow = 'hidden';
-
-      var scrollUnlocked = false;
-      function unlockScroll() {
-        if (scrollUnlocked) return;
-        scrollUnlocked = true;
-        document.documentElement.style.overflow = '';
-        document.body.style.overflow = '';
-      }
-
-      // Safety net: guarantee scroll unlocks even if animation chain breaks
-      setTimeout(unlockScroll, 8000);
+      // No scroll lock — animation plays automatically, user can scroll freely
 
       // Hide hero content
       var heroEls = [heroLabel, heroTitle, heroSub, heroActions, heroTrust, heroPhone, heroAnalytics, heroAi, heroLines, navEl];
@@ -5251,15 +5238,7 @@
         // Auto-advance to convergence after 1s (or on wheel/touch)
         setTimeout(function() { runPhase2(); }, 1000);
 
-        var triggerOnIntent = function() {
-          runPhase2();
-          window.removeEventListener('wheel', triggerOnIntent);
-          window.removeEventListener('touchmove', triggerOnIntent);
-        };
-        setTimeout(function() {
-          window.addEventListener('wheel', triggerOnIntent, { passive: true });
-          window.addEventListener('touchmove', triggerOnIntent, { passive: true });
-        }, 300);
+        // Animation auto-advances — no scroll/wheel trigger needed
       });
 
       function runPhase2() {
@@ -5438,7 +5417,7 @@
           if (heroPhone) {
             gsap.to(heroPhone, { y: -12, duration: 3.5, ease: 'sine.inOut', yoyo: true, repeat: -1 });
           }
-          unlockScroll();
+          // Animation complete
         }, 1.7);
       }
     })();
