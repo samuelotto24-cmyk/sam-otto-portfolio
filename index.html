@@ -3352,8 +3352,8 @@
     <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
   </div>
 
-  <span class="scatter-label" id="scatter-label-before">Your tools right now</span>
-  <span class="scatter-label" id="scatter-label-after">Your platform</span>
+  <span class="scatter-label" id="scatter-label-before">Scattered tools don't scale.</span>
+  <span class="scatter-label" id="scatter-label-after">Six platforms. One growth engine.</span>
   <div id="scatter-merge-circle"></div>
 </div>
 
@@ -5106,22 +5106,25 @@
         });
       });
 
-      // Hide scatter labels — no longer needed since particles tell the story
+      // Labels for scatter → converge narrative
       var labelBefore = document.getElementById('scatter-label-before');
       var labelAfter  = document.getElementById('scatter-label-after');
-      if (labelBefore) labelBefore.style.display = 'none';
-      if (labelAfter) labelAfter.style.display = 'none';
 
       // ═══════════════════════════════════════
-      // When canvas particles crystallize into clusters → fade in DOM icons
+      // When canvas particles crystallize into clusters → fade in DOM icons + label
       // ═══════════════════════════════════════
       var phase2Fired = false;
 
       window.addEventListener('particles-crystallized', function() {
-        // Fade in DOM icons at scatter positions (particles are fading out)
+        // Fade in DOM icons at scatter positions
         icons.forEach(function(icon, i) {
           gsap.to(icon, { opacity: 1, duration: 0.3, ease: 'power2.out' });
         });
+
+        // "Scattered tools don't scale." fades in
+        if (labelBefore) {
+          gsap.to(labelBefore, { opacity: 1, duration: 0.4, ease: 'power2.out', delay: 0.2 });
+        }
 
         // Brief wobble
         icons.forEach(function(icon, i) {
@@ -5132,10 +5135,9 @@
           });
         });
 
-        // Auto-advance to convergence after 1s hold (or on wheel/touch)
-        setTimeout(function() { runPhase2(); }, 1200);
+        // Auto-advance to convergence after 1s (or on wheel/touch)
+        setTimeout(function() { runPhase2(); }, 1000);
 
-        // Wheel/touch intent also triggers
         var triggerOnIntent = function() {
           runPhase2();
           window.removeEventListener('wheel', triggerOnIntent);
@@ -5144,7 +5146,7 @@
         setTimeout(function() {
           window.addEventListener('wheel', triggerOnIntent, { passive: true });
           window.addEventListener('touchmove', triggerOnIntent, { passive: true });
-        }, 400);
+        }, 300);
       });
 
       function runPhase2() {
@@ -5156,29 +5158,34 @@
 
         var tl2 = gsap.timeline();
 
-        // Icons converge
+        // Swap labels: "Scattered tools don't scale." → "Six platforms. One growth engine."
+        tl2.to(labelBefore, { opacity: 0, duration: 0.2, ease: 'power2.in' }, 0);
+        tl2.to(labelAfter, { opacity: 1, duration: 0.35, ease: 'power2.out' }, 0.15);
+        tl2.to(labelAfter, { opacity: 0, duration: 0.25, ease: 'power2.in' }, 0.6);
+
+        // Icons converge (sped up: 0.5s)
         icons.forEach(function(icon) {
           tl2.to(icon, {
             x: cx - 32, y: cy - 32, scale: 0.3, rotation: 0, opacity: 0.6,
-            duration: 0.6, ease: 'expo.inOut'
+            duration: 0.5, ease: 'expo.inOut'
           }, 0);
         });
 
         // Icons vanish → merge circle
         tl2.add(function() {
           icons.forEach(function(icon) { gsap.set(icon, { opacity: 0 }); });
-        }, 0.42);
+        }, 0.35);
 
-        tl2.set(mergeCircle, { x: cx - 40, y: cy - 40, opacity: 1, scale: 1 }, 0.42);
-        tl2.to(mergeCircle, { scale: 1.4, duration: 0.15, ease: 'power2.out' }, 0.45);
-        tl2.to(mergeCircle, { scale: 1, duration: 0.1, ease: 'power2.in' }, 0.6);
-        tl2.to(mergeCircle, { opacity: 0, scale: 0.2, duration: 0.25, ease: 'expo.in' }, 0.7);
+        tl2.set(mergeCircle, { x: cx - 40, y: cy - 40, opacity: 1, scale: 1 }, 0.35);
+        tl2.to(mergeCircle, { scale: 1.4, duration: 0.15, ease: 'power2.out' }, 0.38);
+        tl2.to(mergeCircle, { scale: 1, duration: 0.1, ease: 'power2.in' }, 0.53);
+        tl2.to(mergeCircle, { opacity: 0, scale: 0.2, duration: 0.25, ease: 'expo.in' }, 0.6);
 
         tl2.add(function() {
           if (scatterOverlay) scatterOverlay.style.display = 'none';
-        }, 0.95);
+        }, 0.85);
 
-        // ── CONTENT REVEAL ──
+        // ── CONTENT REVEAL (shifted earlier to match faster convergence) ──
 
         tl2.add(function() {
           if (navEl) {
@@ -5187,7 +5194,7 @@
               opacity: 1, filter: 'blur(0px)', duration: 0.4, ease: 'power2.out'
             });
           }
-        }, 0.7);
+        }, 0.6);
 
         tl2.add(function() {
           if (heroPhone) {
@@ -5196,14 +5203,14 @@
               opacity: 1, scale: 1, y: 0, duration: 0.5, ease: 'expo.out'
             });
           }
-        }, 0.75);
+        }, 0.65);
 
         tl2.add(function() {
           if (heroLabel) {
             heroLabel.classList.remove('scatter-hidden');
             gsap.fromTo(heroLabel, { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 0.3, ease: 'power2.out' });
           }
-        }, 0.85);
+        }, 0.75);
 
         // Headline word split
         tl2.add(function() {
@@ -5257,14 +5264,14 @@
               color: 'var(--rose)', duration: 0.4, stagger: 0.04, delay: 0.1, ease: 'power1.inOut'
             });
           }
-        }, 0.95);
+        }, 0.85);
 
         tl2.add(function() {
           if (heroSub) {
             heroSub.classList.remove('scatter-hidden');
             gsap.fromTo(heroSub, { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 0.35, ease: 'power2.out' });
           }
-        }, 1.35);
+        }, 1.2);
 
         tl2.add(function() {
           if (heroActions) {
@@ -5274,7 +5281,7 @@
               opacity: 1, scale: 1, duration: 0.3, stagger: 0.08, ease: 'back.out(1.7)'
             });
           }
-        }, 1.45);
+        }, 1.3);
 
         tl2.add(function() {
           if (heroTrust) {
@@ -5284,7 +5291,7 @@
               opacity: 1, x: 0, duration: 0.25, stagger: 0.03, ease: 'power2.out'
             });
           }
-        }, 1.5);
+        }, 1.35);
 
         tl2.add(function() {
           if (heroAnalytics) {
@@ -5300,7 +5307,7 @@
               opacity: 1, x: 0, scale: 1, yPercent: -35, duration: 0.45, ease: 'power2.out', delay: 0.1
             });
           }
-        }, 1.2);
+        }, 1.05);
 
         tl2.add(function() {
           if (heroLines) {
@@ -5313,7 +5320,7 @@
               opacity: 1, scale: 1, duration: 0.3, delay: i * 0.08, ease: 'back.out(2)'
             });
           });
-        }, 1.45);
+        }, 1.3);
 
         // IDLE + UNLOCK
         tl2.add(function() {
@@ -5321,7 +5328,7 @@
             gsap.to(heroPhone, { y: -12, duration: 3.5, ease: 'sine.inOut', yoyo: true, repeat: -1 });
           }
           unlockScroll();
-        }, 1.9);
+        }, 1.7);
       }
     })();
 
