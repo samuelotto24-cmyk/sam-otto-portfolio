@@ -637,30 +637,99 @@
       background: var(--rose); box-shadow: 0 0 8px rgba(16,185,129,0.4);
     }
     .recap-visual { display: flex; justify-content: center; }
-    .recap-mockup {
+    .recap-card {
+      width: 100%; max-width: 400px;
+      background: var(--dark-card);
+      border: 1px solid var(--border-mid);
+      border-radius: 16px;
+      padding: 28px 24px;
       transform: perspective(800px) rotateY(-4deg) rotateX(2deg);
-      border-radius: 12px; overflow: hidden;
       box-shadow:
         0 20px 60px rgba(0,0,0,0.5),
-        0 0 0 1px rgba(255,255,255,0.06),
-        0 0 40px rgba(16,185,129,0.08);
+        0 0 0 1px rgba(255,255,255,0.04),
+        0 0 40px rgba(16,185,129,0.06);
       transition: transform 0.4s ease, box-shadow 0.4s ease;
     }
-    .recap-mockup:hover {
+    .recap-card:hover {
       transform: perspective(800px) rotateY(-1deg) rotateX(1deg) translateY(-4px);
       box-shadow:
         0 28px 80px rgba(0,0,0,0.6),
-        0 0 0 1px rgba(255,255,255,0.08),
-        0 0 60px rgba(16,185,129,0.12);
+        0 0 0 1px rgba(255,255,255,0.06),
+        0 0 60px rgba(16,185,129,0.1);
     }
-    .recap-img {
-      width: 100%; max-width: 420px; display: block;
-      border-radius: 12px;
+    .rc-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 20px; padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
     }
+    .rc-badge {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--rose);
+      background: var(--rose-glow); border: 1px solid rgba(16,185,129,0.3);
+      padding: 4px 10px; border-radius: 50px;
+    }
+    .rc-date {
+      font-size: 12px; color: var(--text-muted); font-weight: 500;
+    }
+    .rc-platforms {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 10px; margin-bottom: 20px;
+    }
+    .rc-plat {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: 10px; padding: 12px 10px;
+      text-align: center;
+    }
+    .rc-plat-icon {
+      font-size: 16px; margin-bottom: 6px;
+    }
+    .rc-plat-val {
+      font-size: 16px; font-weight: 700; color: var(--cream);
+      display: block; line-height: 1.2;
+    }
+    .rc-plat-delta {
+      font-size: 10px; font-weight: 600; color: var(--rose);
+    }
+    .rc-plat-label {
+      font-size: 9px; color: var(--text-muted);
+      text-transform: uppercase; letter-spacing: 0.06em;
+      margin-top: 2px;
+    }
+    .rc-section-label {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+    .rc-actions {
+      display: flex; flex-direction: column; gap: 10px;
+      margin-bottom: 20px;
+    }
+    .rc-action {
+      display: flex; align-items: flex-start; gap: 10px;
+      font-size: 12px; color: var(--text-sub); line-height: 1.5;
+      background: rgba(16,185,129,0.04);
+      border: 1px solid rgba(16,185,129,0.1);
+      border-radius: 10px; padding: 12px 14px;
+    }
+    .rc-action-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--rose); box-shadow: 0 0 6px var(--rose);
+      flex-shrink: 0; margin-top: 5px;
+    }
+    .rc-cta {
+      display: block; text-align: center;
+      background: var(--rose); color: #fff;
+      font-size: 12px; font-weight: 600;
+      padding: 10px 20px; border-radius: 50px;
+      transition: background var(--ease);
+    }
+    .rc-cta:hover { background: var(--rose-light); }
     @media (max-width: 768px) {
       .recap-layout { grid-template-columns: 1fr; gap: 32px; text-align: center; }
       .recap-list li { text-align: left; }
-      .recap-img { max-width: 320px; margin: 0 auto; }
+      .recap-card { max-width: 360px; margin: 0 auto; padding: 22px 18px; }
+      .rc-plat-val { font-size: 14px; }
     }
 
     /* ── Shared label style (used outside theatre) ── */
@@ -3780,8 +3849,46 @@
           </ul>
         </div>
         <div class="recap-visual">
-          <div class="recap-mockup">
-            <img src="assets/recap-mockup.png" alt="Weekly AI-powered email recap" class="recap-img">
+          <div class="recap-card">
+            <div class="rc-header">
+              <span class="rc-badge">Monday Briefing</span>
+              <span class="rc-date">Mar 24, 2026</span>
+            </div>
+
+            <div class="rc-platforms">
+              <div class="rc-plat">
+                <div class="rc-plat-icon"><i class="fa-brands fa-youtube" style="color:#FF0000"></i></div>
+                <span class="rc-plat-val">42.1k</span>
+                <span class="rc-plat-delta">↑ 12%</span>
+                <div class="rc-plat-label">Views</div>
+              </div>
+              <div class="rc-plat">
+                <div class="rc-plat-icon"><i class="fa-brands fa-instagram" style="color:#E1306C"></i></div>
+                <span class="rc-plat-val">8,340</span>
+                <span class="rc-plat-delta">↑ 6.2%</span>
+                <div class="rc-plat-label">Engagement</div>
+              </div>
+              <div class="rc-plat">
+                <div class="rc-plat-icon"><i class="fa-brands fa-tiktok" style="color:#fff"></i></div>
+                <span class="rc-plat-val">118k</span>
+                <span class="rc-plat-delta">↑ 24%</span>
+                <div class="rc-plat-label">Views</div>
+              </div>
+            </div>
+
+            <div class="rc-section-label">AI Action Items</div>
+            <div class="rc-actions">
+              <div class="rc-action">
+                <span class="rc-action-dot"></span>
+                <span>Post Tuesday 7pm — your highest click window this week. Your last 3 Tuesday posts averaged 2.4x more saves.</span>
+              </div>
+              <div class="rc-action">
+                <span class="rc-action-dot"></span>
+                <span>Double down on Reels — they drove 3x more profile visits than carousels over the last 14 days.</span>
+              </div>
+            </div>
+
+            <a href="#contact" class="rc-cta">Open Your Hub →</a>
           </div>
         </div>
       </div>
