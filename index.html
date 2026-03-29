@@ -1078,6 +1078,64 @@
       font-size: 15px; color: var(--text-sub);
       margin-bottom: 24px; max-width: 500px;
     }
+    /* ── Compact client cards ── */
+    .work-cards {
+      display: flex; flex-direction: column;
+      gap: 12px; max-width: 560px; margin: 0 auto;
+    }
+    .work-compact-card {
+      display: flex; align-items: center; gap: 16px;
+      background: var(--dark-card);
+      border: 1px solid var(--border-mid);
+      border-radius: 14px;
+      padding: 14px 18px;
+      transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+      text-decoration: none; color: inherit;
+    }
+    .work-compact-card:hover {
+      border-color: rgba(16,185,129,0.4);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(0,0,0,0.4), 0 0 20px rgba(16,185,129,0.06);
+    }
+    .wcc-thumb {
+      width: 52px; height: 52px; border-radius: 12px;
+      overflow: hidden; flex-shrink: 0;
+      background: #000; border: 1px solid var(--border);
+    }
+    .wcc-thumb video {
+      width: 100%; height: 100%; object-fit: cover;
+    }
+    .wcc-info {
+      flex: 1; display: flex; flex-direction: column; gap: 2px;
+    }
+    .wcc-name {
+      font-family: var(--serif); font-size: 17px; font-weight: 500;
+      color: var(--text);
+    }
+    .wcc-niche {
+      font-size: 12px; color: var(--text-muted);
+    }
+    .wcc-domain {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 12px; font-weight: 600; color: var(--rose);
+      margin-top: 2px;
+    }
+    .wcc-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: #28c840; box-shadow: 0 0 6px #28c840;
+    }
+    .wcc-arrow {
+      color: var(--text-muted); font-size: 14px;
+      transition: color 0.2s, transform 0.2s;
+    }
+    .work-compact-card:hover .wcc-arrow {
+      color: var(--rose); transform: translateX(3px);
+    }
+    @media (max-width: 480px) {
+      .work-compact-card { padding: 12px 14px; gap: 12px; }
+      .wcc-thumb { width: 44px; height: 44px; }
+      .wcc-name { font-size: 15px; }
+    }
     /* ── BRAND STRIP ── */
     .brand-strip {
       padding: 40px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
@@ -3913,98 +3971,51 @@
     </div>
   </section>
 
-  <!-- WORK + FEATURES -->
+  <!-- WORK -->
   <section id="work">
     <div class="work-section-shimmer"></div>
     <div class="inner">
-
-      <div class="wf-layout">
-
-        <!-- Work info + features -->
-        <div class="wf-content-col fade-up">
-
-          <!-- Mobile-only domain pill (phone demo hidden on mobile) -->
-          <div class="work-domain-pill"><span class="work-domain-dot"></span>mandibagley.com</div>
-
-          <div class="work-featured-badge"><span class="work-featured-dot"></span>Featured Client Work</div>
-          <span class="work-label">Live Work</span>
-          <h2 class="work-title">One creator.<br>One complete platform.</h2>
-          <p class="work-sub">Built around her brand, her audience, and what she wants them to do.</p>
-
-          <div class="client-showcase">
-            <div class="showcase-shimmer"></div>
-
-            <!-- Top row: what her audience sees — phone + desktop side by side -->
-            <div class="showcase-audience-row">
-              <div class="showcase-col-label">What her audience sees</div>
-              <div class="showcase-devices">
-                <div class="showcase-phone-col">
-                  <div class="demo-phone-wrap-sm">
-                    <div class="phone-shell">
-                      <div class="phone-notch"></div>
-                      <div class="demo-phone-screen">
-                        <video class="demo-video-phone" autoplay muted loop playsinline>
-                          <source src="assets/mandi-phone.mp4" type="video/mp4">
-                        </video>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="showcase-desktop-col">
-                  <div class="showcase-desktop-frame">
-                    <div class="showcase-desktop-chrome">
-                      <div class="desktop-video-dots"><span></span><span></span><span></span></div>
-                      <div class="desktop-video-url"><span class="desktop-video-lock">🔒</span> mandibagley.com</div>
-                    </div>
-                    <video class="showcase-desktop-video" autoplay muted loop playsinline>
-                      <source src="assets/mandi-desktop.mp4" type="video/mp4">
-                    </video>
-                  </div>
-                </div>
-              </div>
-              <div class="showcase-domain">mandibagley.com</div>
-            </div>
-
-            <!-- Bottom row: what she sees — full-width Hub recording -->
-            <div class="showcase-creator-row">
-              <div class="showcase-col-label showcase-col-label-accent">What she sees</div>
-              <div class="showcase-hub-wide">
-                <div class="showcase-hub-chrome">
-                  <span style="width:6px;height:6px;border-radius:50%;background:#ff5f57"></span>
-                  <span style="width:6px;height:6px;border-radius:50%;background:#febc2e"></span>
-                  <span style="width:6px;height:6px;border-radius:50%;background:#28c840"></span>
-                </div>
-                <video class="showcase-hub-video" autoplay muted loop playsinline>
-                  <source src="assets/hub-recording.mp4" type="video/mp4">
-                </video>
-              </div>
-              <div class="showcase-domain showcase-domain-accent">Her private platform</div>
-            </div>
-
-            <div class="work-info">
-              <p class="work-client">Fitness &amp; Lifestyle Creator · 1M+ Followers</p>
-              <h3 class="work-name">Mandi Bagley</h3>
-              <p class="work-desc">A complete platform — custom website, private analytics, AI strategist, and a Hub that gives her everything at a glance.</p>
-              <div class="work-tags">
-                <span class="work-tag">Custom Design</span>
-                <span class="work-tag">Affiliate Codes</span>
-                <span class="work-tag">Program Showcases</span>
-                <span class="work-tag">Private Analytics</span>
-                <span class="work-tag">AI Strategy</span>
-                <span class="work-tag">Weekly Briefings</span>
-                <span class="work-tag">Link Tracking</span>
-              </div>
-              <a class="work-link" href="https://mandibagley.com" target="_blank" rel="noopener noreferrer">
-                See it live <i class="fa-solid fa-arrow-right"></i>
-              </a>
-            </div>
-          </div>
-
-        </div>
+      <div class="fade-up" style="text-align:center;margin-bottom:32px;">
+        <span class="work-label" style="display:block;text-align:center;">Live Work</span>
+        <h2 class="work-title" style="text-align:center;">See it live.</h2>
+        <p class="work-sub" style="text-align:center;margin:0 auto;">Real platforms built for real creators. Click to explore.</p>
       </div>
 
-      <a href="#contact" class="btn-rose" style="margin-top:28px"><span class="btn-rose-outline" aria-hidden="true"></span>Build mine <i class="fa-solid fa-arrow-right"></i></a>
+      <div class="work-cards fade-up">
 
+        <a href="https://mandibagley.com" target="_blank" rel="noopener noreferrer" class="work-compact-card">
+          <div class="wcc-thumb">
+            <video autoplay muted loop playsinline>
+              <source src="assets/mandi-phone.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="wcc-info">
+            <span class="wcc-name">Mandi Bagley</span>
+            <span class="wcc-niche">Fitness · Faith · Food</span>
+            <span class="wcc-domain"><span class="wcc-dot"></span>mandibagley.com</span>
+          </div>
+          <i class="fa-solid fa-arrow-right wcc-arrow"></i>
+        </a>
+
+        <a href="https://gabrielmckenney.com" target="_blank" rel="noopener noreferrer" class="work-compact-card">
+          <div class="wcc-thumb">
+            <video autoplay muted loop playsinline>
+              <source src="assets/gabe-phone.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="wcc-info">
+            <span class="wcc-name">Gabriel McKenney</span>
+            <span class="wcc-niche">Fitness · Lifestyle</span>
+            <span class="wcc-domain"><span class="wcc-dot"></span>gabrielmckenney.com</span>
+          </div>
+          <i class="fa-solid fa-arrow-right wcc-arrow"></i>
+        </a>
+
+      </div>
+
+      <div style="text-align:center;margin-top:28px;">
+        <a href="#contact" class="btn-rose"><span class="btn-rose-outline" aria-hidden="true"></span>Build mine <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
     </div>
   </section>
 
