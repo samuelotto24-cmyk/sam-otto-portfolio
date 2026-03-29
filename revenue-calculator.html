@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Revenue Projection Calculator</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #090907;
+    color: #EBE7DF;
+    min-height: 100vh;
+    padding: 2rem 1rem;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    max-width: 960px;
+    margin: 0 auto;
+  }
+
+  h1 {
+    font-size: 1.75rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.25rem;
+    color: #EBE7DF;
+  }
+
+  .subtitle {
+    color: #9B9688;
+    font-size: 0.9rem;
+    margin-bottom: 2.5rem;
+  }
+
+  /* --- Sliders Section --- */
+  .sliders-section {
+    background: #0E0D0B;
+    border: 1px solid rgba(235,231,223,0.06);
+    border-radius: 12px;
+    padding: 1.75rem;
+    margin-bottom: 2rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.75rem;
+  }
+
+  @media (max-width: 600px) {
+    .sliders-section { grid-template-columns: 1fr; gap: 1.25rem; }
+  }
+
+  .slider-group label {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #9B9688;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.6rem;
+  }
+
+  .slider-value {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #EBE7DF;
+    letter-spacing: -0.01em;
+  }
+
+  input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 4px;
+    border-radius: 2px;
+    background: #2A2720;
+    outline: none;
+    cursor: pointer;
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #10B981;
+    border: 2px solid #090907;
+    box-shadow: 0 0 8px rgba(16,185,129,0.35);
+    cursor: pointer;
+    transition: box-shadow 0.15s;
+  }
+
+  input[type="range"]::-webkit-slider-thumb:hover {
+    box-shadow: 0 0 14px rgba(16,185,129,0.55);
+  }
+
+  input[type="range"]::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #10B981;
+    border: 2px solid #090907;
+    box-shadow: 0 0 8px rgba(16,185,129,0.35);
+    cursor: pointer;
+  }
+
+  /* --- Metric Cards --- */
+  .metrics {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  @media (max-width: 800px) {
+    .metrics { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (max-width: 450px) {
+    .metrics { grid-template-columns: 1fr; }
+  }
+
+  .metric-card {
+    background: rgba(23,21,18,0.65);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(235,231,223,0.07);
+    border-radius: 12px;
+    padding: 1.25rem 1.25rem 1rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .metric-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #10B981, #34D399);
+    opacity: 0.7;
+  }
+
+  .metric-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #9B9688;
+    margin-bottom: 0.5rem;
+  }
+
+  .metric-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: #34D399;
+  }
+
+  /* --- Table --- */
+  .table-wrap {
+    background: #0E0D0B;
+    border: 1px solid rgba(235,231,223,0.06);
+    border-radius: 12px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 640px;
+    font-size: 0.85rem;
+  }
+
+  thead th {
+    text-align: left;
+    padding: 0.85rem 1rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #9B9688;
+    border-bottom: 1px solid rgba(235,231,223,0.08);
+    white-space: nowrap;
+  }
+
+  tbody td {
+    padding: 0.7rem 1rem;
+    border-bottom: 1px solid rgba(235,231,223,0.04);
+    white-space: nowrap;
+    color: #C8C3B8;
+  }
+
+  tbody tr:nth-child(even) {
+    background: rgba(23,21,18,0.4);
+  }
+
+  tbody tr:hover {
+    background: rgba(23,21,18,0.7);
+  }
+
+  td.month-cell {
+    font-weight: 600;
+    color: #EBE7DF;
+  }
+
+  td.month-cell .star {
+    color: #34D399;
+    margin-left: 4px;
+    font-size: 0.75rem;
+  }
+
+  td.total-cell {
+    font-weight: 600;
+    color: #EBE7DF;
+  }
+
+  .bar-cell {
+    width: 180px;
+    min-width: 120px;
+  }
+
+  .bar-track {
+    width: 100%;
+    height: 8px;
+    background: #1E1C18;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #10B981, #34D399);
+    border-radius: 4px;
+    transition: width 0.25s ease;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Revenue Projection Calculator</h1>
+  <p class="subtitle">12-month forecast based on client onboarding and retention assumptions</p>
+
+  <div class="sliders-section">
+    <div class="slider-group">
+      <label>Total Clients to Onboard <span class="slider-value" id="v-clients">10</span></label>
+      <input type="range" id="s-clients" min="1" max="30" value="10">
+    </div>
+    <div class="slider-group">
+      <label>Onboarding Period (months) <span class="slider-value" id="v-period">3</span></label>
+      <input type="range" id="s-period" min="1" max="4" value="3">
+    </div>
+    <div class="slider-group">
+      <label>% Full Platform <span class="slider-value" id="v-platform">70%</span></label>
+      <input type="range" id="s-platform" min="0" max="100" value="70">
+    </div>
+    <div class="slider-group">
+      <label>Monthly Churn Rate <span class="slider-value" id="v-churn">3%</span></label>
+      <input type="range" id="s-churn" min="0" max="15" value="3">
+    </div>
+  </div>
+
+  <div class="metrics">
+    <div class="metric-card">
+      <div class="metric-label">Peak MRR</div>
+      <div class="metric-value" id="m-peak">$0</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Month 12 MRR</div>
+      <div class="metric-value" id="m-m12">$0</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Total Setup Fees</div>
+      <div class="metric-value" id="m-setup">$0</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Year 1 Total Revenue</div>
+      <div class="metric-value" id="m-total">$0</div>
+    </div>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Month</th>
+          <th>Active Clients</th>
+          <th>Setup Revenue</th>
+          <th>Recurring Revenue</th>
+          <th>Total</th>
+          <th>MRR</th>
+        </tr>
+      </thead>
+      <tbody id="table-body"></tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+(function() {
+  var sClients  = document.getElementById('s-clients');
+  var sPeriod   = document.getElementById('s-period');
+  var sPlatform = document.getElementById('s-platform');
+  var sChurn    = document.getElementById('s-churn');
+
+  var vClients  = document.getElementById('v-clients');
+  var vPeriod   = document.getElementById('v-period');
+  var vPlatform = document.getElementById('v-platform');
+  var vChurn    = document.getElementById('v-churn');
+
+  var mPeak  = document.getElementById('m-peak');
+  var mM12   = document.getElementById('m-m12');
+  var mSetup = document.getElementById('m-setup');
+  var mTotal = document.getElementById('m-total');
+
+  var tbody = document.getElementById('table-body');
+
+  var FP_SETUP = 1500, FP_MO = 150;
+  var BS_SETUP = 500,  BS_MO = 50;
+
+  function fmt(n) {
+    return '$' + Math.round(n).toLocaleString('en-US');
+  }
+
+  function calculate() {
+    var totalClients = +sClients.value;
+    var period       = +sPeriod.value;
+    var pctFP        = +sPlatform.value / 100;
+    var churn        = +sChurn.value / 100;
+
+    vClients.textContent  = totalClients;
+    vPeriod.textContent   = period;
+    vPlatform.textContent = sPlatform.value + '%';
+    vChurn.textContent    = sChurn.value + '%';
+
+    // Determine how many clients onboard each month
+    var onboardPerMonth = [];
+    var assigned = 0;
+    for (var m = 0; m < period; m++) {
+      var thisMonth = Math.round((totalClients * (m + 1)) / period) - assigned;
+      onboardPerMonth.push(thisMonth);
+      assigned += thisMonth;
+    }
+
+    // Split each month's onboards into FP and BS
+    var fpOnboard = [];
+    var bsOnboard = [];
+    var fpAssigned = 0, bsAssigned = 0;
+    var totalFP = Math.round(totalClients * pctFP);
+    var totalBS = totalClients - totalFP;
+
+    for (var m = 0; m < period; m++) {
+      var fpThis = Math.round((totalFP * (m + 1)) / period) - fpAssigned;
+      var bsThis = onboardPerMonth[m] - fpThis;
+      // Clamp BS to not exceed totalBS
+      if (bsAssigned + bsThis > totalBS) bsThis = totalBS - bsAssigned;
+      if (bsThis < 0) { fpThis += bsThis; bsThis = 0; }
+      fpOnboard.push(fpThis);
+      bsOnboard.push(bsThis);
+      fpAssigned += fpThis;
+      bsAssigned += bsThis;
+    }
+
+    // Simulate 12 months
+    var activeFP = 0, activeBS = 0;
+    var rows = [];
+    var peakMRR = 0;
+    var totalSetupFees = 0;
+    var totalRevenue = 0;
+
+    for (var m = 0; m < 12; m++) {
+      // Apply churn to existing clients (after their first month)
+      if (m > 0) {
+        activeFP = activeFP * (1 - churn);
+        activeBS = activeBS * (1 - churn);
+      }
+
+      // Onboard new clients this month
+      var newFP = m < period ? fpOnboard[m] : 0;
+      var newBS = m < period ? bsOnboard[m] : 0;
+      activeFP += newFP;
+      activeBS += newBS;
+
+      var setupRev = newFP * FP_SETUP + newBS * BS_SETUP;
+      var recurringRev = activeFP * FP_MO + activeBS * BS_MO;
+      var total = setupRev + recurringRev;
+      var activeTotal = Math.round(activeFP + activeBS);
+
+      if (recurringRev > peakMRR) peakMRR = recurringRev;
+      totalSetupFees += setupRev;
+      totalRevenue += total;
+
+      rows.push({
+        month: m + 1,
+        isOnboarding: m < period,
+        active: activeTotal,
+        setup: setupRev,
+        recurring: recurringRev,
+        total: total
+      });
+    }
+
+    // Update metrics
+    mPeak.textContent  = fmt(peakMRR);
+    mM12.textContent   = fmt(rows[11].recurring);
+    mSetup.textContent = fmt(totalSetupFees);
+    mTotal.textContent = fmt(totalRevenue);
+
+    // Build table
+    var html = '';
+    for (var i = 0; i < rows.length; i++) {
+      var r = rows[i];
+      var barW = peakMRR > 0 ? (r.recurring / peakMRR * 100) : 0;
+      html += '<tr>';
+      html += '<td class="month-cell">' + r.month + (r.isOnboarding ? '<span class="star"> ★</span>' : '') + '</td>';
+      html += '<td>' + r.active + '</td>';
+      html += '<td>' + fmt(r.setup) + '</td>';
+      html += '<td>' + fmt(r.recurring) + '</td>';
+      html += '<td class="total-cell">' + fmt(r.total) + '</td>';
+      html += '<td class="bar-cell"><div class="bar-track"><div class="bar-fill" style="width:' + barW.toFixed(1) + '%"></div></div></td>';
+      html += '</tr>';
+    }
+    tbody.innerHTML = html;
+  }
+
+  sClients.addEventListener('input', calculate);
+  sPeriod.addEventListener('input', calculate);
+  sPlatform.addEventListener('input', calculate);
+  sChurn.addEventListener('input', calculate);
+
+  calculate();
+})();
+</script>
+
+</body>
+</html>
