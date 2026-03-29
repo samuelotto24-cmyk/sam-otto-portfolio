@@ -3255,16 +3255,96 @@
     }
   }
 
+
+  /* ── Scattered-to-Unified overlay ── */
+  #scatter-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9998;
+    pointer-events: none;
+  }
+  .scatter-icon {
+    position: fixed;
+    width: 64px; height: 64px;
+    border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    z-index: 9999;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+    will-change: transform, opacity;
+    pointer-events: none;
+  }
+  .scatter-icon svg { width: 32px; height: 32px; }
+  .scatter-label {
+    position: fixed;
+    top: 12%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    z-index: 9999;
+    opacity: 0;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+  #scatter-merge-circle {
+    position: fixed;
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(16,185,129,0.9) 0%, rgba(16,185,129,0.3) 60%, transparent 100%);
+    z-index: 9999;
+    opacity: 0;
+    pointer-events: none;
+    will-change: transform, opacity;
+  }
+  /* Hide hero content until GSAP reveals it */
+  .scatter-hidden { opacity: 0 !important; animation: none !important; }
   </style>
 
-  <!-- GSAP + ScrollTrigger -->
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
+  <!-- GSAP + ScrollTrigger + Lenis -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
 </head>
 <body>
 
 <div id="intro-overlay" aria-hidden="true">
   <canvas id="intro-canvas"></canvas>
+</div>
+
+<!-- Scattered-to-Unified icons -->
+<div id="scatter-overlay" aria-hidden="true">
+  <!-- YouTube -->
+  <div class="scatter-icon" id="si-yt" style="background:#FF0000;">
+    <svg viewBox="0 0 24 24" fill="white"><path d="M10 15l5.19-3L10 9v6zm11.56-7.83c.13.47.22 1.1.28 1.9.07.8.1 1.49.1 2.09L22 12c0 2.19-.16 3.8-.44 4.83-.25.9-.83 1.48-1.73 1.73-.47.13-1.33.22-2.65.28-1.3.07-2.49.1-3.59.1L12 19c-4.19 0-6.8-.16-7.83-.44-.9-.25-1.48-.83-1.73-1.73-.13-.47-.22-1.1-.28-1.9-.07-.8-.1-1.49-.1-2.09L2 12c0-2.19.16-3.8.44-4.83.25-.9.83-1.48 1.73-1.73.47-.13 1.33-.22 2.65-.28 1.3-.07 2.49-.1 3.59-.1L12 5c4.19 0 6.8.16 7.83.44.9.25 1.48.83 1.73 1.73z"/></svg>
+  </div>
+  <!-- Instagram -->
+  <div class="scatter-icon" id="si-ig" style="background:linear-gradient(135deg,#833AB4,#FD1D1D,#F77737);">
+    <svg viewBox="0 0 24 24" fill="white"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+  </div>
+  <!-- TikTok -->
+  <div class="scatter-icon" id="si-tt" style="background:#000;border:1px solid rgba(255,255,255,0.15);">
+    <svg viewBox="0 0 24 24" fill="white"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1v-3.5a6.37 6.37 0 00-.79-.05A6.34 6.34 0 003.15 15.2a6.34 6.34 0 0010.86 4.48V13a8.28 8.28 0 005.58 2.14V11.7a4.83 4.83 0 01-3.77-1.85V6.69h3.77z"/></svg>
+  </div>
+  <!-- Linktree -->
+  <div class="scatter-icon" id="si-lt" style="background:#43E660;">
+    <svg viewBox="0 0 24 24" fill="white"><path d="M7.953 15.066l-.038-4.036 4.038-.002-.002-4.037h-4.037l3.979-3.964L8.953 0 5 3.953 1.048 0 .009 3.027l3.979 3.964H0l-.002 4.037 4.038.002-.038 4.036h3.955zM5 15.066v8.934h3.955v-8.934z"/></svg>
+  </div>
+  <!-- Analytics chart -->
+  <div class="scatter-icon" id="si-chart" style="background:#1a1a2e;border:1px solid rgba(255,255,255,0.12);">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2" stroke-linecap="round"><rect x="3" y="12" width="4" height="9" rx="1" fill="rgba(16,185,129,0.3)"/><rect x="10" y="7" width="4" height="14" rx="1" fill="rgba(16,185,129,0.5)"/><rect x="17" y="3" width="4" height="18" rx="1" fill="rgba(16,185,129,0.7)"/></svg>
+  </div>
+  <!-- Link icon -->
+  <div class="scatter-icon" id="si-link" style="background:#2d1b69;border:1px solid rgba(255,255,255,0.12);">
+    <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+  </div>
+
+  <span class="scatter-label" id="scatter-label-before">Your tools right now</span>
+  <span class="scatter-label" id="scatter-label-after">Your platform</span>
+  <div id="scatter-merge-circle"></div>
 </div>
 
 <div id="side-orbs" aria-hidden="true">
@@ -4854,6 +4934,450 @@
         }
       }, { threshold: 0.05 });
       mapObs.observe(section);
+    })();
+
+    // ── Scattered-to-Unified Hero Animation ──
+    (function() {
+      gsap.registerPlugin(ScrollTrigger);
+
+      // Elements
+      var icons = [
+        document.getElementById('si-yt'),
+        document.getElementById('si-ig'),
+        document.getElementById('si-tt'),
+        document.getElementById('si-lt'),
+        document.getElementById('si-chart'),
+        document.getElementById('si-link')
+      ];
+      var labelBefore = document.getElementById('scatter-label-before');
+      var labelAfter  = document.getElementById('scatter-label-after');
+      var mergeCircle = document.getElementById('scatter-merge-circle');
+      var overlay     = document.getElementById('scatter-overlay');
+
+      // Hero elements to reveal
+      var heroLabel   = document.querySelector('.hero-label');
+      var heroTitle   = document.querySelector('.hero-title');
+      var heroSub     = document.querySelector('.hero-sub');
+      var heroActions = document.querySelector('.hero-actions');
+      var heroTrust   = document.querySelector('.hero-trust');
+      var heroPhone   = document.querySelector('.hero-sys-phone');
+      var heroAnalytics = document.querySelector('.hero-sys-analytics');
+      var heroAi      = document.querySelector('.hero-sys-ai');
+      var heroLines   = document.querySelector('.hero-sys-lines');
+      var navEl       = document.querySelector('nav');
+
+      if (!icons[0] || !heroTitle) return;
+
+      // Hide hero content immediately — override CSS animations
+      // Also neutralize CSS animation properties so they don't re-fire when scatter-hidden is removed
+      var heroEls = [heroLabel, heroTitle, heroSub, heroActions, heroTrust, heroPhone, heroAnalytics, heroAi, heroLines, navEl];
+      heroEls.forEach(function(el) {
+        if (el) {
+          el.classList.add('scatter-hidden');
+          el.style.animation = 'none';
+        }
+      });
+
+      // Platform badge animations inside analytics card
+      var platformBadges = document.querySelectorAll('.sys-platform-badge');
+      platformBadges.forEach(function(b) {
+        b.classList.add('scatter-hidden');
+        b.style.animation = 'none';
+      });
+
+      // Also pause the bar fill animation until reveal
+      var barFill = document.querySelector('.sys-bar-fill');
+      if (barFill) barFill.style.animation = 'none';
+
+      var W = window.innerWidth;
+      var H = window.innerHeight;
+      var cx = W / 2;
+      var cy = H / 2;
+
+      // Off-screen start positions (outside viewport)
+      var startPositions = [
+        { x: -150,     y: -120    },  // YT: top-left
+        { x: W + 100,  y: -80     },  // IG: top-right
+        { x: -180,     y: H + 80  },  // TT: bottom-left
+        { x: W + 120,  y: H + 100 },  // LT: bottom-right
+        { x: -200,     y: cy - 60 },  // Chart: center-left
+        { x: W + 150,  y: cy + 40 }   // Link: center-right
+      ];
+
+      // Landing positions (scattered across hero)
+      var landPositions = [
+        { x: W * 0.12, y: H * 0.18, rot: -15 },  // YT
+        { x: W * 0.78, y: H * 0.15, rot: 10  },   // IG
+        { x: W * 0.15, y: H * 0.72, rot: -8  },   // TT
+        { x: W * 0.82, y: H * 0.68, rot: 12  },   // LT
+        { x: W * 0.28, y: H * 0.45, rot: -20 },   // Chart
+        { x: W * 0.72, y: H * 0.48, rot: 15  }    // Link
+      ];
+
+      // Set initial positions (off-screen)
+      icons.forEach(function(icon, i) {
+        gsap.set(icon, {
+          x: startPositions[i].x,
+          y: startPositions[i].y,
+          opacity: 0,
+          scale: 1
+        });
+      });
+
+      // Phone mockup reference for merge target
+      var phoneShell = document.querySelector('.hero-phone-shell');
+
+      // ═══════════════════════════════════════
+      // PHASE 1 — CHAOS: Icons fly in as intro particle overlay fades
+      // Intro overlay: SWIRL(1500) + FORM(600) + HOLD(500) = 2600ms, then 800ms fade
+      // Icons start at 2600ms so they fly in while overlay is fading to transparent
+      // ═══════════════════════════════════════
+      var tl = gsap.timeline({ delay: 2.6 });
+
+      // Fly all icons to scattered positions
+      icons.forEach(function(icon, i) {
+        tl.to(icon, {
+          x: landPositions[i].x - 32, // offset by half icon width
+          y: landPositions[i].y - 32,
+          rotation: landPositions[i].rot,
+          opacity: 1,
+          duration: 0.8,
+          ease: 'power3.out'
+        }, 0); // all start at same time
+      });
+
+      // Fade in "Your tools right now" label
+      tl.to(labelBefore, {
+        opacity: 1,
+        duration: 0.5,
+        ease: 'power2.out'
+      }, 0.4);
+
+      // Gentle wobble after landing
+      tl.add(function() {
+        icons.forEach(function(icon, i) {
+          gsap.to(icon, {
+            rotation: landPositions[i].rot + (i % 2 === 0 ? 5 : -5),
+            y: '+=' + (i % 2 === 0 ? -8 : 8),
+            duration: 2,
+            ease: 'sine.inOut',
+            yoyo: true,
+            repeat: -1
+          });
+        });
+      }, 0.9);
+
+      // ═══════════════════════════════════════
+      // PHASE 2 — UNIFICATION: triggered by scroll or auto after 2.5s
+      // ═══════════════════════════════════════
+      var phase2Fired = false;
+
+      function runPhase2() {
+        if (phase2Fired) return;
+        phase2Fired = true;
+
+        // Kill wobble tweens
+        icons.forEach(function(icon) { gsap.killTweensOf(icon); });
+
+        var tl2 = gsap.timeline();
+
+        // Swap labels
+        tl2.to(labelBefore, { opacity: 0, duration: 0.3, ease: 'power2.in' }, 0);
+        tl2.to(labelAfter, { opacity: 1, duration: 0.4, ease: 'power2.out' }, 0.2);
+
+        // All icons converge to center
+        icons.forEach(function(icon) {
+          tl2.to(icon, {
+            x: cx - 32,
+            y: cy - 32,
+            scale: 0.3,
+            rotation: 0,
+            opacity: 0.6,
+            duration: 0.85,
+            ease: 'expo.inOut'
+          }, 0);
+        });
+
+        // At ~70% of convergence — icons vanish, merge circle appears
+        tl2.add(function() {
+          icons.forEach(function(icon) {
+            gsap.set(icon, { opacity: 0 });
+          });
+        }, 0.6);
+
+        // Merge circle pulse
+        tl2.set(mergeCircle, {
+          x: cx - 40,
+          y: cy - 40,
+          opacity: 1,
+          scale: 1
+        }, 0.6);
+
+        tl2.to(mergeCircle, {
+          scale: 1.4,
+          duration: 0.2,
+          ease: 'power2.out'
+        }, 0.65);
+
+        tl2.to(mergeCircle, {
+          scale: 1,
+          duration: 0.15,
+          ease: 'power2.in'
+        }, 0.85);
+
+        // Fade out labels and merge circle
+        tl2.to(labelAfter, { opacity: 0, duration: 0.25 }, 0.95);
+        tl2.to(mergeCircle, { opacity: 0, scale: 0.2, duration: 0.35, ease: 'expo.in' }, 1.0);
+
+        // Clean up overlay
+        tl2.add(function() {
+          if (overlay) overlay.style.display = 'none';
+        }, 1.35);
+
+        // ═══════════════════════════════════════
+        // PHASE 3 — CONTENT REVEAL
+        // ═══════════════════════════════════════
+
+        // Phone mockup morphs in from center
+        tl2.add(function() {
+          if (heroPhone) {
+            heroPhone.classList.remove('scatter-hidden');
+            gsap.fromTo(heroPhone, {
+              opacity: 0,
+              scale: 0.4,
+              y: 30
+            }, {
+              opacity: 1,
+              scale: 1,
+              y: 0,
+              duration: 0.7,
+              ease: 'expo.out'
+            });
+          }
+        }, 1.0);
+
+        // "ARE YOU GROWING?" label
+        tl2.add(function() {
+          if (heroLabel) {
+            heroLabel.classList.remove('scatter-hidden');
+            gsap.fromTo(heroLabel, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' });
+          }
+        }, 1.25);
+
+        // Headline — word split animation
+        tl2.add(function() {
+          if (heroTitle) {
+            heroTitle.classList.remove('scatter-hidden');
+            heroTitle.style.opacity = '1';
+
+            // Split text into word spans, preserving <em> and <br>
+            var words = [];
+
+            function wrapTextWords(parent) {
+              // Snapshot childNodes — must NOT iterate live NodeList while mutating
+              var nodes = Array.from(parent.childNodes);
+              nodes.forEach(function(node) {
+                if (node.nodeType === 3) { // text node
+                  var text = node.textContent;
+                  if (!text.trim()) return;
+                  var parts = text.split(/(\s+)/);
+                  var frag = document.createDocumentFragment();
+                  parts.forEach(function(part) {
+                    if (/^\s+$/.test(part)) {
+                      frag.appendChild(document.createTextNode(' '));
+                    } else if (part) {
+                      var span = document.createElement('span');
+                      span.textContent = part;
+                      span.style.cssText = 'display:inline-block;opacity:0;transform:translateY(30px)';
+                      span.className = 'scatter-word';
+                      words.push(span);
+                      frag.appendChild(span);
+                    }
+                  });
+                  parent.replaceChild(frag, node);
+                } else if (node.nodeName === 'EM') {
+                  var emText = node.textContent;
+                  var emParts = emText.split(/(\s+)/);
+                  var frag = document.createDocumentFragment();
+                  emParts.forEach(function(part) {
+                    if (/^\s+$/.test(part)) {
+                      frag.appendChild(document.createTextNode(' '));
+                    } else if (part) {
+                      var span = document.createElement('span');
+                      span.textContent = part;
+                      span.style.cssText = 'display:inline-block;opacity:0;transform:translateY(30px)';
+                      span.className = 'scatter-word scatter-em-word';
+                      var em = document.createElement('em');
+                      em.appendChild(span);
+                      words.push(span);
+                      frag.appendChild(em);
+                    }
+                  });
+                  parent.replaceChild(frag, node);
+                }
+                // BR nodes are left untouched
+              });
+            }
+
+            wrapTextWords(heroTitle);
+
+            gsap.to('.scatter-word', {
+              opacity: 1,
+              y: 0,
+              duration: 0.5,
+              stagger: 0.06,
+              ease: 'power2.out'
+            });
+
+            // Accent color flash on em words
+            gsap.fromTo('.scatter-em-word', {
+              color: '#34D399'
+            }, {
+              color: 'var(--rose)',
+              duration: 0.6,
+              stagger: 0.06,
+              delay: 0.15,
+              ease: 'power1.inOut'
+            });
+          }
+        }, 1.4);
+
+        // Subheadline
+        tl2.add(function() {
+          if (heroSub) {
+            heroSub.classList.remove('scatter-hidden');
+            gsap.fromTo(heroSub, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' });
+          }
+        }, 1.85);
+
+        // CTA buttons
+        tl2.add(function() {
+          if (heroActions) {
+            heroActions.classList.remove('scatter-hidden');
+            heroActions.style.opacity = '1';
+            var btns = heroActions.children;
+            gsap.fromTo(btns, { opacity: 0, scale: 0.9 }, {
+              opacity: 1,
+              scale: 1,
+              duration: 0.4,
+              stagger: 0.1,
+              ease: 'back.out(1.7)'
+            });
+          }
+        }, 2.05);
+
+        // Badge pills
+        tl2.add(function() {
+          if (heroTrust) {
+            heroTrust.classList.remove('scatter-hidden');
+            heroTrust.style.opacity = '1';
+            var items = heroTrust.children;
+            gsap.fromTo(items, { opacity: 0, x: -15 }, {
+              opacity: 1,
+              x: 0,
+              duration: 0.35,
+              stagger: 0.05,
+              ease: 'power2.out'
+            });
+          }
+        }, 2.2);
+
+        // Analytics + AI cards
+        tl2.add(function() {
+          if (heroAnalytics) {
+            heroAnalytics.classList.remove('scatter-hidden');
+            gsap.fromTo(heroAnalytics, {
+              opacity: 0, x: -30, scale: 0.9, yPercent: -70
+            }, {
+              opacity: 1, x: 0, scale: 1, yPercent: -70,
+              duration: 0.6, ease: 'power2.out'
+            });
+            // Trigger bar fill
+            if (barFill) {
+              gsap.fromTo(barFill, { width: '0%' }, { width: '72%', duration: 1, ease: 'power2.out', delay: 0.3 });
+            }
+          }
+          if (heroAi) {
+            heroAi.classList.remove('scatter-hidden');
+            gsap.fromTo(heroAi, {
+              opacity: 0, x: 30, scale: 0.9, yPercent: -35
+            }, {
+              opacity: 1, x: 0, scale: 1, yPercent: -35,
+              duration: 0.6, ease: 'power2.out', delay: 0.15
+            });
+          }
+        }, 2.0);
+
+        // Connection lines
+        tl2.add(function() {
+          if (heroLines) {
+            heroLines.classList.remove('scatter-hidden');
+            gsap.fromTo(heroLines, { opacity: 0 }, { opacity: 1, duration: 0.5 });
+          }
+        }, 2.4);
+
+        // Platform badges pop
+        tl2.add(function() {
+          platformBadges.forEach(function(b, i) {
+            b.classList.remove('scatter-hidden');
+            gsap.fromTo(b, { opacity: 0, scale: 0.6 }, {
+              opacity: 1, scale: 1,
+              duration: 0.4,
+              delay: i * 0.12,
+              ease: 'back.out(2)'
+            });
+          });
+        }, 2.3);
+
+        // ═══════════════════════════════════════
+        // PHASE 4 — IDLE STATE
+        // ═══════════════════════════════════════
+        tl2.add(function() {
+          // Phone floating idle
+          if (heroPhone) {
+            gsap.to(heroPhone, {
+              y: -12,
+              duration: 3.5,
+              ease: 'sine.inOut',
+              yoyo: true,
+              repeat: -1
+            });
+          }
+
+          // Nav fade in with blur-to-clear
+          if (navEl) {
+            navEl.classList.remove('scatter-hidden');
+            gsap.fromTo(navEl, {
+              opacity: 0,
+              filter: 'blur(6px)'
+            }, {
+              opacity: 1,
+              filter: 'blur(0px)',
+              duration: 0.6,
+              ease: 'power2.out'
+            });
+          }
+
+          // Initialize Lenis smooth scroll
+          var lenis = new Lenis({ lerp: 0.08 });
+          gsap.ticker.add(function(time) {
+            lenis.raf(time * 1000);
+          });
+          gsap.ticker.lagSmoothing(0);
+        }, 2.8);
+      }
+
+      // Auto-advance after 2.5s from Phase 1 start (2600ms intro + 800ms fly-in + 2500ms hold)
+      setTimeout(function() { runPhase2(); }, 5900);
+
+      // Or trigger on first scroll after icons land
+      var scrollOnce = function() {
+        runPhase2();
+        window.removeEventListener('scroll', scrollOnce);
+      };
+      setTimeout(function() {
+        window.addEventListener('scroll', scrollOnce, { passive: true });
+      }, 3600); // Listen after icons are settled
     })();
 
   </script>
