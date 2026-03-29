@@ -5321,12 +5321,32 @@
             gsap.to(heroPhone, { y: -12, duration: 3.5, ease: 'sine.inOut', yoyo: true, repeat: -1 });
           }
           unlockScroll();
-          var lenis = new Lenis({ lerp: 0.08 });
-          gsap.ticker.add(function(time) { lenis.raf(time * 1000); });
-          gsap.ticker.lagSmoothing(0);
         }, 1.9);
       }
     })();
+
+    // ── Lenis smooth scroll — initialized unconditionally ──
+    (function() {
+      try {
+        var lenis = new Lenis({ lerp: 0.08 });
+        gsap.ticker.add(function(time) { lenis.raf(time * 1000); });
+        gsap.ticker.lagSmoothing(0);
+      } catch(e) { /* Lenis failed to load — native scroll works fine */ }
+    })();
+
+    // ── Safety nets — guarantee page is usable even if animation breaks ──
+    setTimeout(function() {
+      // Force-remove intro overlay if still present
+      var overlay = document.getElementById('intro-overlay');
+      if (overlay) overlay.remove();
+
+      // Force-remove scatter-hidden from all elements
+      var hidden = document.querySelectorAll('.scatter-hidden');
+      hidden.forEach(function(el) {
+        el.classList.remove('scatter-hidden');
+        el.style.animation = '';
+      });
+    }, 7000);
 
   </script>
 
