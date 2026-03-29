@@ -4276,23 +4276,15 @@
       for (var i = 0; i < NUM; i++) {
         var gi = groupAssign[i];
         var g = groups[gi];
-        var angle = Math.random() * Math.PI * 2;
-        var dist = Math.max(W, H) * 0.7 + Math.random() * 200;
         particles.push({
           gi: gi,
           r: g.r, g: g.g, b: g.b,
-          sx: cx + Math.cos(angle) * dist,
-          sy: cy + Math.sin(angle) * dist,
           tx: targets[i].x, ty: targets[i].y,
-          // scatter target = icon cluster position (with jitter)
           ix: iconTargets[gi].x + (Math.random() - 0.5) * 40,
           iy: iconTargets[gi].y + (Math.random() - 0.5) * 40,
           x: 0, y: 0,
           size: 0.5 + Math.random() * 0.8,
-          alpha: 0.4 + Math.random() * 0.6,
-          delay: Math.random() * 0.35,
-          swirlAngle: angle,
-          swirlSpeed: 2.5 + Math.random() * 3.5
+          alpha: 0.4 + Math.random() * 0.6
         });
       }
 
@@ -4313,21 +4305,18 @@
         });
       }
 
-      // ── Timing ──
-      var SWIRL = 1200;   // swirl inward
-      var FORM = 500;     // form text
-      var HOLD = 400;     // hold text
-      var SCATTER = 700;  // explode to icon clusters
-      var TIGHT = 300;    // tighten clusters
-      var T_FORM = SWIRL;
-      var T_HOLD = SWIRL + FORM;
-      var T_SCATTER = T_HOLD + HOLD;
+      // ── Timing — start formed, hold, shatter ──
+      var FADE_IN = 400;    // particles fade in at text positions
+      var HOLD = 800;       // hold readable text
+      var SCATTER = 600;    // explode to icon clusters
+      var TIGHT = 300;      // tighten clusters
+      var T_HOLD = FADE_IN + HOLD;
+      var T_SCATTER = T_HOLD;
       var T_TIGHT = T_SCATTER + SCATTER;
       var T_DONE = T_TIGHT + TIGHT;
       var startTime = null;
       var done = false;
 
-      function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
       function easeInOutQuad(t) { return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2; }
       function easeInCubic(t) { return t * t * t; }
 
@@ -4336,7 +4325,7 @@
         var elapsed = ts - startTime;
         ctx.clearRect(0, 0, W, H);
 
-        // Ambient dots (colored)
+        // Ambient dots
         for (var i = 0; i < AMBIENT; i++) {
           var a = ambient[i];
           a.x += a.vx; a.y += a.vy;
@@ -4351,31 +4340,9 @@
         // Main particles
         for (var i = 0; i < NUM; i++) {
           var p = particles[i];
-          var pDelay = p.delay * SWIRL;
 
-          if (elapsed < SWIRL) {
-            // Phase: swirl inward
-            var t = Math.max(0, elapsed - pDelay) / (SWIRL - pDelay);
-            t = Math.min(t, 1);
-            var e = easeInOutQuad(t);
-            var startDist = Math.sqrt(Math.pow(p.sx - cx, 2) + Math.pow(p.sy - cy, 2));
-            var curDist = startDist * (1 - e * e * 0.85);
-            var curAngle = p.swirlAngle + e * p.swirlSpeed * Math.PI;
-            p.x = cx + Math.cos(curAngle) * curDist;
-            p.y = cy + Math.sin(curAngle) * curDist;
-          } else if (elapsed < T_HOLD) {
-            // Phase: form text
-            var t2 = Math.min((elapsed - SWIRL) / FORM, 1);
-            var e2 = easeOutCubic(t2);
-            var startDist = Math.sqrt(Math.pow(p.sx - cx, 2) + Math.pow(p.sy - cy, 2));
-            var swirlDist = startDist * 0.15;
-            var swirlAngleEnd = p.swirlAngle + p.swirlSpeed * Math.PI;
-            var swirlX = cx + Math.cos(swirlAngleEnd) * swirlDist;
-            var swirlY = cy + Math.sin(swirlAngleEnd) * swirlDist;
-            p.x = swirlX + (p.tx - swirlX) * e2;
-            p.y = swirlY + (p.ty - swirlY) * e2;
-          } else if (elapsed < T_SCATTER) {
-            // Phase: hold text position
+          if (elapsed < T_SCATTER) {
+            // Phases: fade-in + hold — particles sit at text positions
             p.x = p.tx;
             p.y = p.ty;
           } else if (elapsed < T_TIGHT) {
@@ -4385,7 +4352,7 @@
             p.x = p.tx + (p.ix - p.tx) * e3;
             p.y = p.ty + (p.iy - p.ty) * e3;
           } else {
-            // Phase: tighten clusters (particles pull toward cluster center)
+            // Phase: tighten clusters
             var t4 = Math.min((elapsed - T_TIGHT) / TIGHT, 1);
             var e4 = easeInCubic(t4);
             var gCenter = iconTargets[p.gi];
@@ -4393,7 +4360,8 @@
             p.y = p.iy + (gCenter.y - p.iy) * e4;
           }
 
-          var vis = Math.min(elapsed / 300, 1);
+          // Fade in over FADE_IN ms
+          var vis = Math.min(elapsed / FADE_IN, 1);
           // Fade out during tighten phase
           var fadeOut = elapsed > T_TIGHT ? Math.max(0, 1 - (elapsed - T_TIGHT) / TIGHT) : 1;
           ctx.beginPath();
@@ -4402,32 +4370,9 @@
           ctx.fill();
         }
 
-        // Connection lines during swirl
-        if (elapsed < SWIRL + FORM * 0.4) {
-          ctx.lineWidth = 0.3;
-          for (var i = 0; i < NUM; i += 20) {
-            for (var j = i + 20; j < NUM; j += 20) {
-              if (particles[i].gi !== particles[j].gi) continue; // only within same group
-              var dx = particles[i].x - particles[j].x;
-              var dy = particles[i].y - particles[j].y;
-              var d2 = dx * dx + dy * dy;
-              if (d2 < 2500) {
-                ctx.beginPath();
-                ctx.moveTo(particles[i].x, particles[i].y);
-                ctx.lineTo(particles[j].x, particles[j].y);
-                var p0 = particles[i];
-                ctx.strokeStyle = 'rgba(' + p0.r + ',' + p0.g + ',' + p0.b + ',' + ((1 - Math.sqrt(d2) / 50) * 0.15).toFixed(3) + ')';
-                ctx.stroke();
-              }
-            }
-          }
-        }
-
         if (elapsed >= T_DONE && !done) {
           done = true;
-          // Signal scatter animation to show DOM icons and proceed
           window.dispatchEvent(new Event('particles-crystallized'));
-          // Fade canvas
           overlay.classList.add('icons-visible');
           setTimeout(function() { overlay.remove(); }, 500);
         }
