@@ -61,7 +61,7 @@
       --ease:       0.22s ease;
     }
 
-    html { }
+    html { scroll-behavior: smooth; }
 
     body {
       background: var(--black);
@@ -2979,20 +2979,11 @@
     100% { transform: translate(0px,    0px); }
   }
 
-  /* ── FEATURE THEATRE (scroll-jacked) ── */
+  /* ── FEATURE THEATRE (intersection-triggered, no scroll hijack) ── */
   #feature-theatre {
     position: relative;
-    height: 300vh;
+    padding: clamp(48px, 6vw, 80px) 0;
     background: var(--black);
-  }
-  .ft-pin {
-    position: sticky;
-    top: 0;
-    height: 100vh;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
   }
   .ft-container {
     width: 100%;
@@ -3006,6 +2997,7 @@
   }
 
   /* ── Left: nav with progress line ── */
+  .ft-left { position: relative; }
   .ft-nav {
     display: flex;
     flex-direction: column;
@@ -3014,7 +3006,6 @@
     position: relative;
     padding-left: 20px;
   }
-  /* Vertical track line behind dots */
   .ft-nav::before {
     content: '';
     position: absolute;
@@ -3025,16 +3016,16 @@
     background: rgba(235,231,223,0.08);
     border-radius: 1px;
   }
-  /* Animated fill line */
   .ft-nav-progress {
     position: absolute;
     left: 4px;
     top: 8px;
     width: 2px;
     height: 0%;
+    max-height: calc(100% - 16px);
     background: var(--rose);
     border-radius: 1px;
-    transition: height 0.35s ease;
+    transition: height 0.6s ease;
     box-shadow: 0 0 8px rgba(16,185,129,0.4);
   }
   .ft-nav-dot {
@@ -3064,9 +3055,6 @@
     box-shadow: 0 0 14px rgba(16,185,129,0.6);
     transform: translateY(-50%) scale(1.3);
   }
-  .ft-nav-dot.visited .dot {
-    background: var(--rose);
-  }
   .ft-nav-dot .dot-label {
     font-size: 13px;
     font-weight: 500;
@@ -3077,45 +3065,43 @@
   .ft-nav-dot.active .dot-label {
     color: var(--text);
   }
-  .ft-nav-dot.visited .dot-label {
-    color: var(--text-sub);
-  }
 
-  /* ── Counter badge (top right) ── */
-  .ft-counter {
+  /* ── Timer bar under active dot label ── */
+  .ft-nav-dot .dot-timer {
     position: absolute;
-    top: 40px;
-    right: 40px;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--text-muted);
-    letter-spacing: 0.06em;
-    font-family: var(--sans);
-    z-index: 2;
+    bottom: 4px;
+    left: 0;
+    height: 2px;
+    width: 0%;
+    background: var(--rose);
+    border-radius: 1px;
+    opacity: 0;
+    transition: none;
   }
-  .ft-counter-current {
-    color: var(--rose);
-    font-size: 20px;
-    font-weight: 700;
+  .ft-nav-dot.active .dot-timer {
+    opacity: 1;
+  }
+  .ft-nav-dot.active .dot-timer.running {
+    width: 100%;
+    transition: width var(--ft-interval) linear;
   }
 
-  /* Chapters — scroll-driven opacity via JS, no CSS transition snap */
+  /* Chapters — CSS transition crossfade */
   .ft-chapter {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(16px);
     pointer-events: none;
-    will-change: opacity, transform;
+    transition: opacity 0.5s ease, transform 0.5s ease;
   }
   .ft-chapter.active {
     position: relative;
+    opacity: 1;
+    transform: translateY(0);
     pointer-events: auto;
-  }
-  .ft-left {
-    position: relative;
   }
   .ft-chapters-wrap {
     position: relative;
@@ -3147,7 +3133,7 @@
     max-width: 420px;
   }
 
-  /* Feature pills / details */
+  /* Feature pills */
   .ft-features {
     display: flex;
     flex-wrap: wrap;
@@ -3165,13 +3151,8 @@
   }
 
   /* Stats row (analytics chapter) */
-  .ft-stats {
-    display: flex;
-    gap: 28px;
-  }
-  .ft-stat {
-    text-align: center;
-  }
+  .ft-stats { display: flex; gap: 28px; }
+  .ft-stat { text-align: center; }
   .ft-stat-num {
     display: flex;
     align-items: baseline;
@@ -3216,9 +3197,7 @@
     background: var(--rose);
     animation: blink 1s step-end infinite;
   }
-  @keyframes blink {
-    50% { opacity: 0; }
-  }
+  @keyframes blink { 50% { opacity: 0; } }
 
   /* ── Right: video ── */
   .ft-right {
@@ -3235,12 +3214,14 @@
     left: 0;
     width: 100%;
     opacity: 0;
-    transform: scale(0.97) translateY(12px);
+    transform: scale(0.97);
     pointer-events: none;
-    will-change: opacity, transform;
+    transition: opacity 0.6s ease, transform 0.6s ease;
   }
   .ft-video-wrap.active {
     position: relative;
+    opacity: 1;
+    transform: scale(1);
     pointer-events: auto;
   }
   .ft-video-frame {
@@ -3267,68 +3248,16 @@
     display: block;
   }
 
-  /* Scroll hint — bottom center with animated arrow */
-  .ft-scroll-hint {
-    position: absolute;
-    bottom: 28px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 12px;
-    font-weight: 500;
-    letter-spacing: 0.08em;
-    color: var(--text-muted);
-    pointer-events: none;
-    transition: opacity 0.5s ease;
-  }
-  .ft-scroll-hint .hint-arrow {
-    display: inline-block;
-    animation: bounce-down 1.6s ease-in-out infinite;
-  }
-  @keyframes bounce-down {
-    0%, 100% { transform: translateY(0); opacity: 0.5; }
-    50% { transform: translateY(5px); opacity: 1; }
-  }
-
-  /* Progress bar at bottom of theatre */
-  .ft-progress-bar {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 3px;
-    background: rgba(235,231,223,0.06);
-    z-index: 2;
-  }
-  .ft-progress-fill {
-    height: 100%;
-    width: 0%;
-    background: linear-gradient(90deg, var(--rose), var(--rose-light));
-    border-radius: 0 2px 2px 0;
-    transition: width 0.1s linear;
-    box-shadow: 0 0 10px rgba(16,185,129,0.3);
-  }
-
-  /* ── Mobile: stack vertically ── */
+  /* ── Mobile ── */
   @media (max-width: 768px) {
     .ft-container {
       grid-template-columns: 1fr;
       gap: 32px;
     }
-    .ft-right {
-      min-height: 240px;
-    }
-    .ft-chapters-wrap {
-      min-height: 220px;
-    }
-    .ft-stats {
-      gap: 16px;
-    }
-    .ft-stat-val {
-      font-size: 28px;
-    }
+    .ft-right { min-height: 240px; }
+    .ft-chapters-wrap { min-height: 220px; }
+    .ft-stats { gap: 16px; }
+    .ft-stat-val { font-size: 28px; }
   }
 
 
@@ -3540,138 +3469,129 @@
   </section>
 
 
-  <!-- FEATURE THEATRE (scroll-jacked) -->
+  <!-- FEATURE THEATRE (auto-rotating, no scroll hijack) -->
   <section id="feature-theatre">
-    <div class="ft-pin">
+    <div class="ft-container fade-up">
 
-      <!-- Counter badge -->
-      <div class="ft-counter"><span class="ft-counter-current">1</span> / 3</div>
-
-      <div class="ft-container">
-
-        <!-- Left column: navigation + chapter copy -->
-        <div class="ft-left">
-          <div class="ft-nav">
-            <div class="ft-nav-progress"></div>
-            <div class="ft-nav-dot active" data-chapter="0">
-              <span class="dot"></span>
-              <span class="dot-label">Your Website</span>
-            </div>
-            <div class="ft-nav-dot" data-chapter="1">
-              <span class="dot"></span>
-              <span class="dot-label">Your Analytics</span>
-            </div>
-            <div class="ft-nav-dot" data-chapter="2">
-              <span class="dot"></span>
-              <span class="dot-label">Your AI Strategist</span>
-            </div>
+      <!-- Left column: navigation + chapter copy -->
+      <div class="ft-left">
+        <div class="ft-nav">
+          <div class="ft-nav-progress"></div>
+          <div class="ft-nav-dot active" data-chapter="0">
+            <span class="dot"></span>
+            <span class="dot-label">Your Website</span>
+            <span class="dot-timer"></span>
           </div>
-
-          <div class="ft-chapters-wrap">
-            <!-- Chapter 1: Website -->
-            <div class="ft-chapter active" data-index="0">
-              <div class="ft-chapter-num">01</div>
-              <h3 class="ft-chapter-title">The link in your bio, reimagined.</h3>
-              <p class="ft-chapter-desc">Not a list of links on a generic page. A completely custom site at yourname.com — your colors, your voice, your vibe — designed to turn followers into fans.</p>
-              <div class="ft-features">
-                <span class="ft-pill">Your own domain — yourname.com</span>
-                <span class="ft-pill">Every detail built around your brand</span>
-                <span class="ft-pill">Tap-to-copy affiliate codes</span>
-                <span class="ft-pill">Program &amp; course cards</span>
-              </div>
-            </div>
-
-            <!-- Chapter 2: Analytics -->
-            <div class="ft-chapter" data-index="1">
-              <div class="ft-chapter-num">02</div>
-              <h3 class="ft-chapter-title">Your Analytics</h3>
-              <p class="ft-chapter-desc">YouTube, Instagram, TikTok and your website — one dashboard. Live data, not yesterday's numbers.</p>
-              <div class="ft-stats">
-                <div class="ft-stat">
-                  <div class="ft-stat-num">
-                    <span class="ft-stat-val" data-count="0">0</span>
-                    <span class="ft-stat-suffix">K</span>
-                  </div>
-                  <div class="ft-stat-label">Total Views</div>
-                </div>
-                <div class="ft-stat">
-                  <div class="ft-stat-num">
-                    <span class="ft-stat-val" data-count="0">0</span>
-                    <span class="ft-stat-suffix">K</span>
-                  </div>
-                  <div class="ft-stat-label">Followers</div>
-                </div>
-                <div class="ft-stat">
-                  <div class="ft-stat-num">
-                    <span class="ft-stat-val" data-count="0">0</span>
-                    <span class="ft-stat-suffix">%</span>
-                  </div>
-                  <div class="ft-stat-label">Engagement</div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Chapter 3: AI Strategist -->
-            <div class="ft-chapter" data-index="2">
-              <div class="ft-chapter-num">03</div>
-              <h3 class="ft-chapter-title">Your AI Strategist</h3>
-              <p class="ft-chapter-desc">Not generic advice. An AI that reads your actual data and tells you exactly what to post, when, and why.</p>
-              <div class="ft-ai-prompt">
-                <span>When should I post this week?</span>
-                <span class="prompt-cursor"></span>
-              </div>
-            </div>
+          <div class="ft-nav-dot" data-chapter="1">
+            <span class="dot"></span>
+            <span class="dot-label">Your Analytics</span>
+            <span class="dot-timer"></span>
+          </div>
+          <div class="ft-nav-dot" data-chapter="2">
+            <span class="dot"></span>
+            <span class="dot-label">Your AI Strategist</span>
+            <span class="dot-timer"></span>
           </div>
         </div>
 
-        <!-- Right column: video stage -->
-        <div class="ft-right">
-          <div class="ft-video-stage">
-            <div class="ft-video-wrap active" data-index="0">
-              <div class="ft-video-frame">
-                <div class="ft-browser-bar">
-                  <span style="background:#ff5f57"></span>
-                  <span style="background:#febc2e"></span>
-                  <span style="background:#28c840"></span>
-                </div>
-                <video autoplay muted loop playsinline>
-                  <source src="assets/gabe-desktop.mp4" type="video/mp4">
-                </video>
-              </div>
+        <div class="ft-chapters-wrap">
+          <!-- Chapter 1: Website -->
+          <div class="ft-chapter active" data-index="0">
+            <div class="ft-chapter-num">01</div>
+            <h3 class="ft-chapter-title">The link in your bio, reimagined.</h3>
+            <p class="ft-chapter-desc">Not a list of links on a generic page. A completely custom site at yourname.com — your colors, your voice, your vibe — designed to turn followers into fans.</p>
+            <div class="ft-features">
+              <span class="ft-pill">Your own domain — yourname.com</span>
+              <span class="ft-pill">Every detail built around your brand</span>
+              <span class="ft-pill">Tap-to-copy affiliate codes</span>
+              <span class="ft-pill">Program &amp; course cards</span>
             </div>
-            <div class="ft-video-wrap" data-index="1">
-              <div class="ft-video-frame">
-                <div class="ft-browser-bar">
-                  <span style="background:#ff5f57"></span>
-                  <span style="background:#febc2e"></span>
-                  <span style="background:#28c840"></span>
+          </div>
+
+          <!-- Chapter 2: Analytics -->
+          <div class="ft-chapter" data-index="1">
+            <div class="ft-chapter-num">02</div>
+            <h3 class="ft-chapter-title">Your Analytics</h3>
+            <p class="ft-chapter-desc">YouTube, Instagram, TikTok and your website — one dashboard. Live data, not yesterday's numbers.</p>
+            <div class="ft-stats">
+              <div class="ft-stat">
+                <div class="ft-stat-num">
+                  <span class="ft-stat-val" data-count="0">0</span>
+                  <span class="ft-stat-suffix">K</span>
                 </div>
-                <video autoplay muted loop playsinline>
-                  <source src="assets/analytics-recording.mp4" type="video/mp4">
-                </video>
+                <div class="ft-stat-label">Total Views</div>
               </div>
-            </div>
-            <div class="ft-video-wrap" data-index="2">
-              <div class="ft-video-frame">
-                <div class="ft-browser-bar">
-                  <span style="background:#ff5f57"></span>
-                  <span style="background:#febc2e"></span>
-                  <span style="background:#28c840"></span>
+              <div class="ft-stat">
+                <div class="ft-stat-num">
+                  <span class="ft-stat-val" data-count="0">0</span>
+                  <span class="ft-stat-suffix">K</span>
                 </div>
-                <video autoplay muted loop playsinline>
-                  <source src="assets/ai-strategist.mp4" type="video/mp4">
-                </video>
+                <div class="ft-stat-label">Followers</div>
+              </div>
+              <div class="ft-stat">
+                <div class="ft-stat-num">
+                  <span class="ft-stat-val" data-count="0">0</span>
+                  <span class="ft-stat-suffix">%</span>
+                </div>
+                <div class="ft-stat-label">Engagement</div>
               </div>
             </div>
           </div>
-        </div>
 
+          <!-- Chapter 3: AI Strategist -->
+          <div class="ft-chapter" data-index="2">
+            <div class="ft-chapter-num">03</div>
+            <h3 class="ft-chapter-title">Your AI Strategist</h3>
+            <p class="ft-chapter-desc">Not generic advice. An AI that reads your actual data and tells you exactly what to post, when, and why.</p>
+            <div class="ft-ai-prompt">
+              <span>When should I post this week?</span>
+              <span class="prompt-cursor"></span>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div class="ft-scroll-hint"><span class="hint-arrow">↓</span> Scroll to explore</div>
-
-      <!-- Progress bar -->
-      <div class="ft-progress-bar"><div class="ft-progress-fill"></div></div>
+      <!-- Right column: video stage -->
+      <div class="ft-right">
+        <div class="ft-video-stage">
+          <div class="ft-video-wrap active" data-index="0">
+            <div class="ft-video-frame">
+              <div class="ft-browser-bar">
+                <span style="background:#ff5f57"></span>
+                <span style="background:#febc2e"></span>
+                <span style="background:#28c840"></span>
+              </div>
+              <video autoplay muted loop playsinline>
+                <source src="assets/gabe-desktop.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>
+          <div class="ft-video-wrap" data-index="1">
+            <div class="ft-video-frame">
+              <div class="ft-browser-bar">
+                <span style="background:#ff5f57"></span>
+                <span style="background:#febc2e"></span>
+                <span style="background:#28c840"></span>
+              </div>
+              <video autoplay muted loop playsinline>
+                <source src="assets/analytics-recording.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>
+          <div class="ft-video-wrap" data-index="2">
+            <div class="ft-video-frame">
+              <div class="ft-browser-bar">
+                <span style="background:#ff5f57"></span>
+                <span style="background:#febc2e"></span>
+                <span style="background:#28c840"></span>
+              </div>
+              <video autoplay muted loop playsinline>
+                <source src="assets/ai-strategist.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>
+        </div>
+      </div>
 
     </div>
   </section>
@@ -5373,136 +5293,112 @@
 
   </script>
 
-  <!-- ── FEATURE THEATRE — scroll-proportional controller ── -->
+  <!-- ── FEATURE THEATRE — auto-rotate on intersection ── -->
   <script>
   (function() {
-    gsap.registerPlugin(ScrollTrigger);
-
     var theatre = document.getElementById('feature-theatre');
     if (!theatre) return;
+
+    var INTERVAL = 4000; // ms per chapter
+    theatre.style.setProperty('--ft-interval', INTERVAL + 'ms');
 
     var chapters    = theatre.querySelectorAll('.ft-chapter');
     var videos      = theatre.querySelectorAll('.ft-video-wrap');
     var dots        = theatre.querySelectorAll('.ft-nav-dot');
-    var hint        = theatre.querySelector('.ft-scroll-hint');
-    var progressFill = theatre.querySelector('.ft-progress-fill');
     var navProgress = theatre.querySelector('.ft-nav-progress');
-    var counterEl   = theatre.querySelector('.ft-counter-current');
-    var totalCh     = chapters.length; // 3
+    var totalCh     = chapters.length;
     var current     = 0;
+    var timer       = null;
+    var isVisible   = false;
 
-    // Height is set in CSS (300vh) — no JS override needed
+    function setChapter(idx) {
+      current = idx;
 
-    // Clamp helper
-    function clamp(v, min, max) { return Math.max(min, Math.min(max, v)); }
-
-    // Smooth interpolation for each element based on scroll
-    function updateScroll(progress) {
-      // Overall progress bar — always moving, always giving feedback
-      var pct = progress * 100;
-      progressFill.style.width = pct + '%';
-
-      // Which chapter are we in?
-      var raw = progress * totalCh;
-      var idx = Math.min(Math.floor(raw), totalCh - 1);
-      // How far through the current chapter (0 → 1)
-      var within = raw - idx;
-
-      // Update counter
-      counterEl.textContent = (idx + 1);
-
-      // Nav progress line — fills proportionally through all 3 dots
-      var navPct = (progress * 100);
-      navProgress.style.height = navPct + '%';
-
-      // Update nav dots
-      dots.forEach(function(d, i) {
-        d.classList.remove('active', 'visited');
-        if (i === idx) {
-          d.classList.add('active');
-        } else if (i < idx) {
-          d.classList.add('visited');
-        }
-      });
-
-      // Fade hint on any scroll
-      if (progress > 0.02 && hint) {
-        hint.style.opacity = '0';
-      } else if (hint) {
-        hint.style.opacity = '1';
-      }
-
-      // Animate each chapter and video proportionally
       chapters.forEach(function(ch, i) {
-        var vid = videos[i];
-        if (i === idx) {
-          // Active chapter — fully visible at center of its range
-          // Fade in during first 20% of chapter, stay solid
-          var fadeIn = clamp(within / 0.2, 0, 1);
-          ch.style.opacity = fadeIn;
-          ch.style.transform = 'translateY(' + ((1 - fadeIn) * 20) + 'px)';
-          ch.classList.add('active');
+        ch.classList.toggle('active', i === idx);
+      });
+      videos.forEach(function(v, i) {
+        v.classList.toggle('active', i === idx);
+      });
 
-          vid.style.opacity = fadeIn;
-          vid.style.transform = 'scale(' + (0.97 + 0.03 * fadeIn) + ') translateY(' + ((1 - fadeIn) * 12) + 'px)';
-          vid.classList.add('active');
-        } else if (i === idx - 1 && within < 0.2) {
-          // Previous chapter fading out during transition zone
-          var fadeOut = 1 - clamp(within / 0.2, 0, 1);
-          ch.style.opacity = fadeOut;
-          ch.style.transform = 'translateY(' + (-(1 - fadeOut) * 15) + 'px)';
-          ch.classList.remove('active');
-
-          vid.style.opacity = fadeOut;
-          vid.style.transform = 'scale(' + (1 - 0.03 * (1 - fadeOut)) + ') translateY(' + (-(1 - fadeOut) * 8) + 'px)';
-          vid.classList.remove('active');
-        } else {
-          // Fully hidden
-          ch.style.opacity = '0';
-          ch.style.transform = i > idx ? 'translateY(20px)' : 'translateY(-15px)';
-          ch.classList.remove('active');
-
-          vid.style.opacity = '0';
-          vid.style.transform = i > idx ? 'scale(0.97) translateY(12px)' : 'scale(0.97) translateY(-8px)';
-          vid.classList.remove('active');
+      // Nav dots + progress line
+      dots.forEach(function(d, i) {
+        d.classList.toggle('active', i === idx);
+        // Reset timer bar
+        var timerBar = d.querySelector('.dot-timer');
+        if (timerBar) {
+          timerBar.classList.remove('running');
+          // Force reflow to restart animation
+          void timerBar.offsetWidth;
+          if (i === idx) {
+            timerBar.classList.add('running');
+          }
         }
       });
 
-      // First chapter: no fade-in needed on initial view
-      if (idx === 0 && within < 0.01) {
-        chapters[0].style.opacity = '1';
-        chapters[0].style.transform = 'translateY(0)';
-        videos[0].style.opacity = '1';
-        videos[0].style.transform = 'scale(1) translateY(0)';
+      // Progress line fills to match current dot position
+      var progressPct = ((idx + 1) / totalCh) * 100;
+      navProgress.style.height = progressPct + '%';
+    }
+
+    function advance() {
+      var next = (current + 1) % totalCh;
+      setChapter(next);
+    }
+
+    function startTimer() {
+      stopTimer();
+      timer = setInterval(advance, INTERVAL);
+      // Start the timer bar animation on the current dot
+      var activeDot = dots[current];
+      if (activeDot) {
+        var timerBar = activeDot.querySelector('.dot-timer');
+        if (timerBar) {
+          timerBar.classList.remove('running');
+          void timerBar.offsetWidth;
+          timerBar.classList.add('running');
+        }
       }
     }
 
-    // Initial state
-    updateScroll(0);
-
-    // GSAP ScrollTrigger — pin + scrub
-    ScrollTrigger.create({
-      trigger: theatre,
-      start: 'top top',
-      end: 'bottom bottom',
-      pin: '.ft-pin',
-      pinSpacing: false,
-      scrub: 0.3,
-      onUpdate: function(self) {
-        updateScroll(self.progress);
+    function stopTimer() {
+      if (timer) {
+        clearInterval(timer);
+        timer = null;
       }
-    });
+      // Pause all timer bars
+      dots.forEach(function(d) {
+        var timerBar = d.querySelector('.dot-timer');
+        if (timerBar) timerBar.classList.remove('running');
+      });
+    }
 
-    // Clickable nav dots
+    // Click dots to switch manually (resets timer)
     dots.forEach(function(dot) {
       dot.addEventListener('click', function() {
         var idx = parseInt(this.getAttribute('data-chapter'));
-        var theatreTop = theatre.offsetTop;
-        var theatreHeight = theatre.offsetHeight - window.innerHeight;
-        var targetScroll = theatreTop + (theatreHeight * ((idx + 0.1) / totalCh));
-        window.scrollTo({ top: targetScroll, behavior: 'smooth' });
+        setChapter(idx);
+        if (isVisible) startTimer(); // restart timer from clicked chapter
       });
     });
+
+    // Start/stop auto-rotation based on visibility
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          isVisible = true;
+          startTimer();
+        } else {
+          isVisible = false;
+          stopTimer();
+        }
+      });
+    }, { threshold: 0.3 });
+
+    observer.observe(theatre);
+
+    // Initialize first chapter
+    setChapter(0);
   })();
   </script>
 
