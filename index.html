@@ -3007,60 +3007,113 @@
     align-items: center;
   }
 
-  /* ── Left: nav + copy ── */
+  /* ── Left: nav with progress line ── */
   .ft-nav {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 0;
     margin-bottom: 32px;
+    position: relative;
+    padding-left: 20px;
+  }
+  /* Vertical track line behind dots */
+  .ft-nav::before {
+    content: '';
+    position: absolute;
+    left: 4px;
+    top: 8px;
+    bottom: 8px;
+    width: 2px;
+    background: rgba(235,231,223,0.08);
+    border-radius: 1px;
+  }
+  /* Animated fill line */
+  .ft-nav-progress {
+    position: absolute;
+    left: 4px;
+    top: 8px;
+    width: 2px;
+    height: 0%;
+    background: var(--rose);
+    border-radius: 1px;
+    transition: height 0.35s ease;
+    box-shadow: 0 0 8px rgba(16,185,129,0.4);
   }
   .ft-nav-dot {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 14px;
     cursor: pointer;
-    padding: 6px 0;
-    transition: all 0.4s ease;
+    padding: 10px 0;
+    transition: all 0.35s ease;
+    position: relative;
   }
   .ft-nav-dot .dot {
     width: 10px;
     height: 10px;
     border-radius: 50%;
-    background: rgba(235,231,223,0.15);
-    transition: all 0.4s ease;
+    background: rgba(235,231,223,0.12);
+    transition: all 0.35s ease;
     flex-shrink: 0;
+    position: absolute;
+    left: -20px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1;
   }
   .ft-nav-dot.active .dot {
     background: var(--rose);
-    box-shadow: 0 0 12px rgba(16,185,129,0.5);
-    transform: scale(1.3);
+    box-shadow: 0 0 14px rgba(16,185,129,0.6);
+    transform: translateY(-50%) scale(1.3);
+  }
+  .ft-nav-dot.visited .dot {
+    background: var(--rose);
   }
   .ft-nav-dot .dot-label {
     font-size: 13px;
     font-weight: 500;
     letter-spacing: 0.04em;
     color: var(--text-muted);
-    transition: color 0.4s ease;
+    transition: color 0.35s ease;
   }
   .ft-nav-dot.active .dot-label {
     color: var(--text);
   }
+  .ft-nav-dot.visited .dot-label {
+    color: var(--text-sub);
+  }
 
-  /* Chapters */
+  /* ── Counter badge (top right) ── */
+  .ft-counter {
+    position: absolute;
+    top: 40px;
+    right: 40px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-muted);
+    letter-spacing: 0.06em;
+    font-family: var(--sans);
+    z-index: 2;
+  }
+  .ft-counter-current {
+    color: var(--rose);
+    font-size: 20px;
+    font-weight: 700;
+  }
+
+  /* Chapters — scroll-driven opacity via JS, no CSS transition snap */
   .ft-chapter {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.5s ease, transform 0.5s ease;
+    transform: translateY(20px);
     pointer-events: none;
+    will-change: opacity, transform;
   }
   .ft-chapter.active {
     position: relative;
-    opacity: 1;
-    transform: translateY(0);
     pointer-events: auto;
   }
   .ft-left {
@@ -3184,14 +3237,12 @@
     left: 0;
     width: 100%;
     opacity: 0;
-    transform: scale(0.96);
-    transition: opacity 0.6s ease, transform 0.6s ease;
+    transform: scale(0.97) translateY(12px);
     pointer-events: none;
+    will-change: opacity, transform;
   }
   .ft-video-wrap.active {
     position: relative;
-    opacity: 1;
-    transform: scale(1);
     pointer-events: auto;
   }
   .ft-video-frame {
@@ -3218,21 +3269,48 @@
     display: block;
   }
 
-  /* Scroll hint */
+  /* Scroll hint — bottom center with animated arrow */
   .ft-scroll-hint {
     position: absolute;
     bottom: 28px;
     left: 50%;
     transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 8px;
     font-size: 12px;
+    font-weight: 500;
     letter-spacing: 0.08em;
     color: var(--text-muted);
-    animation: pulse-hint 2s ease-in-out infinite;
     pointer-events: none;
+    transition: opacity 0.5s ease;
   }
-  @keyframes pulse-hint {
-    0%, 100% { opacity: 0.4; }
-    50% { opacity: 0.8; }
+  .ft-scroll-hint .hint-arrow {
+    display: inline-block;
+    animation: bounce-down 1.6s ease-in-out infinite;
+  }
+  @keyframes bounce-down {
+    0%, 100% { transform: translateY(0); opacity: 0.5; }
+    50% { transform: translateY(5px); opacity: 1; }
+  }
+
+  /* Progress bar at bottom of theatre */
+  .ft-progress-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: rgba(235,231,223,0.06);
+    z-index: 2;
+  }
+  .ft-progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--rose), var(--rose-light));
+    border-radius: 0 2px 2px 0;
+    transition: width 0.1s linear;
+    box-shadow: 0 0 10px rgba(16,185,129,0.3);
   }
 
   /* ── Mobile: stack vertically ── */
@@ -3468,11 +3546,15 @@
   <section id="feature-theatre">
     <div class="ft-pin">
 
+      <!-- Counter badge -->
+      <div class="ft-counter"><span class="ft-counter-current">1</span> / 3</div>
+
       <div class="ft-container">
 
         <!-- Left column: navigation + chapter copy -->
         <div class="ft-left">
           <div class="ft-nav">
+            <div class="ft-nav-progress"></div>
             <div class="ft-nav-dot active" data-chapter="0">
               <span class="dot"></span>
               <span class="dot-label">Your Website</span>
@@ -3491,11 +3573,11 @@
             <!-- Chapter 1: Website -->
             <div class="ft-chapter active" data-index="0">
               <div class="ft-chapter-num">01</div>
-              <h3 class="ft-chapter-title">Your Website</h3>
-              <p class="ft-chapter-desc">A website that looks like you. Your colors, your domain, your audience — built from scratch, not from a template.</p>
+              <h3 class="ft-chapter-title">The link in your bio, reimagined.</h3>
+              <p class="ft-chapter-desc">Not a list of links on a generic page. A completely custom site at yourname.com — your colors, your voice, your vibe — designed to turn followers into fans.</p>
               <div class="ft-features">
                 <span class="ft-pill">Your own domain — yourname.com</span>
-                <span class="ft-pill">Custom design, zero templates</span>
+                <span class="ft-pill">Every detail built around your brand</span>
                 <span class="ft-pill">Tap-to-copy affiliate codes</span>
                 <span class="ft-pill">Program &amp; course cards</span>
               </div>
@@ -3588,7 +3670,10 @@
 
       </div>
 
-      <div class="ft-scroll-hint">Scroll to explore →</div>
+      <div class="ft-scroll-hint"><span class="hint-arrow">↓</span> Scroll to explore</div>
+
+      <!-- Progress bar -->
+      <div class="ft-progress-bar"><div class="ft-progress-fill"></div></div>
 
     </div>
   </section>
@@ -5382,7 +5467,7 @@
 
   </script>
 
-  <!-- ── FEATURE THEATRE — scroll-jacked controller ── -->
+  <!-- ── FEATURE THEATRE — scroll-proportional controller ── -->
   <script>
   (function() {
     gsap.registerPlugin(ScrollTrigger);
@@ -5390,67 +5475,115 @@
     var theatre = document.getElementById('feature-theatre');
     if (!theatre) return;
 
-    var chapters  = theatre.querySelectorAll('.ft-chapter');
-    var videos    = theatre.querySelectorAll('.ft-video-wrap');
-    var dots      = theatre.querySelectorAll('.ft-nav-dot');
-    var hint      = theatre.querySelector('.ft-scroll-hint');
-    var totalCh   = chapters.length;  // 3
-    var current   = 0;
+    var chapters    = theatre.querySelectorAll('.ft-chapter');
+    var videos      = theatre.querySelectorAll('.ft-video-wrap');
+    var dots        = theatre.querySelectorAll('.ft-nav-dot');
+    var hint        = theatre.querySelector('.ft-scroll-hint');
+    var progressFill = theatre.querySelector('.ft-progress-fill');
+    var navProgress = theatre.querySelector('.ft-nav-progress');
+    var counterEl   = theatre.querySelector('.ft-counter-current');
+    var totalCh     = chapters.length; // 3
+    var current     = 0;
 
-    // Make the section tall enough for 3 chapters of scrolling
-    // 300vh total: 100vh visible + 200vh of scroll travel
+    // 300vh total scroll distance
     theatre.style.height = (totalCh * 100) + 'vh';
 
-    function setChapter(idx) {
-      if (idx === current) return;
-      if (idx < 0 || idx >= totalCh) return;
-      current = idx;
+    // Clamp helper
+    function clamp(v, min, max) { return Math.max(min, Math.min(max, v)); }
 
-      // Update chapters
-      chapters.forEach(function(ch, i) {
-        if (i === idx) {
-          ch.classList.add('active');
-        } else {
-          ch.classList.remove('active');
-        }
-      });
+    // Smooth interpolation for each element based on scroll
+    function updateScroll(progress) {
+      // Overall progress bar — always moving, always giving feedback
+      var pct = progress * 100;
+      progressFill.style.width = pct + '%';
 
-      // Update videos
-      videos.forEach(function(v, i) {
-        if (i === idx) {
-          v.classList.add('active');
-        } else {
-          v.classList.remove('active');
-        }
-      });
+      // Which chapter are we in?
+      var raw = progress * totalCh;
+      var idx = Math.min(Math.floor(raw), totalCh - 1);
+      // How far through the current chapter (0 → 1)
+      var within = raw - idx;
+
+      // Update counter
+      counterEl.textContent = (idx + 1);
+
+      // Nav progress line — fills proportionally through all 3 dots
+      var navPct = (progress * 100);
+      navProgress.style.height = navPct + '%';
 
       // Update nav dots
       dots.forEach(function(d, i) {
+        d.classList.remove('active', 'visited');
         if (i === idx) {
           d.classList.add('active');
-        } else {
-          d.classList.remove('active');
+        } else if (i < idx) {
+          d.classList.add('visited');
         }
       });
 
-      // Hide hint after first scroll
-      if (idx > 0 && hint) {
+      // Fade hint on any scroll
+      if (progress > 0.02 && hint) {
         hint.style.opacity = '0';
+      } else if (hint) {
+        hint.style.opacity = '1';
+      }
+
+      // Animate each chapter and video proportionally
+      chapters.forEach(function(ch, i) {
+        var vid = videos[i];
+        if (i === idx) {
+          // Active chapter — fully visible at center of its range
+          // Fade in during first 20% of chapter, stay solid
+          var fadeIn = clamp(within / 0.2, 0, 1);
+          ch.style.opacity = fadeIn;
+          ch.style.transform = 'translateY(' + ((1 - fadeIn) * 20) + 'px)';
+          ch.classList.add('active');
+
+          vid.style.opacity = fadeIn;
+          vid.style.transform = 'scale(' + (0.97 + 0.03 * fadeIn) + ') translateY(' + ((1 - fadeIn) * 12) + 'px)';
+          vid.classList.add('active');
+        } else if (i === idx - 1 && within < 0.2) {
+          // Previous chapter fading out during transition zone
+          var fadeOut = 1 - clamp(within / 0.2, 0, 1);
+          ch.style.opacity = fadeOut;
+          ch.style.transform = 'translateY(' + (-(1 - fadeOut) * 15) + 'px)';
+          ch.classList.remove('active');
+
+          vid.style.opacity = fadeOut;
+          vid.style.transform = 'scale(' + (1 - 0.03 * (1 - fadeOut)) + ') translateY(' + (-(1 - fadeOut) * 8) + 'px)';
+          vid.classList.remove('active');
+        } else {
+          // Fully hidden
+          ch.style.opacity = '0';
+          ch.style.transform = i > idx ? 'translateY(20px)' : 'translateY(-15px)';
+          ch.classList.remove('active');
+
+          vid.style.opacity = '0';
+          vid.style.transform = i > idx ? 'scale(0.97) translateY(12px)' : 'scale(0.97) translateY(-8px)';
+          vid.classList.remove('active');
+        }
+      });
+
+      // First chapter: no fade-in needed on initial view
+      if (idx === 0 && within < 0.01) {
+        chapters[0].style.opacity = '1';
+        chapters[0].style.transform = 'translateY(0)';
+        videos[0].style.opacity = '1';
+        videos[0].style.transform = 'scale(1) translateY(0)';
       }
     }
 
-    // GSAP ScrollTrigger: pin the section and switch chapters
+    // Initial state
+    updateScroll(0);
+
+    // GSAP ScrollTrigger — pin + scrub
     ScrollTrigger.create({
       trigger: theatre,
       start: 'top top',
       end: 'bottom bottom',
       pin: '.ft-pin',
-      scrub: true,
+      scrub: 0.3,
       onUpdate: function(self) {
-        // self.progress goes 0 → 1 across the full scroll
-        var raw = self.progress * totalCh;
-        var idx = Math.min(Math.floor(raw), totalCh - 1);
-        setChapter(idx);
+        updateScroll(self.progress);
       }
     });
 
@@ -5458,10 +5591,9 @@
     dots.forEach(function(dot) {
       dot.addEventListener('click', function() {
         var idx = parseInt(this.getAttribute('data-chapter'));
-        // Scroll to the right position within the pinned section
         var theatreTop = theatre.offsetTop;
         var theatreHeight = theatre.offsetHeight - window.innerHeight;
-        var targetScroll = theatreTop + (theatreHeight * (idx / totalCh)) + 1;
+        var targetScroll = theatreTop + (theatreHeight * ((idx + 0.1) / totalCh));
         window.scrollTo({ top: targetScroll, behavior: 'smooth' });
       });
     });
