@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600');
+    </style>
+    <!-- Subtle glow behind the letters -->
+    <radialGradient id="centerGlow" cx="50%" cy="50%" r="35%">
+      <stop offset="0%" stop-color="#10B981" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#10B981" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Dark background -->
+  <rect width="400" height="400" rx="48" fill="#0E0D0B"/>
+
+  <!-- Subtle center glow -->
+  <circle cx="200" cy="200" r="140" fill="url(#centerGlow)"/>
+
+  <!-- 6 converging dots — scattered but pulling inward -->
+  <!-- Top left -->
+  <circle cx="88" cy="92" r="4.5" fill="#FF0000" opacity="0.8"/>
+  <line x1="92" y1="96" x2="148" y2="148" stroke="#FF0000" stroke-width="0.8" opacity="0.25"/>
+
+  <!-- Top right -->
+  <circle cx="318" cy="105" r="4" fill="#E1306C" opacity="0.8"/>
+  <line x1="314" y1="109" x2="258" y2="155" stroke="#E1306C" stroke-width="0.8" opacity="0.25"/>
+
+  <!-- Left -->
+  <circle cx="72" cy="235" r="3.5" fill="#C8C8D2" opacity="0.7"/>
+  <line x1="76" y1="233" x2="140" y2="210" stroke="#C8C8D2" stroke-width="0.8" opacity="0.2"/>
+
+  <!-- Right -->
+  <circle cx="335" cy="248" r="4" fill="#43E660" opacity="0.8"/>
+  <line x1="331" y1="246" x2="265" y2="218" stroke="#43E660" stroke-width="0.8" opacity="0.25"/>
+
+  <!-- Bottom left -->
+  <circle cx="105" cy="325" r="3.5" fill="#8B5CF6" opacity="0.75"/>
+  <line x1="109" y1="321" x2="155" y2="258" stroke="#8B5CF6" stroke-width="0.8" opacity="0.2"/>
+
+  <!-- Bottom right -->
+  <circle cx="302" cy="318" r="4.5" fill="#10B981" opacity="0.85"/>
+  <line x1="298" y1="314" x2="248" y2="252" stroke="#10B981" stroke-width="0.8" opacity="0.3"/>
+
+  <!-- Inner ring of smaller converging dots (closer) -->
+  <circle cx="138" cy="148" r="2.5" fill="#FF0000" opacity="0.5"/>
+  <circle cx="268" cy="155" r="2.5" fill="#E1306C" opacity="0.5"/>
+  <circle cx="130" cy="225" r="2" fill="#C8C8D2" opacity="0.4"/>
+  <circle cx="275" cy="230" r="2.5" fill="#43E660" opacity="0.5"/>
+  <circle cx="148" cy="272" r="2" fill="#8B5CF6" opacity="0.45"/>
+  <circle cx="260" cy="268" r="2.5" fill="#10B981" opacity="0.55"/>
+
+  <!-- "SO" monogram -->
+  <text x="200" y="218" font-family="'Cormorant Garamond', Georgia, serif" font-size="120" font-weight="600" fill="#EBE7DF" text-anchor="middle" letter-spacing="8">SO</text>
+
+  <!-- Thin accent line under the letters -->
+  <line x1="148" y1="245" x2="252" y2="245" stroke="#10B981" stroke-width="1.5" opacity="0.6" stroke-linecap="round"/>
+</svg>

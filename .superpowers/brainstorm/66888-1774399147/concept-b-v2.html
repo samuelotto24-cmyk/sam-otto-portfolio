@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Concept B — Refined</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0d0d0f; color: #e8e8e8; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; padding: 32px 20px 80px; }
+  h1 { font-size: 13px; font-weight: 600; color: #555; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 6px; }
+  .sub { font-size: 13px; color: #444; margin-bottom: 32px; }
+
+  .concept { border: 1px solid #222; border-radius: 14px; overflow: hidden; cursor: pointer; transition: border-color 0.2s, box-shadow 0.2s; margin-bottom: 40px; }
+  .concept:hover { border-color: #333; }
+  .concept.selected { border-color: #c8922a; box-shadow: 0 0 0 2px rgba(200,146,42,0.2); }
+  .concept-label { background: #111; padding: 12px 20px; border-bottom: 1px solid #1e1e1e; display: flex; align-items: center; gap: 10px; }
+  .concept-letter { width: 24px; height: 24px; border-radius: 50%; background: #1a1a1a; border: 1px solid #2e2e2e; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: #777; flex-shrink: 0; }
+  .concept.selected .concept-letter { background: #c8922a; border-color: #c8922a; color: #000; }
+  .concept-name { font-size: 13px; font-weight: 600; color: #bbb; }
+  .concept-tag { margin-left: auto; font-size: 11px; color: #444; }
+  .concept-preview { padding: 32px 28px; }
+
+  /* ── VARIANT 1: Photo + big quote left, icon rows right ── */
+  .v1-wrap { display: grid; grid-template-columns: 1fr 1px 1fr; gap: 0; }
+  .v1-left { padding-right: 36px; display: flex; flex-direction: column; justify-content: center; gap: 28px; }
+  .v1-divider { background: linear-gradient(180deg, transparent, #2a2a2a 20%, #2a2a2a 80%, transparent); }
+  .v1-right { padding-left: 36px; display: flex; flex-direction: column; justify-content: center; }
+
+  /* Photo placeholder */
+  .v1-photo {
+    width: 100%; height: 160px; border-radius: 12px; overflow: hidden;
+    position: relative; background: linear-gradient(135deg, #1a1208 0%, #251a0a 50%, #1a1208 100%);
+    border: 1px solid rgba(200,146,42,0.15);
+  }
+  .v1-photo-inner {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 30% 70%, rgba(200,146,42,0.12) 0%, transparent 60%),
+      linear-gradient(135deg, #1a1208 0%, #251a0a 50%, #1a1208 100%);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .v1-photo-label { font-size: 11px; color: rgba(200,146,42,0.5); text-transform: uppercase; letter-spacing: 0.1em; }
+  /* The actual photo would go here — for mockup we show a styled placeholder */
+
+  .v1-eyebrow { font-size: 11px; font-weight: 700; color: #c8922a; text-transform: uppercase; letter-spacing: 0.14em; margin-bottom: 14px; }
+  .v1-quote { font-size: 26px; font-weight: 700; line-height: 1.4; color: #fff; margin-bottom: 16px; }
+  .v1-quote em { color: #c8922a; font-style: normal; }
+  .v1-sub { font-size: 15px; color: #888; line-height: 1.7; margin-bottom: 18px; }
+  .v1-sig { font-size: 12px; font-weight: 600; color: #555; display: flex; align-items: center; gap: 8px; }
+  .v1-sig::before { content: ''; display: block; width: 20px; height: 1px; background: #444; }
+
+  .v1-cats { display: flex; flex-direction: column; gap: 0; }
+  .v1-cat { padding: 18px 0; border-bottom: 1px solid #1c1c1c; }
+  .v1-cat:first-child { padding-top: 0; }
+  .v1-cat:last-child { border-bottom: none; padding-bottom: 0; }
+  .v1-cat-head { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+  .v1-cat-icon { font-size: 18px; width: 36px; height: 36px; border-radius: 9px; background: #141414; border: 1px solid #222; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .v1-cat-title { font-size: 15px; font-weight: 700; color: #e0e0e0; }
+  .v1-cat-items { display: flex; flex-wrap: wrap; gap: 6px; padding-left: 48px; }
+  .v1-cat-item { font-size: 12px; color: #777; background: #111; border: 1px solid #1e1e1e; border-radius: 20px; padding: 4px 10px; }
+
+  /* ── VARIANT 2: Full-width, quote top, visual cards below ── */
+  .v2-wrap { }
+  .v2-top { display: grid; grid-template-columns: auto 1fr; gap: 32px; align-items: center; margin-bottom: 36px; padding-bottom: 36px; border-bottom: 1px solid #1e1e1e; }
+  .v2-avatar {
+    width: 80px; height: 80px; border-radius: 50%; flex-shrink: 0;
+    background: linear-gradient(135deg, #1e1608, #2a1e0a);
+    border: 2px solid rgba(200,146,42,0.3);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; color: rgba(200,146,42,0.5); text-align: center;
+    letter-spacing: 0.05em;
+  }
+  .v2-quote-block { }
+  .v2-quote { font-size: 22px; font-weight: 700; color: #fff; line-height: 1.5; margin-bottom: 10px; }
+  .v2-quote em { color: #c8922a; font-style: normal; }
+  .v2-detail { font-size: 14px; color: #777; line-height: 1.7; }
+  .v2-sig { font-size: 12px; font-weight: 600; color: #c8922a; margin-top: 12px; }
+
+  .v2-cats { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; }
+  .v2-cat-card {
+    background: #111; border: 1px solid #1e1e1e; border-radius: 12px;
+    padding: 20px 16px; transition: border-color 0.2s;
+  }
+  .v2-cat-card:hover { border-color: #2e2e2e; }
+  .v2-icon { font-size: 24px; margin-bottom: 12px; }
+  .v2-cat-title { font-size: 13px; font-weight: 700; color: #c8922a; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 12px; }
+  .v2-cat-list { display: flex; flex-direction: column; gap: 7px; }
+  .v2-cat-list span { font-size: 13px; color: #888; display: flex; align-items: center; gap: 8px; }
+  .v2-cat-list span::before { content: ''; width: 4px; height: 4px; border-radius: 50%; background: #c8922a; flex-shrink: 0; }
+
+  #sel-bar { position: fixed; bottom: 0; left: 0; right: 0; background: #0a0a0a; border-top: 1px solid #1e1e1e; padding: 13px 24px; font-size: 13px; color: #555; }
+  #sel-bar span { color: #c8922a; font-weight: 600; }
+</style>
+</head>
+<body>
+
+<h1>Concept B — Two Variations</h1>
+<p class="sub">Larger text, visuals added. Click to select your preferred version.</p>
+
+<!-- ── B1 ── -->
+<div class="concept" id="opt-b1" onclick="sel('b1')">
+  <div class="concept-label">
+    <div class="concept-letter">1</div>
+    <div class="concept-name">B1 — Split: Photo + Big Quote left, Icon category rows right</div>
+    <div class="concept-tag">Sam's photo fills left panel</div>
+  </div>
+  <div class="concept-preview">
+    <div class="v1-wrap">
+      <div class="v1-left">
+        <!-- Photo block -->
+        <div class="v1-photo">
+          <div class="v1-photo-inner">
+            <span class="v1-photo-label">Sam's photo here</span>
+          </div>
+        </div>
+        <!-- Quote -->
+        <div>
+          <div class="v1-eyebrow">What's Possible</div>
+          <div class="v1-quote">No templates.<br>No ceilings.<br><em>No two pages alike.</em></div>
+          <div class="v1-sub">Every page starts with your brand, your audience, and what you want people to do — and gets built from scratch.</div>
+          <div class="v1-sig">Sam Otto</div>
+        </div>
+      </div>
+      <div class="v1-divider"></div>
+      <div class="v1-right">
+        <div class="v1-cats">
+          <div class="v1-cat">
+            <div class="v1-cat-head">
+              <div class="v1-cat-icon">🎨</div>
+              <div class="v1-cat-title">Brand</div>
+            </div>
+            <div class="v1-cat-items">
+              <span class="v1-cat-item">Custom colors &amp; fonts</span>
+              <span class="v1-cat-item">Your own domain</span>
+              <span class="v1-cat-item">Branded layout</span>
+              <span class="v1-cat-item">Custom photography</span>
+            </div>
+          </div>
+          <div class="v1-cat">
+            <div class="v1-cat-head">
+              <div class="v1-cat-icon">📸</div>
+              <div class="v1-cat-title">Content</div>
+            </div>
+            <div class="v1-cat-items">
+              <span class="v1-cat-item">Auto YouTube embed</span>
+              <span class="v1-cat-item">Scrolling photo strip</span>
+              <span class="v1-cat-item">Link buttons &amp; CTAs</span>
+              <span class="v1-cat-item">Announcements</span>
+            </div>
+          </div>
+          <div class="v1-cat">
+            <div class="v1-cat-head">
+              <div class="v1-cat-icon">💰</div>
+              <div class="v1-cat-title">Commerce</div>
+            </div>
+            <div class="v1-cat-items">
+              <span class="v1-cat-item">Program &amp; course cards</span>
+              <span class="v1-cat-item">Discount codes</span>
+              <span class="v1-cat-item">Live sale countdown</span>
+              <span class="v1-cat-item">Affiliate grid</span>
+            </div>
+          </div>
+          <div class="v1-cat">
+            <div class="v1-cat-head">
+              <div class="v1-cat-icon">⭐</div>
+              <div class="v1-cat-title">Social Proof</div>
+            </div>
+            <div class="v1-cat-items">
+              <span class="v1-cat-item">Scrolling testimonials</span>
+              <span class="v1-cat-item">Social media hub</span>
+              <span class="v1-cat-item">Before &amp; after results</span>
+              <span class="v1-cat-item">Client highlights</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── B2 ── -->
+<div class="concept" id="opt-b2" onclick="sel('b2')">
+  <div class="concept-label">
+    <div class="concept-letter">2</div>
+    <div class="concept-name">B2 — Avatar + Big Quote top, Feature cards below</div>
+    <div class="concept-tag">Single column, more vertical flow</div>
+  </div>
+  <div class="concept-preview">
+    <div class="v2-wrap">
+      <div class="v2-top">
+        <div class="v2-avatar">Sam<br>photo</div>
+        <div class="v2-quote-block">
+          <div class="v2-quote">"No templates. No ceilings.<br><em>No two pages alike.</em>"</div>
+          <div class="v2-detail">Every build starts with your brand, your audience, and what you actually want people to do. I build from scratch — what you get depends entirely on you.</div>
+          <div class="v2-sig">— Sam Otto</div>
+        </div>
+      </div>
+      <div class="v2-cats">
+        <div class="v2-cat-card">
+          <div class="v2-icon">🎨</div>
+          <div class="v2-cat-title">Brand</div>
+          <div class="v2-cat-list">
+            <span>Custom colors &amp; fonts</span>
+            <span>Your own domain</span>
+            <span>Branded layout</span>
+            <span>Custom photography</span>
+          </div>
+        </div>
+        <div class="v2-cat-card">
+          <div class="v2-icon">📸</div>
+          <div class="v2-cat-title">Content</div>
+          <div class="v2-cat-list">
+            <span>Auto YouTube embed</span>
+            <span>Scrolling photo strip</span>
+            <span>Link buttons &amp; CTAs</span>
+            <span>Announcements</span>
+          </div>
+        </div>
+        <div class="v2-cat-card">
+          <div class="v2-icon">💰</div>
+          <div class="v2-cat-title">Commerce</div>
+          <div class="v2-cat-list">
+            <span>Program &amp; course cards</span>
+            <span>Discount codes</span>
+            <span>Live sale countdown</span>
+            <span>Affiliate product grid</span>
+          </div>
+        </div>
+        <div class="v2-cat-card">
+          <div class="v2-icon">⭐</div>
+          <div class="v2-cat-title">Social Proof</div>
+          <div class="v2-cat-list">
+            <span>Scrolling testimonials</span>
+            <span>Social media hub</span>
+            <span>Before &amp; after results</span>
+            <span>Client highlights</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="sel-bar">Click a version to select — or tell me in the terminal what to adjust</div>
+
+<script>
+  var cur = null;
+  function sel(id) {
+    if (cur) document.getElementById('opt-'+cur).classList.remove('selected');
+    cur = id; document.getElementById('opt-'+id).classList.add('selected');
+    var n = { b1: 'B1 — Split layout with photo', b2: 'B2 — Avatar + cards layout' };
+    document.getElementById('sel-bar').innerHTML = 'Selected: <span>' + n[id] + '</span> — tell me in the terminal to proceed or adjust';
+    try { fetch('/events',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'click',choice:id,text:n[id],timestamp:Date.now()})}).catch(function(){}); } catch(e){}
+  }
+</script>
+</body>
+</html>

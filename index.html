@@ -11,6 +11,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="assets/favicon.png" />
+
   <!-- Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
@@ -109,6 +112,11 @@
       display: flex;
       align-items: center;
       gap: 14px;
+    }
+    .nav-logo-icon {
+      width: 30px; height: 30px;
+      border-radius: 6px;
+      object-fit: contain;
     }
     .nav-logo-name {
       font-family: var(--serif);
@@ -3392,6 +3400,7 @@
   <!-- NAV -->
   <nav>
     <a href="#hero" class="nav-logo">
+      <img src="assets/bysamotto-icon.png" alt="Sam Otto" class="nav-logo-icon" />
       <span class="nav-logo-name">Sam <span>Otto</span></span>
       <span class="nav-logo-div"></span>
       <span class="nav-logo-tag">Creator Platforms, Built from Scratch</span>

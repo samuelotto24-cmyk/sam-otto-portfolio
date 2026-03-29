@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+  <!-- Dark background -->
+  <rect width="400" height="400" rx="48" fill="#0E0D0B"/>
+
+  <!-- Funnel monogram: 6 lines enter spread apart at top, converge and weave to form "SO" -->
+  <!-- The lines start parallel and wide, then curve inward to trace letterforms -->
+
+  <!-- Line 1: leftmost — traces the left side of the S -->
+  <path d="M 80,60 C 80,120 80,160 120,190 C 160,220 160,260 120,290 C 100,305 100,330 120,345"
+        stroke="#10B981" stroke-width="1.8" fill="none" opacity="0.85" stroke-linecap="round"/>
+
+  <!-- Line 2 — traces the top curve of S -->
+  <path d="M 130,60 C 130,110 145,150 175,175 C 200,195 195,230 170,255 C 155,270 155,310 170,335"
+        stroke="#10B981" stroke-width="1.8" fill="none" opacity="0.7" stroke-linecap="round"/>
+
+  <!-- Line 3 — traces the spine/center of the S -->
+  <path d="M 180,60 C 180,100 165,140 145,170 C 125,200 145,240 175,260 C 195,275 195,315 185,345"
+        stroke="#10B981" stroke-width="1.8" fill="none" opacity="0.55" stroke-linecap="round"/>
+
+  <!-- Line 4 — transitions from S into O, traces left side of O -->
+  <path d="M 230,60 C 230,110 220,155 225,190 C 230,240 245,260 260,280 C 275,300 275,330 260,348"
+        stroke="#10B981" stroke-width="1.8" fill="none" opacity="0.55" stroke-linecap="round"/>
+
+  <!-- Line 5 — traces the O curve right side -->
+  <path d="M 280,60 C 280,105 295,145 305,185 C 315,225 310,270 290,305 C 278,325 270,340 285,348"
+        stroke="#10B981" stroke-width="1.8" fill="none" opacity="0.7" stroke-linecap="round"/>
+
+  <!-- Line 6: rightmost — traces outer right of O -->
+  <path d="M 330,60 C 330,100 335,140 330,185 C 325,235 310,275 305,310 C 302,330 310,345 325,348"
+        stroke="#10B981" stroke-width="1.8" fill="none" opacity="0.85" stroke-linecap="round"/>
+
+  <!-- Small dots at the entry points (top) — the 6 sources -->
+  <circle cx="80" cy="60" r="3" fill="#10B981" opacity="0.9"/>
+  <circle cx="130" cy="60" r="3" fill="#10B981" opacity="0.9"/>
+  <circle cx="180" cy="60" r="3" fill="#10B981" opacity="0.9"/>
+  <circle cx="230" cy="60" r="3" fill="#10B981" opacity="0.9"/>
+  <circle cx="280" cy="60" r="3" fill="#10B981" opacity="0.9"/>
+  <circle cx="330" cy="60" r="3" fill="#10B981" opacity="0.9"/>
+</svg>

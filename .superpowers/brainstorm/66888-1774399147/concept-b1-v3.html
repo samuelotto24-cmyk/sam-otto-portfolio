@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B1 — Category Treatments</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0d0d0f; color: #e8e8e8; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; padding: 28px 20px 90px; }
+  h1 { font-size: 12px; font-weight: 600; color: #444; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 6px; }
+  .sub { font-size: 13px; color: #444; margin-bottom: 28px; }
+
+  .concept { border: 1px solid #1e1e1e; border-radius: 14px; overflow: hidden; margin-bottom: 40px; cursor: pointer; transition: border-color 0.2s, box-shadow 0.2s; }
+  .concept:hover { border-color: #333; }
+  .concept.selected { border-color: #c8922a; box-shadow: 0 0 0 2px rgba(200,146,42,0.18); }
+  .concept-label { background: #111; padding: 11px 18px; border-bottom: 1px solid #1a1a1a; display: flex; align-items: center; gap: 10px; }
+  .concept-letter { width: 22px; height: 22px; border-radius: 50%; background: #1a1a1a; border: 1px solid #2a2a2a; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: #666; flex-shrink: 0; }
+  .concept.selected .concept-letter { background: #c8922a; border-color: #c8922a; color: #000; }
+  .concept-name { font-size: 13px; font-weight: 600; color: #aaa; }
+  .concept-tag { margin-left: auto; font-size: 11px; color: #3a3a3a; }
+  .concept-preview { padding: 28px 24px; }
+
+  /* ── SHARED SPLIT SHELL ── */
+  .split { display: grid; grid-template-columns: 5fr 1px 7fr; gap: 0; }
+  .s-left { padding-right: 32px; display: flex; flex-direction: column; gap: 20px; }
+  .s-div { background: linear-gradient(180deg, transparent, #252525 20%, #252525 80%, transparent); }
+  .s-right { padding-left: 32px; }
+
+  .s-photo { width: 100%; aspect-ratio: 4/3; border-radius: 12px; overflow: hidden; background: linear-gradient(135deg, #18130a 0%, #2a1e0a 50%, #161208 100%); border: 1px solid rgba(200,146,42,0.12); display: flex; align-items: center; justify-content: center; }
+  .s-photo span { font-size: 11px; color: rgba(200,146,42,0.35); text-transform: uppercase; letter-spacing: 0.1em; }
+  .s-eyebrow { font-size: 10px; font-weight: 700; color: #c8922a; text-transform: uppercase; letter-spacing: 0.14em; }
+  .s-quote { font-size: 28px; font-weight: 800; line-height: 1.3; color: #fff; }
+  .s-quote em { color: #c8922a; font-style: normal; }
+  .s-body { font-size: 14px; color: #777; line-height: 1.7; }
+  .s-sig { font-size: 12px; color: #555; display: flex; align-items: center; gap: 8px; }
+  .s-sig::before { content: ''; display: block; width: 18px; height: 1px; background: #3a3a3a; }
+
+  /* ── OPTION 1: Color-coded rows, each with its own tint ── */
+  .o1-cats { display: flex; flex-direction: column; gap: 0; }
+  .o1-cat { padding: 20px 0; border-bottom: 1px solid #181818; }
+  .o1-cat:last-child { border-bottom: none; padding-bottom: 0; }
+  .o1-cat:first-child { padding-top: 0; }
+  .o1-head { display: flex; align-items: center; gap: 14px; margin-bottom: 12px; }
+  .o1-icon { font-size: 26px; width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .o1-icon.brand  { background: rgba(139,92,246,0.12); border: 1px solid rgba(139,92,246,0.2); }
+  .o1-icon.content { background: rgba(59,130,246,0.12); border: 1px solid rgba(59,130,246,0.2); }
+  .o1-icon.commerce { background: rgba(200,146,42,0.12); border: 1px solid rgba(200,146,42,0.2); }
+  .o1-icon.social { background: rgba(236,72,153,0.12); border: 1px solid rgba(236,72,153,0.2); }
+  .o1-title { font-size: 18px; font-weight: 800; }
+  .o1-title.brand  { color: #a78bfa; }
+  .o1-title.content { color: #60a5fa; }
+  .o1-title.commerce { color: #c8922a; }
+  .o1-title.social { color: #f472b6; }
+  .o1-items { display: flex; flex-wrap: wrap; gap: 7px; padding-left: 62px; }
+  .o1-item { font-size: 13px; border-radius: 20px; padding: 5px 13px; }
+  .o1-item.brand  { color: #a78bfa; background: rgba(139,92,246,0.08); border: 1px solid rgba(139,92,246,0.15); }
+  .o1-item.content { color: #60a5fa; background: rgba(59,130,246,0.08); border: 1px solid rgba(59,130,246,0.15); }
+  .o1-item.commerce { color: #c8922a; background: rgba(200,146,42,0.08); border: 1px solid rgba(200,146,42,0.15); }
+  .o1-item.social { color: #f472b6; background: rgba(236,72,153,0.08); border: 1px solid rgba(236,72,153,0.15); }
+
+  /* ── OPTION 2: Each category is its own distinct "card" with unique accent bar ── */
+  .o2-cats { display: flex; flex-direction: column; gap: 10px; }
+  .o2-cat { border-radius: 12px; padding: 18px 18px 16px; border: 1px solid #1e1e1e; position: relative; overflow: hidden; }
+  .o2-cat::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; }
+  .o2-cat.brand::before  { background: linear-gradient(90deg, #8b5cf6, transparent); }
+  .o2-cat.content::before { background: linear-gradient(90deg, #3b82f6, transparent); }
+  .o2-cat.commerce::before { background: linear-gradient(90deg, #c8922a, transparent); }
+  .o2-cat.social::before { background: linear-gradient(90deg, #ec4899, transparent); }
+  .o2-head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+  .o2-icon { font-size: 22px; }
+  .o2-title { font-size: 17px; font-weight: 800; }
+  .o2-title.brand { color: #a78bfa; }
+  .o2-title.content { color: #60a5fa; }
+  .o2-title.commerce { color: #c8922a; }
+  .o2-title.social { color: #f472b6; }
+  .o2-items { display: flex; flex-direction: column; gap: 8px; }
+  .o2-item { font-size: 14px; color: #aaa; display: flex; align-items: center; gap: 10px; }
+  .o2-item::before { content: ''; width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
+  .o2-cat.brand  .o2-item::before { background: #8b5cf6; }
+  .o2-cat.content .o2-item::before { background: #3b82f6; }
+  .o2-cat.commerce .o2-item::before { background: #c8922a; }
+  .o2-cat.social .o2-item::before { background: #ec4899; }
+
+  /* ── OPTION 3: Oversized stacked list — no cards, pure bold type hierarchy ── */
+  .o3-cats { display: flex; flex-direction: column; gap: 24px; }
+  .o3-cat { }
+  .o3-head { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+  .o3-icon { font-size: 28px; }
+  .o3-num { font-size: 11px; font-weight: 700; color: #333; }
+  .o3-title { font-size: 22px; font-weight: 900; letter-spacing: -0.02em; }
+  .o3-title.brand { color: #a78bfa; }
+  .o3-title.content { color: #60a5fa; }
+  .o3-title.commerce { color: #c8922a; }
+  .o3-title.social { color: #f472b6; }
+  .o3-items { display: flex; flex-wrap: wrap; gap: 5px 16px; padding-left: 40px; }
+  .o3-item { font-size: 14px; color: #888; position: relative; }
+  .o3-item::after { content: '·'; margin-left: 16px; color: #333; }
+  .o3-item:last-child::after { display: none; }
+
+  #sel-bar { position: fixed; bottom: 0; left: 0; right: 0; background: #0a0a0a; border-top: 1px solid #1a1a1a; padding: 13px 24px; font-size: 13px; color: #444; }
+  #sel-bar span { color: #c8922a; font-weight: 600; }
+</style>
+</head>
+<body>
+
+<h1>B1 — Right Panel Treatments</h1>
+<p class="sub">Larger fonts, each category visually distinct. Same left split in all 3.</p>
+
+<!-- ── OPTION 1: Color-coded rows ── -->
+<div class="concept" id="opt-1" onclick="sel('1')">
+  <div class="concept-label">
+    <div class="concept-letter">1</div>
+    <div class="concept-name">Color-coded rows — icon tile + colored title + pill tags</div>
+    <div class="concept-tag">Each category has its own color</div>
+  </div>
+  <div class="concept-preview">
+    <div class="split">
+      <div class="s-left">
+        <div class="s-photo"><span>Your photo</span></div>
+        <div>
+          <div class="s-eyebrow" style="margin-bottom:10px">What's Possible</div>
+          <div class="s-quote" style="margin-bottom:14px">No templates.<br>No ceilings.<br><em>No two pages alike.</em></div>
+          <div class="s-body" style="margin-bottom:14px">Every page starts with your brand, your audience, and what you want people to do — built from scratch.</div>
+          <div class="s-sig">Sam Otto</div>
+        </div>
+      </div>
+      <div class="s-div"></div>
+      <div class="s-right">
+        <div class="o1-cats">
+          <div class="o1-cat">
+            <div class="o1-head">
+              <div class="o1-icon brand">🎨</div>
+              <div class="o1-title brand">Brand</div>
+            </div>
+            <div class="o1-items">
+              <span class="o1-item brand">Custom colors &amp; fonts</span>
+              <span class="o1-item brand">Your own domain</span>
+              <span class="o1-item brand">Branded layout</span>
+              <span class="o1-item brand">Custom photography</span>
+            </div>
+          </div>
+          <div class="o1-cat">
+            <div class="o1-head">
+              <div class="o1-icon content">📸</div>
+              <div class="o1-title content">Content</div>
+            </div>
+            <div class="o1-items">
+              <span class="o1-item content">Auto YouTube embed</span>
+              <span class="o1-item content">Scrolling photo strip</span>
+              <span class="o1-item content">Link buttons &amp; CTAs</span>
+              <span class="o1-item content">Announcements</span>
+            </div>
+          </div>
+          <div class="o1-cat">
+            <div class="o1-head">
+              <div class="o1-icon commerce">💰</div>
+              <div class="o1-title commerce">Commerce</div>
+            </div>
+            <div class="o1-items">
+              <span class="o1-item commerce">Program &amp; course cards</span>
+              <span class="o1-item commerce">Discount codes</span>
+              <span class="o1-item commerce">Live sale countdown</span>
+              <span class="o1-item commerce">Affiliate grid</span>
+            </div>
+          </div>
+          <div class="o1-cat">
+            <div class="o1-head">
+              <div class="o1-icon social">⭐</div>
+              <div class="o1-title social">Social Proof</div>
+            </div>
+            <div class="o1-items">
+              <span class="o1-item social">Scrolling testimonials</span>
+              <span class="o1-item social">Social media hub</span>
+              <span class="o1-item social">Before &amp; after results</span>
+              <span class="o1-item social">Client highlights</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── OPTION 2: Cards with top accent bar ── -->
+<div class="concept" id="opt-2" onclick="sel('2')">
+  <div class="concept-label">
+    <div class="concept-letter">2</div>
+    <div class="concept-name">Cards with colored top bar — each category in its own panel</div>
+    <div class="concept-tag">Clean card borders, accent line at top</div>
+  </div>
+  <div class="concept-preview">
+    <div class="split">
+      <div class="s-left">
+        <div class="s-photo"><span>Your photo</span></div>
+        <div>
+          <div class="s-eyebrow" style="margin-bottom:10px">What's Possible</div>
+          <div class="s-quote" style="margin-bottom:14px">No templates.<br>No ceilings.<br><em>No two pages alike.</em></div>
+          <div class="s-body" style="margin-bottom:14px">Every page starts with your brand, your audience, and what you want people to do — built from scratch.</div>
+          <div class="s-sig">Sam Otto</div>
+        </div>
+      </div>
+      <div class="s-div"></div>
+      <div class="s-right">
+        <div class="o2-cats">
+          <div class="o2-cat brand">
+            <div class="o2-head"><span class="o2-icon">🎨</span><span class="o2-title brand">Brand</span></div>
+            <div class="o2-items">
+              <span class="o2-item">Custom colors &amp; fonts</span>
+              <span class="o2-item">Your own domain</span>
+              <span class="o2-item">Branded layout &amp; feel</span>
+              <span class="o2-item">Custom photography</span>
+            </div>
+          </div>
+          <div class="o2-cat content">
+            <div class="o2-head"><span class="o2-icon">📸</span><span class="o2-title content">Content</span></div>
+            <div class="o2-items">
+              <span class="o2-item">Auto YouTube embed</span>
+              <span class="o2-item">Scrolling photo strip</span>
+              <span class="o2-item">Link buttons &amp; CTAs</span>
+              <span class="o2-item">Announcements</span>
+            </div>
+          </div>
+          <div class="o2-cat commerce">
+            <div class="o2-head"><span class="o2-icon">💰</span><span class="o2-title commerce">Commerce</span></div>
+            <div class="o2-items">
+              <span class="o2-item">Program &amp; course cards</span>
+              <span class="o2-item">Discount codes</span>
+              <span class="o2-item">Live sale countdown</span>
+              <span class="o2-item">Affiliate product grid</span>
+            </div>
+          </div>
+          <div class="o2-cat social">
+            <div class="o2-head"><span class="o2-icon">⭐</span><span class="o2-title social">Social Proof</span></div>
+            <div class="o2-items">
+              <span class="o2-item">Scrolling testimonials</span>
+              <span class="o2-item">Social media hub</span>
+              <span class="o2-item">Before &amp; after results</span>
+              <span class="o2-item">Client highlights</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── OPTION 3: Big type stacked ── -->
+<div class="concept" id="opt-3" onclick="sel('3')">
+  <div class="concept-label">
+    <div class="concept-letter">3</div>
+    <div class="concept-name">Big type stacked — oversized category titles, items inline</div>
+    <div class="concept-tag">Bold, editorial, no borders</div>
+  </div>
+  <div class="concept-preview">
+    <div class="split">
+      <div class="s-left">
+        <div class="s-photo"><span>Your photo</span></div>
+        <div>
+          <div class="s-eyebrow" style="margin-bottom:10px">What's Possible</div>
+          <div class="s-quote" style="margin-bottom:14px">No templates.<br>No ceilings.<br><em>No two pages alike.</em></div>
+          <div class="s-body" style="margin-bottom:14px">Every page starts with your brand, your audience, and what you want people to do — built from scratch.</div>
+          <div class="s-sig">Sam Otto</div>
+        </div>
+      </div>
+      <div class="s-div"></div>
+      <div class="s-right">
+        <div class="o3-cats">
+          <div class="o3-cat">
+            <div class="o3-head">
+              <span class="o3-icon">🎨</span>
+              <span class="o3-num">01</span>
+              <span class="o3-title brand">Brand</span>
+            </div>
+            <div class="o3-items">
+              <span class="o3-item">Custom colors &amp; fonts</span>
+              <span class="o3-item">Your own domain</span>
+              <span class="o3-item">Branded layout</span>
+              <span class="o3-item">Custom photography</span>
+            </div>
+          </div>
+          <div class="o3-cat">
+            <div class="o3-head">
+              <span class="o3-icon">📸</span>
+              <span class="o3-num">02</span>
+              <span class="o3-title content">Content</span>
+            </div>
+            <div class="o3-items">
+              <span class="o3-item">Auto YouTube embed</span>
+              <span class="o3-item">Scrolling photo strip</span>
+              <span class="o3-item">Link buttons &amp; CTAs</span>
+              <span class="o3-item">Announcements</span>
+            </div>
+          </div>
+          <div class="o3-cat">
+            <div class="o3-head">
+              <span class="o3-icon">💰</span>
+              <span class="o3-num">03</span>
+              <span class="o3-title commerce">Commerce</span>
+            </div>
+            <div class="o3-items">
+              <span class="o3-item">Program &amp; course cards</span>
+              <span class="o3-item">Discount codes</span>
+              <span class="o3-item">Live sale countdown</span>
+              <span class="o3-item">Affiliate grid</span>
+            </div>
+          </div>
+          <div class="o3-cat">
+            <div class="o3-head">
+              <span class="o3-icon">⭐</span>
+              <span class="o3-num">04</span>
+              <span class="o3-title social">Social Proof</span>
+            </div>
+            <div class="o3-items">
+              <span class="o3-item">Scrolling testimonials</span>
+              <span class="o3-item">Social media hub</span>
+              <span class="o3-item">Before &amp; after results</span>
+              <span class="o3-item">Client highlights</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="sel-bar">Click a version to select it — or tell me what to adjust</div>
+
+<script>
+  var cur = null;
+  function sel(id) {
+    if (cur) document.getElementById('opt-'+cur).classList.remove('selected');
+    cur = id; document.getElementById('opt-'+id).classList.add('selected');
+    var n = {'1':'1 — Color-coded rows','2':'2 — Cards with top bar','3':'3 — Big type stacked'};
+    document.getElementById('sel-bar').innerHTML = 'Selected: <span>'+n[id]+'</span> — tell me in terminal to build it or mix ideas';
+    try { fetch('/events',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'click',choice:id,text:n[id],timestamp:Date.now()})}).catch(function(){}); } catch(e){}
+  }
+</script>
+</body>
+</html>

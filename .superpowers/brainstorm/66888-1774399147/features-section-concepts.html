@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Features Section — Design Concepts</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0d0d0f; color: #e8e8e8; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; padding: 32px 20px; }
+  h1 { font-size: 15px; font-weight: 600; color: #888; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; }
+  .sub { font-size: 14px; color: #555; margin-bottom: 40px; }
+
+  /* ── OPTION FRAME ── */
+  .concept { border: 1px solid #222; border-radius: 14px; margin-bottom: 48px; overflow: hidden; cursor: pointer; transition: border-color 0.2s, box-shadow 0.2s; }
+  .concept:hover { border-color: #444; }
+  .concept.selected { border-color: #c8922a; box-shadow: 0 0 0 2px rgba(200,146,42,0.25); }
+  .concept-label { background: #141414; padding: 14px 20px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid #222; }
+  .concept-letter { width: 26px; height: 26px; border-radius: 50%; background: #1e1e1e; border: 1px solid #333; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: #888; flex-shrink: 0; }
+  .concept.selected .concept-letter { background: #c8922a; border-color: #c8922a; color: #000; }
+  .concept-name { font-size: 13px; font-weight: 600; color: #ccc; }
+  .concept-desc { font-size: 12px; color: #555; margin-left: auto; max-width: 300px; text-align: right; }
+  .concept-preview { padding: 28px 24px; }
+
+  /* ─── CONCEPT A: SPOTLIGHT CARD + TAG CLOUD ─── */
+  .a-quote-card {
+    background: linear-gradient(135deg, #18130a 0%, #1e1608 60%, #12100a 100%);
+    border: 1px solid rgba(200,146,42,0.25);
+    border-radius: 16px;
+    padding: 36px 40px;
+    position: relative;
+    margin-bottom: 28px;
+    overflow: hidden;
+  }
+  .a-quote-card::before {
+    content: '"';
+    position: absolute; top: -10px; left: 20px;
+    font-size: 160px; line-height: 1;
+    color: rgba(200,146,42,0.08);
+    font-family: Georgia, serif;
+    pointer-events: none;
+  }
+  .a-quote-card::after {
+    content: '';
+    position: absolute; inset: 0;
+    border-radius: 16px;
+    background: radial-gradient(ellipse 60% 50% at 80% 50%, rgba(200,146,42,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .a-quote-text {
+    font-size: 17px; line-height: 1.8; color: #d4c4a0;
+    font-style: italic; position: relative; z-index: 1;
+    max-width: 640px; margin-bottom: 20px;
+  }
+  .a-quote-sig {
+    font-size: 12px; font-weight: 700; color: #c8922a;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .a-quote-sig::before { content: ''; display: block; width: 24px; height: 1px; background: #c8922a; }
+  .a-tag-section { }
+  .a-tag-group { margin-bottom: 12px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .a-tag-category { font-size: 10px; font-weight: 700; color: #c8922a; text-transform: uppercase; letter-spacing: 0.12em; width: 70px; flex-shrink: 0; }
+  .a-tag {
+    font-size: 12px; color: #aaa;
+    background: #141414; border: 1px solid #272727;
+    border-radius: 20px; padding: 5px 12px;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .a-tag:hover { border-color: #c8922a; color: #e8e8e8; }
+
+  /* ─── CONCEPT B: EDITORIAL SPLIT ─── */
+  .b-wrap { display: grid; grid-template-columns: 1fr 1px 1fr; gap: 0; min-height: 320px; }
+  .b-left { padding: 0 32px 0 0; display: flex; flex-direction: column; justify-content: center; }
+  .b-divider { background: #222; }
+  .b-right { padding: 0 0 0 32px; }
+  .b-eyebrow { font-size: 10px; font-weight: 700; color: #c8922a; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 20px; }
+  .b-quote { font-size: 22px; line-height: 1.55; color: #fff; font-weight: 600; margin-bottom: 24px; }
+  .b-quote em { color: #c8922a; font-style: normal; }
+  .b-sig { font-size: 12px; color: #666; }
+  .b-cats { display: flex; flex-direction: column; gap: 0; }
+  .b-cat {
+    border-bottom: 1px solid #1e1e1e;
+    padding: 16px 0; cursor: pointer;
+  }
+  .b-cat:first-child { border-top: 1px solid #1e1e1e; }
+  .b-cat-head { display: flex; align-items: center; justify-content: space-between; }
+  .b-cat-title { font-size: 13px; font-weight: 700; color: #e0e0e0; }
+  .b-cat-count { font-size: 11px; color: #555; }
+  .b-cat-items { margin-top: 10px; display: flex; flex-direction: column; gap: 5px; }
+  .b-cat-item { font-size: 12px; color: #888; padding-left: 12px; position: relative; }
+  .b-cat-item::before { content: '→'; position: absolute; left: 0; color: #c8922a; font-size: 10px; }
+
+  /* ─── CONCEPT C: FULL-BLEED STATEMENT + ICON TILES ─── */
+  .c-statement {
+    text-align: center;
+    padding: 48px 24px 40px;
+    border-radius: 16px;
+    background: linear-gradient(180deg, #141414 0%, #0f0f0f 100%);
+    margin-bottom: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .c-statement::before {
+    content: '';
+    position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+    width: 400px; height: 1px;
+    background: linear-gradient(90deg, transparent, #c8922a, transparent);
+  }
+  .c-eyebrow { font-size: 11px; font-weight: 700; color: #c8922a; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 16px; }
+  .c-headline { font-size: 32px; font-weight: 800; line-height: 1.25; margin-bottom: 20px; color: #fff; }
+  .c-headline span { color: #c8922a; }
+  .c-quote { font-size: 14px; color: #777; line-height: 1.75; max-width: 540px; margin: 0 auto 12px; font-style: italic; }
+  .c-sig { font-size: 11px; font-weight: 700; color: #c8922a; letter-spacing: 0.1em; }
+  .c-tiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  .c-tile {
+    background: #111; border: 1px solid #1e1e1e; border-radius: 12px;
+    padding: 20px 16px; text-align: left;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .c-tile:hover { border-color: #333; background: #141414; }
+  .c-tile-icon { font-size: 22px; margin-bottom: 10px; }
+  .c-tile-title { font-size: 12px; font-weight: 700; color: #c8922a; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 10px; }
+  .c-tile-list { list-style: none; }
+  .c-tile-list li { font-size: 11px; color: #666; padding: 3px 0; border-bottom: 1px solid #181818; }
+  .c-tile-list li:last-child { border-bottom: none; }
+
+  /* Selection bar */
+  #selection-bar { position: fixed; bottom: 0; left: 0; right: 0; background: #0d0d0f; border-top: 1px solid #222; padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; font-size: 13px; }
+  #selection-text { color: #666; }
+  #selection-text span { color: #c8922a; font-weight: 600; }
+  .btn { background: #c8922a; color: #000; border: none; border-radius: 8px; padding: 9px 20px; font-size: 13px; font-weight: 700; cursor: pointer; }
+  body { padding-bottom: 80px; }
+</style>
+</head>
+<body>
+<h1>Features Section — Design Concepts</h1>
+<p class="sub">The "Built around you" section needs more visual energy. Pick the direction that feels right — or mix ideas.</p>
+
+<!-- ── OPTION A ── -->
+<div class="concept" id="opt-a" onclick="select('a')">
+  <div class="concept-label">
+    <div class="concept-letter">A</div>
+    <div class="concept-name">Spotlight Card + Tag Cloud</div>
+    <div class="concept-desc">Quote in a glowing amber card, capabilities as filterable pill tags grouped by category</div>
+  </div>
+  <div class="concept-preview">
+    <div class="a-quote-card">
+      <p class="a-quote-text">"I build every page from scratch — no templates, no recycled layouts, no drag-and-drop builder with a ceiling. What gets built depends on your brand, your audience, and what you actually want people to do. Every client gets something different, because every creator is."</p>
+      <div class="a-quote-sig">Sam Otto</div>
+    </div>
+    <div class="a-tag-section">
+      <div class="a-tag-group">
+        <span class="a-tag-category">Brand</span>
+        <span class="a-tag">Custom colors &amp; fonts</span>
+        <span class="a-tag">Your own domain</span>
+        <span class="a-tag">Branded layout &amp; feel</span>
+        <span class="a-tag">Custom photography</span>
+      </div>
+      <div class="a-tag-group">
+        <span class="a-tag-category">Content</span>
+        <span class="a-tag">Auto YouTube embed</span>
+        <span class="a-tag">Scrolling photo strip</span>
+        <span class="a-tag">Link buttons &amp; CTAs</span>
+        <span class="a-tag">Announcements</span>
+      </div>
+      <div class="a-tag-group">
+        <span class="a-tag-category">Commerce</span>
+        <span class="a-tag">Program &amp; course cards</span>
+        <span class="a-tag">Tap-to-copy discount codes</span>
+        <span class="a-tag">Live sale countdown</span>
+        <span class="a-tag">Affiliate product grid</span>
+      </div>
+      <div class="a-tag-group">
+        <span class="a-tag-category">Social Proof</span>
+        <span class="a-tag">Scrolling testimonials</span>
+        <span class="a-tag">Social media hub</span>
+        <span class="a-tag">Before &amp; after results</span>
+        <span class="a-tag">Client result highlights</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── OPTION B ── -->
+<div class="concept" id="opt-b" onclick="select('b')">
+  <div class="concept-label">
+    <div class="concept-letter">B</div>
+    <div class="concept-name">Editorial Split</div>
+    <div class="concept-desc">Bold rewritten quote on the left, expandable category rows on the right — feels like a magazine spread</div>
+  </div>
+  <div class="concept-preview">
+    <div class="b-wrap">
+      <div class="b-left">
+        <div class="b-eyebrow">What's Possible</div>
+        <div class="b-quote">
+          No templates.<br>
+          No ceilings.<br>
+          <em>No two pages alike.</em>
+        </div>
+        <div class="b-sig">— Every build starts with a blank canvas and your brand.</div>
+      </div>
+      <div class="b-divider"></div>
+      <div class="b-right">
+        <div class="b-cats">
+          <div class="b-cat">
+            <div class="b-cat-head"><span class="b-cat-title">Brand</span><span class="b-cat-count">4 features</span></div>
+            <div class="b-cat-items">
+              <div class="b-cat-item">Custom colors &amp; fonts</div>
+              <div class="b-cat-item">Your own domain</div>
+              <div class="b-cat-item">Branded layout &amp; feel</div>
+              <div class="b-cat-item">Custom photography</div>
+            </div>
+          </div>
+          <div class="b-cat">
+            <div class="b-cat-head"><span class="b-cat-title">Content</span><span class="b-cat-count">4 features</span></div>
+            <div class="b-cat-items">
+              <div class="b-cat-item">Auto YouTube embed</div>
+              <div class="b-cat-item">Scrolling photo strip</div>
+              <div class="b-cat-item">Link buttons &amp; CTAs</div>
+              <div class="b-cat-item">Announcements</div>
+            </div>
+          </div>
+          <div class="b-cat">
+            <div class="b-cat-head"><span class="b-cat-title">Commerce</span><span class="b-cat-count">4 features</span></div>
+            <div class="b-cat-items">
+              <div class="b-cat-item">Program &amp; course cards</div>
+              <div class="b-cat-item">Tap-to-copy discount codes</div>
+              <div class="b-cat-item">Live sale countdown</div>
+              <div class="b-cat-item">Affiliate product grid</div>
+            </div>
+          </div>
+          <div class="b-cat">
+            <div class="b-cat-head"><span class="b-cat-title">Social Proof</span><span class="b-cat-count">4 features</span></div>
+            <div class="b-cat-items">
+              <div class="b-cat-item">Scrolling testimonials</div>
+              <div class="b-cat-item">Social media hub</div>
+              <div class="b-cat-item">Before &amp; after results</div>
+              <div class="b-cat-item">Client result highlights</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── OPTION C ── -->
+<div class="concept" id="opt-c" onclick="select('c')">
+  <div class="concept-label">
+    <div class="concept-letter">C</div>
+    <div class="concept-name">Big Statement + Icon Tiles</div>
+    <div class="concept-desc">Rewritten quote as a bold centered headline with an amber top-line, capabilities in 4 distinct icon tiles below</div>
+  </div>
+  <div class="concept-preview">
+    <div class="c-statement">
+      <div class="c-eyebrow">What's Possible</div>
+      <div class="c-headline">Built for <span>you</span>.<br>Not from a menu.</div>
+      <div class="c-quote">"No templates. No recycled layouts. No ceilings. Every page starts with your brand, your audience, and what you want people to do — and gets built from scratch."</div>
+      <div class="c-sig">— Sam Otto</div>
+    </div>
+    <div class="c-tiles">
+      <div class="c-tile">
+        <div class="c-tile-icon">🎨</div>
+        <div class="c-tile-title">Brand</div>
+        <ul class="c-tile-list">
+          <li>Custom colors &amp; fonts</li>
+          <li>Your own domain</li>
+          <li>Branded layout</li>
+          <li>Custom photography</li>
+        </ul>
+      </div>
+      <div class="c-tile">
+        <div class="c-tile-icon">📸</div>
+        <div class="c-tile-title">Content</div>
+        <ul class="c-tile-list">
+          <li>Auto YouTube embed</li>
+          <li>Scrolling photo strip</li>
+          <li>Link buttons &amp; CTAs</li>
+          <li>Announcements</li>
+        </ul>
+      </div>
+      <div class="c-tile">
+        <div class="c-tile-icon">💰</div>
+        <div class="c-tile-title">Commerce</div>
+        <ul class="c-tile-list">
+          <li>Program &amp; course cards</li>
+          <li>Discount codes</li>
+          <li>Live sale countdown</li>
+          <li>Affiliate product grid</li>
+        </ul>
+      </div>
+      <div class="c-tile">
+        <div class="c-tile-icon">⭐</div>
+        <div class="c-tile-title">Social Proof</div>
+        <ul class="c-tile-list">
+          <li>Scrolling testimonials</li>
+          <li>Social media hub</li>
+          <li>Before &amp; after results</li>
+          <li>Client highlights</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="selection-bar">
+  <div id="selection-text">Click a concept to select it</div>
+</div>
+
+<script>
+  var current = null;
+  function select(id) {
+    if (current) document.getElementById('opt-' + current).classList.remove('selected');
+    current = id;
+    document.getElementById('opt-' + id).classList.add('selected');
+    var names = { a: 'A — Spotlight Card + Tag Cloud', b: 'B — Editorial Split', c: 'C — Big Statement + Icon Tiles' };
+    document.getElementById('selection-text').innerHTML = 'Selected: <span>' + names[id] + '</span> — tell me in the terminal if you want to move forward or mix ideas';
+    // log for events file
+    try {
+      var ev = { type: 'click', choice: id, text: names[id], timestamp: Date.now() };
+      fetch('/events', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(ev) }).catch(function(){});
+    } catch(e) {}
+  }
+</script>
+</body>
+</html>

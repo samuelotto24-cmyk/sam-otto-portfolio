@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+  <!-- Dark background -->
+  <rect width="400" height="400" rx="48" fill="#0E0D0B"/>
+
+  <!-- Constellation S — dots connected by thin lines tracing an S curve -->
+  <!-- The S flows: top-right → curves left → crosses center → curves right → bottom-left -->
+
+  <!-- Node positions forming the S -->
+  <!-- Top of S: right side -->
+  <circle cx="258" cy="88" r="5" fill="#10B981"/>
+  <circle cx="208" cy="78" r="4" fill="#10B981"/>
+  <circle cx="158" cy="98" r="5.5" fill="#10B981"/>
+
+  <!-- Upper curve: sweeping left -->
+  <circle cx="138" cy="138" r="3.5" fill="#10B981"/>
+  <circle cx="162" cy="170" r="4.5" fill="#10B981"/>
+
+  <!-- Center crossing -->
+  <circle cx="210" cy="195" r="6" fill="#10B981"/>
+
+  <!-- Lower curve: sweeping right -->
+  <circle cx="248" cy="228" r="4" fill="#10B981"/>
+  <circle cx="268" cy="265" r="3.5" fill="#10B981"/>
+
+  <!-- Bottom of S: left side -->
+  <circle cx="248" cy="305" r="5.5" fill="#10B981"/>
+  <circle cx="198" cy="322" r="4" fill="#10B981"/>
+  <circle cx="145" cy="312" r="5" fill="#10B981"/>
+
+  <!-- Connection lines tracing the S path -->
+  <line x1="258" y1="88" x2="208" y2="78" stroke="#10B981" stroke-width="1" opacity="0.4"/>
+  <line x1="208" y1="78" x2="158" y2="98" stroke="#10B981" stroke-width="1" opacity="0.4"/>
+  <line x1="158" y1="98" x2="138" y2="138" stroke="#10B981" stroke-width="1" opacity="0.4"/>
+  <line x1="138" y1="138" x2="162" y2="170" stroke="#10B981" stroke-width="1" opacity="0.4"/>
+  <line x1="162" y1="170" x2="210" y2="195" stroke="#10B981" stroke-width="1" opacity="0.4"/>
+  <line x1="210" y1="195" x2="248" y2="228" stroke="#10B981" stroke-width="1" opacity="0.4"/>
+  <line x1="248" y1="228" x2="268" y2="265" stroke="#10B981" stroke-width="1" opacity="0.4"/>
+  <line x1="268" y1="265" x2="248" y2="305" stroke="#10B981" stroke-width="1" opacity="0.4"/>
+  <line x1="248" y1="305" x2="198" y2="322" stroke="#10B981" stroke-width="1" opacity="0.4"/>
+  <line x1="198" y1="322" x2="145" y2="312" stroke="#10B981" stroke-width="1" opacity="0.4"/>
+
+  <!-- Subtle cross-connections for constellation feel -->
+  <line x1="208" y1="78" x2="138" y2="138" stroke="#10B981" stroke-width="0.5" opacity="0.15"/>
+  <line x1="158" y1="98" x2="162" y2="170" stroke="#10B981" stroke-width="0.5" opacity="0.15"/>
+  <line x1="210" y1="195" x2="268" y2="265" stroke="#10B981" stroke-width="0.5" opacity="0.15"/>
+  <line x1="248" y1="228" x2="248" y2="305" stroke="#10B981" stroke-width="0.5" opacity="0.15"/>
+  <line x1="258" y1="88" x2="158" y2="98" stroke="#10B981" stroke-width="0.5" opacity="0.12"/>
+  <line x1="198" y1="322" x2="268" y2="265" stroke="#10B981" stroke-width="0.5" opacity="0.12"/>
+
+  <!-- Subtle glow on the center node -->
+  <circle cx="210" cy="195" r="18" fill="#10B981" opacity="0.06"/>
+  <circle cx="210" cy="195" r="10" fill="#10B981" opacity="0.08"/>
+</svg>
