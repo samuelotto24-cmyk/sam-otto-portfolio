@@ -3033,115 +3033,6 @@
     100% { transform: translate(0px,    0px); }
   }
 
-  /* ── COMPACT CLIENT CARD ── */
-  .client-card {
-    display: grid;
-    grid-template-columns: 280px 1fr;
-    gap: 28px;
-    align-items: center;
-    background: var(--dark-card);
-    border: 1px solid var(--border);
-    border-radius: 18px;
-    padding: 20px;
-    max-width: 680px;
-    margin: 0 auto;
-  }
-  .client-card-video {
-    border-radius: 12px;
-    overflow: hidden;
-    border: 1px solid var(--border);
-    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
-  }
-  .client-card-chrome {
-    display: flex;
-    gap: 4px;
-    padding: 6px 8px;
-    background: var(--surface-hi);
-    border-bottom: 1px solid var(--border);
-  }
-  .client-card-chrome span {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-  }
-  .client-card-video video {
-    width: 100%;
-    display: block;
-  }
-  .client-card-copy {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-  .client-card-name {
-    font-family: var(--serif);
-    font-size: 20px;
-    font-weight: 500;
-    color: var(--text);
-  }
-  .client-card-meta {
-    font-size: 12px;
-    color: var(--text-muted);
-    letter-spacing: 0.02em;
-  }
-  .client-card-desc {
-    font-size: 13px;
-    color: var(--text-sub);
-    line-height: 1.6;
-    margin: 4px 0 12px;
-  }
-  .client-card-actions {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    flex-wrap: wrap;
-  }
-  .client-card-actions .btn-see-live {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 10px 22px;
-    font-size: 13px;
-    font-weight: 600;
-    border-radius: 10px;
-    background: var(--rose);
-    color: #fff;
-    letter-spacing: 0.02em;
-    transition: all 0.2s ease;
-    text-decoration: none;
-  }
-  .client-card-actions .btn-see-live:hover {
-    background: var(--rose-light);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 16px rgba(16,185,129,0.3);
-  }
-  .client-card-actions .btn-build-mine {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 10px 22px;
-    font-size: 13px;
-    font-weight: 600;
-    border-radius: 10px;
-    background: transparent;
-    color: var(--text);
-    border: 1px solid var(--border-mid);
-    letter-spacing: 0.02em;
-    transition: all 0.2s ease;
-    text-decoration: none;
-  }
-  .client-card-actions .btn-build-mine:hover {
-    border-color: var(--rose);
-    color: var(--rose-light);
-    transform: translateY(-1px);
-  }
-  @media (max-width: 600px) {
-    .client-card {
-      grid-template-columns: 1fr;
-      gap: 16px;
-    }
-  }
-
   /* ── THREE LAYERS — stacked cards ── */
   #three-layers {
     position: relative;
@@ -3258,6 +3149,78 @@
     .layer-card:nth-child(even) .layer-copy { order: 0; }
   }
 
+
+  /* ══════════════════════════════════════════════════
+     MOBILE-ONLY CONDENSING — desktop untouched
+     ══════════════════════════════════════════════════ */
+  @media (max-width: 768px) {
+
+    /* ── 1. Three Layers: hide descriptions, compact cards ── */
+    .layers-heading { margin-bottom: 20px; }
+    .layers-stack { gap: 12px; }
+    .layer-card {
+      gap: 12px;
+      padding: 12px;
+    }
+    .layer-video-frame {
+      max-height: 180px;
+      overflow: hidden;
+    }
+    .layer-desc { display: none; }
+    .layer-name { font-size: 18px; margin-bottom: 4px; }
+    .layer-num { margin-bottom: 4px; font-size: 10px; }
+    .layer-copy { padding: 0; }
+
+    /* ── 2. Growth Interrupt: halve padding ── */
+    .growth-interrupt { padding: clamp(28px, 5vh, 48px) 0; }
+    .growth-interrupt-headline { font-size: clamp(24px, 6vw, 36px); margin-bottom: 12px; }
+    .growth-interrupt-sub { font-size: 14px; }
+
+    /* ── 3. Analytics: hide platform cards, keep stat strip ── */
+    .analytics-cards { display: none; }
+    .analytics-title { font-size: clamp(22px, 6vw, 32px); margin-bottom: 20px; }
+    .analytics-sub { font-size: 13px; margin-bottom: 16px; }
+
+    /* ── 4. Compare: tighten padding ── */
+    #compare { padding: clamp(24px, 4vw, 40px) 0; }
+    .compare-title { font-size: clamp(22px, 5.5vw, 32px); margin-bottom: 12px; }
+    .compare-sub { font-size: 13px; margin-bottom: 20px; }
+
+    /* ── 5. Client Work: hide phone + hub videos, keep desktop only ── */
+    .showcase-phone-col { display: none; }
+    .showcase-creator-row { display: none; }
+    .showcase-audience-row { padding: 10px 12px; }
+    .showcase-col-label { display: none; }
+    .showcase-domain { display: none; }
+    .work-tags { display: none; }
+    .work-desc { font-size: 13px; }
+    .work-title { font-size: clamp(22px, 5.5vw, 32px); }
+    .work-sub { font-size: 13px; }
+
+    /* ── 6. Weekly Recap: tighten ── */
+    #recap { padding: clamp(24px, 4vw, 40px) 0; }
+    .recap-title { font-size: clamp(22px, 5.5vw, 32px); }
+    .recap-sub { font-size: 13px; }
+    .recap-list li { font-size: 13px; }
+
+    /* ── 7. AI Spotlight: tighten ── */
+    .ai-spotlight { padding: clamp(24px, 4vw, 40px) 0; }
+    .ai-spotlight-title { font-size: clamp(24px, 6vw, 36px); }
+    .ai-spotlight-sub { font-size: 13px; }
+
+    /* ── 8. Impact metrics: compact ── */
+    .impact-card { padding: 14px 12px; }
+    .impact-desc { display: none; }
+    .impact-cat { font-size: 10px; }
+
+    /* ── 9. Ownership: tighter ── */
+    .ownership-row { gap: 8px; }
+    .ownership-item { padding: 12px; }
+    .ownership-body { font-size: 12px; }
+
+    /* ── Global mobile section padding reduction ── */
+    section { padding: clamp(20px, 3vw, 36px) 0; }
+  }
 
   /* ── Scattered-to-Unified overlay ── */
   #scatter-overlay {
@@ -3848,35 +3811,97 @@
     </div>
   </section>
 
-  <!-- WORK — compact client card -->
+  <!-- WORK + FEATURES -->
   <section id="work">
+    <div class="work-section-shimmer"></div>
     <div class="inner">
 
-      <div class="fade-up" style="text-align:center;margin-bottom:28px">
-        <span class="work-label">Want to see it live?</span>
+      <div class="wf-layout">
+
+        <!-- Work info + features -->
+        <div class="wf-content-col fade-up">
+
+          <!-- Mobile-only domain pill (phone demo hidden on mobile) -->
+          <div class="work-domain-pill"><span class="work-domain-dot"></span>mandibagley.com</div>
+
+          <div class="work-featured-badge"><span class="work-featured-dot"></span>Featured Client Work</div>
+          <span class="work-label">Live Work</span>
+          <h2 class="work-title">One creator.<br>One complete platform.</h2>
+          <p class="work-sub">Built around her brand, her audience, and what she wants them to do.</p>
+
+          <div class="client-showcase">
+            <div class="showcase-shimmer"></div>
+
+            <!-- Top row: what her audience sees — phone + desktop side by side -->
+            <div class="showcase-audience-row">
+              <div class="showcase-col-label">What her audience sees</div>
+              <div class="showcase-devices">
+                <div class="showcase-phone-col">
+                  <div class="demo-phone-wrap-sm">
+                    <div class="phone-shell">
+                      <div class="phone-notch"></div>
+                      <div class="demo-phone-screen">
+                        <video class="demo-video-phone" autoplay muted loop playsinline>
+                          <source src="assets/mandi-phone.mp4" type="video/mp4">
+                        </video>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="showcase-desktop-col">
+                  <div class="showcase-desktop-frame">
+                    <div class="showcase-desktop-chrome">
+                      <div class="desktop-video-dots"><span></span><span></span><span></span></div>
+                      <div class="desktop-video-url"><span class="desktop-video-lock">🔒</span> mandibagley.com</div>
+                    </div>
+                    <video class="showcase-desktop-video" autoplay muted loop playsinline>
+                      <source src="assets/mandi-desktop.mp4" type="video/mp4">
+                    </video>
+                  </div>
+                </div>
+              </div>
+              <div class="showcase-domain">mandibagley.com</div>
+            </div>
+
+            <!-- Bottom row: what she sees — full-width Hub recording -->
+            <div class="showcase-creator-row">
+              <div class="showcase-col-label showcase-col-label-accent">What she sees</div>
+              <div class="showcase-hub-wide">
+                <div class="showcase-hub-chrome">
+                  <span style="width:6px;height:6px;border-radius:50%;background:#ff5f57"></span>
+                  <span style="width:6px;height:6px;border-radius:50%;background:#febc2e"></span>
+                  <span style="width:6px;height:6px;border-radius:50%;background:#28c840"></span>
+                </div>
+                <video class="showcase-hub-video" autoplay muted loop playsinline>
+                  <source src="assets/hub-recording.mp4" type="video/mp4">
+                </video>
+              </div>
+              <div class="showcase-domain showcase-domain-accent">Her private platform</div>
+            </div>
+
+            <div class="work-info">
+              <p class="work-client">Fitness &amp; Lifestyle Creator · 1M+ Followers</p>
+              <h3 class="work-name">Mandi Bagley</h3>
+              <p class="work-desc">A complete platform — custom website, private analytics, AI strategist, and a Hub that gives her everything at a glance.</p>
+              <div class="work-tags">
+                <span class="work-tag">Custom Design</span>
+                <span class="work-tag">Affiliate Codes</span>
+                <span class="work-tag">Program Showcases</span>
+                <span class="work-tag">Private Analytics</span>
+                <span class="work-tag">AI Strategy</span>
+                <span class="work-tag">Weekly Briefings</span>
+                <span class="work-tag">Link Tracking</span>
+              </div>
+              <a class="work-link" href="https://mandibagley.com" target="_blank" rel="noopener noreferrer">
+                See it live <i class="fa-solid fa-arrow-right"></i>
+              </a>
+            </div>
+          </div>
+
+        </div>
       </div>
 
-      <div class="client-card fade-up">
-        <div class="client-card-video">
-          <div class="client-card-chrome">
-            <span style="background:#ff5f57"></span>
-            <span style="background:#febc2e"></span>
-            <span style="background:#28c840"></span>
-          </div>
-          <video autoplay muted loop playsinline>
-            <source src="assets/mandi-desktop.mp4" type="video/mp4">
-          </video>
-        </div>
-        <div class="client-card-copy">
-          <div class="client-card-name">Mandi Bagley</div>
-          <div class="client-card-meta">Fitness &amp; Lifestyle Creator · 1M+ Followers</div>
-          <div class="client-card-desc">Custom website, private analytics, and AI strategist — built around her brand.</div>
-          <div class="client-card-actions">
-            <a class="btn-see-live" href="https://mandibagley.com" target="_blank" rel="noopener noreferrer">See it live <i class="fa-solid fa-arrow-right"></i></a>
-            <a class="btn-build-mine" href="#contact">Build mine <i class="fa-solid fa-arrow-right"></i></a>
-          </div>
-        </div>
-      </div>
+      <a href="#contact" class="btn-rose" style="margin-top:28px"><span class="btn-rose-outline" aria-hidden="true"></span>Build mine <i class="fa-solid fa-arrow-right"></i></a>
 
     </div>
   </section>
