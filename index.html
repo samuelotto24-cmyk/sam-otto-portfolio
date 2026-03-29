@@ -2342,6 +2342,11 @@
     opacity: 0;
     pointer-events: none;
   }
+  #intro-overlay.icons-visible {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+  }
   #intro-canvas {
     width: 100%; height: 100%;
   }
@@ -4204,7 +4209,7 @@
   </footer>
 
   <script>
-    // ── Intro: fast particle swirl → form slogan → fade to hero ──
+    // ── Unified Intro: colored particles → "SAM OTTO" → scatter to icons → hero ──
     (function() {
       var overlay = document.getElementById('intro-overlay');
       var c = document.getElementById('intro-canvas');
@@ -4214,13 +4219,33 @@
       var W = window.innerWidth, H = window.innerHeight;
       c.width = W * dpr; c.height = H * dpr;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      var isMobile = W < 768;
+      var cx = W / 2, cy = H / 2;
 
+      // ── 6 color groups matching app icons ──
+      var groups = [
+        { r: 255, g: 0,   b: 0   },  // YouTube red
+        { r: 225, g: 48,  b: 108 },  // Instagram magenta
+        { r: 200, g: 200, b: 210 },  // TikTok silver-white
+        { r: 67,  g: 230, b: 96  },  // Linktree green
+        { r: 16,  g: 185, b: 129 },  // Analytics emerald
+        { r: 139, g: 92,  b: 246 }   // Link purple
+      ];
+
+      // ── Scatter target positions for DOM icons (matches scatter icon IDs) ──
+      var iconTargets = [
+        { x: W * 0.12, y: H * 0.18 },
+        { x: W * 0.78, y: H * 0.15 },
+        { x: W * 0.15, y: H * 0.72 },
+        { x: W * 0.82, y: H * 0.68 },
+        { x: W * 0.28, y: H * 0.45 },
+        { x: W * 0.72, y: H * 0.48 }
+      ];
+
+      // ── Sample text targets for "SAM OTTO" ──
       var offscreen = document.createElement('canvas');
       offscreen.width = W; offscreen.height = H;
       var octx = offscreen.getContext('2d');
-      var isMobile = W < 768;
-      var sloganLine1 = 'Sam Otto';
-      var sloganLine2 = 'Creator Platforms';
       var fs1 = isMobile ? Math.min(W * 0.15, 60) : Math.min(W * 0.08, 110);
       var fs2 = isMobile ? Math.min(W * 0.075, 32) : Math.min(W * 0.032, 42);
 
@@ -4230,10 +4255,10 @@
         octx.textAlign = 'center';
         octx.textBaseline = 'middle';
         octx.font = '500 ' + fs1 + 'px "Cormorant Garamond", Georgia, serif';
-        octx.fillText(sloganLine1, W / 2, H / 2 - fs1 * 0.4);
+        octx.fillText('Sam Otto', W / 2, H / 2 - fs1 * 0.4);
         octx.font = '700 ' + fs2 + 'px "DM Sans", system-ui, sans-serif';
         octx.letterSpacing = '0.18em';
-        octx.fillText(sloganLine2, W / 2, H / 2 + fs1 * 0.55);
+        octx.fillText('Creator Platforms', W / 2, H / 2 + fs1 * 0.55);
       }
 
       function sampleTargets() {
@@ -4246,9 +4271,10 @@
             if (px[(y * W + x) * 4 + 3] > 128) t.push({ x: x, y: y });
           }
         }
-        if (t.length > 8000) {
-          var k = []; var s = t.length / 8000;
-          for (var i = 0; i < 8000; i++) k.push(t[Math.floor(i * s)]);
+        var maxP = isMobile ? 4000 : 6000;
+        if (t.length > maxP) {
+          var k = []; var s = t.length / maxP;
+          for (var i = 0; i < maxP; i++) k.push(t[Math.floor(i * s)]);
           return k;
         }
         return t;
@@ -4256,52 +4282,84 @@
 
       renderSlogan();
       var targets = sampleTargets();
-
       var NUM = targets.length;
+      var PER_GROUP = Math.floor(NUM / 6);
+
+      // ── Create particles — each assigned to a color group (shuffled for mixed text colors) ──
+      // Build a shuffled group assignment array so colors intersperse in the text
+      var groupAssign = [];
+      for (var i = 0; i < NUM; i++) groupAssign.push(Math.min(Math.floor(i / PER_GROUP), 5));
+      // Fisher-Yates shuffle
+      for (var i = groupAssign.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var tmp = groupAssign[i]; groupAssign[i] = groupAssign[j]; groupAssign[j] = tmp;
+      }
+
       var particles = [];
-      var cx = W / 2, cy = H / 2;
       for (var i = 0; i < NUM; i++) {
+        var gi = groupAssign[i];
+        var g = groups[gi];
         var angle = Math.random() * Math.PI * 2;
         var dist = Math.max(W, H) * 0.7 + Math.random() * 200;
         particles.push({
+          gi: gi,
+          r: g.r, g: g.g, b: g.b,
           sx: cx + Math.cos(angle) * dist,
           sy: cy + Math.sin(angle) * dist,
           tx: targets[i].x, ty: targets[i].y,
+          // scatter target = icon cluster position (with jitter)
+          ix: iconTargets[gi].x + (Math.random() - 0.5) * 40,
+          iy: iconTargets[gi].y + (Math.random() - 0.5) * 40,
           x: 0, y: 0,
-          size: 0.4 + Math.random() * 0.8,
-          alpha: 0.3 + Math.random() * 0.7,
+          size: 0.5 + Math.random() * 0.8,
+          alpha: 0.4 + Math.random() * 0.6,
           delay: Math.random() * 0.35,
           swirlAngle: angle,
           swirlSpeed: 2.5 + Math.random() * 3.5
         });
       }
 
-      var AMBIENT = 150;
+      // Ambient floating dots
+      var AMBIENT = 100;
       var ambient = [];
       for (var i = 0; i < AMBIENT; i++) {
         var a = Math.random() * Math.PI * 2;
         var r = 100 + Math.random() * Math.max(W, H) * 0.6;
+        var gi = Math.floor(Math.random() * 6);
         ambient.push({
           x: cx + Math.cos(a) * r, y: cy + Math.sin(a) * r,
           size: 0.4 + Math.random() * 1.2,
-          alpha: 0.1 + Math.random() * 0.2,
-          vx: (Math.random() - 0.5) * 0.6,
-          vy: (Math.random() - 0.5) * 0.6
+          alpha: 0.08 + Math.random() * 0.15,
+          vx: (Math.random() - 0.5) * 0.5,
+          vy: (Math.random() - 0.5) * 0.5,
+          r: groups[gi].r, g: groups[gi].g, b: groups[gi].b
         });
       }
 
-      var startTime = performance.now();
-      var SWIRL = 1500, FORM = 600, HOLD = 500;
-      var TOTAL = SWIRL + FORM + HOLD;
+      // ── Timing ──
+      var SWIRL = 1200;   // swirl inward
+      var FORM = 500;     // form text
+      var HOLD = 400;     // hold text
+      var SCATTER = 700;  // explode to icon clusters
+      var TIGHT = 300;    // tighten clusters
+      var T_FORM = SWIRL;
+      var T_HOLD = SWIRL + FORM;
+      var T_SCATTER = T_HOLD + HOLD;
+      var T_TIGHT = T_SCATTER + SCATTER;
+      var T_DONE = T_TIGHT + TIGHT;
+      var startTime = null;
       var done = false;
 
       function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
       function easeInOutQuad(t) { return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2; }
+      function easeInCubic(t) { return t * t * t; }
 
       function draw(ts) {
+        if (!startTime) startTime = ts;
         var elapsed = ts - startTime;
         ctx.clearRect(0, 0, W, H);
 
+        // Ambient dots (colored)
         for (var i = 0; i < AMBIENT; i++) {
           var a = ambient[i];
           a.x += a.vx; a.y += a.vy;
@@ -4309,14 +4367,17 @@
           if (a.y < -20) a.y = H + 20; if (a.y > H + 20) a.y = -20;
           ctx.beginPath();
           ctx.arc(a.x, a.y, a.size, 0, Math.PI * 2);
-          ctx.fillStyle = 'rgba(16,185,129,' + a.alpha.toFixed(3) + ')';
+          ctx.fillStyle = 'rgba(' + a.r + ',' + a.g + ',' + a.b + ',' + a.alpha.toFixed(3) + ')';
           ctx.fill();
         }
 
+        // Main particles
         for (var i = 0; i < NUM; i++) {
           var p = particles[i];
           var pDelay = p.delay * SWIRL;
+
           if (elapsed < SWIRL) {
+            // Phase: swirl inward
             var t = Math.max(0, elapsed - pDelay) / (SWIRL - pDelay);
             t = Math.min(t, 1);
             var e = easeInOutQuad(t);
@@ -4325,7 +4386,8 @@
             var curAngle = p.swirlAngle + e * p.swirlSpeed * Math.PI;
             p.x = cx + Math.cos(curAngle) * curDist;
             p.y = cy + Math.sin(curAngle) * curDist;
-          } else {
+          } else if (elapsed < T_HOLD) {
+            // Phase: form text
             var t2 = Math.min((elapsed - SWIRL) / FORM, 1);
             var e2 = easeOutCubic(t2);
             var startDist = Math.sqrt(Math.pow(p.sx - cx, 2) + Math.pow(p.sy - cy, 2));
@@ -4335,38 +4397,65 @@
             var swirlY = cy + Math.sin(swirlAngleEnd) * swirlDist;
             p.x = swirlX + (p.tx - swirlX) * e2;
             p.y = swirlY + (p.ty - swirlY) * e2;
+          } else if (elapsed < T_SCATTER) {
+            // Phase: hold text position
+            p.x = p.tx;
+            p.y = p.ty;
+          } else if (elapsed < T_TIGHT) {
+            // Phase: explode to icon cluster positions
+            var t3 = Math.min((elapsed - T_SCATTER) / SCATTER, 1);
+            var e3 = easeInOutQuad(t3);
+            p.x = p.tx + (p.ix - p.tx) * e3;
+            p.y = p.ty + (p.iy - p.ty) * e3;
+          } else {
+            // Phase: tighten clusters (particles pull toward cluster center)
+            var t4 = Math.min((elapsed - T_TIGHT) / TIGHT, 1);
+            var e4 = easeInCubic(t4);
+            var gCenter = iconTargets[p.gi];
+            p.x = p.ix + (gCenter.x - p.ix) * e4;
+            p.y = p.iy + (gCenter.y - p.iy) * e4;
           }
-          var vis = Math.min(elapsed / 400, 1);
+
+          var vis = Math.min(elapsed / 300, 1);
+          // Fade out during tighten phase
+          var fadeOut = elapsed > T_TIGHT ? Math.max(0, 1 - (elapsed - T_TIGHT) / TIGHT) : 1;
           ctx.beginPath();
-          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-          ctx.fillStyle = 'rgba(52,211,153,' + (p.alpha * vis).toFixed(3) + ')';
+          ctx.arc(p.x, p.y, p.size * (elapsed > T_SCATTER ? 1 + (1 - fadeOut) * 0.5 : 1), 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(' + p.r + ',' + p.g + ',' + p.b + ',' + (p.alpha * vis * fadeOut).toFixed(3) + ')';
           ctx.fill();
         }
 
-        if (elapsed < SWIRL + FORM * 0.5) {
+        // Connection lines during swirl
+        if (elapsed < SWIRL + FORM * 0.4) {
           ctx.lineWidth = 0.3;
-          for (var i = 0; i < NUM; i += 16) {
-            for (var j = i + 16; j < NUM; j += 16) {
+          for (var i = 0; i < NUM; i += 20) {
+            for (var j = i + 20; j < NUM; j += 20) {
+              if (particles[i].gi !== particles[j].gi) continue; // only within same group
               var dx = particles[i].x - particles[j].x;
               var dy = particles[i].y - particles[j].y;
               var d2 = dx * dx + dy * dy;
-              if (d2 < 3600) {
+              if (d2 < 2500) {
                 ctx.beginPath();
                 ctx.moveTo(particles[i].x, particles[i].y);
                 ctx.lineTo(particles[j].x, particles[j].y);
-                ctx.strokeStyle = 'rgba(16,185,129,' + ((1 - Math.sqrt(d2) / 60) * 0.18).toFixed(3) + ')';
+                var p0 = particles[i];
+                ctx.strokeStyle = 'rgba(' + p0.r + ',' + p0.g + ',' + p0.b + ',' + ((1 - Math.sqrt(d2) / 50) * 0.15).toFixed(3) + ')';
                 ctx.stroke();
               }
             }
           }
         }
 
-        if (elapsed >= TOTAL && !done) {
+        if (elapsed >= T_DONE && !done) {
           done = true;
-          overlay.classList.add('fade-out');
-          setTimeout(function() { overlay.remove(); }, 800);
+          // Signal scatter animation to show DOM icons and proceed
+          window.dispatchEvent(new Event('particles-crystallized'));
+          // Fade canvas
+          overlay.classList.add('icons-visible');
+          setTimeout(function() { overlay.remove(); }, 500);
         }
-        if (!done || elapsed < TOTAL + 800) {
+
+        if (!done || elapsed < T_DONE + 500) {
           requestAnimationFrame(draw);
         }
       }
@@ -4378,8 +4467,11 @@
         for (var i = 0; i < NUM; i++) {
           particles[i].tx = targets[i].x;
           particles[i].ty = targets[i].y;
+          // Update scatter targets based on already-assigned group
+          var gi = particles[i].gi;
+          particles[i].ix = iconTargets[gi].x + (Math.random() - 0.5) * 40;
+          particles[i].iy = iconTargets[gi].y + (Math.random() - 0.5) * 40;
         }
-        startTime = performance.now();
         requestAnimationFrame(draw);
       });
     })();
@@ -4939,11 +5031,10 @@
       mapObs.observe(section);
     })();
 
-    // ── Scattered-to-Unified Hero Animation ──
+    // ── Scatter → Converge → Hero Reveal (triggered by canvas particles-crystallized event) ──
     (function() {
       gsap.registerPlugin(ScrollTrigger);
 
-      // Elements
       var icons = [
         document.getElementById('si-yt'),
         document.getElementById('si-ig'),
@@ -4952,12 +5043,9 @@
         document.getElementById('si-chart'),
         document.getElementById('si-link')
       ];
-      var labelBefore = document.getElementById('scatter-label-before');
-      var labelAfter  = document.getElementById('scatter-label-after');
       var mergeCircle = document.getElementById('scatter-merge-circle');
-      var overlay     = document.getElementById('scatter-overlay');
+      var scatterOverlay = document.getElementById('scatter-overlay');
 
-      // Hero elements to reveal
       var heroLabel   = document.querySelector('.hero-label');
       var heroTitle   = document.querySelector('.hero-title');
       var heroSub     = document.querySelector('.hero-sub');
@@ -4971,44 +5059,34 @@
 
       if (!icons[0] || !heroTitle) return;
 
-      // Scroll is never locked — animation plays while user retains full control
-      var scrollLocked = false;
-      function unlockScroll() { scrollLocked = false; }
+      // Lock scroll during animation
+      document.documentElement.style.overflow = 'hidden';
+      document.body.style.overflow = 'hidden';
 
-      // Hide hero content — override CSS animations
+      var scrollUnlocked = false;
+      function unlockScroll() {
+        if (scrollUnlocked) return;
+        scrollUnlocked = true;
+        document.documentElement.style.overflow = '';
+        document.body.style.overflow = '';
+      }
+
+      // Safety net: guarantee scroll unlocks even if animation chain breaks
+      setTimeout(unlockScroll, 8000);
+
+      // Hide hero content
       var heroEls = [heroLabel, heroTitle, heroSub, heroActions, heroTrust, heroPhone, heroAnalytics, heroAi, heroLines, navEl];
       heroEls.forEach(function(el) {
-        if (el) {
-          el.classList.add('scatter-hidden');
-          el.style.animation = 'none';
-        }
+        if (el) { el.classList.add('scatter-hidden'); el.style.animation = 'none'; }
       });
-
       var platformBadges = document.querySelectorAll('.sys-platform-badge');
-      platformBadges.forEach(function(b) {
-        b.classList.add('scatter-hidden');
-        b.style.animation = 'none';
-      });
-
+      platformBadges.forEach(function(b) { b.classList.add('scatter-hidden'); b.style.animation = 'none'; });
       var barFill = document.querySelector('.sys-bar-fill');
       if (barFill) barFill.style.animation = 'none';
 
-      var W = window.innerWidth;
-      var H = window.innerHeight;
-      var cx = W / 2;
-      var cy = H / 2;
+      var W = window.innerWidth, H = window.innerHeight, cx = W / 2, cy = H / 2;
 
-      // Off-screen start positions
-      var startPositions = [
-        { x: -150,     y: -120    },
-        { x: W + 100,  y: -80     },
-        { x: -180,     y: H + 80  },
-        { x: W + 120,  y: H + 100 },
-        { x: -200,     y: cy - 60 },
-        { x: W + 150,  y: cy + 40 }
-      ];
-
-      // Scattered landing positions
+      // Scatter positions — must match canvas iconTargets exactly
       var landPositions = [
         { x: W * 0.12, y: H * 0.18, rot: -15 },
         { x: W * 0.78, y: H * 0.15, rot: 10  },
@@ -5018,61 +5096,67 @@
         { x: W * 0.72, y: H * 0.48, rot: 15  }
       ];
 
+      // Start icons hidden at their scatter positions (particles are handling the visual)
       icons.forEach(function(icon, i) {
-        gsap.set(icon, { x: startPositions[i].x, y: startPositions[i].y, opacity: 0, scale: 1 });
-      });
-
-      // ═══════════════════════════════════════
-      // PHASE 1 — CHAOS (starts as intro overlay fades ~2.6s)
-      // ═══════════════════════════════════════
-      var tl = gsap.timeline({ delay: 2.6 });
-
-      // Fly all icons to scattered positions (0.6s, was 0.8s)
-      icons.forEach(function(icon, i) {
-        tl.to(icon, {
+        gsap.set(icon, {
           x: landPositions[i].x - 32,
           y: landPositions[i].y - 32,
           rotation: landPositions[i].rot,
-          opacity: 1,
-          duration: 0.6,
-          ease: 'power3.out'
-        }, 0);
+          opacity: 0, scale: 1
+        });
       });
 
-      // "Your tools right now" label
-      tl.to(labelBefore, { opacity: 1, duration: 0.4, ease: 'power2.out' }, 0.3);
+      // Hide scatter labels — no longer needed since particles tell the story
+      var labelBefore = document.getElementById('scatter-label-before');
+      var labelAfter  = document.getElementById('scatter-label-after');
+      if (labelBefore) labelBefore.style.display = 'none';
+      if (labelAfter) labelAfter.style.display = 'none';
 
-      // Gentle wobble
-      tl.add(function() {
+      // ═══════════════════════════════════════
+      // When canvas particles crystallize into clusters → fade in DOM icons
+      // ═══════════════════════════════════════
+      var phase2Fired = false;
+
+      window.addEventListener('particles-crystallized', function() {
+        // Fade in DOM icons at scatter positions (particles are fading out)
+        icons.forEach(function(icon, i) {
+          gsap.to(icon, { opacity: 1, duration: 0.3, ease: 'power2.out' });
+        });
+
+        // Brief wobble
         icons.forEach(function(icon, i) {
           gsap.to(icon, {
             rotation: landPositions[i].rot + (i % 2 === 0 ? 5 : -5),
             y: '+=' + (i % 2 === 0 ? -8 : 8),
-            duration: 2, ease: 'sine.inOut', yoyo: true, repeat: -1
+            duration: 2, ease: 'sine.inOut', yoyo: true, repeat: -1, delay: 0.3
           });
         });
-      }, 0.7);
 
-      // ═══════════════════════════════════════
-      // PHASE 2 — UNIFICATION (auto after 1.2s hold, or on scroll-attempt)
-      // ═══════════════════════════════════════
-      var phase2Fired = false;
+        // Auto-advance to convergence after 1s hold (or on wheel/touch)
+        setTimeout(function() { runPhase2(); }, 1200);
+
+        // Wheel/touch intent also triggers
+        var triggerOnIntent = function() {
+          runPhase2();
+          window.removeEventListener('wheel', triggerOnIntent);
+          window.removeEventListener('touchmove', triggerOnIntent);
+        };
+        setTimeout(function() {
+          window.addEventListener('wheel', triggerOnIntent, { passive: true });
+          window.addEventListener('touchmove', triggerOnIntent, { passive: true });
+        }, 400);
+      });
 
       function runPhase2() {
         if (phase2Fired) return;
         phase2Fired = true;
-        window.scrollTo(0, 0); // Reset scroll position in case of any drift
+        window.scrollTo(0, 0);
 
-        // Kill wobble
         icons.forEach(function(icon) { gsap.killTweensOf(icon); });
 
         var tl2 = gsap.timeline();
 
-        // Labels swap
-        tl2.to(labelBefore, { opacity: 0, duration: 0.2, ease: 'power2.in' }, 0);
-        tl2.to(labelAfter, { opacity: 1, duration: 0.3, ease: 'power2.out' }, 0.1);
-
-        // Icons converge (0.6s, was 0.85s)
+        // Icons converge
         icons.forEach(function(icon) {
           tl2.to(icon, {
             x: cx - 32, y: cy - 32, scale: 0.3, rotation: 0, opacity: 0.6,
@@ -5088,20 +5172,14 @@
         tl2.set(mergeCircle, { x: cx - 40, y: cy - 40, opacity: 1, scale: 1 }, 0.42);
         tl2.to(mergeCircle, { scale: 1.4, duration: 0.15, ease: 'power2.out' }, 0.45);
         tl2.to(mergeCircle, { scale: 1, duration: 0.1, ease: 'power2.in' }, 0.6);
-
-        // Fade out merge + label
-        tl2.to(labelAfter, { opacity: 0, duration: 0.2 }, 0.7);
         tl2.to(mergeCircle, { opacity: 0, scale: 0.2, duration: 0.25, ease: 'expo.in' }, 0.7);
 
         tl2.add(function() {
-          if (overlay) overlay.style.display = 'none';
+          if (scatterOverlay) scatterOverlay.style.display = 'none';
         }, 0.95);
 
-        // ═══════════════════════════════════════
-        // PHASE 3 — CONTENT REVEAL (compressed, overlapping)
-        // ═══════════════════════════════════════
+        // ── CONTENT REVEAL ──
 
-        // Nav — appears first so user sees top bar
         tl2.add(function() {
           if (navEl) {
             navEl.classList.remove('scatter-hidden');
@@ -5111,7 +5189,6 @@
           }
         }, 0.7);
 
-        // Phone mockup scales in
         tl2.add(function() {
           if (heroPhone) {
             heroPhone.classList.remove('scatter-hidden');
@@ -5121,7 +5198,6 @@
           }
         }, 0.75);
 
-        // Label
         tl2.add(function() {
           if (heroLabel) {
             heroLabel.classList.remove('scatter-hidden');
@@ -5129,12 +5205,11 @@
           }
         }, 0.85);
 
-        // Headline — word split
+        // Headline word split
         tl2.add(function() {
           if (heroTitle) {
             heroTitle.classList.remove('scatter-hidden');
             heroTitle.style.opacity = '1';
-
             var words = [];
             function wrapTextWords(parent) {
               var nodes = Array.from(parent.childNodes);
@@ -5145,9 +5220,8 @@
                   var parts = text.split(/(\s+)/);
                   var frag = document.createDocumentFragment();
                   parts.forEach(function(part) {
-                    if (/^\s+$/.test(part)) {
-                      frag.appendChild(document.createTextNode(' '));
-                    } else if (part) {
+                    if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(' ')); }
+                    else if (part) {
                       var span = document.createElement('span');
                       span.textContent = part;
                       span.style.cssText = 'display:inline-block;opacity:0;transform:translateY(24px)';
@@ -5161,9 +5235,8 @@
                   var emParts = node.textContent.split(/(\s+)/);
                   var frag = document.createDocumentFragment();
                   emParts.forEach(function(part) {
-                    if (/^\s+$/.test(part)) {
-                      frag.appendChild(document.createTextNode(' '));
-                    } else if (part) {
+                    if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(' ')); }
+                    else if (part) {
                       var span = document.createElement('span');
                       span.textContent = part;
                       span.style.cssText = 'display:inline-block;opacity:0;transform:translateY(24px)';
@@ -5179,17 +5252,13 @@
               });
             }
             wrapTextWords(heroTitle);
-
-            gsap.to('.scatter-word', {
-              opacity: 1, y: 0, duration: 0.35, stagger: 0.04, ease: 'power2.out'
-            });
+            gsap.to('.scatter-word', { opacity: 1, y: 0, duration: 0.35, stagger: 0.04, ease: 'power2.out' });
             gsap.fromTo('.scatter-em-word', { color: '#34D399' }, {
               color: 'var(--rose)', duration: 0.4, stagger: 0.04, delay: 0.1, ease: 'power1.inOut'
             });
           }
         }, 0.95);
 
-        // Sub + CTAs + trust — all overlap tightly
         tl2.add(function() {
           if (heroSub) {
             heroSub.classList.remove('scatter-hidden');
@@ -5217,7 +5286,6 @@
           }
         }, 1.5);
 
-        // Cards — overlaps with above
         tl2.add(function() {
           if (heroAnalytics) {
             heroAnalytics.classList.remove('scatter-hidden');
@@ -5234,7 +5302,6 @@
           }
         }, 1.2);
 
-        // Lines + badges
         tl2.add(function() {
           if (heroLines) {
             heroLines.classList.remove('scatter-hidden');
@@ -5248,40 +5315,17 @@
           });
         }, 1.45);
 
-        // ═══════════════════════════════════════
-        // PHASE 4 — IDLE + UNLOCK SCROLL
-        // ═══════════════════════════════════════
+        // IDLE + UNLOCK
         tl2.add(function() {
           if (heroPhone) {
             gsap.to(heroPhone, { y: -12, duration: 3.5, ease: 'sine.inOut', yoyo: true, repeat: -1 });
           }
-
-          // Unlock scroll
           unlockScroll();
-
-          // Initialize Lenis smooth scroll
           var lenis = new Lenis({ lerp: 0.08 });
           gsap.ticker.add(function(time) { lenis.raf(time * 1000); });
           gsap.ticker.lagSmoothing(0);
         }, 1.9);
       }
-
-      // Auto-advance 1.2s after icons land (was 2.5s)
-      // Total: 2600ms intro + 600ms fly-in + 1200ms hold = 4400ms from page load
-      setTimeout(function() { runPhase2(); }, 4400);
-
-      // Scroll-attempt also triggers (captures the wheel/touch intent without displacing page)
-      var triggerOnIntent = function(e) {
-        if (!phase2Fired) {
-          runPhase2();
-        }
-        window.removeEventListener('wheel', triggerOnIntent);
-        window.removeEventListener('touchmove', triggerOnIntent);
-      };
-      setTimeout(function() {
-        window.addEventListener('wheel', triggerOnIntent, { passive: true });
-        window.addEventListener('touchmove', triggerOnIntent, { passive: true });
-      }, 3300); // After icons land
     })();
 
   </script>
