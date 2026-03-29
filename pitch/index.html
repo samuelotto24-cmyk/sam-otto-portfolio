@@ -363,8 +363,13 @@ h3 { font-family: var(--serif); font-size: 26px; font-weight: 500; margin-bottom
       </div>
     </div>
     <div class="col fade-up">
-      <div class="video-wrap">
-        <video muted loop playsinline autoplay id="demoVideo" preload="auto"><source src="demo-video.mp4" type="video/mp4">Your browser does not support video.</video>
+      <div class="video-wrap" style="position:relative;cursor:pointer;" onclick="playVideo('demoVideo',this)">
+        <video muted loop playsinline id="demoVideo" preload="auto" style="display:block;width:100%;"><source src="demo-video.mp4" type="video/mp4"></video>
+        <div class="play-overlay" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(9,9,7,0.4);border-radius:12px;transition:opacity 0.3s;">
+          <div style="width:60px;height:60px;border-radius:50%;background:rgba(16,185,129,0.9);display:flex;align-items:center;justify-content:center;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="#090907"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -400,8 +405,13 @@ h3 { font-family: var(--serif); font-size: 26px; font-weight: 500; margin-bottom
       </div>
     </div>
     <div class="col fade-up">
-      <div class="video-wrap">
-        <video muted loop playsinline autoplay id="hubVideo" preload="auto"><source src="hub-video.mp4" type="video/mp4">Your browser does not support video.</video>
+      <div class="video-wrap" style="position:relative;cursor:pointer;" onclick="playVideo('hubVideo',this)">
+        <video muted loop playsinline id="hubVideo" preload="auto" style="display:block;width:100%;"><source src="hub-video.mp4" type="video/mp4"></video>
+        <div class="play-overlay" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(9,9,7,0.4);border-radius:12px;transition:opacity 0.3s;">
+          <div style="width:60px;height:60px;border-radius:50%;background:rgba(16,185,129,0.9);display:flex;align-items:center;justify-content:center;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="#090907"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -966,19 +976,17 @@ document.addEventListener('touchend', function(e) {
   if (Math.abs(diff) > 50) { diff < 0 ? goTo(current + 1) : goTo(current - 1); }
 });
 
-// Force play videos — try on every interaction
-function tryPlayVideos() {
-  if (current === 3 && demoVideo) { demoVideo.muted = true; demoVideo.play().catch(function(){}); }
-  if (current === 4 && hubVideo) { hubVideo.muted = true; hubVideo.play().catch(function(){}); }
+// Play video on click — bulletproof across all browsers
+function playVideo(id, wrapper) {
+  var vid = document.getElementById(id);
+  if (!vid) return;
+  vid.muted = true;
+  vid.play().then(function() {
+    var overlay = wrapper.querySelector('.play-overlay');
+    if (overlay) overlay.style.opacity = '0';
+    setTimeout(function() { if (overlay) overlay.style.display = 'none'; }, 300);
+  }).catch(function(e) { console.error('Play failed:', e); });
 }
-document.addEventListener('click', tryPlayVideos);
-document.addEventListener('keydown', tryPlayVideos);
-document.addEventListener('touchstart', tryPlayVideos);
-// Also try on page load
-window.addEventListener('load', function() {
-  if (demoVideo) { demoVideo.muted = true; demoVideo.load(); }
-  if (hubVideo) { hubVideo.muted = true; hubVideo.load(); }
-});
 
 // Init
 document.getElementById('progress').style.width = (1 / total * 100) + '%';
