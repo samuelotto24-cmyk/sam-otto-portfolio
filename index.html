@@ -5051,8 +5051,18 @@
 
       if (!icons[0] || !heroTitle) return;
 
-      // Hide hero content immediately — override CSS animations
-      // Also neutralize CSS animation properties so they don't re-fire when scatter-hidden is removed
+      // ── Lock scroll during animation — prevent displacement ──
+      var scrollLocked = true;
+      document.documentElement.style.overflow = 'hidden';
+      document.body.style.overflow = 'hidden';
+
+      function unlockScroll() {
+        scrollLocked = false;
+        document.documentElement.style.overflow = '';
+        document.body.style.overflow = '';
+      }
+
+      // Hide hero content — override CSS animations
       var heroEls = [heroLabel, heroTitle, heroSub, heroActions, heroTrust, heroPhone, heroAnalytics, heroAi, heroLines, navEl];
       heroEls.forEach(function(el) {
         if (el) {
@@ -5061,14 +5071,12 @@
         }
       });
 
-      // Platform badge animations inside analytics card
       var platformBadges = document.querySelectorAll('.sys-platform-badge');
       platformBadges.forEach(function(b) {
         b.classList.add('scatter-hidden');
         b.style.animation = 'none';
       });
 
-      // Also pause the bar fill animation until reveal
       var barFill = document.querySelector('.sys-bar-fill');
       if (barFill) barFill.style.animation = 'none';
 
@@ -5077,190 +5085,148 @@
       var cx = W / 2;
       var cy = H / 2;
 
-      // Off-screen start positions (outside viewport)
+      // Off-screen start positions
       var startPositions = [
-        { x: -150,     y: -120    },  // YT: top-left
-        { x: W + 100,  y: -80     },  // IG: top-right
-        { x: -180,     y: H + 80  },  // TT: bottom-left
-        { x: W + 120,  y: H + 100 },  // LT: bottom-right
-        { x: -200,     y: cy - 60 },  // Chart: center-left
-        { x: W + 150,  y: cy + 40 }   // Link: center-right
+        { x: -150,     y: -120    },
+        { x: W + 100,  y: -80     },
+        { x: -180,     y: H + 80  },
+        { x: W + 120,  y: H + 100 },
+        { x: -200,     y: cy - 60 },
+        { x: W + 150,  y: cy + 40 }
       ];
 
-      // Landing positions (scattered across hero)
+      // Scattered landing positions
       var landPositions = [
-        { x: W * 0.12, y: H * 0.18, rot: -15 },  // YT
-        { x: W * 0.78, y: H * 0.15, rot: 10  },   // IG
-        { x: W * 0.15, y: H * 0.72, rot: -8  },   // TT
-        { x: W * 0.82, y: H * 0.68, rot: 12  },   // LT
-        { x: W * 0.28, y: H * 0.45, rot: -20 },   // Chart
-        { x: W * 0.72, y: H * 0.48, rot: 15  }    // Link
+        { x: W * 0.12, y: H * 0.18, rot: -15 },
+        { x: W * 0.78, y: H * 0.15, rot: 10  },
+        { x: W * 0.15, y: H * 0.72, rot: -8  },
+        { x: W * 0.82, y: H * 0.68, rot: 12  },
+        { x: W * 0.28, y: H * 0.45, rot: -20 },
+        { x: W * 0.72, y: H * 0.48, rot: 15  }
       ];
 
-      // Set initial positions (off-screen)
       icons.forEach(function(icon, i) {
-        gsap.set(icon, {
-          x: startPositions[i].x,
-          y: startPositions[i].y,
-          opacity: 0,
-          scale: 1
-        });
+        gsap.set(icon, { x: startPositions[i].x, y: startPositions[i].y, opacity: 0, scale: 1 });
       });
 
-      // Phone mockup reference for merge target
-      var phoneShell = document.querySelector('.hero-phone-shell');
-
       // ═══════════════════════════════════════
-      // PHASE 1 — CHAOS: Icons fly in as intro particle overlay fades
-      // Intro overlay: SWIRL(1500) + FORM(600) + HOLD(500) = 2600ms, then 800ms fade
-      // Icons start at 2600ms so they fly in while overlay is fading to transparent
+      // PHASE 1 — CHAOS (starts as intro overlay fades ~2.6s)
       // ═══════════════════════════════════════
       var tl = gsap.timeline({ delay: 2.6 });
 
-      // Fly all icons to scattered positions
+      // Fly all icons to scattered positions (0.6s, was 0.8s)
       icons.forEach(function(icon, i) {
         tl.to(icon, {
-          x: landPositions[i].x - 32, // offset by half icon width
+          x: landPositions[i].x - 32,
           y: landPositions[i].y - 32,
           rotation: landPositions[i].rot,
           opacity: 1,
-          duration: 0.8,
+          duration: 0.6,
           ease: 'power3.out'
-        }, 0); // all start at same time
+        }, 0);
       });
 
-      // Fade in "Your tools right now" label
-      tl.to(labelBefore, {
-        opacity: 1,
-        duration: 0.5,
-        ease: 'power2.out'
-      }, 0.4);
+      // "Your tools right now" label
+      tl.to(labelBefore, { opacity: 1, duration: 0.4, ease: 'power2.out' }, 0.3);
 
-      // Gentle wobble after landing
+      // Gentle wobble
       tl.add(function() {
         icons.forEach(function(icon, i) {
           gsap.to(icon, {
             rotation: landPositions[i].rot + (i % 2 === 0 ? 5 : -5),
             y: '+=' + (i % 2 === 0 ? -8 : 8),
-            duration: 2,
-            ease: 'sine.inOut',
-            yoyo: true,
-            repeat: -1
+            duration: 2, ease: 'sine.inOut', yoyo: true, repeat: -1
           });
         });
-      }, 0.9);
+      }, 0.7);
 
       // ═══════════════════════════════════════
-      // PHASE 2 — UNIFICATION: triggered by scroll or auto after 2.5s
+      // PHASE 2 — UNIFICATION (auto after 1.2s hold, or on scroll-attempt)
       // ═══════════════════════════════════════
       var phase2Fired = false;
 
       function runPhase2() {
         if (phase2Fired) return;
         phase2Fired = true;
+        window.scrollTo(0, 0); // Reset scroll position in case of any drift
 
-        // Kill wobble tweens
+        // Kill wobble
         icons.forEach(function(icon) { gsap.killTweensOf(icon); });
 
         var tl2 = gsap.timeline();
 
-        // Swap labels
-        tl2.to(labelBefore, { opacity: 0, duration: 0.3, ease: 'power2.in' }, 0);
-        tl2.to(labelAfter, { opacity: 1, duration: 0.4, ease: 'power2.out' }, 0.2);
+        // Labels swap
+        tl2.to(labelBefore, { opacity: 0, duration: 0.2, ease: 'power2.in' }, 0);
+        tl2.to(labelAfter, { opacity: 1, duration: 0.3, ease: 'power2.out' }, 0.1);
 
-        // All icons converge to center
+        // Icons converge (0.6s, was 0.85s)
         icons.forEach(function(icon) {
           tl2.to(icon, {
-            x: cx - 32,
-            y: cy - 32,
-            scale: 0.3,
-            rotation: 0,
-            opacity: 0.6,
-            duration: 0.85,
-            ease: 'expo.inOut'
+            x: cx - 32, y: cy - 32, scale: 0.3, rotation: 0, opacity: 0.6,
+            duration: 0.6, ease: 'expo.inOut'
           }, 0);
         });
 
-        // At ~70% of convergence — icons vanish, merge circle appears
+        // Icons vanish → merge circle
         tl2.add(function() {
-          icons.forEach(function(icon) {
-            gsap.set(icon, { opacity: 0 });
-          });
-        }, 0.6);
+          icons.forEach(function(icon) { gsap.set(icon, { opacity: 0 }); });
+        }, 0.42);
 
-        // Merge circle pulse
-        tl2.set(mergeCircle, {
-          x: cx - 40,
-          y: cy - 40,
-          opacity: 1,
-          scale: 1
-        }, 0.6);
+        tl2.set(mergeCircle, { x: cx - 40, y: cy - 40, opacity: 1, scale: 1 }, 0.42);
+        tl2.to(mergeCircle, { scale: 1.4, duration: 0.15, ease: 'power2.out' }, 0.45);
+        tl2.to(mergeCircle, { scale: 1, duration: 0.1, ease: 'power2.in' }, 0.6);
 
-        tl2.to(mergeCircle, {
-          scale: 1.4,
-          duration: 0.2,
-          ease: 'power2.out'
-        }, 0.65);
+        // Fade out merge + label
+        tl2.to(labelAfter, { opacity: 0, duration: 0.2 }, 0.7);
+        tl2.to(mergeCircle, { opacity: 0, scale: 0.2, duration: 0.25, ease: 'expo.in' }, 0.7);
 
-        tl2.to(mergeCircle, {
-          scale: 1,
-          duration: 0.15,
-          ease: 'power2.in'
-        }, 0.85);
-
-        // Fade out labels and merge circle
-        tl2.to(labelAfter, { opacity: 0, duration: 0.25 }, 0.95);
-        tl2.to(mergeCircle, { opacity: 0, scale: 0.2, duration: 0.35, ease: 'expo.in' }, 1.0);
-
-        // Clean up overlay
         tl2.add(function() {
           if (overlay) overlay.style.display = 'none';
-        }, 1.35);
+        }, 0.95);
 
         // ═══════════════════════════════════════
-        // PHASE 3 — CONTENT REVEAL
+        // PHASE 3 — CONTENT REVEAL (compressed, overlapping)
         // ═══════════════════════════════════════
 
-        // Phone mockup morphs in from center
+        // Nav — appears first so user sees top bar
+        tl2.add(function() {
+          if (navEl) {
+            navEl.classList.remove('scatter-hidden');
+            gsap.fromTo(navEl, { opacity: 0, filter: 'blur(6px)' }, {
+              opacity: 1, filter: 'blur(0px)', duration: 0.4, ease: 'power2.out'
+            });
+          }
+        }, 0.7);
+
+        // Phone mockup scales in
         tl2.add(function() {
           if (heroPhone) {
             heroPhone.classList.remove('scatter-hidden');
-            gsap.fromTo(heroPhone, {
-              opacity: 0,
-              scale: 0.4,
-              y: 30
-            }, {
-              opacity: 1,
-              scale: 1,
-              y: 0,
-              duration: 0.7,
-              ease: 'expo.out'
+            gsap.fromTo(heroPhone, { opacity: 0, scale: 0.4, y: 30 }, {
+              opacity: 1, scale: 1, y: 0, duration: 0.5, ease: 'expo.out'
             });
           }
-        }, 1.0);
+        }, 0.75);
 
-        // "ARE YOU GROWING?" label
+        // Label
         tl2.add(function() {
           if (heroLabel) {
             heroLabel.classList.remove('scatter-hidden');
-            gsap.fromTo(heroLabel, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' });
+            gsap.fromTo(heroLabel, { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 0.3, ease: 'power2.out' });
           }
-        }, 1.25);
+        }, 0.85);
 
-        // Headline — word split animation
+        // Headline — word split
         tl2.add(function() {
           if (heroTitle) {
             heroTitle.classList.remove('scatter-hidden');
             heroTitle.style.opacity = '1';
 
-            // Split text into word spans, preserving <em> and <br>
             var words = [];
-
             function wrapTextWords(parent) {
-              // Snapshot childNodes — must NOT iterate live NodeList while mutating
               var nodes = Array.from(parent.childNodes);
               nodes.forEach(function(node) {
-                if (node.nodeType === 3) { // text node
+                if (node.nodeType === 3) {
                   var text = node.textContent;
                   if (!text.trim()) return;
                   var parts = text.split(/(\s+)/);
@@ -5271,7 +5237,7 @@
                     } else if (part) {
                       var span = document.createElement('span');
                       span.textContent = part;
-                      span.style.cssText = 'display:inline-block;opacity:0;transform:translateY(30px)';
+                      span.style.cssText = 'display:inline-block;opacity:0;transform:translateY(24px)';
                       span.className = 'scatter-word';
                       words.push(span);
                       frag.appendChild(span);
@@ -5279,8 +5245,7 @@
                   });
                   parent.replaceChild(frag, node);
                 } else if (node.nodeName === 'EM') {
-                  var emText = node.textContent;
-                  var emParts = emText.split(/(\s+)/);
+                  var emParts = node.textContent.split(/(\s+)/);
                   var frag = document.createDocumentFragment();
                   emParts.forEach(function(part) {
                     if (/^\s+$/.test(part)) {
@@ -5288,7 +5253,7 @@
                     } else if (part) {
                       var span = document.createElement('span');
                       span.textContent = part;
-                      span.style.cssText = 'display:inline-block;opacity:0;transform:translateY(30px)';
+                      span.style.cssText = 'display:inline-block;opacity:0;transform:translateY(24px)';
                       span.className = 'scatter-word scatter-em-word';
                       var em = document.createElement('em');
                       em.appendChild(span);
@@ -5298,169 +5263,112 @@
                   });
                   parent.replaceChild(frag, node);
                 }
-                // BR nodes are left untouched
               });
             }
-
             wrapTextWords(heroTitle);
 
             gsap.to('.scatter-word', {
-              opacity: 1,
-              y: 0,
-              duration: 0.5,
-              stagger: 0.06,
-              ease: 'power2.out'
+              opacity: 1, y: 0, duration: 0.35, stagger: 0.04, ease: 'power2.out'
             });
-
-            // Accent color flash on em words
-            gsap.fromTo('.scatter-em-word', {
-              color: '#34D399'
-            }, {
-              color: 'var(--rose)',
-              duration: 0.6,
-              stagger: 0.06,
-              delay: 0.15,
-              ease: 'power1.inOut'
+            gsap.fromTo('.scatter-em-word', { color: '#34D399' }, {
+              color: 'var(--rose)', duration: 0.4, stagger: 0.04, delay: 0.1, ease: 'power1.inOut'
             });
           }
-        }, 1.4);
+        }, 0.95);
 
-        // Subheadline
+        // Sub + CTAs + trust — all overlap tightly
         tl2.add(function() {
           if (heroSub) {
             heroSub.classList.remove('scatter-hidden');
-            gsap.fromTo(heroSub, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' });
+            gsap.fromTo(heroSub, { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 0.35, ease: 'power2.out' });
           }
-        }, 1.85);
+        }, 1.35);
 
-        // CTA buttons
         tl2.add(function() {
           if (heroActions) {
             heroActions.classList.remove('scatter-hidden');
             heroActions.style.opacity = '1';
-            var btns = heroActions.children;
-            gsap.fromTo(btns, { opacity: 0, scale: 0.9 }, {
-              opacity: 1,
-              scale: 1,
-              duration: 0.4,
-              stagger: 0.1,
-              ease: 'back.out(1.7)'
+            gsap.fromTo(heroActions.children, { opacity: 0, scale: 0.9 }, {
+              opacity: 1, scale: 1, duration: 0.3, stagger: 0.08, ease: 'back.out(1.7)'
             });
           }
-        }, 2.05);
+        }, 1.45);
 
-        // Badge pills
         tl2.add(function() {
           if (heroTrust) {
             heroTrust.classList.remove('scatter-hidden');
             heroTrust.style.opacity = '1';
-            var items = heroTrust.children;
-            gsap.fromTo(items, { opacity: 0, x: -15 }, {
-              opacity: 1,
-              x: 0,
-              duration: 0.35,
-              stagger: 0.05,
-              ease: 'power2.out'
+            gsap.fromTo(heroTrust.children, { opacity: 0, x: -10 }, {
+              opacity: 1, x: 0, duration: 0.25, stagger: 0.03, ease: 'power2.out'
             });
           }
-        }, 2.2);
+        }, 1.5);
 
-        // Analytics + AI cards
+        // Cards — overlaps with above
         tl2.add(function() {
           if (heroAnalytics) {
             heroAnalytics.classList.remove('scatter-hidden');
-            gsap.fromTo(heroAnalytics, {
-              opacity: 0, x: -30, scale: 0.9, yPercent: -70
-            }, {
-              opacity: 1, x: 0, scale: 1, yPercent: -70,
-              duration: 0.6, ease: 'power2.out'
+            gsap.fromTo(heroAnalytics, { opacity: 0, x: -25, scale: 0.9, yPercent: -70 }, {
+              opacity: 1, x: 0, scale: 1, yPercent: -70, duration: 0.45, ease: 'power2.out'
             });
-            // Trigger bar fill
-            if (barFill) {
-              gsap.fromTo(barFill, { width: '0%' }, { width: '72%', duration: 1, ease: 'power2.out', delay: 0.3 });
-            }
+            if (barFill) gsap.fromTo(barFill, { width: '0%' }, { width: '72%', duration: 0.8, ease: 'power2.out', delay: 0.2 });
           }
           if (heroAi) {
             heroAi.classList.remove('scatter-hidden');
-            gsap.fromTo(heroAi, {
-              opacity: 0, x: 30, scale: 0.9, yPercent: -35
-            }, {
-              opacity: 1, x: 0, scale: 1, yPercent: -35,
-              duration: 0.6, ease: 'power2.out', delay: 0.15
+            gsap.fromTo(heroAi, { opacity: 0, x: 25, scale: 0.9, yPercent: -35 }, {
+              opacity: 1, x: 0, scale: 1, yPercent: -35, duration: 0.45, ease: 'power2.out', delay: 0.1
             });
           }
-        }, 2.0);
+        }, 1.2);
 
-        // Connection lines
+        // Lines + badges
         tl2.add(function() {
           if (heroLines) {
             heroLines.classList.remove('scatter-hidden');
-            gsap.fromTo(heroLines, { opacity: 0 }, { opacity: 1, duration: 0.5 });
+            gsap.fromTo(heroLines, { opacity: 0 }, { opacity: 1, duration: 0.35 });
           }
-        }, 2.4);
-
-        // Platform badges pop
-        tl2.add(function() {
           platformBadges.forEach(function(b, i) {
             b.classList.remove('scatter-hidden');
             gsap.fromTo(b, { opacity: 0, scale: 0.6 }, {
-              opacity: 1, scale: 1,
-              duration: 0.4,
-              delay: i * 0.12,
-              ease: 'back.out(2)'
+              opacity: 1, scale: 1, duration: 0.3, delay: i * 0.08, ease: 'back.out(2)'
             });
           });
-        }, 2.3);
+        }, 1.45);
 
         // ═══════════════════════════════════════
-        // PHASE 4 — IDLE STATE
+        // PHASE 4 — IDLE + UNLOCK SCROLL
         // ═══════════════════════════════════════
         tl2.add(function() {
-          // Phone floating idle
           if (heroPhone) {
-            gsap.to(heroPhone, {
-              y: -12,
-              duration: 3.5,
-              ease: 'sine.inOut',
-              yoyo: true,
-              repeat: -1
-            });
+            gsap.to(heroPhone, { y: -12, duration: 3.5, ease: 'sine.inOut', yoyo: true, repeat: -1 });
           }
 
-          // Nav fade in with blur-to-clear
-          if (navEl) {
-            navEl.classList.remove('scatter-hidden');
-            gsap.fromTo(navEl, {
-              opacity: 0,
-              filter: 'blur(6px)'
-            }, {
-              opacity: 1,
-              filter: 'blur(0px)',
-              duration: 0.6,
-              ease: 'power2.out'
-            });
-          }
+          // Unlock scroll
+          unlockScroll();
 
           // Initialize Lenis smooth scroll
           var lenis = new Lenis({ lerp: 0.08 });
-          gsap.ticker.add(function(time) {
-            lenis.raf(time * 1000);
-          });
+          gsap.ticker.add(function(time) { lenis.raf(time * 1000); });
           gsap.ticker.lagSmoothing(0);
-        }, 2.8);
+        }, 1.9);
       }
 
-      // Auto-advance after 2.5s from Phase 1 start (2600ms intro + 800ms fly-in + 2500ms hold)
-      setTimeout(function() { runPhase2(); }, 5900);
+      // Auto-advance 1.2s after icons land (was 2.5s)
+      // Total: 2600ms intro + 600ms fly-in + 1200ms hold = 4400ms from page load
+      setTimeout(function() { runPhase2(); }, 4400);
 
-      // Or trigger on first scroll after icons land
-      var scrollOnce = function() {
-        runPhase2();
-        window.removeEventListener('scroll', scrollOnce);
+      // Scroll-attempt also triggers (captures the wheel/touch intent without displacing page)
+      var triggerOnIntent = function(e) {
+        if (!phase2Fired) {
+          runPhase2();
+        }
+        window.removeEventListener('wheel', triggerOnIntent);
+        window.removeEventListener('touchmove', triggerOnIntent);
       };
       setTimeout(function() {
-        window.addEventListener('scroll', scrollOnce, { passive: true });
-      }, 3600); // Listen after icons are settled
+        window.addEventListener('wheel', triggerOnIntent, { passive: true });
+        window.addEventListener('touchmove', triggerOnIntent, { passive: true });
+      }, 3300); // After icons land
     })();
 
   </script>
