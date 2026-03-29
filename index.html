@@ -61,7 +61,7 @@
       --ease:       0.22s ease;
     }
 
-    html { scroll-behavior: smooth; }
+    html { }
 
     body {
       background: var(--black);
@@ -2982,8 +2982,7 @@
   /* ── FEATURE THEATRE (scroll-jacked) ── */
   #feature-theatre {
     position: relative;
-    height: 100vh;
-    overflow: hidden;
+    height: 300vh;
     background: var(--black);
   }
   .ft-pin {
@@ -2994,7 +2993,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow: hidden;
   }
   .ft-container {
     width: 100%;
@@ -5485,8 +5483,7 @@
     var totalCh     = chapters.length; // 3
     var current     = 0;
 
-    // 300vh total scroll distance
-    theatre.style.height = (totalCh * 100) + 'vh';
+    // Height is set in CSS (300vh) — no JS override needed
 
     // Clamp helper
     function clamp(v, min, max) { return Math.max(min, Math.min(max, v)); }
@@ -5581,6 +5578,7 @@
       start: 'top top',
       end: 'bottom bottom',
       pin: '.ft-pin',
+      pinSpacing: false,
       scrub: 0.3,
       onUpdate: function(self) {
         updateScroll(self.progress);
