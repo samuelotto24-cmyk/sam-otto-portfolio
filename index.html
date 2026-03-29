@@ -4977,10 +4977,14 @@
       document.body.style.overflow = 'hidden';
 
       function unlockScroll() {
+        if (!scrollLocked) return;
         scrollLocked = false;
         document.documentElement.style.overflow = '';
         document.body.style.overflow = '';
       }
+
+      // Safety net: guarantee scroll unlocks even if animation chain breaks
+      setTimeout(unlockScroll, 8000);
 
       // Hide hero content — override CSS animations
       var heroEls = [heroLabel, heroTitle, heroSub, heroActions, heroTrust, heroPhone, heroAnalytics, heroAi, heroLines, navEl];
