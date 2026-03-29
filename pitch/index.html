@@ -364,7 +364,7 @@ h3 { font-family: var(--serif); font-size: 26px; font-weight: 500; margin-bottom
     </div>
     <div class="col fade-up">
       <div class="video-wrap" style="position:relative;cursor:pointer;" onclick="playVideo('demoVideo',this)">
-        <video muted loop playsinline id="demoVideo" preload="auto" style="display:block;width:100%;"><source src="demo-video.mp4" type="video/mp4"></video>
+        <video muted loop playsinline id="demoVideo" preload="auto" style="display:block;width:100%;"><source src="/pitch/demo-video.mp4" type="video/mp4"></video>
         <div class="play-overlay" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(9,9,7,0.4);border-radius:12px;transition:opacity 0.3s;">
           <div style="width:60px;height:60px;border-radius:50%;background:rgba(16,185,129,0.9);display:flex;align-items:center;justify-content:center;">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="#090907"><path d="M8 5v14l11-7z"/></svg>
@@ -406,7 +406,7 @@ h3 { font-family: var(--serif); font-size: 26px; font-weight: 500; margin-bottom
     </div>
     <div class="col fade-up">
       <div class="video-wrap" style="position:relative;cursor:pointer;" onclick="playVideo('hubVideo',this)">
-        <video muted loop playsinline id="hubVideo" preload="auto" style="display:block;width:100%;"><source src="hub-video.mp4" type="video/mp4"></video>
+        <video muted loop playsinline id="hubVideo" preload="auto" style="display:block;width:100%;"><source src="/pitch/hub-video.mp4" type="video/mp4"></video>
         <div class="play-overlay" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(9,9,7,0.4);border-radius:12px;transition:opacity 0.3s;">
           <div style="width:60px;height:60px;border-radius:50%;background:rgba(16,185,129,0.9);display:flex;align-items:center;justify-content:center;">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="#090907"><path d="M8 5v14l11-7z"/></svg>
@@ -981,11 +981,22 @@ function playVideo(id, wrapper) {
   var vid = document.getElementById(id);
   if (!vid) return;
   vid.muted = true;
-  vid.play().then(function() {
-    var overlay = wrapper.querySelector('.play-overlay');
-    if (overlay) overlay.style.opacity = '0';
-    setTimeout(function() { if (overlay) overlay.style.display = 'none'; }, 300);
-  }).catch(function(e) { console.error('Play failed:', e); });
+  vid.load();
+  vid.addEventListener('canplay', function handler() {
+    vid.removeEventListener('canplay', handler);
+    vid.play().then(function() {
+      var overlay = wrapper.querySelector('.play-overlay');
+      if (overlay) overlay.style.opacity = '0';
+      setTimeout(function() { if (overlay) overlay.style.display = 'none'; }, 300);
+    }).catch(function(e) { console.error('Play failed:', e); });
+  });
+  // Fallback — try playing immediately too
+  setTimeout(function() {
+    vid.play().then(function() {
+      var overlay = wrapper.querySelector('.play-overlay');
+      if (overlay) { overlay.style.opacity = '0'; setTimeout(function() { overlay.style.display = 'none'; }, 300); }
+    }).catch(function(){});
+  }, 500);
 }
 
 // Init
