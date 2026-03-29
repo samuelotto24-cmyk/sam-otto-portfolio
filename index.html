@@ -3494,6 +3494,25 @@
 .quiz-input:focus { border-color: var(--rose); }
 .quiz-input::placeholder { color: var(--text-muted); }
 
+.quiz-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 16px;
+  margin-right: 12px;
+  padding: 10px 20px;
+  background: transparent;
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 500;
+  font-family: var(--sans);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.quiz-back:hover { color: var(--text); border-color: var(--border-mid); }
+
 .quiz-next {
   display: inline-flex;
   align-items: center;
@@ -5546,6 +5565,7 @@
       <div class="quiz-question">What's your Instagram?</div>
       <input class="quiz-input" id="qHandle" placeholder="@yourhandle">
       <br>
+      <button class="quiz-back" onclick="quizNext(1)"><i class="fa-solid fa-arrow-left"></i> Back</button>
       <button class="quiz-next" id="qHandleBtn" onclick="scrapeProfile()">Find my profile <i class="fa-solid fa-search"></i></button>
       <div class="quiz-loading" id="qScrapeLoading">
         <div class="quiz-spinner"></div>
@@ -5576,6 +5596,7 @@
         <button class="quiz-niche-btn" onclick="selectNiche(this)">Business</button>
         <button class="quiz-niche-btn" onclick="selectNiche(this)">Other</button>
       </div>
+      <button class="quiz-back" onclick="quizNext(2)"><i class="fa-solid fa-arrow-left"></i> Back</button>
       <button class="quiz-next" id="qNicheNext" onclick="quizNext(4)" disabled>Next <i class="fa-solid fa-arrow-right"></i></button>
     </div>
 
@@ -5592,6 +5613,7 @@
         <button class="quiz-pill" onclick="togglePill(this)">Recipes</button>
         <button class="quiz-pill" onclick="togglePill(this)">Content/Tutorials</button>
       </div>
+      <button class="quiz-back" onclick="quizNext(3)"><i class="fa-solid fa-arrow-left"></i> Back</button>
       <button class="quiz-next" onclick="quizNext(5)">Next <i class="fa-solid fa-arrow-right"></i></button>
     </div>
 
@@ -5599,6 +5621,7 @@
     <div class="quiz-step" data-step="5">
       <div class="quiz-question">We pulled these from your brand</div>
       <div class="quiz-palette" id="qPalette"></div>
+      <button class="quiz-back" onclick="quizNext(4)"><i class="fa-solid fa-arrow-left"></i> Back</button>
       <button class="quiz-next" onclick="quizNext(6)">Looks right <i class="fa-solid fa-check"></i></button>
     </div>
 
@@ -5607,6 +5630,7 @@
       <div class="quiz-question">Where should we send your mockup?</div>
       <input class="quiz-input" id="qEmail" type="email" placeholder="your@email.com">
       <br>
+      <button class="quiz-back" onclick="quizNext(5)"><i class="fa-solid fa-arrow-left"></i> Back</button>
       <button class="quiz-next" onclick="submitQuiz()">Build my preview <i class="fa-solid fa-wand-magic-sparkles"></i></button>
     </div>
 
