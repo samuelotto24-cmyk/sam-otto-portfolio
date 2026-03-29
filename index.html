@@ -3150,6 +3150,72 @@
   }
 
 
+  /* ── Layer 4: Email preview mockup ── */
+  .layer-email-preview {
+    background: var(--dark);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+  }
+  .layer-email-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    background: var(--surface-hi);
+    border-bottom: 1px solid var(--border);
+  }
+  .layer-email-dot {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--rose), var(--rose-light));
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .layer-email-from {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+  }
+  .layer-email-subj {
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+  .layer-email-body {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .layer-email-stats {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .layer-email-stats span {
+    font-size: 12px;
+    color: var(--text-sub);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .layer-email-action {
+    font-size: 13px;
+    color: var(--text-sub);
+    line-height: 1.6;
+    padding: 12px 14px;
+    background: rgba(16,185,129,0.06);
+    border: 1px solid rgba(16,185,129,0.12);
+    border-radius: 8px;
+  }
+  .layer-email-action strong {
+    color: var(--rose-light);
+  }
+
   /* ══════════════════════════════════════════════════
      MOBILE-ONLY CONDENSING — desktop untouched
      ══════════════════════════════════════════════════ */
@@ -3347,7 +3413,7 @@
       <div class="hero-copy">
         <div class="hero-label">Your growth machine</div>
         <h1 class="hero-title">Your site. Your data.<br>Your AI strategist.<br><em>Built to scale what you've started.</em></h1>
-        <p class="hero-sub">A custom-built page, live analytics from YouTube, Instagram, and TikTok, and an AI strategist that tells you what to do next — one system, built around your brand.</p>
+        <p class="hero-sub">A custom-built page, live analytics from every platform, an AI strategist, and a weekly strategy briefing delivered straight to your inbox — one system, built around your brand.</p>
         <div class="hero-actions">
           <a href="#contact" class="btn-rose btn-hero-cta"><span class="btn-rose-outline" aria-hidden="true"></span><i class="fa-solid fa-paper-plane"></i> Let's Build Yours</a>
           <a href="#work" class="btn-ghost">See live work <i class="fa-solid fa-arrow-right"></i></a>
@@ -3431,7 +3497,7 @@
   <section id="three-layers">
     <div class="layers-heading fade-up">
       <span class="layers-label">The Platform</span>
-      <h2 class="layers-title">One platform. <em>Three layers.</em></h2>
+      <h2 class="layers-title">One platform. <em>Four layers.</em></h2>
     </div>
 
     <div class="layers-stack">
@@ -3487,6 +3553,33 @@
           <div class="layer-num">03</div>
           <h3 class="layer-name">Your AI Strategist</h3>
           <p class="layer-desc">Not generic advice. An AI that reads your actual data and tells you exactly what to post, when, and why.</p>
+        </div>
+      </div>
+
+      <div class="layer-card">
+        <div class="layer-email-preview">
+          <div class="layer-email-header">
+            <div class="layer-email-dot"></div>
+            <div class="layer-email-meta">
+              <div class="layer-email-from">Your AI Strategist</div>
+              <div class="layer-email-subj">Your Monday Briefing — Mar 24</div>
+            </div>
+          </div>
+          <div class="layer-email-body">
+            <div class="layer-email-stats">
+              <span><i class="fa-brands fa-youtube" style="color:#FF0000"></i> 42.1k views ↑12%</span>
+              <span><i class="fa-brands fa-instagram" style="color:#E1306C"></i> 8.4% eng ↑6%</span>
+              <span><i class="fa-brands fa-tiktok"></i> 118k views ↑31%</span>
+            </div>
+            <div class="layer-email-action">
+              <strong>This week:</strong> Post your workout reel Tuesday 7pm — your highest engagement window this month.
+            </div>
+          </div>
+        </div>
+        <div class="layer-copy">
+          <div class="layer-num">04</div>
+          <h3 class="layer-name">Your Weekly Briefing</h3>
+          <p class="layer-desc">Every Monday, an AI-written strategy email lands in your inbox — your numbers, your wins, and exactly what to do next. No login required.</p>
         </div>
       </div>
 
