@@ -12,20 +12,20 @@ export default async function handler(req, res) {
 
   const cleanHandle = handle.replace(/^@/, '').trim();
 
-  // Primary: Instagram web profile API
+  // Primary: Googlebot UA (Instagram serves full meta tags to crawlers)
   let profileData = null;
   try {
-    profileData = await fetchProfileApi(cleanHandle);
+    profileData = await fetchWithGooglebot(cleanHandle);
   } catch (e) {
-    console.error('Primary scrape failed:', e.message);
+    console.error('Googlebot scrape failed:', e.message);
   }
 
-  // Fallback: scrape profile page HTML
+  // Fallback: Instagram mobile API
   if (!profileData) {
     try {
-      profileData = await fetchProfileHtml(cleanHandle);
+      profileData = await fetchProfileApi(cleanHandle);
     } catch (e) {
-      console.error('Fallback scrape failed:', e.message);
+      console.error('API scrape failed:', e.message);
     }
   }
 
@@ -59,6 +59,53 @@ export default async function handler(req, res) {
   });
 }
 
+async function fetchWithGooglebot(handle) {
+  const resp = await fetch(`https://www.instagram.com/${handle}/`, {
+    headers: {
+      'User-Agent': 'Googlebot/2.1 (+http://www.google.com/bot.html)',
+    },
+    redirect: 'follow',
+  });
+
+  if (!resp.ok) throw new Error(`Googlebot fetch returned ${resp.status}`);
+  const html = await resp.text();
+
+  // Extract description meta tag (contains follower count + name)
+  const description = html.match(/<meta\s+(?:name|property)="(?:og:)?description"\s+content="([^"]+)"/)?.[1]
+    || html.match(/content="([^"]*[Ff]ollow[^"]*)"/)?.[1]
+    || '';
+
+  if (!description || !description.includes('ollow')) {
+    throw new Error('No profile description found — likely login wall');
+  }
+
+  // Extract follower count: "1M Followers" or "123,456 Followers"
+  let followers = 0;
+  const followerMatch = description.match(/([\d,.]+[KMkm]?)\s*Followers/i);
+  if (followerMatch) {
+    followers = parseFollowerCount(followerMatch[1]);
+  }
+
+  // Extract name from description: "... from Amanda Bagley (@mandi.bagley)"
+  const descNameMatch = description.match(/from\s+([^(]+)\s*\(/);
+  const titleMatch = html.match(/<title>([^(]+)\(/);
+  const name = descNameMatch ? descNameMatch[1].trim()
+    : titleMatch ? titleMatch[1].trim()
+    : handle;
+
+  // Extract profile photo from og:image
+  let photo = '';
+  const ogImageMatch = html.match(/<meta\s+property="og:image"\s+content="([^"]+)"/);
+  if (ogImageMatch) {
+    photo = ogImageMatch[1].replace(/&amp;/g, '&');
+  }
+
+  // Detect niche from bio portion of description
+  const category = detectNicheFromBio(description);
+
+  return { name, photo, followers, bio: description, category };
+}
+
 async function fetchProfileApi(handle) {
   const url = `https://i.instagram.com/api/v1/users/web_profile_info/?username=${handle}`;
   const resp = await fetch(url, {
@@ -77,59 +124,17 @@ async function fetchProfileApi(handle) {
   const user = data?.data?.user;
   if (!user) throw new Error('No user data in response');
 
+  // Validate we got real data (not an empty shell)
+  if (!user.full_name && !user.edge_followed_by?.count) {
+    throw new Error('API returned empty profile data');
+  }
+
   return {
     name: user.full_name || handle,
     photo: user.profile_pic_url_hd || user.profile_pic_url || '',
     followers: user.edge_followed_by?.count || 0,
     bio: user.biography || '',
     category: user.category_name || detectNicheFromBio(user.biography || ''),
-  };
-}
-
-async function fetchProfileHtml(handle) {
-  const resp = await fetch(`https://www.instagram.com/${handle}/`, {
-    headers: {
-      'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
-      'Accept': 'text/html,application/xhtml+xml',
-      'Accept-Language': 'en-US,en;q=0.9',
-      'Sec-Fetch-Dest': 'document',
-      'Sec-Fetch-Mode': 'navigate',
-      'Sec-Fetch-Site': 'none',
-      'Sec-Fetch-User': '?1',
-    },
-    redirect: 'follow',
-  });
-
-  if (!resp.ok) throw new Error(`HTML fetch returned ${resp.status}`);
-  const html = await resp.text();
-
-  // Try og:image first, then any meta image
-  const ogImage = html.match(/<meta\s+property="og:image"\s+content="([^"]+)"/)?.[1] || '';
-
-  // Try og:description, then name="description"
-  const description = html.match(/<meta\s+property="og:description"\s+content="([^"]+)"/)?.[1]
-    || html.match(/<meta\s+name="description"\s+content="([^"]+)"/)?.[1]
-    || '';
-
-  let followers = 0;
-  const followerMatch = description.match(/([\d,.]+[KMkm]?)\s*Followers/i);
-  if (followerMatch) {
-    followers = parseFollowerCount(followerMatch[1]);
-  }
-
-  // Extract name from title or description
-  const titleMatch = html.match(/<title>([^(]+)\(/);
-  const descNameMatch = description.match(/See Instagram photos and videos from ([^(]+)\(/);
-  const name = descNameMatch ? descNameMatch[1].trim()
-    : titleMatch ? titleMatch[1].trim()
-    : handle;
-
-  return {
-    name,
-    photo: ogImage,
-    followers,
-    bio: description,
-    category: detectNicheFromBio(description),
   };
 }
 
