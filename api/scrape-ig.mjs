@@ -60,15 +60,14 @@ export default async function handler(req, res) {
 }
 
 async function fetchProfileApi(handle) {
-  const url = `https://www.instagram.com/api/v1/users/web_profile_info/?username=${handle}`;
+  const url = `https://i.instagram.com/api/v1/users/web_profile_info/?username=${handle}`;
   const resp = await fetch(url, {
     headers: {
-      'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+      'User-Agent': 'Instagram 278.0.0.19.115 Android',
       'X-IG-App-ID': '936619743392459',
       'Sec-Fetch-Dest': 'empty',
       'Sec-Fetch-Mode': 'cors',
       'Sec-Fetch-Site': 'same-origin',
-      'X-Requested-With': 'XMLHttpRequest',
     },
   });
 
@@ -90,15 +89,27 @@ async function fetchProfileApi(handle) {
 async function fetchProfileHtml(handle) {
   const resp = await fetch(`https://www.instagram.com/${handle}/`, {
     headers: {
-      'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+      'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
+      'Accept': 'text/html,application/xhtml+xml',
+      'Accept-Language': 'en-US,en;q=0.9',
+      'Sec-Fetch-Dest': 'document',
+      'Sec-Fetch-Mode': 'navigate',
+      'Sec-Fetch-Site': 'none',
+      'Sec-Fetch-User': '?1',
     },
+    redirect: 'follow',
   });
 
   if (!resp.ok) throw new Error(`HTML fetch returned ${resp.status}`);
   const html = await resp.text();
 
-  const ogImage = html.match(/<meta property="og:image" content="([^"]+)"/)?.[1] || '';
-  const description = html.match(/<meta property="og:description" content="([^"]+)"/)?.[1] || '';
+  // Try og:image first, then any meta image
+  const ogImage = html.match(/<meta\s+property="og:image"\s+content="([^"]+)"/)?.[1] || '';
+
+  // Try og:description, then name="description"
+  const description = html.match(/<meta\s+property="og:description"\s+content="([^"]+)"/)?.[1]
+    || html.match(/<meta\s+name="description"\s+content="([^"]+)"/)?.[1]
+    || '';
 
   let followers = 0;
   const followerMatch = description.match(/([\d,.]+[KMkm]?)\s*Followers/i);
@@ -106,8 +117,12 @@ async function fetchProfileHtml(handle) {
     followers = parseFollowerCount(followerMatch[1]);
   }
 
-  const nameMatch = description.match(/^([^-]+)\s*-/);
-  const name = nameMatch ? nameMatch[1].trim() : handle;
+  // Extract name from title or description
+  const titleMatch = html.match(/<title>([^(]+)\(/);
+  const descNameMatch = description.match(/See Instagram photos and videos from ([^(]+)\(/);
+  const name = descNameMatch ? descNameMatch[1].trim()
+    : titleMatch ? titleMatch[1].trim()
+    : handle;
 
   return {
     name,
