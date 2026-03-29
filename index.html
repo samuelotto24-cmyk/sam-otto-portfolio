@@ -3400,6 +3400,270 @@
   }
   /* Hide hero content until GSAP reveals it */
   .scatter-hidden { opacity: 0 !important; animation: none !important; }
+
+/* ══════════════════════════════════════════
+   QUIZ OVERLAY
+   ══════════════════════════════════════════ */
+.quiz-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: var(--black);
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+.quiz-overlay.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.quiz-progress {
+  height: 3px;
+  background: rgba(255,255,255,0.06);
+  position: relative;
+}
+.quiz-progress-fill {
+  height: 100%;
+  background: var(--rose);
+  transition: width 0.4s ease;
+  border-radius: 0 2px 2px 0;
+}
+
+.quiz-close {
+  position: absolute;
+  top: 20px;
+  right: 24px;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 24px;
+  cursor: pointer;
+  z-index: 2;
+  transition: color 0.2s;
+}
+.quiz-close:hover { color: var(--text); }
+
+.quiz-body {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 24px;
+}
+
+.quiz-step {
+  display: none;
+  text-align: center;
+  max-width: 500px;
+  width: 100%;
+  animation: quizFadeIn 0.4s ease;
+}
+.quiz-step.active { display: block; }
+
+@keyframes quizFadeIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.quiz-question {
+  font-family: var(--serif);
+  font-size: clamp(28px, 5vw, 40px);
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 32px;
+  line-height: 1.15;
+}
+
+.quiz-input {
+  width: 100%;
+  max-width: 360px;
+  padding: 16px 20px;
+  background: var(--dark-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  color: var(--text);
+  font-size: 16px;
+  font-family: var(--sans);
+  text-align: center;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.quiz-input:focus { border-color: var(--rose); }
+.quiz-input::placeholder { color: var(--text-muted); }
+
+.quiz-next {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 24px;
+  padding: 14px 36px;
+  background: var(--rose);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  font-family: var(--sans);
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+.quiz-next:hover { background: var(--rose-light); transform: translateY(-1px); }
+.quiz-next:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+/* Profile card (step 2 result) */
+.quiz-profile {
+  display: none;
+  background: var(--dark-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px;
+  margin: 24px auto;
+  max-width: 320px;
+  text-align: center;
+  animation: quizFadeIn 0.5s ease;
+}
+.quiz-profile.show { display: block; }
+.quiz-profile-photo {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  border: 2px solid var(--rose);
+  object-fit: cover;
+  margin-bottom: 12px;
+}
+.quiz-profile-name { font-family: var(--serif); font-size: 20px; font-weight: 500; margin-bottom: 4px; }
+.quiz-profile-followers { font-size: 13px; color: var(--text-muted); }
+.quiz-profile-confirm { margin-top: 16px; display: flex; gap: 10px; justify-content: center; }
+.quiz-profile-yes, .quiz-profile-no {
+  padding: 8px 20px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: var(--sans);
+  border: none;
+}
+.quiz-profile-yes { background: var(--rose); color: #fff; }
+.quiz-profile-no { background: transparent; color: var(--text-muted); border: 1px solid var(--border); }
+
+/* Multi-select pills (step 4) */
+.quiz-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  max-width: 440px;
+  margin: 0 auto;
+}
+.quiz-pill {
+  padding: 10px 20px;
+  border-radius: 100px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-sub);
+  font-size: 14px;
+  font-family: var(--sans);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.quiz-pill.selected {
+  background: rgba(16,185,129,0.12);
+  border-color: var(--rose);
+  color: var(--rose-light);
+}
+
+/* Color palette display (step 5) */
+.quiz-palette {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin: 24px 0;
+}
+.quiz-color-swatch {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  border: 2px solid var(--border);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+/* Niche confirm (step 3) */
+.quiz-niche-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  max-width: 360px;
+  margin: 0 auto;
+}
+.quiz-niche-btn {
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-sub);
+  font-size: 13px;
+  font-family: var(--sans);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.quiz-niche-btn.selected {
+  background: rgba(16,185,129,0.12);
+  border-color: var(--rose);
+  color: var(--rose-light);
+}
+
+/* Loading animation */
+.quiz-loading {
+  display: none;
+  text-align: center;
+}
+.quiz-loading.show { display: block; }
+.quiz-loading-text {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+  transition: opacity 0.3s;
+}
+.quiz-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--border);
+  border-top-color: var(--rose);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: 0 auto 20px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Cinematic loading (post-quiz) */
+.quiz-generating {
+  display: none;
+  text-align: center;
+  max-width: 400px;
+}
+.quiz-generating.show { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 60vh; }
+.gen-step {
+  font-size: 15px;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.5s ease, transform 0.5s ease, color 0.3s ease;
+}
+.gen-step.active {
+  opacity: 1;
+  transform: translateY(0);
+  color: var(--text);
+}
+.gen-step.done { color: var(--rose); }
+
+@media (max-width: 480px) {
+  .quiz-niche-grid { grid-template-columns: repeat(2, 1fr); }
+  .quiz-question { font-size: clamp(22px, 6vw, 32px); }
+}
   </style>
 
   <!-- GSAP + ScrollTrigger -->
@@ -3483,6 +3747,7 @@
         <p class="hero-sub">A custom-built page, live analytics from every platform, an AI strategist, and a weekly strategy briefing delivered straight to your inbox — one system, built around your brand.</p>
         <div class="hero-actions">
           <a href="#contact" class="btn-rose btn-hero-cta"><span class="btn-rose-outline" aria-hidden="true"></span><i class="fa-solid fa-paper-plane"></i> Let's Build Yours</a>
+          <a href="javascript:void(0)" class="btn-ghost" onclick="openQuiz()"><i class="fa-solid fa-wand-magic-sparkles"></i> Build My Demo</a>
           <a href="#work" class="btn-ghost">See live work <i class="fa-solid fa-arrow-right"></i></a>
         </div>
         <div class="hero-trust">
@@ -5260,6 +5525,321 @@
     cards.forEach(function(card) { observer.observe(card); });
   })();
   </script>
+
+<!-- QUIZ OVERLAY -->
+<div class="quiz-overlay" id="quizOverlay">
+  <div class="quiz-progress"><div class="quiz-progress-fill" id="quizProgress" style="width:16.6%"></div></div>
+  <button class="quiz-close" onclick="closeQuiz()">&times;</button>
+
+  <div class="quiz-body">
+
+    <!-- Step 1: Name -->
+    <div class="quiz-step active" data-step="1">
+      <div class="quiz-question">What's your name?</div>
+      <input class="quiz-input" id="qName" placeholder="Your name" autofocus>
+      <br>
+      <button class="quiz-next" onclick="quizNext(2)">Next <i class="fa-solid fa-arrow-right"></i></button>
+    </div>
+
+    <!-- Step 2: Instagram -->
+    <div class="quiz-step" data-step="2">
+      <div class="quiz-question">What's your Instagram?</div>
+      <input class="quiz-input" id="qHandle" placeholder="@yourhandle">
+      <br>
+      <button class="quiz-next" id="qHandleBtn" onclick="scrapeProfile()">Find my profile <i class="fa-solid fa-search"></i></button>
+      <div class="quiz-loading" id="qScrapeLoading">
+        <div class="quiz-spinner"></div>
+        <div class="quiz-loading-text" id="qScrapeText">Finding your profile...</div>
+      </div>
+      <div class="quiz-profile" id="qProfile">
+        <img class="quiz-profile-photo" id="qProfilePhoto" src="" alt="">
+        <div class="quiz-profile-name" id="qProfileName"></div>
+        <div class="quiz-profile-followers" id="qProfileFollowers"></div>
+        <div class="quiz-profile-confirm">
+          <button class="quiz-profile-yes" onclick="confirmProfile(true)">That's me!</button>
+          <button class="quiz-profile-no" onclick="confirmProfile(false)">Not me</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 3: Niche -->
+    <div class="quiz-step" data-step="3">
+      <div class="quiz-question" id="qNicheQuestion">What's your niche?</div>
+      <div class="quiz-niche-grid" id="qNicheGrid">
+        <button class="quiz-niche-btn" onclick="selectNiche(this)">Fitness</button>
+        <button class="quiz-niche-btn" onclick="selectNiche(this)">Beauty</button>
+        <button class="quiz-niche-btn" onclick="selectNiche(this)">Lifestyle</button>
+        <button class="quiz-niche-btn" onclick="selectNiche(this)">Food</button>
+        <button class="quiz-niche-btn" onclick="selectNiche(this)">Education</button>
+        <button class="quiz-niche-btn" onclick="selectNiche(this)">Entertainment</button>
+        <button class="quiz-niche-btn" onclick="selectNiche(this)">Fashion</button>
+        <button class="quiz-niche-btn" onclick="selectNiche(this)">Business</button>
+        <button class="quiz-niche-btn" onclick="selectNiche(this)">Other</button>
+      </div>
+      <button class="quiz-next" id="qNicheNext" onclick="quizNext(4)" disabled>Next <i class="fa-solid fa-arrow-right"></i></button>
+    </div>
+
+    <!-- Step 4: What they sell -->
+    <div class="quiz-step" data-step="4">
+      <div class="quiz-question">What do you offer?</div>
+      <div class="quiz-pills" id="qPills">
+        <button class="quiz-pill" onclick="togglePill(this)">Programs & Courses</button>
+        <button class="quiz-pill" onclick="togglePill(this)">Affiliate Codes</button>
+        <button class="quiz-pill" onclick="togglePill(this)">Brand Deals</button>
+        <button class="quiz-pill" onclick="togglePill(this)">Merch</button>
+        <button class="quiz-pill" onclick="togglePill(this)">Coaching</button>
+        <button class="quiz-pill" onclick="togglePill(this)">Digital Products</button>
+        <button class="quiz-pill" onclick="togglePill(this)">Recipes</button>
+        <button class="quiz-pill" onclick="togglePill(this)">Content/Tutorials</button>
+      </div>
+      <button class="quiz-next" onclick="quizNext(5)">Next <i class="fa-solid fa-arrow-right"></i></button>
+    </div>
+
+    <!-- Step 5: Colors -->
+    <div class="quiz-step" data-step="5">
+      <div class="quiz-question">We pulled these from your brand</div>
+      <div class="quiz-palette" id="qPalette"></div>
+      <button class="quiz-next" onclick="quizNext(6)">Looks right <i class="fa-solid fa-check"></i></button>
+    </div>
+
+    <!-- Step 6: Email -->
+    <div class="quiz-step" data-step="6">
+      <div class="quiz-question">Where should we send your mockup?</div>
+      <input class="quiz-input" id="qEmail" type="email" placeholder="your@email.com">
+      <br>
+      <button class="quiz-next" onclick="submitQuiz()">Build my preview <i class="fa-solid fa-wand-magic-sparkles"></i></button>
+    </div>
+
+    <!-- Cinematic loading -->
+    <div class="quiz-generating" id="quizGenerating">
+      <div class="gen-step" data-gen="1">Building your website...</div>
+      <div class="gen-step" data-gen="2">Scaling your analytics...</div>
+      <div class="gen-step" data-gen="3">Training your AI strategist...</div>
+      <div class="gen-step" data-gen="4">Writing your first briefing...</div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ── Quiz Controller ──
+var quizData = { name: '', handle: '', followers: 0, niche: '', sells: [], colors: [], photo: '', email: '' };
+
+function openQuiz() {
+  document.getElementById('quizOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  var nameInput = document.getElementById('qName');
+  if (nameInput) setTimeout(function() { nameInput.focus(); }, 400);
+}
+
+function closeQuiz() {
+  document.getElementById('quizOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function quizNext(step) {
+  // Collect data from current step
+  if (step === 2) {
+    var name = document.getElementById('qName').value.trim();
+    if (!name) return;
+    quizData.name = name;
+  }
+
+  // Hide all steps, show target
+  document.querySelectorAll('.quiz-step').forEach(function(s) { s.classList.remove('active'); });
+  var target = document.querySelector('.quiz-step[data-step="' + step + '"]');
+  if (target) target.classList.add('active');
+
+  // Update progress bar
+  document.getElementById('quizProgress').style.width = (step / 6 * 100) + '%';
+
+  // Pre-populate niche if detected
+  if (step === 3 && quizData.niche) {
+    document.getElementById('qNicheQuestion').textContent = "Looks like you're in " + quizData.niche + ". Is that right?";
+    document.querySelectorAll('.quiz-niche-btn').forEach(function(btn) {
+      if (btn.textContent === quizData.niche) {
+        btn.classList.add('selected');
+        document.getElementById('qNicheNext').disabled = false;
+      }
+    });
+  }
+
+  // Show color palette
+  if (step === 5) {
+    var palette = document.getElementById('qPalette');
+    palette.innerHTML = '';
+    (quizData.colors || []).forEach(function(c) {
+      var swatch = document.createElement('div');
+      swatch.className = 'quiz-color-swatch';
+      swatch.style.background = c.hex;
+      palette.appendChild(swatch);
+    });
+    if (!quizData.colors.length) {
+      palette.innerHTML = '<div style="color:var(--text-muted);font-size:14px">Default palette will be applied</div>';
+    }
+  }
+}
+
+function scrapeProfile() {
+  var handle = document.getElementById('qHandle').value.trim().replace(/^@/, '');
+  if (!handle) return;
+  quizData.handle = handle;
+
+  // Show loading
+  document.getElementById('qHandleBtn').style.display = 'none';
+  document.getElementById('qScrapeLoading').classList.add('show');
+
+  fetch('/api/scrape-ig', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ handle: handle })
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+    document.getElementById('qScrapeLoading').classList.remove('show');
+
+    if (data.success) {
+      // Show profile card
+      document.getElementById('qProfilePhoto').src = data.photo;
+      document.getElementById('qProfileName').textContent = data.name;
+      document.getElementById('qProfileFollowers').textContent = formatFollowers(data.followers) + ' followers';
+      document.getElementById('qProfile').classList.add('show');
+
+      quizData.photo = data.photo;
+      quizData.followers = data.followers;
+      quizData.niche = data.category || '';
+      quizData.colors = data.colors || [];
+      if (!quizData.name || quizData.name === '') quizData.name = data.name;
+    } else {
+      // Fallback: just advance to niche step manually
+      document.getElementById('qHandleBtn').style.display = '';
+      quizNext(3);
+    }
+  })
+  .catch(function() {
+    document.getElementById('qScrapeLoading').classList.remove('show');
+    document.getElementById('qHandleBtn').style.display = '';
+    quizNext(3);
+  });
+}
+
+function confirmProfile(isCorrect) {
+  if (isCorrect) {
+    quizNext(3);
+  } else {
+    document.getElementById('qProfile').classList.remove('show');
+    document.getElementById('qHandleBtn').style.display = '';
+    quizNext(3);
+  }
+}
+
+function selectNiche(btn) {
+  document.querySelectorAll('.quiz-niche-btn').forEach(function(b) { b.classList.remove('selected'); });
+  btn.classList.add('selected');
+  quizData.niche = btn.textContent;
+  document.getElementById('qNicheNext').disabled = false;
+}
+
+function togglePill(btn) {
+  btn.classList.toggle('selected');
+}
+
+function submitQuiz() {
+  var email = document.getElementById('qEmail').value.trim();
+  if (!email) return;
+  quizData.email = email;
+
+  // Collect sells
+  quizData.sells = [];
+  document.querySelectorAll('.quiz-pill.selected').forEach(function(p) {
+    quizData.sells.push(p.textContent);
+  });
+
+  // Hide steps, show cinematic loading
+  document.querySelectorAll('.quiz-step').forEach(function(s) { s.classList.remove('active'); });
+  document.getElementById('quizProgress').style.width = '100%';
+  var gen = document.getElementById('quizGenerating');
+  gen.classList.add('show');
+
+  // Animate generation steps
+  var steps = gen.querySelectorAll('.gen-step');
+  var delay = 0;
+  steps.forEach(function(s, i) {
+    setTimeout(function() {
+      s.classList.add('active');
+      if (i > 0) steps[i - 1].classList.add('done');
+    }, delay);
+    delay += 2500;
+  });
+
+  // First: generate AI copy
+  fetch('/api/generate-copy', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      name: quizData.name,
+      niche: quizData.niche,
+      sells: quizData.sells,
+      followers: quizData.followers
+    })
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(copyResult) {
+    // Then: generate mockup with the copy
+    return fetch('/api/generate-mockup', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: quizData.name,
+        email: quizData.email,
+        handle: quizData.handle,
+        followers: quizData.followers,
+        niche: quizData.niche,
+        sells: quizData.sells,
+        colors: quizData.colors,
+        photo: quizData.photo,
+        copy: copyResult.success ? copyResult.copy : {}
+      })
+    });
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(result) {
+    if (result.success) {
+      // Wait for animation to finish, then redirect
+      var remaining = Math.max(0, 10000 - Date.now());
+      setTimeout(function() {
+        window.location.href = result.previewUrl;
+      }, 2000);
+    }
+  })
+  .catch(function(err) {
+    console.error('Quiz submission failed:', err);
+    alert('Something went wrong. Please try again.');
+    closeQuiz();
+  });
+}
+
+function formatFollowers(n) {
+  if (n >= 1000000) return (n / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
+  if (n >= 1000) return (n / 1000).toFixed(1).replace(/\.0$/, '') + 'K';
+  return String(n);
+}
+
+// Enter key advances on input steps
+document.addEventListener('keydown', function(e) {
+  if (e.key !== 'Enter') return;
+  var overlay = document.getElementById('quizOverlay');
+  if (!overlay.classList.contains('open')) return;
+
+  var active = overlay.querySelector('.quiz-step.active');
+  if (!active) return;
+  var step = parseInt(active.dataset.step);
+
+  if (step === 1) quizNext(2);
+  else if (step === 2) scrapeProfile();
+  else if (step === 6) submitQuiz();
+});
+</script>
 
 </body>
 </html>
