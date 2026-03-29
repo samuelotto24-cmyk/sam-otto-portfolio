@@ -167,27 +167,7 @@
         radial-gradient(ellipse 35% 45% at 18% 72%, rgba(180,120,30,0.07) 0%, transparent 55%);
       pointer-events: none;
     }
-    .hero-ghost-text {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-family: var(--serif);
-      font-size: clamp(48px, 7vw, 110px);
-      font-weight: 600;
-      color: rgba(16,185,129,0.07);
-      white-space: nowrap;
-      pointer-events: none;
-      z-index: 0;
-      letter-spacing: 0.04em;
-      animation: ghostDrift 20s ease-in-out infinite;
-      user-select: none;
-      transition: opacity 0.3s ease;
-    }
-    @keyframes ghostDrift {
-      0%, 100% { transform: translate(-50%, -50%) translateX(0); }
-      50%      { transform: translate(-50%, -50%) translateX(30px); }
-    }
+
 
     #hero-orbits {
       position: absolute;
@@ -3382,7 +3362,6 @@
   </nav>
 
   <!-- HERO -->
-  <div class="hero-ghost-text" aria-hidden="true">ARE YOU GROWING?</div>
 
   <section id="hero">
     <div class="hero-bg"></div>
@@ -4578,19 +4557,13 @@
       requestAnimationFrame(draw);
     })();
 
-    // Scroll progress bar + ghost text fade
+    // Scroll progress bar
     (function() {
-      var ghost = document.querySelector('.hero-ghost-text');
-      var fadeOutAt = window.innerHeight * 1.8; // fade out after ~1.8 viewports of scrolling
       window.addEventListener('scroll', function() {
         var scrolled = document.documentElement.scrollTop;
         var total    = document.documentElement.scrollHeight - document.documentElement.clientHeight;
         document.getElementById('scroll-progress').style.width =
           (total > 0 ? (scrolled / total) * 100 : 0) + '%';
-        if (ghost) {
-          var opacity = Math.max(0, 1 - scrolled / fadeOutAt);
-          ghost.style.opacity = opacity;
-        }
       }, { passive: true });
     })();
 
