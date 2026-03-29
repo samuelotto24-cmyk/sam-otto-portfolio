@@ -1,6 +1,10 @@
 {
   "rewrites": [
+    { "source": "/preview/:hash", "destination": "/api/preview/:hash" },
     { "source": "/api/(.*)", "destination": "/api/$1" },
     { "source": "/revenue-calculator", "destination": "/revenue-calculator.html" }
+  ],
+  "crons": [
+    { "path": "/api/cron/cleanup-previews", "schedule": "0 4 * * *" }
   ]
 }
