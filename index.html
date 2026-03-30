@@ -6299,6 +6299,19 @@ function showInlinePreview(previewUrl) {
     + '<div class="preview-browser-cta"><a href="' + previewUrl + '" target="_blank">Open full preview →</a></div>'
     + '</div>'
 
+    // Photo grid from their Instagram
+    + (quizData.postImages.length ? (
+      '<div style="max-width:700px;margin:0 auto 32px">'
+      + '<div style="font-size:11px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--rose);margin-bottom:12px;text-align:center">Your content, featured on your site</div>'
+      + '<div style="display:grid;grid-template-columns:repeat(' + Math.min(quizData.postImages.length, 4) + ',1fr);gap:6px;border-radius:12px;overflow:hidden">'
+      + quizData.postImages.slice(0, 8).map(function(url) {
+          return '<img src="' + url + '" style="width:100%;aspect-ratio:1;object-fit:cover;display:block" onerror="this.style.display=\'none\'">';
+        }).join('')
+      + '</div>'
+      + '<div style="font-size:11px;color:var(--text-muted);text-align:center;margin-top:8px">Pulled from your Instagram · These would be featured throughout your site</div>'
+      + '</div>'
+    ) : '')
+
     // Layers
     + '<div class="preview-layers">'
 
