@@ -6114,14 +6114,16 @@ function scrapeProfile() {
       quizData.postImages = data.postImages || [];
       if (!quizData.name || quizData.name === '') quizData.name = data.name;
     } else {
-      // Scrape failed — skip to niche, use default colors
+      // Scrape failed — skip to niche, use defaults
       quizData.colors = [];
+      quizData.postImages = [];
       quizNext(3);
     }
   })
   .catch(function() {
     document.getElementById('qScrapeLoading').classList.remove('show');
     quizData.colors = [];
+    quizData.postImages = [];
     quizNext(3);
   });
 }

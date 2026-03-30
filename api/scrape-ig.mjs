@@ -62,10 +62,16 @@ export default async function handler(req, res) {
     }
 
     // Extract post images for the preview
-    const postImages = (profile.latestPosts || [])
+    let postImages = (profile.latestPosts || [])
       .filter(function(p) { return p.displayUrl; })
       .slice(0, 8)
       .map(function(p) { return p.displayUrl; });
+
+    // Fallback: niche-appropriate placeholder images if no posts
+    if (postImages.length < 3) {
+      const niche = profile.businessCategoryName || detectNicheFromBio(profile.biography || '');
+      postImages = getNicheFallbackImages(niche);
+    }
 
     return res.status(200).json({
       success: true,
@@ -91,6 +97,22 @@ function defaultColors() {
     { hex: '#E8DDD7', rgb: { r: 232, g: 221, b: 215 }, weight: 0.15 },
     { hex: '#8B7B74', rgb: { r: 139, g: 123, b: 116 }, weight: 0.1 },
   ];
+}
+
+function getNicheFallbackImages(niche) {
+  // Curated picsum.photos IDs by niche (deterministic, always load)
+  const sets = {
+    Fitness: [870, 685, 597, 836, 866, 529],
+    Beauty: [64, 669, 682, 710, 433, 579],
+    Food: [292, 488, 429, 493, 312, 835],
+    Fashion: [669, 318, 433, 710, 682, 579],
+    Lifestyle: [836, 685, 870, 597, 529, 866],
+    Education: [180, 306, 367, 403, 380, 392],
+    Entertainment: [96, 334, 593, 823, 454, 527],
+    Business: [180, 306, 367, 403, 380, 392],
+  };
+  const ids = sets[niche] || sets.Lifestyle;
+  return ids.map(function(id) { return 'https://picsum.photos/id/' + id + '/400/400'; });
 }
 
 function detectNicheFromBio(bio) {
