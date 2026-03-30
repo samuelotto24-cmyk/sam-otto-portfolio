@@ -313,78 +313,69 @@ h3 { font-family: var(--serif); font-size: 26px; font-weight: 500; margin-bottom
 <div class="slide" data-slide="1" data-splash="Problem">
   <div class="section-title-splash"><div class="splash-text"></div></div>
   <div class="accent-bar"></div>
-  <div class="slide-content" style="display:flex;flex-direction:column;height:100%;padding:30px 50px 0 50px;overflow-y:auto;">
+  <div class="slide-content" style="display:flex;flex-direction:column;height:100%;padding:20px 40px 50px 40px;overflow:hidden;">
 
     <!-- Header Row -->
-    <div style="display:flex;gap:40px;align-items:flex-end;margin-bottom:16px;">
+    <div style="display:flex;gap:32px;align-items:flex-end;margin-bottom:10px;flex-shrink:0;">
       <div style="flex:1;">
-        <div class="fade-up" style="font-family:var(--sans);font-size:10px;font-weight:400;letter-spacing:0.14em;color:rgba(235,231,223,0.35);text-transform:uppercase;margin-bottom:6px;">01 — PROBLEM</div>
-        <div class="fade-up" style="width:28px;height:3px;background:var(--accent);margin-bottom:14px;"></div>
-        <div class="slide-headline" style="font-size:clamp(32px,4vw,44px);font-weight:400;color:var(--text);line-height:1.1;">Creators are leaving money on the table.</div>
-        <div class="slide-headline" style="font-size:clamp(32px,4vw,44px);font-weight:600;color:#C0392B;line-height:1.1;">Every. Single. Day.</div>
+        <div class="fade-up" style="font-family:var(--sans);font-size:10px;font-weight:400;letter-spacing:0.14em;color:rgba(235,231,223,0.35);text-transform:uppercase;margin-bottom:4px;">01 — PROBLEM</div>
+        <div class="slide-headline" style="font-size:clamp(26px,3.5vw,38px);font-weight:400;color:var(--text);line-height:1.1;">Creators are leaving money on the table.</div>
+        <div class="slide-headline" style="font-size:clamp(26px,3.5vw,38px);font-weight:600;color:#C0392B;line-height:1.1;">Every. Single. Day.</div>
       </div>
-      <div class="fade-up" style="display:flex;gap:28px;flex-shrink:0;">
-        <div>
-          <div style="font-family:var(--serif);font-size:48px;font-weight:600;color:#C0392B;">15</div>
-          <div style="font-family:var(--sans);font-size:13px;font-weight:300;color:rgba(235,231,223,0.4);">disconnected tools</div>
+      <div class="fade-up" style="display:flex;gap:24px;flex-shrink:0;">
+        <div style="text-align:center;">
+          <div style="font-family:var(--serif);font-size:40px;font-weight:600;color:#C0392B;">15</div>
+          <div style="font-family:var(--sans);font-size:11px;font-weight:300;color:rgba(235,231,223,0.4);">tools</div>
         </div>
-        <div>
-          <div style="font-family:var(--serif);font-size:48px;font-weight:600;color:#C0392B;" id="totalCounter">$0</div>
-          <div style="font-family:var(--sans);font-size:13px;font-weight:300;color:rgba(235,231,223,0.4);">wasted per month</div>
+        <div style="text-align:center;">
+          <div style="font-family:var(--serif);font-size:40px;font-weight:600;color:#C0392B;" id="totalCounter">$0</div>
+          <div style="font-family:var(--sans);font-size:11px;font-weight:300;color:rgba(235,231,223,0.4);">/month wasted</div>
         </div>
       </div>
     </div>
 
     <!-- Tool Receipt Grid -->
-    <div class="fade-up" style="background:rgba(192,57,43,0.04);border-radius:14px;padding:16px;flex:1;overflow-y:auto;">
+    <div class="fade-up" style="background:rgba(192,57,43,0.04);border-radius:12px;padding:12px;flex:1;display:flex;flex-direction:column;overflow:hidden;">
       <style>
-        .tool-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:10px; }
-        .tool-card { background:#F8F8F8; border-radius:12px; padding:12px; position:relative; display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:100px; box-shadow:0 2px 12px rgba(0,0,0,0.10); }
-        .tool-card img { height:36px; max-width:60px; object-fit:contain; filter:grayscale(1) brightness(0.6); }
-        .tool-card .tool-name { font-family:var(--sans); font-size:10px; font-weight:600; text-transform:uppercase; letter-spacing:0.06em; color:#666; margin-top:6px; text-align:center; }
-        .tool-card .price-badge { position:absolute; bottom:6px; right:6px; background:#C0392B; color:#fff; font-family:var(--sans); font-size:12px; font-weight:700; padding:2px 8px; border-radius:6px; }
-        .tool-card .logo-fallback { width:48px; height:36px; border-radius:6px; display:flex; align-items:center; justify-content:center; font-family:var(--sans); font-size:9px; font-weight:700; color:#fff; text-align:center; line-height:1.1; }
-        .cat-label { font-family:var(--sans); font-size:9px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:rgba(235,231,223,0.35); grid-column:1/-1; margin-top:4px; }
+        .tool-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:8px; flex:1; }
+        .tool-card { background:#F8F8F8; border-radius:10px; padding:8px 6px; position:relative; display:flex; flex-direction:column; align-items:center; justify-content:center; box-shadow:0 2px 8px rgba(0,0,0,0.08); }
+        .tool-card img { height:28px; max-width:50px; object-fit:contain; filter:grayscale(1) brightness(0.6); }
+        .tool-card .tool-name { font-family:var(--sans); font-size:9px; font-weight:600; text-transform:uppercase; letter-spacing:0.04em; color:#666; margin-top:4px; text-align:center; }
+        .tool-card .price-badge { position:absolute; top:4px; right:4px; background:#C0392B; color:#fff; font-family:var(--sans); font-size:10px; font-weight:700; padding:1px 6px; border-radius:4px; }
+        .tool-card .logo-fallback { width:40px; height:28px; border-radius:4px; display:flex; align-items:center; justify-content:center; font-family:var(--sans); font-size:8px; font-weight:700; color:#fff; text-align:center; line-height:1.1; }
       </style>
 
       <div class="tool-grid">
-        <div class="cat-label">Website & Link-in-Bio</div>
-        <div class="tool-card"><img src="https://logo.clearbit.com/linktr.ee" alt="Linktree" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="logo-fallback" style="display:none;background:#39E09B;">Linktree</div><div class="tool-name">Linktree</div><div class="price-badge">$24/mo</div></div>
-        <div class="tool-card"><img src="https://logo.clearbit.com/beacons.ai" alt="Beacons" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="logo-fallback" style="display:none;background:#5B5FC7;">Beacons</div><div class="tool-name">Beacons</div><div class="price-badge">$30/mo</div></div>
-        <div class="tool-card"><img src="https://logo.clearbit.com/squarespace.com" alt="Squarespace" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="logo-fallback" style="display:none;background:#000;">Squarespace</div><div class="tool-name">Squarespace</div><div class="price-badge">$49/mo</div></div>
+        <div class="tool-card"><img src="https://logo.clearbit.com/linktr.ee" alt="Linktree" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="logo-fallback" style="display:none;background:#39E09B;">Linktree</div><div class="tool-name">Linktree</div><div class="price-badge">$24</div></div>
+        <div class="tool-card"><img src="https://logo.clearbit.com/beacons.ai" alt="Beacons" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="logo-fallback" style="display:none;background:#5B5FC7;">Beacons</div><div class="tool-name">Beacons</div><div class="price-badge">$30</div></div>
+        <div class="tool-card"><img src="https://logo.clearbit.com/squarespace.com" alt="Squarespace" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="logo-fallback" style="display:none;background:#000;">Square</div><div class="tool-name">Squarespace</div><div class="price-badge">$49</div></div>
+        <div class="tool-card"><img src="https://logo.clearbit.com/sproutsocial.com" alt="Sprout Social" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="logo-fallback" style="display:none;background:#59CB59;">Sprout</div><div class="tool-name">Sprout Social</div><div class="price-badge">$249</div></div>
+        <div class="tool-card"><img src="https://logo.clearbit.com/later.com" alt="Later" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="logo-fallback" style="display:none;background:#F74967;">Later</div><div class="tool-name">Later</div><div class="price-badge">$80</div></div>
 
-        <div class="cat-label" style="grid-column:4/-1;">Analytics & Scheduling</div>
-        <div class="tool-card"><img src="https://logo.clearbit.com/sproutsocial.com" alt="Sprout Social" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="logo-fallback" style="display:none;background:#59CB59;">Sprout</div><div class="tool-name">Sprout Social</div><div class="price-badge">$249/mo</div></div>
-        <div class="tool-card"><img src="https://logo.clearbit.com/later.com" alt="Later" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="logo-fallback" style="display:none;background:#F74967;">Later</div><div class="tool-name">Later</div><div class="price-badge">$80/mo</div></div>
+        <div class="tool-card"><img src="https://logo.clearbit.com/iconosquare.com" alt="Iconosquare" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="logo-fallback" style="display:none;background:#4353FF;">Icono</div><div class="tool-name">Iconosquare</div><div class="price-badge">$59</div></div>
+        <div class="tool-card"><img src="https://logo.clearbit.com/convertkit.com" alt="ConvertKit" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="logo-fallback" style="display:none;background:#FB6970;">Kit</div><div class="tool-name">ConvertKit</div><div class="price-badge">$79</div></div>
+        <div class="tool-card"><img src="https://logo.clearbit.com/beehiiv.com" alt="Beehiiv" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="logo-fallback" style="display:none;background:#FFD500;color:#000;">Beehiiv</div><div class="tool-name">Beehiiv</div><div class="price-badge">$42</div></div>
+        <div class="tool-card"><img src="https://logo.clearbit.com/mailchimp.com" alt="Mailchimp" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="logo-fallback" style="display:none;background:#FFE01B;color:#000;">Mail</div><div class="tool-name">Mailchimp</div><div class="price-badge">$100</div></div>
+        <div class="tool-card"><img src="https://logo.clearbit.com/openai.com" alt="ChatGPT" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="logo-fallback" style="display:none;background:#10A37F;">GPT</div><div class="tool-name">ChatGPT</div><div class="price-badge">$20</div></div>
 
-        <div class="tool-card"><img src="https://logo.clearbit.com/iconosquare.com" alt="Iconosquare" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="logo-fallback" style="display:none;background:#4353FF;">Icono</div><div class="tool-name">Iconosquare</div><div class="price-badge">$59/mo</div></div>
-        <div class="tool-card"><img src="https://logo.clearbit.com/convertkit.com" alt="ConvertKit" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="logo-fallback" style="display:none;background:#FB6970;">Kit</div><div class="tool-name">ConvertKit</div><div class="price-badge">$79/mo</div></div>
-        <div class="tool-card"><img src="https://logo.clearbit.com/beehiiv.com" alt="Beehiiv" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="logo-fallback" style="display:none;background:#FFD500;color:#000;">Beehiiv</div><div class="tool-name">Beehiiv</div><div class="price-badge">$42/mo</div></div>
-        <div class="tool-card"><img src="https://logo.clearbit.com/mailchimp.com" alt="Mailchimp" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="logo-fallback" style="display:none;background:#FFE01B;color:#000;">Mailchimp</div><div class="tool-name">Mailchimp</div><div class="price-badge">$100/mo</div></div>
-        <div class="tool-card"><img src="https://logo.clearbit.com/openai.com" alt="ChatGPT" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="logo-fallback" style="display:none;background:#10A37F;">ChatGPT</div><div class="tool-name">ChatGPT</div><div class="price-badge">$20/mo</div></div>
-
-        <div class="tool-card"><img src="https://logo.clearbit.com/jasper.ai" alt="Jasper" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="logo-fallback" style="display:none;background:#7B61FF;">Jasper</div><div class="tool-name">Jasper</div><div class="price-badge">$99/mo</div></div>
-        <div class="tool-card"><img src="https://logo.clearbit.com/notion.so" alt="Notion AI" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="logo-fallback" style="display:none;background:#000;">Notion</div><div class="tool-name">Notion AI</div><div class="price-badge">$16/mo</div></div>
-        <div class="tool-card"><img src="https://logo.clearbit.com/impact.com" alt="Impact" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="logo-fallback" style="display:none;background:#2B3990;">Impact</div><div class="tool-name">Impact</div><div class="price-badge">$150/mo</div></div>
-        <div class="tool-card"><img src="https://logo.clearbit.com/gumroad.com" alt="Gumroad" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="logo-fallback" style="display:none;background:#FF90E8;">Gumroad</div><div class="tool-name">Gumroad</div><div class="price-badge">$50/mo</div></div>
-        <div class="tool-card"><img src="https://logo.clearbit.com/stanstore.com" alt="Stan Store" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="logo-fallback" style="display:none;background:#5865F2;">Stan</div><div class="tool-name">Stan Store</div><div class="price-badge">$99/mo</div></div>
+        <div class="tool-card"><img src="https://logo.clearbit.com/jasper.ai" alt="Jasper" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="logo-fallback" style="display:none;background:#7B61FF;">Jasper</div><div class="tool-name">Jasper</div><div class="price-badge">$99</div></div>
+        <div class="tool-card"><img src="https://logo.clearbit.com/notion.so" alt="Notion AI" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="logo-fallback" style="display:none;background:#000;">Notion</div><div class="tool-name">Notion AI</div><div class="price-badge">$16</div></div>
+        <div class="tool-card"><img src="https://logo.clearbit.com/impact.com" alt="Impact" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="logo-fallback" style="display:none;background:#2B3990;">Impact</div><div class="tool-name">Impact</div><div class="price-badge">$150</div></div>
+        <div class="tool-card"><img src="https://logo.clearbit.com/gumroad.com" alt="Gumroad" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="logo-fallback" style="display:none;background:#FF90E8;">Gum</div><div class="tool-name">Gumroad</div><div class="price-badge">$50</div></div>
+        <div class="tool-card"><img src="https://logo.clearbit.com/stanstore.com" alt="Stan Store" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="logo-fallback" style="display:none;background:#5865F2;">Stan</div><div class="tool-name">Stan Store</div><div class="price-badge">$99</div></div>
       </div>
 
       <!-- Total Bar -->
-      <div style="display:flex;align-items:center;gap:16px;margin-top:14px;padding:10px 0;border-top:2px dashed rgba(192,57,43,0.3);">
-        <div style="font-family:var(--sans);font-size:16px;font-weight:700;color:var(--text);white-space:nowrap;">15 disconnected tools</div>
+      <div style="display:flex;align-items:center;gap:12px;margin-top:8px;padding-top:8px;border-top:2px dashed rgba(192,57,43,0.3);flex-shrink:0;">
+        <div style="font-family:var(--sans);font-size:14px;font-weight:700;color:var(--text);white-space:nowrap;">15 disconnected tools</div>
         <div style="flex:1;border-top:1px dashed rgba(235,231,223,0.15);"></div>
-        <div style="font-family:var(--serif);font-size:42px;font-weight:700;color:#C0392B;white-space:nowrap;" id="totalDisplay">$1,146 / month</div>
-      </div>
-      <div style="text-align:center;margin-top:6px;">
-        <div style="font-family:var(--sans);font-size:16px;font-weight:700;color:#C0392B;">$13,752 per year. On tools that have never spoken to each other.</div>
+        <div style="font-family:var(--serif);font-size:36px;font-weight:700;color:#C0392B;white-space:nowrap;" id="totalDisplay">$1,146 / month</div>
       </div>
     </div>
 
     <!-- Closing -->
-    <div class="fade-up" style="text-align:center;padding:12px 0;">
-      <div style="font-family:var(--serif);font-size:28px;font-weight:700;color:var(--text);">None of these connect. None of them tell you what's converting.</div>
-      <div style="font-family:var(--sans);font-size:17px;font-weight:700;color:#C0392B;margin-top:4px;">The problem isn't your content. It's that you're running a business on tools built for hobbyists.</div>
+    <div class="fade-up" style="text-align:center;padding:8px 0 0 0;flex-shrink:0;">
+      <div style="font-family:var(--sans);font-size:15px;font-weight:700;color:#C0392B;">$13,752/yr on tools that have never spoken to each other.</div>
     </div>
   </div>
 
