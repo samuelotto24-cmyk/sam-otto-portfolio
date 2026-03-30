@@ -472,11 +472,6 @@ h3 { font-family: var(--serif); font-size: 26px; font-weight: 500; margin-bottom
           </div>
         </div>
       </div>
-      <div class="col fade-up">
-        <div class="video-wrap">
-          <video muted loop playsinline autoplay id="demoVideo" preload="auto" style="display:block;width:100%;"><source src="/pitch/demo-video.mp4" type="video/mp4"></video>
-        </div>
-      </div>
     </div>
   </div>
 </div>
@@ -489,31 +484,38 @@ h3 { font-family: var(--serif); font-size: 26px; font-weight: 500; margin-bottom
       <div class="slide-label">03 — Solution</div>
       <div class="slide-label-line" style="margin-bottom:8px;"></div>
     </div>
-    <div>
-      <div>
-        <div class="slide-headline" style="font-size:clamp(28px,3.5vw,40px);font-weight:500;color:var(--text);">Six Social Media Platforms.</div>
-        <div class="slide-headline" style="font-size:clamp(28px,3.5vw,40px);font-weight:500;color:var(--accent);">One Growth Engine.</div>
+    <div class="row" style="align-items:center;">
+      <div class="col" style="max-width:42%;">
+        <div>
+          <div class="slide-headline" style="font-size:clamp(28px,3.5vw,40px);font-weight:500;color:var(--text);">Six Social Media Platforms.</div>
+          <div class="slide-headline" style="font-size:clamp(28px,3.5vw,40px);font-weight:500;color:var(--accent);">One Growth Engine.</div>
+        </div>
+        <div class="fade-up" style="margin-top:10px;display:flex;flex-direction:column;gap:6px;">
+          <div class="card card-accent" style="padding:10px 16px;">
+            <div style="font-size:18px;font-weight:600;">🌐 Your Website</div>
+            <div style="font-size:15px;color:var(--text-muted);margin-top:2px;">Custom domain, tracked affiliate codes, brand deal pages.</div>
+          </div>
+          <div class="card card-purple" style="padding:10px 16px;">
+            <div style="font-size:18px;font-weight:600;">📊 Your Analytics</div>
+            <div style="font-size:15px;color:var(--text-muted);margin-top:2px;">IG, TikTok, YouTube — one dashboard showing what drives revenue.</div>
+          </div>
+          <div class="card card-green" style="padding:10px 16px;">
+            <div style="font-size:18px;font-weight:600;">🤖 Your AI Strategist</div>
+            <div style="font-size:15px;color:var(--text-muted);margin-top:2px;">Reads YOUR numbers. Tells you what to post to maximize conversions.</div>
+          </div>
+          <div class="card card-gold" style="padding:10px 16px;">
+            <div style="font-size:18px;font-weight:600;">📬 Weekly Briefing</div>
+            <div style="font-size:15px;color:var(--text-muted);margin-top:2px;">Every Monday: top content, conversion insights, and your next moves.</div>
+          </div>
+        </div>
+        <div class="fade-up" style="margin-top:8px;">
+          <div style="font-family:var(--sans);font-size:18px;font-weight:700;color:var(--accent);">Live in 72 hours. Done for you. Built to convert.</div>
+        </div>
       </div>
-      <div class="fade-up" style="margin-top:10px;display:flex;flex-direction:column;gap:6px;">
-        <div class="card card-accent" style="padding:10px 16px;">
-          <div style="font-size:18px;font-weight:600;">🌐 Your Website</div>
-          <div style="font-size:15px;color:var(--text-muted);margin-top:2px;">Custom domain, tracked affiliate codes, brand deal pages.</div>
+      <div class="col fade-up">
+        <div class="video-wrap">
+          <video muted loop playsinline autoplay id="demoVideo" preload="auto" style="display:block;width:100%;"><source src="/pitch/demo-video.mp4" type="video/mp4"></video>
         </div>
-        <div class="card card-purple" style="padding:10px 16px;">
-          <div style="font-size:18px;font-weight:600;">📊 Your Analytics</div>
-          <div style="font-size:15px;color:var(--text-muted);margin-top:2px;">IG, TikTok, YouTube — one dashboard showing what drives revenue.</div>
-        </div>
-        <div class="card card-green" style="padding:10px 16px;">
-          <div style="font-size:18px;font-weight:600;">🤖 Your AI Strategist</div>
-          <div style="font-size:15px;color:var(--text-muted);margin-top:2px;">Reads YOUR numbers. Tells you what to post to maximize conversions.</div>
-        </div>
-        <div class="card card-gold" style="padding:10px 16px;">
-          <div style="font-size:18px;font-weight:600;">📬 Weekly Briefing</div>
-          <div style="font-size:15px;color:var(--text-muted);margin-top:2px;">Every Monday: top content, conversion insights, and your next moves.</div>
-        </div>
-      </div>
-      <div class="fade-up" style="margin-top:8px;">
-        <div style="font-family:var(--sans);font-size:18px;font-weight:700;color:var(--accent);">Live in 72 hours. Done for you. Built to convert.</div>
       </div>
     </div>
   </div>
@@ -1266,7 +1268,7 @@ function goTo(n) {
   }
 
   // Auto-play videos on their slides
-  if (current === 2 && demoVideo) { demoVideo.currentTime = 0; demoVideo.play().catch(function(){}); }
+  if (current === 3 && demoVideo) { demoVideo.currentTime = 0; demoVideo.play().catch(function(){}); }
   else if (demoVideo) { demoVideo.pause(); }
   if (current === 4 && hubVideo) { hubVideo.currentTime = 0; hubVideo.play().catch(function(){}); }
   else if (hubVideo) { hubVideo.pause(); }
