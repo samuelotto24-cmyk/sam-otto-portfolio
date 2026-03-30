@@ -747,87 +747,56 @@
       color: var(--rose); margin-bottom: 16px;
     }
 
-    /* ── CREATOR TOOL STACK ── */
+    /* ── CREATOR TOOL STACK (compact) ── */
     .ts-grid {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
-      gap: 16px;
+      gap: 10px;
     }
-    .ts-cat-label {
-      grid-column: 1 / -1;
-      font-size: 11px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--text-muted);
-      text-align: left;
-      padding-top: 12px;
-    }
-    .ts-cat-label:first-child { padding-top: 0; }
     .ts-card {
       position: relative;
       background: var(--dark-card);
       border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 20px 12px 14px;
+      border-radius: 12px;
+      padding: 14px 8px 10px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      gap: 8px;
-      min-height: 140px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+      gap: 4px;
+      min-height: 90px;
     }
-    .ts-logo {
-      height: 56px;
-      width: auto;
-      max-width: 80px;
-      object-fit: contain;
-      filter: grayscale(100%);
-      opacity: 0.85;
-    }
-    .ts-logo-fallback {
-      background: rgba(255,255,255,0.06);
-      border-radius: 8px;
-      padding: 8px 12px;
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--text-muted);
-      text-align: center;
-      height: 56px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    .ts-icon {
+      font-size: 24px;
+      line-height: 1;
+      filter: grayscale(80%);
+      opacity: 0.8;
     }
     .ts-name {
-      font-size: 11px;
+      font-size: 9px;
       text-transform: uppercase;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.05em;
       color: var(--text-muted);
       text-align: center;
+      line-height: 1.2;
     }
     .ts-price {
       position: absolute;
-      bottom: 10px;
-      right: 10px;
+      bottom: 6px;
+      right: 6px;
       background: #C0392B;
       color: #fff;
-      font-size: 12px;
+      font-size: 9px;
       font-weight: 700;
-      border-radius: 8px;
-      padding: 3px 9px;
+      border-radius: 6px;
+      padding: 2px 6px;
       line-height: 1.3;
     }
-    @media (max-width: 1199px) {
-      .ts-grid { grid-template-columns: repeat(4, 1fr); }
-    }
     @media (max-width: 768px) {
-      .ts-grid { grid-template-columns: repeat(3, 1fr); gap: 10px; }
-      .ts-card { min-height: 120px; padding: 16px 8px 12px; }
-      .ts-logo { height: 40px; }
-      .ts-name { font-size: 9px; }
-      .ts-price { font-size: 10px; padding: 2px 7px; bottom: 6px; right: 6px; }
-      .ts-cat-label { font-size: 9px; }
+      .ts-grid { grid-template-columns: repeat(5, 1fr); gap: 6px; }
+      .ts-card { min-height: 72px; padding: 10px 4px 8px; border-radius: 10px; }
+      .ts-icon { font-size: 18px; }
+      .ts-name { font-size: 7px; }
+      .ts-price { font-size: 7px; padding: 1px 4px; bottom: 4px; right: 4px; border-radius: 4px; }
     }
 
     /* ── (old compare section removed) ── */
@@ -4384,163 +4353,126 @@
     </div>
   </section>
 
-  <!-- CREATOR TOOL STACK -->
-  <section id="tool-stack" style="padding:clamp(48px,8vw,100px) 0;background:var(--black)">
+  <!-- CREATOR TOOL STACK (compact) -->
+  <section id="tool-stack" style="padding:clamp(32px,5vw,60px) 0;background:var(--black)">
     <div class="inner" style="text-align:center">
-      <h2 style="font-family:var(--serif);font-size:clamp(32px,5vw,56px);font-weight:900;color:var(--text);letter-spacing:-0.02em;line-height:1.1;margin-bottom:16px">This is what most creators<br>are paying for right now.</h2>
-      <p style="font-size:clamp(16px,2vw,22px);color:var(--text-muted);max-width:640px;margin:0 auto 40px;line-height:1.5">15 tools. None of them talking to each other. None of them telling you what's converting.</p>
+      <h2 style="font-family:var(--serif);font-size:clamp(26px,4vw,40px);font-weight:500;color:var(--text);letter-spacing:-0.02em;line-height:1.15;margin-bottom:10px">This is what most creators are paying for.</h2>
+      <p style="font-size:clamp(13px,1.5vw,16px);color:var(--text-muted);max-width:500px;margin:0 auto 24px;line-height:1.5">15 tools. None of them talking to each other.</p>
 
-      <div class="ts-container" style="background:rgba(192,57,43,0.03);border:1px solid rgba(192,57,43,0.08);border-radius:24px;padding:clamp(24px,4vw,48px) clamp(16px,3vw,40px);max-width:900px;margin:0 auto">
+      <div style="background:rgba(192,57,43,0.03);border:1px solid rgba(192,57,43,0.08);border-radius:18px;padding:clamp(16px,3vw,28px);max-width:700px;margin:0 auto">
 
         <div class="ts-grid" id="tsGrid"></div>
 
-        <!-- Total bar -->
-        <div style="display:flex;align-items:center;gap:16px;margin-top:32px;padding-top:24px;border-top:1px solid var(--border)">
-          <div style="font-size:14px;font-weight:700;color:var(--text);white-space:nowrap;flex-shrink:0">15 tools. Zero unified insight.</div>
-          <div style="flex:1;border-top:2px dashed rgba(255,255,255,0.08)"></div>
-          <div style="text-align:right;flex-shrink:0">
-            <span style="font-size:clamp(36px,5vw,52px);font-weight:900;color:#C0392B;line-height:1" id="tsTotalNum">$0</span>
-            <span style="font-size:16px;color:#C0392B;font-weight:600"> / month</span>
+        <!-- Total -->
+        <div style="display:flex;align-items:center;gap:12px;margin-top:20px;padding-top:16px;border-top:1px solid var(--border)">
+          <div style="font-size:12px;font-weight:600;color:var(--text-muted);flex-shrink:0">15 tools. Zero insight.</div>
+          <div style="flex:1;border-top:1px dashed rgba(255,255,255,0.08)"></div>
+          <div style="flex-shrink:0">
+            <span style="font-size:clamp(28px,4vw,40px);font-weight:900;color:#C0392B;line-height:1" id="tsTotalNum">$0</span>
+            <span style="font-size:13px;color:#C0392B;font-weight:600">/mo</span>
           </div>
         </div>
-        <div style="text-align:center;margin-top:16px;font-size:clamp(14px,1.5vw,18px);font-weight:700;color:#C0392B" id="tsYearly"></div>
+        <div style="text-align:center;margin-top:8px;font-size:clamp(11px,1.2vw,14px);font-weight:700;color:#C0392B" id="tsYearly"></div>
 
       </div>
 
-      <h3 style="font-family:var(--serif);font-size:clamp(28px,4vw,48px);font-weight:900;color:var(--text);margin-top:48px;line-height:1.1" id="tsClosing1" class="ts-closing">The problem isn't your content.</h3>
-      <p style="font-size:clamp(16px,2vw,24px);color:var(--text-muted);max-width:580px;margin:12px auto 0" id="tsClosing2" class="ts-closing">It's that you're running a business on tools built for hobbyists.</p>
+      <p style="font-family:var(--serif);font-size:clamp(18px,2.5vw,28px);font-weight:500;color:var(--text);margin-top:28px;line-height:1.2" class="ts-closing">The problem isn't your content.</p>
+      <p style="font-size:clamp(13px,1.5vw,16px);color:var(--text-muted);max-width:440px;margin:6px auto 0" class="ts-closing">It's that you're running a business on tools built for hobbyists.</p>
     </div>
   </section>
 
   <script>
   (function() {
     var tools = [
-      { cat: 'Website & Link-in-Bio', items: [
-        { name: 'Linktree', logo: 'https://logo.clearbit.com/linktr.ee', price: 24 },
-        { name: 'Beacons', logo: 'https://logo.clearbit.com/beacons.ai', price: 30 },
-        { name: 'Squarespace', logo: 'https://logo.clearbit.com/squarespace.com', price: 49 },
-      ]},
-      { cat: 'Analytics & Scheduling', items: [
-        { name: 'Sprout Social', logo: 'https://logo.clearbit.com/sproutsocial.com', price: 249 },
-        { name: 'Later', logo: 'https://logo.clearbit.com/later.com', price: 80 },
-        { name: 'Iconosquare', logo: 'https://logo.clearbit.com/iconosquare.com', price: 59 },
-      ]},
-      { cat: 'Email & Newsletter', items: [
-        { name: 'ConvertKit', logo: 'https://logo.clearbit.com/convertkit.com', price: 79 },
-        { name: 'Beehiiv', logo: 'https://logo.clearbit.com/beehiiv.com', price: 42 },
-        { name: 'Mailchimp', logo: 'https://logo.clearbit.com/mailchimp.com', price: 100 },
-      ]},
-      { cat: 'AI & Content Strategy', items: [
-        { name: 'ChatGPT', logo: 'https://logo.clearbit.com/openai.com', price: 20 },
-        { name: 'Jasper', logo: 'https://logo.clearbit.com/jasper.ai', price: 99 },
-        { name: 'Notion AI', logo: 'https://logo.clearbit.com/notion.so', price: 16 },
-      ]},
-      { cat: 'Brand Deal & Affiliate', items: [
-        { name: 'Impact', logo: 'https://logo.clearbit.com/impact.com', price: 150 },
-        { name: 'Gumroad', logo: 'https://logo.clearbit.com/gumroad.com', price: 50 },
-        { name: 'Stan Store', logo: 'https://logo.clearbit.com/stanstore.com', price: 99 },
-      ]},
+      { name: 'Linktree', icon: '🌳', price: 24 },
+      { name: 'Beacons', icon: '🔗', price: 30 },
+      { name: 'Squarespace', icon: '◼️', price: 49 },
+      { name: 'Sprout Social', icon: '🌱', price: 249 },
+      { name: 'Later', icon: '📅', price: 80 },
+      { name: 'Iconosquare', icon: '📊', price: 59 },
+      { name: 'ConvertKit', icon: '✉️', price: 79 },
+      { name: 'Beehiiv', icon: '🐝', price: 42 },
+      { name: 'Mailchimp', icon: '📧', price: 100 },
+      { name: 'ChatGPT', icon: '🤖', price: 20 },
+      { name: 'Jasper', icon: '✨', price: 99 },
+      { name: 'Notion AI', icon: '📝', price: 16 },
+      { name: 'Impact', icon: '🤝', price: 150 },
+      { name: 'Gumroad', icon: '🛒', price: 50 },
+      { name: 'Stan Store', icon: '🏪', price: 99 },
     ];
 
     var grid = document.getElementById('tsGrid');
-    var cardIndex = 0;
-    tools.forEach(function(group) {
-      // Category label
-      var label = document.createElement('div');
-      label.className = 'ts-cat-label';
-      label.textContent = group.cat;
-      grid.appendChild(label);
-
-      group.items.forEach(function(tool) {
-        var card = document.createElement('div');
-        card.className = 'ts-card';
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(20px)';
-        card.setAttribute('data-idx', cardIndex++);
-
-        card.innerHTML = '<img src="' + tool.logo + '" alt="' + tool.name + '" class="ts-logo" loading="lazy" onerror="this.outerHTML=\'<div class=ts-logo-fallback>' + tool.name + '</div>\'">'
-          + '<div class="ts-name">' + tool.name + '</div>'
-          + '<div class="ts-price">$' + tool.price + '/mo</div>';
-
-        grid.appendChild(card);
-      });
+    tools.forEach(function(tool, i) {
+      var card = document.createElement('div');
+      card.className = 'ts-card';
+      card.style.opacity = '0';
+      card.style.transform = 'translateY(14px)';
+      card.setAttribute('data-idx', i);
+      card.innerHTML = '<div class="ts-icon">' + tool.icon + '</div>'
+        + '<div class="ts-name">' + tool.name + '</div>'
+        + '<div class="ts-price">$' + tool.price + '/mo</div>';
+      grid.appendChild(card);
     });
 
-    // Animations
-    var gridObserver = new IntersectionObserver(function(entries) {
+    // Card entrance
+    var gridObs = new IntersectionObserver(function(entries) {
       entries.forEach(function(entry) {
         if (!entry.isIntersecting) return;
-        var cards = grid.querySelectorAll('.ts-card');
-        cards.forEach(function(card) {
+        grid.querySelectorAll('.ts-card').forEach(function(card) {
           var idx = parseInt(card.getAttribute('data-idx'));
           setTimeout(function() {
-            card.style.transition = 'opacity 400ms ease-out, transform 400ms ease-out';
+            card.style.transition = 'opacity 350ms ease-out, transform 350ms ease-out';
             card.style.opacity = '1';
             card.style.transform = 'translateY(0)';
-            // Price badge pop
             var badge = card.querySelector('.ts-price');
             if (badge) {
               badge.style.transform = 'scale(0)';
               setTimeout(function() {
                 badge.style.transition = 'transform 200ms ease-out';
                 badge.style.transform = 'scale(1.08)';
-                setTimeout(function() {
-                  badge.style.transform = 'scale(1)';
-                }, 200);
-              }, 300);
+                setTimeout(function() { badge.style.transform = 'scale(1)'; }, 150);
+              }, 250);
             }
-          }, idx * 40);
+          }, idx * 35);
         });
-        gridObserver.unobserve(entry.target);
+        gridObs.unobserve(entry.target);
       });
     }, { threshold: 0.15 });
-    gridObserver.observe(grid);
+    gridObs.observe(grid);
 
-    // Count-up animation
+    // Count-up
     var totalEl = document.getElementById('tsTotalNum');
     var yearlyEl = document.getElementById('tsYearly');
-    var totalTarget = 1146;
-    var totalObserver = new IntersectionObserver(function(entries) {
+    var totalObs = new IntersectionObserver(function(entries) {
       entries.forEach(function(entry) {
         if (!entry.isIntersecting) return;
-        var start = performance.now();
-        var duration = 1400;
-        function easeOutQuart(t) { return 1 - Math.pow(1 - t, 4); }
+        var start = performance.now(), target = 1146, dur = 1400;
+        function ease(t) { return 1 - Math.pow(1 - t, 4); }
         function tick(now) {
-          var elapsed = now - start;
-          var progress = Math.min(elapsed / duration, 1);
-          var value = Math.round(easeOutQuart(progress) * totalTarget);
-          totalEl.textContent = '$' + value.toLocaleString();
-          if (progress < 1) {
-            requestAnimationFrame(tick);
-          } else {
-            yearlyEl.textContent = '$' + (totalTarget * 12).toLocaleString() + ' per year. On tools that have never spoken to each other.';
-          }
+          var p = Math.min((now - start) / dur, 1);
+          totalEl.textContent = '$' + Math.round(ease(p) * target).toLocaleString();
+          if (p < 1) requestAnimationFrame(tick);
+          else yearlyEl.textContent = '$' + (target * 12).toLocaleString() + '/year on disconnected tools.';
         }
         requestAnimationFrame(tick);
-        totalObserver.unobserve(entry.target);
+        totalObs.unobserve(entry.target);
       });
     }, { threshold: 0.5 });
-    totalObserver.observe(totalEl);
+    totalObs.observe(totalEl);
 
-    // Closing lines fade in
-    var closings = document.querySelectorAll('.ts-closing');
-    closings.forEach(function(el) {
-      el.style.opacity = '0';
-      el.style.transform = 'translateY(16px)';
-    });
-    var closingObserver = new IntersectionObserver(function(entries) {
-      entries.forEach(function(entry) {
-        if (!entry.isIntersecting) return;
+    // Closing fade
+    document.querySelectorAll('.ts-closing').forEach(function(el) {
+      el.style.opacity = '0'; el.style.transform = 'translateY(12px)';
+      var obs = new IntersectionObserver(function(e) {
+        if (!e[0].isIntersecting) return;
         setTimeout(function() {
-          entry.target.style.transition = 'opacity 500ms ease-out, transform 500ms ease-out';
-          entry.target.style.opacity = '1';
-          entry.target.style.transform = 'translateY(0)';
-        }, 200);
-        closingObserver.unobserve(entry.target);
-      });
-    }, { threshold: 0.3 });
-    closings.forEach(function(el) { closingObserver.observe(el); });
+          el.style.transition = 'opacity 400ms ease-out, transform 400ms ease-out';
+          el.style.opacity = '1'; el.style.transform = 'translateY(0)';
+        }, 150);
+        obs.unobserve(el);
+      }, { threshold: 0.3 });
+      obs.observe(el);
+    });
   })();
   </script>
 
