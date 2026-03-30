@@ -1,5 +1,13 @@
 import sharp from 'sharp';
 
+const USER_AGENTS = [
+  'facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_uatext.php)',
+  'Mozilla/5.0 (compatible; Discordbot/2.0; +https://discordapp.com)',
+  'Twitterbot/1.0',
+  'LinkedInBot/1.0 (compatible; Mozilla/5.0)',
+  'Slackbot-LinkExpanding 1.0 (+https://api.slack.com/robots)',
+];
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
@@ -12,12 +20,15 @@ export default async function handler(req, res) {
 
   const cleanHandle = handle.replace(/^@/, '').trim();
 
-  // Primary: Googlebot UA (Instagram serves full meta tags to crawlers)
+  // Try multiple crawler UAs — Instagram allows some but blocks others
   let profileData = null;
-  try {
-    profileData = await fetchWithGooglebot(cleanHandle);
-  } catch (e) {
-    console.error('Googlebot scrape failed:', e.message);
+  for (const ua of USER_AGENTS) {
+    try {
+      profileData = await fetchWithCrawlerUA(cleanHandle, ua);
+      if (profileData) break;
+    } catch (e) {
+      console.error(`Scrape with ${ua.split('/')[0]} failed:`, e.message);
+    }
   }
 
   // Fallback: Instagram mobile API
@@ -40,12 +51,10 @@ export default async function handler(req, res) {
       colors = await extractColors(profileData.photo);
     } catch (e) {
       console.error('Color extraction failed:', e.message);
-      colors = [
-        { hex: '#B76E79', rgb: { r: 183, g: 110, b: 121 }, weight: 0.4 },
-        { hex: '#FAF7F2', rgb: { r: 250, g: 247, b: 242 }, weight: 0.3 },
-        { hex: '#2D1810', rgb: { r: 45, g: 24, b: 16 }, weight: 0.3 },
-      ];
+      colors = defaultColors();
     }
+  } else {
+    colors = defaultColors();
   }
 
   return res.status(200).json({
@@ -59,48 +68,50 @@ export default async function handler(req, res) {
   });
 }
 
-async function fetchWithGooglebot(handle) {
+function defaultColors() {
+  return [
+    { hex: '#B76E79', rgb: { r: 183, g: 110, b: 121 }, weight: 0.3 },
+    { hex: '#FAF7F2', rgb: { r: 250, g: 247, b: 242 }, weight: 0.25 },
+    { hex: '#2D1810', rgb: { r: 45, g: 24, b: 16 }, weight: 0.2 },
+    { hex: '#E8DDD7', rgb: { r: 232, g: 221, b: 215 }, weight: 0.15 },
+    { hex: '#8B7B74', rgb: { r: 139, g: 123, b: 116 }, weight: 0.1 },
+  ];
+}
+
+async function fetchWithCrawlerUA(handle, ua) {
   const resp = await fetch(`https://www.instagram.com/${handle}/`, {
-    headers: {
-      'User-Agent': 'facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_uatext.php)',
-    },
+    headers: { 'User-Agent': ua },
     redirect: 'follow',
   });
 
-  if (!resp.ok) throw new Error(`Googlebot fetch returned ${resp.status}`);
+  if (!resp.ok) throw new Error(`Fetch returned ${resp.status}`);
   const html = await resp.text();
 
-  // Extract description meta tag (contains follower count + name)
-  const description = html.match(/<meta\s+(?:name|property)="(?:og:)?description"\s+content="([^"]+)"/)?.[1]
-    || html.match(/content="([^"]*[Ff]ollow[^"]*)"/)?.[1]
-    || '';
+  // Look for description with follower count
+  const description = html.match(/content="([^"]*\d+[KMkm]?\s*Followers[^"]*)"/i)?.[1] || '';
+  if (!description) throw new Error('No follower description found');
 
-  if (!description || !description.includes('ollow')) {
-    throw new Error('No profile description found — likely login wall');
-  }
-
-  // Extract follower count: "1M Followers" or "123,456 Followers"
   let followers = 0;
   const followerMatch = description.match(/([\d,.]+[KMkm]?)\s*Followers/i);
   if (followerMatch) {
     followers = parseFollowerCount(followerMatch[1]);
   }
+  if (followers === 0) throw new Error('Could not parse follower count');
 
-  // Extract name from description: "... from Amanda Bagley (@mandi.bagley)"
+  // Name
   const descNameMatch = description.match(/from\s+([^(]+)\s*\(/);
   const titleMatch = html.match(/<title>([^(]+)\(/);
   const name = descNameMatch ? descNameMatch[1].trim()
     : titleMatch ? titleMatch[1].trim()
     : handle;
 
-  // Extract profile photo from og:image
+  // Photo
   let photo = '';
   const ogImageMatch = html.match(/<meta\s+property="og:image"\s+content="([^"]+)"/);
   if (ogImageMatch) {
     photo = ogImageMatch[1].replace(/&amp;/g, '&');
   }
 
-  // Detect niche from bio portion of description
   const category = detectNicheFromBio(description);
 
   return { name, photo, followers, bio: description, category };
@@ -122,11 +133,8 @@ async function fetchProfileApi(handle) {
 
   const data = await resp.json();
   const user = data?.data?.user;
-  if (!user) throw new Error('No user data in response');
-
-  // Validate we got real data (not an empty shell)
-  if (!user.full_name && !user.edge_followed_by?.count) {
-    throw new Error('API returned empty profile data');
+  if (!user || (!user.full_name && !user.edge_followed_by?.count)) {
+    throw new Error('API returned empty profile');
   }
 
   return {
@@ -167,7 +175,7 @@ async function extractColors(photoUrl) {
   if (!resp.ok) throw new Error('Failed to fetch photo');
   const buffer = Buffer.from(await resp.arrayBuffer());
 
-  const { data, info } = await sharp(buffer)
+  const { data } = await sharp(buffer)
     .resize(64, 64, { fit: 'cover' })
     .removeAlpha()
     .raw()

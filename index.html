@@ -5619,7 +5619,7 @@
 
     <!-- Step 5: Colors -->
     <div class="quiz-step" data-step="5">
-      <div class="quiz-question">We pulled these from your brand</div>
+      <div class="quiz-question" id="qColorQuestion">Your brand colors</div>
       <div class="quiz-palette" id="qPalette"></div>
       <button class="quiz-back" onclick="quizNext(4)"><i class="fa-solid fa-arrow-left"></i> Back</button>
       <button class="quiz-next" onclick="quizNext(6)">Looks right <i class="fa-solid fa-check"></i></button>
@@ -5691,7 +5691,13 @@ function quizNext(step) {
   // Show color palette
   if (step === 5) {
     var palette = document.getElementById('qPalette');
+    var colorQ = document.getElementById('qColorQuestion');
     palette.innerHTML = '';
+    if (quizData.photo && quizData.colors.length) {
+      colorQ.textContent = 'We pulled these from your brand';
+    } else {
+      colorQ.textContent = 'Your brand colors';
+    }
     (quizData.colors || []).forEach(function(c) {
       var swatch = document.createElement('div');
       swatch.className = 'quiz-color-swatch';
@@ -5699,7 +5705,20 @@ function quizNext(step) {
       palette.appendChild(swatch);
     });
     if (!quizData.colors.length) {
-      palette.innerHTML = '<div style="color:var(--text-muted);font-size:14px">Default palette will be applied</div>';
+      // Use warm default palette and show it
+      quizData.colors = [
+        { hex: '#B76E79', rgb: { r: 183, g: 110, b: 121 }, weight: 0.3 },
+        { hex: '#FAF7F2', rgb: { r: 250, g: 247, b: 242 }, weight: 0.25 },
+        { hex: '#2D1810', rgb: { r: 45, g: 24, b: 16 }, weight: 0.2 },
+        { hex: '#E8DDD7', rgb: { r: 232, g: 221, b: 215 }, weight: 0.15 },
+        { hex: '#8B7B74', rgb: { r: 139, g: 123, b: 116 }, weight: 0.1 },
+      ];
+      quizData.colors.forEach(function(c) {
+        var swatch = document.createElement('div');
+        swatch.className = 'quiz-color-swatch';
+        swatch.style.background = c.hex;
+        palette.appendChild(swatch);
+      });
     }
   }
 }
@@ -5735,14 +5754,14 @@ function scrapeProfile() {
       quizData.colors = data.colors || [];
       if (!quizData.name || quizData.name === '') quizData.name = data.name;
     } else {
-      // Fallback: just advance to niche step manually
-      document.getElementById('qHandleBtn').style.display = '';
+      // Scrape failed — skip to niche, use default colors
+      quizData.colors = [];
       quizNext(3);
     }
   })
   .catch(function() {
     document.getElementById('qScrapeLoading').classList.remove('show');
-    document.getElementById('qHandleBtn').style.display = '';
+    quizData.colors = [];
     quizNext(3);
   });
 }
