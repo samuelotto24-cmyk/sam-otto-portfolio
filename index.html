@@ -3731,6 +3731,277 @@
 }
 .gen-step.done { color: var(--rose); }
 
+/* ── Inline Preview Panel ── */
+.quiz-preview {
+  display: none;
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 40px 24px 60px;
+}
+.quiz-preview.show { display: block; }
+
+.preview-header {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto 40px;
+}
+.preview-header-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--rose);
+  margin-bottom: 12px;
+}
+.preview-header-title {
+  font-family: var(--serif);
+  font-size: clamp(24px, 4vw, 36px);
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 8px;
+  line-height: 1.15;
+}
+.preview-header-sub {
+  font-size: 14px;
+  color: var(--text-muted);
+}
+.preview-disclaimer {
+  font-size: 11px;
+  color: var(--text-muted);
+  background: var(--dark-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 16px;
+  margin-top: 16px;
+  line-height: 1.5;
+  display: inline-block;
+}
+
+/* Browser frame for site preview */
+.preview-browser {
+  max-width: 800px;
+  margin: 0 auto 48px;
+  background: var(--dark-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+}
+.preview-browser-chrome {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: var(--surface-hi);
+  border-bottom: 1px solid var(--border);
+}
+.preview-browser-dots {
+  display: flex;
+  gap: 5px;
+}
+.preview-browser-dots span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+.preview-browser-url {
+  flex: 1;
+  font-size: 11px;
+  color: var(--text-muted);
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 4px 10px;
+}
+.preview-browser-body {
+  height: 500px;
+  overflow: hidden;
+  position: relative;
+}
+.preview-browser-body iframe {
+  width: 200%;
+  height: 200%;
+  transform: scale(0.5);
+  transform-origin: top left;
+  border: none;
+  pointer-events: none;
+}
+.preview-browser-fade {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 80px;
+  background: linear-gradient(transparent, var(--dark-card));
+  pointer-events: none;
+}
+.preview-browser-cta {
+  text-align: center;
+  padding: 16px;
+  border-top: 1px solid var(--border);
+}
+.preview-browser-cta a {
+  font-size: 13px;
+  color: var(--rose);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+/* Layer cards in preview */
+.preview-layers {
+  max-width: 700px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+.preview-layer {
+  background: var(--dark-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 28px;
+}
+.preview-layer-num {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--rose);
+  margin-bottom: 12px;
+}
+.preview-layer-title {
+  font-family: var(--serif);
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 16px;
+}
+
+/* Preview CTA */
+.preview-cta {
+  text-align: center;
+  max-width: 500px;
+  margin: 48px auto 0;
+  padding-bottom: 40px;
+}
+.preview-cta-title {
+  font-family: var(--serif);
+  font-size: clamp(24px, 4vw, 36px);
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+.preview-cta-sub {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-bottom: 24px;
+}
+.preview-cta-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.preview-cta-buttons a {
+  padding: 14px 28px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform 0.2s;
+}
+.preview-cta-buttons a:hover { transform: translateY(-2px); }
+.preview-cta-primary { background: var(--rose); color: #fff; }
+.preview-cta-secondary { background: transparent; color: var(--text); border: 1px solid var(--border-mid); }
+.preview-expiry {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 16px;
+}
+.preview-share {
+  margin-top: 12px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+.preview-share a {
+  color: var(--rose);
+  text-decoration: none;
+}
+
+/* Analytics grid in preview */
+.preview-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.preview-stat {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px;
+  text-align: center;
+}
+.preview-stat-val {
+  font-family: var(--serif);
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text);
+}
+.preview-stat-label {
+  font-size: 9px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-top: 4px;
+}
+.preview-stat-trend {
+  font-size: 10px;
+  color: #4ade80;
+  margin-top: 2px;
+}
+.preview-sim {
+  font-size: 10px;
+  color: var(--text-muted);
+  text-align: center;
+  margin-top: 12px;
+  opacity: 0.5;
+}
+
+/* Chat mockup */
+.preview-chat {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.preview-chat-msg {
+  max-width: 85%;
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-size: 13px;
+  line-height: 1.6;
+}
+.preview-chat-user {
+  align-self: flex-end;
+  background: var(--rose);
+  color: #fff;
+  border-bottom-right-radius: 4px;
+}
+.preview-chat-bot {
+  align-self: flex-start;
+  background: var(--dark);
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-bottom-left-radius: 4px;
+}
+
+@media (max-width: 640px) {
+  .preview-stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .preview-browser-body { height: 350px; }
+}
+
 @media (max-width: 480px) {
   .quiz-niche-grid { grid-template-columns: repeat(2, 1fr); }
   .quiz-question { font-size: clamp(22px, 6vw, 32px); }
@@ -5734,12 +6005,15 @@
       <div class="gen-step" data-gen="4">Writing your first briefing...</div>
     </div>
 
+    <!-- Inline Preview (replaces quiz content after generation) -->
+    <div class="quiz-preview" id="quizPreview"></div>
+
   </div>
 </div>
 
 <script>
 // ── Quiz Controller ──
-var quizData = { name: '', handle: '', followers: 0, niche: '', sells: [], colors: [], photo: '', email: '' };
+var quizData = { name: '', handle: '', followers: 0, niche: '', sells: [], colors: [], photo: '', email: '', postImages: [] };
 
 function openQuiz() {
   document.getElementById('quizOverlay').classList.add('open');
@@ -5829,6 +6103,7 @@ function scrapeProfile() {
       quizData.followers = data.followers;
       quizData.niche = data.category || '';
       quizData.colors = data.colors || [];
+      quizData.postImages = data.postImages || [];
       if (!quizData.name || quizData.name === '') quizData.name = data.name;
     } else {
       // Scrape failed — skip to niche, use default colors
@@ -5957,17 +6232,17 @@ function submitQuiz() {
         sells: quizData.sells,
         colors: quizData.colors,
         photo: quizData.photo,
-        copy: copyResult.success ? copyResult.copy : {}
+        copy: copyResult.success ? copyResult.copy : {},
+        postImages: quizData.postImages
       })
     });
   })
   .then(function(r) { return r.json(); })
   .then(function(result) {
     if (result.success) {
-      // Wait for animation to finish, then redirect
-      var remaining = Math.max(0, 10000 - Date.now());
+      // Show inline preview instead of redirecting
       setTimeout(function() {
-        window.location.href = result.previewUrl;
+        showInlinePreview(result.previewUrl);
       }, 2000);
     }
   })
@@ -5976,6 +6251,108 @@ function submitQuiz() {
     alert('Something went wrong. Please try again.');
     closeQuiz();
   });
+}
+
+function showInlinePreview(previewUrl) {
+  // Hide generating animation
+  document.getElementById('quizGenerating').classList.remove('show');
+
+  // Build the inline preview
+  var preview = document.getElementById('quizPreview');
+  var accent = quizData.colors.length ? pickMostVibrant(quizData.colors) : '#10B981';
+  var fmtFollowers = formatFollowers(quizData.followers);
+
+  // Scale analytics
+  var f = quizData.followers || 10000;
+  var views = Math.round(f * (0.2 + Math.random() * 0.4));
+  var eng = (3 + Math.random() * 5).toFixed(1);
+  var rev = f >= 1000000 ? 3000 + Math.round(Math.random() * 5000) : f >= 100000 ? 1500 + Math.round(Math.random() * 3000) : 500 + Math.round(Math.random() * 1500);
+
+  preview.innerHTML = ''
+    // Header
+    + '<div class="preview-header">'
+    + '<div class="preview-header-label">Your Preview</div>'
+    + '<h2 class="preview-header-title">Here\'s what I\'d build for you, <em style="color:' + accent + '">' + quizData.name + '</em></h2>'
+    + '<div class="preview-header-sub">Scroll through your personalized platform preview</div>'
+    + '<div class="preview-disclaimer">This is a preview built from your public profile. All data is illustrative — your real analytics will be connected once we build your platform.</div>'
+    + '</div>'
+
+    // Browser frame with iframe
+    + '<div class="preview-browser">'
+    + '<div class="preview-browser-chrome">'
+    + '<div class="preview-browser-dots"><span style="background:#ff5f57"></span><span style="background:#febc2e"></span><span style="background:#28c840"></span></div>'
+    + '<div class="preview-browser-url">🔒 ' + quizData.name.toLowerCase().replace(/\s+/g, '') + '.com</div>'
+    + '</div>'
+    + '<div class="preview-browser-body">'
+    + '<iframe src="' + previewUrl + '" loading="eager"></iframe>'
+    + '<div class="preview-browser-fade"></div>'
+    + '</div>'
+    + '<div class="preview-browser-cta"><a href="' + previewUrl + '" target="_blank">Open full preview →</a></div>'
+    + '</div>'
+
+    // Layers
+    + '<div class="preview-layers">'
+
+    // Analytics
+    + '<div class="preview-layer">'
+    + '<div class="preview-layer-num">Layer 02 — Your Analytics</div>'
+    + '<div class="preview-layer-title">Growth Overview</div>'
+    + '<div class="preview-stats-grid">'
+    + '<div class="preview-stat"><div class="preview-stat-val">' + fmtFollowers + '</div><div class="preview-stat-label">Followers</div><div class="preview-stat-trend">↑ this month</div></div>'
+    + '<div class="preview-stat"><div class="preview-stat-val">' + formatFollowers(views) + '</div><div class="preview-stat-label">Total Views</div><div class="preview-stat-trend">↑ ' + (5 + Math.round(Math.random() * 20)) + '%</div></div>'
+    + '<div class="preview-stat"><div class="preview-stat-val">' + eng + '%</div><div class="preview-stat-label">Engagement</div><div class="preview-stat-trend">↑ 2.1%</div></div>'
+    + '<div class="preview-stat"><div class="preview-stat-val">$' + rev.toLocaleString() + '</div><div class="preview-stat-label">Link Revenue</div><div class="preview-stat-trend">↑ 34%</div></div>'
+    + '</div>'
+    + '<div class="preview-sim">Simulated data · Based on your public profile</div>'
+    + '</div>'
+
+    // AI Strategist
+    + '<div class="preview-layer">'
+    + '<div class="preview-layer-num">Layer 03 — Your AI Strategist</div>'
+    + '<div class="preview-layer-title">Ask it anything</div>'
+    + '<div class="preview-chat">'
+    + '<div class="preview-chat-msg preview-chat-user">When should I post this week?</div>'
+    + '<div class="preview-chat-msg preview-chat-bot">Based on your engagement patterns, Tuesday at 7pm and Thursday at 12pm are your highest-performing windows this month.</div>'
+    + '</div>'
+    + '<div class="preview-sim">Sample recommendation · Your real AI will use your actual data</div>'
+    + '</div>'
+
+    // Weekly Briefing
+    + '<div class="preview-layer">'
+    + '<div class="preview-layer-num">Layer 04 — Your Weekly Briefing</div>'
+    + '<div class="preview-layer-title">Every Monday in your inbox</div>'
+    + '<div style="font-size:13px;color:var(--text-sub);line-height:1.7">An AI-written strategy email with your numbers, your wins, and exactly what to do next. No login required.</div>'
+    + '<div class="preview-sim">Simulated · Your real briefings use your actual data</div>'
+    + '</div>'
+
+    + '</div>'
+
+    // CTA
+    + '<div class="preview-cta">'
+    + '<h3 class="preview-cta-title">Ready to make it real?</h3>'
+    + '<div class="preview-cta-sub">I\'ll fully customize this to your brand and have it live within 72 hours.</div>'
+    + '<div class="preview-cta-buttons">'
+    + '<a class="preview-cta-primary" href="#contact" onclick="closeQuiz()">Build mine →</a>'
+    + '<a class="preview-cta-secondary" href="#contact" onclick="closeQuiz()">Book a call →</a>'
+    + '</div>'
+    + '<div class="preview-expiry">This preview expires in 7 days</div>'
+    + '<div class="preview-share">Share this preview: <a href="https://bysamotto.com' + previewUrl + '" target="_blank">bysamotto.com' + previewUrl + '</a></div>'
+    + '</div>';
+
+  preview.classList.add('show');
+  preview.scrollTop = 0;
+}
+
+function pickMostVibrant(colors) {
+  var best = colors[0], bestSat = 0;
+  for (var i = 0; i < colors.length; i++) {
+    var c = colors[i];
+    var r = c.rgb.r, g = c.rgb.g, b = c.rgb.b;
+    var max = Math.max(r, g, b), min = Math.min(r, g, b);
+    var sat = max === 0 ? 0 : (max - min) / max;
+    if (sat > bestSat) { bestSat = sat; best = c; }
+  }
+  return best.hex;
 }
 
 function formatFollowers(n) {

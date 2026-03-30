@@ -61,6 +61,12 @@ export default async function handler(req, res) {
       colors = defaultColors();
     }
 
+    // Extract post images for the preview
+    const postImages = (profile.latestPosts || [])
+      .filter(function(p) { return p.displayUrl; })
+      .slice(0, 8)
+      .map(function(p) { return p.displayUrl; });
+
     return res.status(200).json({
       success: true,
       name: profile.fullName || cleanHandle,
@@ -69,6 +75,7 @@ export default async function handler(req, res) {
       bio: profile.biography || '',
       category: profile.businessCategoryName || detectNicheFromBio(profile.biography || ''),
       colors,
+      postImages,
     });
   } catch (e) {
     console.error('Apify scrape failed:', e.message);
