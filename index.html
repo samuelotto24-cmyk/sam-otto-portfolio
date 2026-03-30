@@ -83,7 +83,7 @@
       padding: 0 var(--px);
     }
 
-    section { padding: clamp(32px, 4vw, 60px) 0; }
+    section { padding: clamp(28px, 3.5vw, 48px) 0; }
 
     /* ── SCROLL PROGRESS ── */
     #scroll-progress {
@@ -612,37 +612,39 @@
 
     /* ── WEEKLY RECAP ── */
     #recap {
-      padding: clamp(48px, 6vw, 80px) 0;
+      padding: clamp(32px, 4vw, 56px) 0;
       border-top: 1px solid var(--border);
       border-bottom: 1px solid var(--border);
       background: var(--dark);
     }
     .recap-layout {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 48px; align-items: center;
+      display: flex; flex-direction: column; align-items: center;
+      gap: 24px; text-align: center;
     }
+    .recap-copy { max-width: 500px; }
     .recap-title {
       font-family: var(--serif);
-      font-size: clamp(28px, 4vw, 48px);
-      font-weight: 500; line-height: 1.1; margin-bottom: 12px;
+      font-size: clamp(24px, 3.5vw, 36px);
+      font-weight: 500; line-height: 1.1; margin-bottom: 8px;
     }
     .recap-title em { color: var(--rose); font-style: italic; }
     .recap-sub {
-      font-size: 15px; color: var(--text-sub); margin-bottom: 24px;
+      font-size: 14px; color: var(--text-sub); margin-bottom: 16px;
       font-style: italic;
     }
     .recap-list {
       list-style: none; padding: 0;
-      display: flex; flex-direction: column; gap: 12px;
+      display: flex; flex-direction: column; gap: 8px;
+      text-align: left;
     }
     .recap-list li {
-      font-size: 14px; color: var(--text-sub); line-height: 1.55;
-      padding-left: 20px; position: relative;
+      font-size: 13px; color: var(--text-sub); line-height: 1.5;
+      padding-left: 18px; position: relative;
     }
     .recap-list li::before {
-      content: ''; position: absolute; left: 0; top: 8px;
-      width: 8px; height: 8px; border-radius: 50%;
-      background: var(--rose); box-shadow: 0 0 8px rgba(16,185,129,0.4);
+      content: ''; position: absolute; left: 0; top: 7px;
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--rose); box-shadow: 0 0 6px rgba(16,185,129,0.4);
     }
     .recap-visual { display: flex; justify-content: center; }
     .recap-card {
@@ -2800,7 +2802,7 @@
   /* ── Growth interrupt ── */
   .growth-interrupt {
     position: relative;
-    padding: clamp(60px, 10vh, 120px) 0;
+    padding: clamp(28px, 5vh, 48px) 0;
     background: var(--black);
     text-align: center;
     overflow: hidden;
@@ -2821,28 +2823,28 @@
   }
   .growth-interrupt-headline {
     font-family: var(--serif);
-    font-size: clamp(32px, 5vw, 56px);
+    font-size: clamp(24px, 4vw, 40px);
     font-weight: 500;
     line-height: 1.15;
     color: var(--text);
-    margin-bottom: 20px;
+    margin-bottom: 12px;
   }
   .growth-interrupt-headline em {
     color: var(--rose);
     font-style: italic;
   }
   .growth-interrupt-sub {
-    font-size: clamp(15px, 1.8vw, 18px);
+    font-size: clamp(13px, 1.5vw, 16px);
     color: var(--text-sub);
-    line-height: 1.65;
-    max-width: 560px;
+    line-height: 1.6;
+    max-width: 480px;
     margin: 0 auto;
   }
 
   /* ── Analytics showcase section ── */
   #analytics {
     position: relative;
-    padding: 110px 0 120px;
+    padding: 60px 0 64px;
     overflow: hidden;
     background: #080806;
   }
@@ -2869,26 +2871,26 @@
     z-index: 2;
     display: grid;
     grid-template-columns: 1fr 1.15fr;
-    gap: 60px;
+    gap: 36px;
     align-items: center;
   }
   .analytics-left { }
   .analytics-title {
     font-family: var(--serif);
-    font-size: clamp(28px, 3.5vw, 44px);
+    font-size: clamp(24px, 3vw, 36px);
     font-weight: 600;
     line-height: 1.2;
     color: var(--cream);
-    margin-bottom: 14px;
+    margin-bottom: 10px;
     letter-spacing: -0.01em;
   }
   .analytics-title em { color: var(--rose); font-style: normal; }
   .analytics-sub {
-    font-size: 15px;
+    font-size: 14px;
     color: var(--text-sub);
-    line-height: 1.75;
-    margin-bottom: 28px;
-    max-width: 420px;
+    line-height: 1.65;
+    margin-bottom: 20px;
+    max-width: 400px;
   }
   .analytics-cards {
     display: grid;
@@ -2898,13 +2900,13 @@
   .analytics-card {
     background: rgba(8,8,6,0.78);
     border: 1px solid rgba(16,185,129,0.2);
-    border-radius: 14px;
-    padding: 16px 14px;
+    border-radius: 12px;
+    padding: 12px 12px;
     backdrop-filter: blur(14px);
   }
-  .analytics-card-icon { font-size: 18px; margin-bottom: 8px; }
-  .analytics-card-title { font-size: 13px; font-weight: 700; color: var(--cream); margin-bottom: 5px; }
-  .analytics-card-body { font-size: 12px; color: var(--text-muted); line-height: 1.55; }
+  .analytics-card-icon { font-size: 16px; margin-bottom: 5px; }
+  .analytics-card-title { font-size: 12px; font-weight: 700; color: var(--cream); margin-bottom: 3px; }
+  .analytics-card-body { font-size: 11px; color: var(--text-muted); line-height: 1.45; }
 
   /* Dashboard browser mockup */
   .analytics-right { position: relative; }
@@ -2935,7 +2937,7 @@
     display: flex; align-items: center; gap: 6px;
   }
   .dash-lock { font-size: 10px; }
-  .dash-body { padding: 18px 18px 20px; display: flex; flex-direction: column; gap: 14px; }
+  .dash-body { padding: 14px 14px 16px; display: flex; flex-direction: column; gap: 10px; }
   .dash-header { display: flex; align-items: center; justify-content: space-between; }
   .dash-site-name { font-size: 13px; font-weight: 700; color: var(--text); }
   .dash-period { font-size: 11px; color: var(--text-muted); background: rgba(255,248,220,0.04); border: 1px solid var(--border); border-radius: 20px; padding: 3px 10px; }
@@ -2945,11 +2947,11 @@
   .dash-stat {
     background: rgba(255,248,220,0.03);
     border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 10px 12px;
+    border-radius: 8px;
+    padding: 8px 10px;
   }
-  .dash-stat-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px; }
-  .dash-stat-val { font-size: 18px; font-weight: 700; color: var(--cream); line-height: 1; margin-bottom: 5px; }
+  .dash-stat-label { font-size: 9px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
+  .dash-stat-val { font-size: 16px; font-weight: 700; color: var(--cream); line-height: 1; margin-bottom: 4px; }
   .dash-stat-val.dash-stat-text { font-size: 13px; font-weight: 700; padding-top: 2px; }
   .dash-stat-trend { font-size: 10px; font-weight: 600; }
   .dash-stat-trend.up { color: #5cb87a; }
@@ -4266,97 +4268,66 @@
         </div>
       </div>
 
-      <!-- Layer 02: Analytics — video + embedded dashboard -->
-      <div class="layer-card" style="grid-template-columns:1fr;gap:0">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:center;padding:24px">
-          <div>
-            <div class="layer-num">02</div>
-            <h3 class="layer-name">Your Analytics</h3>
-            <p class="layer-desc">YouTube, Instagram, TikTok and your website — one dashboard. Live data, not yesterday's numbers.</p>
-            <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:12px">
-              <span style="font-size:10px;padding:4px 10px;border-radius:20px;background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.18);color:var(--rose-light)">Cross-platform</span>
-              <span style="font-size:10px;padding:4px 10px;border-radius:20px;background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.18);color:var(--rose-light)">Live data</span>
-              <span style="font-size:10px;padding:4px 10px;border-radius:20px;background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.18);color:var(--rose-light)">Private</span>
-            </div>
+      <div class="layer-card">
+        <div class="layer-video-frame">
+          <div class="layer-browser-bar">
+            <span style="background:#ff5f57"></span>
+            <span style="background:#febc2e"></span>
+            <span style="background:#28c840"></span>
           </div>
-          <div class="layer-video-frame">
-            <div class="layer-browser-bar">
-              <span style="background:#ff5f57"></span>
-              <span style="background:#febc2e"></span>
-              <span style="background:#28c840"></span>
-            </div>
-            <video autoplay muted loop playsinline>
-              <source src="assets/analytics-recording.mp4" type="video/mp4">
-            </video>
-          </div>
+          <video autoplay muted loop playsinline>
+            <source src="assets/analytics-recording.mp4" type="video/mp4">
+          </video>
         </div>
-        <!-- Embedded dashboard stats -->
-        <div style="border-top:1px solid var(--border);padding:16px 24px;display:grid;grid-template-columns:repeat(4,1fr);gap:8px">
-          <div style="text-align:center;padding:10px 0"><div style="font-family:var(--serif);font-size:20px;color:var(--text)">48.2k</div><div style="font-size:8px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.1em;margin-top:2px">Followers</div><div style="font-size:9px;color:#4ade80">↑ 1,240</div></div>
-          <div style="text-align:center;padding:10px 0"><div style="font-family:var(--serif);font-size:20px;color:var(--text)">284k</div><div style="font-size:8px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.1em;margin-top:2px">Views</div><div style="font-size:9px;color:#4ade80">↑ 23%</div></div>
-          <div style="text-align:center;padding:10px 0"><div style="font-family:var(--serif);font-size:20px;color:var(--text)">8.4%</div><div style="font-size:8px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.1em;margin-top:2px">Engagement</div><div style="font-size:9px;color:#4ade80">↑ 2.1%</div></div>
-          <div style="text-align:center;padding:10px 0"><div style="font-family:var(--serif);font-size:20px;color:var(--text)">$4,280</div><div style="font-size:8px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.1em;margin-top:2px">Revenue</div><div style="font-size:9px;color:#4ade80">↑ 34%</div></div>
+        <div class="layer-copy">
+          <div class="layer-num">02</div>
+          <h3 class="layer-name">Your Analytics</h3>
+          <p class="layer-desc">YouTube, Instagram, TikTok and your website — one dashboard. Live data, not yesterday's numbers.</p>
         </div>
       </div>
 
-      <!-- Layer 03: AI Strategist — video + embedded chat -->
-      <div class="layer-card" style="grid-template-columns:1fr;gap:0">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:center;padding:24px">
-          <div class="layer-video-frame">
-            <div class="layer-browser-bar">
-              <span style="background:#ff5f57"></span>
-              <span style="background:#febc2e"></span>
-              <span style="background:#28c840"></span>
-            </div>
-            <video autoplay muted loop playsinline>
-              <source src="assets/ai-strategist.mp4" type="video/mp4">
-            </video>
+      <div class="layer-card">
+        <div class="layer-video-frame">
+          <div class="layer-browser-bar">
+            <span style="background:#ff5f57"></span>
+            <span style="background:#febc2e"></span>
+            <span style="background:#28c840"></span>
           </div>
-          <div>
-            <div class="layer-num">03</div>
-            <h3 class="layer-name">Your AI Strategist</h3>
-            <p class="layer-desc">Not ChatGPT guessing. An AI trained on your actual analytics — tells you what to post, when, and why.</p>
-            <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:12px">
-              <span style="font-size:10px;padding:4px 10px;border-radius:20px;background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.18);color:var(--rose-light)">Captions &amp; hashtags</span>
-              <span style="font-size:10px;padding:4px 10px;border-radius:20px;background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.18);color:var(--rose-light)">Best time to post</span>
-              <span style="font-size:10px;padding:4px 10px;border-radius:20px;background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.18);color:var(--rose-light)">Photo → post</span>
-            </div>
-          </div>
+          <video autoplay muted loop playsinline>
+            <source src="assets/ai-strategist.mp4" type="video/mp4">
+          </video>
         </div>
-        <!-- Embedded chat mockup -->
-        <div style="border-top:1px solid var(--border);padding:16px 24px;display:flex;flex-direction:column;gap:8px">
-          <div style="align-self:flex-end;background:rgba(16,185,129,0.12);color:var(--text);padding:8px 14px;border-radius:12px 12px 4px 12px;font-size:13px;max-width:75%">Write me a caption for my new reel</div>
-          <div style="align-self:flex-start;background:var(--dark);border:1px solid var(--border);color:var(--text-sub);padding:8px 14px;border-radius:12px 12px 12px 4px;font-size:13px;max-width:85%;line-height:1.5">"Your mornings don't have to be perfect to be powerful. Here's what actually changed my energy this month." <span style="opacity:0.4">#morningroutine #wellnesstips</span></div>
+        <div class="layer-copy">
+          <div class="layer-num">03</div>
+          <h3 class="layer-name">Your AI Strategist</h3>
+          <p class="layer-desc">Not generic advice. An AI that reads your actual data and tells you exactly what to post, when, and why.</p>
         </div>
       </div>
 
-      <!-- Layer 04: Weekly Briefing — email preview -->
-      <div class="layer-card" style="grid-template-columns:1fr;gap:0">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:center;padding:24px">
-          <div>
-            <div class="layer-num">04</div>
-            <h3 class="layer-name">Your Weekly Briefing</h3>
-            <p class="layer-desc">Every Monday, an AI-written strategy email — your numbers, your wins, and exactly what to do next. No login required.</p>
-          </div>
-          <div class="layer-email-preview">
-            <div class="layer-email-header">
-              <div class="layer-email-dot"></div>
-              <div class="layer-email-meta">
-                <div class="layer-email-from">Your AI Strategist</div>
-                <div class="layer-email-subj">Monday Briefing — Mar 24</div>
-              </div>
-            </div>
-            <div class="layer-email-body">
-              <div class="layer-email-stats">
-                <span><i class="fa-brands fa-youtube" style="color:#FF0000"></i> 42.1k ↑12%</span>
-                <span><i class="fa-brands fa-instagram" style="color:#E1306C"></i> 8.4% ↑6%</span>
-                <span><i class="fa-brands fa-tiktok"></i> 118k ↑31%</span>
-              </div>
-              <div class="layer-email-action">
-                <strong>This week:</strong> Post Tuesday 7pm — your highest engagement window this month.
-              </div>
+      <div class="layer-card">
+        <div class="layer-email-preview">
+          <div class="layer-email-header">
+            <div class="layer-email-dot"></div>
+            <div class="layer-email-meta">
+              <div class="layer-email-from">Your AI Strategist</div>
+              <div class="layer-email-subj">Your Monday Briefing — Mar 24</div>
             </div>
           </div>
+          <div class="layer-email-body">
+            <div class="layer-email-stats">
+              <span><i class="fa-brands fa-youtube" style="color:#FF0000"></i> 42.1k views ↑12%</span>
+              <span><i class="fa-brands fa-instagram" style="color:#E1306C"></i> 8.4% eng ↑6%</span>
+              <span><i class="fa-brands fa-tiktok"></i> 118k views ↑31%</span>
+            </div>
+            <div class="layer-email-action">
+              <strong>This week:</strong> Post your workout reel Tuesday 7pm — your highest engagement window this month.
+            </div>
+          </div>
+        </div>
+        <div class="layer-copy">
+          <div class="layer-num">04</div>
+          <h3 class="layer-name">Your Weekly Briefing</h3>
+          <p class="layer-desc">Every Monday, an AI-written strategy email lands in your inbox — your numbers, your wins, and exactly what to do next. No login required.</p>
         </div>
       </div>
 
