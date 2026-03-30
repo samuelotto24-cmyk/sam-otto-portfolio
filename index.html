@@ -747,7 +747,90 @@
       color: var(--rose); margin-bottom: 16px;
     }
 
-    /* ── COMPARE: BEFORE / AFTER ── */
+    /* ── CREATOR TOOL STACK ── */
+    .ts-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 16px;
+    }
+    .ts-cat-label {
+      grid-column: 1 / -1;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      text-align: left;
+      padding-top: 12px;
+    }
+    .ts-cat-label:first-child { padding-top: 0; }
+    .ts-card {
+      position: relative;
+      background: var(--dark-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px 12px 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 140px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    }
+    .ts-logo {
+      height: 56px;
+      width: auto;
+      max-width: 80px;
+      object-fit: contain;
+      filter: grayscale(100%);
+      opacity: 0.85;
+    }
+    .ts-logo-fallback {
+      background: rgba(255,255,255,0.06);
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-align: center;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .ts-name {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+      text-align: center;
+    }
+    .ts-price {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      background: #C0392B;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      border-radius: 8px;
+      padding: 3px 9px;
+      line-height: 1.3;
+    }
+    @media (max-width: 1199px) {
+      .ts-grid { grid-template-columns: repeat(4, 1fr); }
+    }
+    @media (max-width: 768px) {
+      .ts-grid { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+      .ts-card { min-height: 120px; padding: 16px 8px 12px; }
+      .ts-logo { height: 40px; }
+      .ts-name { font-size: 9px; }
+      .ts-price { font-size: 10px; padding: 2px 7px; bottom: 6px; right: 6px; }
+      .ts-cat-label { font-size: 9px; }
+    }
+
+    /* ── (old compare section removed) ── */
     #compare {
       background: var(--dark);
       border-top: 1px solid var(--border-mid);
@@ -4301,161 +4384,165 @@
     </div>
   </section>
 
-  <!-- COMPARE: BEFORE / AFTER -->
-  <section id="compare">
-    <div class="inner">
-      <div class="fade-up">
-        <span class="compare-label">The Difference</span>
-        <h2 class="compare-title">Other tools show you numbers.<br><em>This one grows your brand.</em></h2>
-        <p class="compare-sub">Linktree gives you links. YouTube Studio, Instagram Insights, TikTok Analytics — three apps, three dashboards, none of them talking to each other. I give you one system that pulls it all together and tells you what to do next.</p>
-      </div>
+  <!-- CREATOR TOOL STACK -->
+  <section id="tool-stack" style="padding:clamp(48px,8vw,100px) 0;background:var(--black)">
+    <div class="inner" style="text-align:center">
+      <h2 style="font-family:var(--serif);font-size:clamp(32px,5vw,56px);font-weight:900;color:var(--text);letter-spacing:-0.02em;line-height:1.1;margin-bottom:16px">This is what most creators<br>are paying for right now.</h2>
+      <p style="font-size:clamp(16px,2vw,22px);color:var(--text-muted);max-width:640px;margin:0 auto 40px;line-height:1.5">15 tools. None of them talking to each other. None of them telling you what's converting.</p>
 
-      <div class="laptop-wrap fade-up">
-        <!-- Screen -->
-        <div class="laptop-screen">
-          <div class="laptop-chrome">
-            <div class="laptop-dots"><span></span><span></span><span></span></div>
-            <div class="laptop-url">
-              <span class="url-bad">your scattered tools</span>
-              <span class="url-sep">vs</span>
-              <span class="url-good">your platform</span>
-            </div>
-          </div>
-          <div class="laptop-content">
-            <div class="laptop-pane bad-pane">
-              <div class="linktree-boring">
-                <div class="lt-avatar"></div>
-                <div class="lt-name">@fitnessinfluencer</div>
-                <div class="lt-bio">Fitness · Faith · Food</div>
-                <div class="lt-btn">My YouTube</div>
-                <div class="lt-btn">My Programs</div>
-                <div class="lt-btn">Shop My Favorites</div>
-                <div class="lt-btn">DFYNE Code: MANDI</div>
-                <div class="lt-btn">Gymshark Code: MANDI</div>
-                <div class="lt-btn">Contact Me</div>
-                <div class="lt-logo">🌳 Linktree</div>
-              </div>
-              <div class="pane-label">Generic Link Page</div>
-            </div>
-            <div class="laptop-divider"><div class="divider-vs">VS</div></div>
-            <div class="laptop-pane good-pane">
-              <video autoplay muted loop playsinline>
-                <source src="assets/mandi-desktop.mp4" type="video/mp4">
-              </video>
-              <div class="pane-label">Built by Sam Otto</div>
-            </div>
+      <div class="ts-container" style="background:rgba(192,57,43,0.03);border:1px solid rgba(192,57,43,0.08);border-radius:24px;padding:clamp(24px,4vw,48px) clamp(16px,3vw,40px);max-width:900px;margin:0 auto">
+
+        <div class="ts-grid" id="tsGrid"></div>
+
+        <!-- Total bar -->
+        <div style="display:flex;align-items:center;gap:16px;margin-top:32px;padding-top:24px;border-top:1px solid var(--border)">
+          <div style="font-size:14px;font-weight:700;color:var(--text);white-space:nowrap;flex-shrink:0">15 tools. Zero unified insight.</div>
+          <div style="flex:1;border-top:2px dashed rgba(255,255,255,0.08)"></div>
+          <div style="text-align:right;flex-shrink:0">
+            <span style="font-size:clamp(36px,5vw,52px);font-weight:900;color:#C0392B;line-height:1" id="tsTotalNum">$0</span>
+            <span style="font-size:16px;color:#C0392B;font-weight:600"> / month</span>
           </div>
         </div>
-        <!-- Hinge + base -->
-        <div class="laptop-bezel"><div class="laptop-camera"></div></div>
-        <div class="laptop-stand">
-          <div class="laptop-hinge"></div>
-          <div class="laptop-base"></div>
-        </div>
+        <div style="text-align:center;margin-top:16px;font-size:clamp(14px,1.5vw,18px);font-weight:700;color:#C0392B" id="tsYearly"></div>
+
       </div>
 
-      <!-- Mobile-only comparison cards (laptop hidden on mobile) -->
-      <div class="compare-cards-mobile fade-up">
-        <div class="ccm-card ccm-bad">
-          <div class="ccm-label">Your Tools Now</div>
-          <ul class="ccm-list">
-            <li>YouTube Studio, IG Insights, TikTok Analytics — separate apps</li>
-            <li>Nothing talks to anything else</li>
-            <li>You're guessing what works</li>
-          </ul>
-        </div>
-        <div class="ccm-card ccm-good">
-          <div class="ccm-label">Your Platform</div>
-          <ul class="ccm-list">
-            <li>YouTube, IG, TikTok + website — one dashboard</li>
-            <li>AI reads your data and tells you what to do</li>
-            <li>You know exactly what's working, everywhere</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="compare-verdicts fade-up">
-        <div class="verdict-item verdict-bad">Scattered · Manual</div>
-        <div class="verdict-item verdict-good">Unified · Intelligent</div>
-      </div>
-
-      <div class="compare-metrics fade-up">
-        <div class="compare-metrics-head">
-          <span class="compare-metrics-title">Estimated impact when the page is built for your audience</span>
-          <span class="compare-metrics-caveat">Illustrative estimates · Not verified results</span>
-        </div>
-        <div class="impact-grid">
-
-          <div class="impact-card">
-            <div class="impact-cat">Offer &amp; Program Views</div>
-            <div class="impact-stat">
-              <span class="impact-plus">+</span>
-              <span class="impact-num" data-target="28">0</span>
-              <span class="impact-pct">%</span>
-            </div>
-            <div class="impact-est-tag">estimated lift</div>
-            <div class="impact-name">Program Engagement</div>
-            <div class="impact-desc">Pages built around your specific offers tend to earn more clicks to them.</div>
-          </div>
-
-          <div class="impact-card">
-            <div class="impact-cat">Discount &amp; Code Usage</div>
-            <div class="impact-stat">
-              <span class="impact-plus">+</span>
-              <span class="impact-num" data-target="22">0</span>
-              <span class="impact-pct">%</span>
-            </div>
-            <div class="impact-est-tag">estimated lift</div>
-            <div class="impact-name">Code Redemption</div>
-            <div class="impact-desc">Surfacing codes at the right moment and in the right format improves usage.</div>
-          </div>
-
-          <div class="impact-card">
-            <div class="impact-cat">Affiliate Link Clicks</div>
-            <div class="impact-stat">
-              <span class="impact-plus">+</span>
-              <span class="impact-num" data-target="34">0</span>
-              <span class="impact-pct">%</span>
-            </div>
-            <div class="impact-est-tag">estimated lift</div>
-            <div class="impact-name">Affiliate Revenue</div>
-            <div class="impact-desc">Purpose-designed affiliate layouts generate more intentional, high-intent clicks.</div>
-          </div>
-
-          <div class="impact-card">
-            <div class="impact-cat">Cross-Platform Discovery</div>
-            <div class="impact-stat">
-              <span class="impact-plus">+</span>
-              <span class="impact-num" data-target="19">0</span>
-              <span class="impact-pct">%</span>
-            </div>
-            <div class="impact-est-tag">estimated lift</div>
-            <div class="impact-name">Platform Click-Through</div>
-            <div class="impact-desc">Directing your audience across platforms works better when the hierarchy is intentional.</div>
-          </div>
-
-        </div>
-      </div>
-
-      <div class="ownership-row fade-up">
-        <div class="ownership-item">
-          <div class="ownership-icon">🌐</div>
-          <div class="ownership-title">Your domain. Your name.</div>
-          <div class="ownership-body">You get a real URL — <em>yourname.com</em>, not linktree.com/yourname. It's yours to keep, forever, regardless of any platform.</div>
-        </div>
-        <div class="ownership-item">
-          <div class="ownership-icon">🔒</div>
-          <div class="ownership-title">Your data stays yours.</div>
-          <div class="ownership-body">We don't collect, store, or share your audience's behavior. <em>No tracking injected. No analytics harvested.</em> Your traffic belongs to you.</div>
-        </div>
-        <div class="ownership-item">
-          <div class="ownership-icon">👁️</div>
-          <div class="ownership-title">No platform watching.</div>
-          <div class="ownership-body">Every tap on a Linktree is Linktree's data — not yours. <em>A custom page means no middleman</em> between you and your audience.</div>
-        </div>
-      </div>
+      <h3 style="font-family:var(--serif);font-size:clamp(28px,4vw,48px);font-weight:900;color:var(--text);margin-top:48px;line-height:1.1" id="tsClosing1" class="ts-closing">The problem isn't your content.</h3>
+      <p style="font-size:clamp(16px,2vw,24px);color:var(--text-muted);max-width:580px;margin:12px auto 0" id="tsClosing2" class="ts-closing">It's that you're running a business on tools built for hobbyists.</p>
     </div>
   </section>
+
+  <script>
+  (function() {
+    var tools = [
+      { cat: 'Website & Link-in-Bio', items: [
+        { name: 'Linktree', logo: 'https://logo.clearbit.com/linktr.ee', price: 24 },
+        { name: 'Beacons', logo: 'https://logo.clearbit.com/beacons.ai', price: 30 },
+        { name: 'Squarespace', logo: 'https://logo.clearbit.com/squarespace.com', price: 49 },
+      ]},
+      { cat: 'Analytics & Scheduling', items: [
+        { name: 'Sprout Social', logo: 'https://logo.clearbit.com/sproutsocial.com', price: 249 },
+        { name: 'Later', logo: 'https://logo.clearbit.com/later.com', price: 80 },
+        { name: 'Iconosquare', logo: 'https://logo.clearbit.com/iconosquare.com', price: 59 },
+      ]},
+      { cat: 'Email & Newsletter', items: [
+        { name: 'ConvertKit', logo: 'https://logo.clearbit.com/convertkit.com', price: 79 },
+        { name: 'Beehiiv', logo: 'https://logo.clearbit.com/beehiiv.com', price: 42 },
+        { name: 'Mailchimp', logo: 'https://logo.clearbit.com/mailchimp.com', price: 100 },
+      ]},
+      { cat: 'AI & Content Strategy', items: [
+        { name: 'ChatGPT', logo: 'https://logo.clearbit.com/openai.com', price: 20 },
+        { name: 'Jasper', logo: 'https://logo.clearbit.com/jasper.ai', price: 99 },
+        { name: 'Notion AI', logo: 'https://logo.clearbit.com/notion.so', price: 16 },
+      ]},
+      { cat: 'Brand Deal & Affiliate', items: [
+        { name: 'Impact', logo: 'https://logo.clearbit.com/impact.com', price: 150 },
+        { name: 'Gumroad', logo: 'https://logo.clearbit.com/gumroad.com', price: 50 },
+        { name: 'Stan Store', logo: 'https://logo.clearbit.com/stanstore.com', price: 99 },
+      ]},
+    ];
+
+    var grid = document.getElementById('tsGrid');
+    var cardIndex = 0;
+    tools.forEach(function(group) {
+      // Category label
+      var label = document.createElement('div');
+      label.className = 'ts-cat-label';
+      label.textContent = group.cat;
+      grid.appendChild(label);
+
+      group.items.forEach(function(tool) {
+        var card = document.createElement('div');
+        card.className = 'ts-card';
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(20px)';
+        card.setAttribute('data-idx', cardIndex++);
+
+        card.innerHTML = '<img src="' + tool.logo + '" alt="' + tool.name + '" class="ts-logo" loading="lazy" onerror="this.outerHTML=\'<div class=ts-logo-fallback>' + tool.name + '</div>\'">'
+          + '<div class="ts-name">' + tool.name + '</div>'
+          + '<div class="ts-price">$' + tool.price + '/mo</div>';
+
+        grid.appendChild(card);
+      });
+    });
+
+    // Animations
+    var gridObserver = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (!entry.isIntersecting) return;
+        var cards = grid.querySelectorAll('.ts-card');
+        cards.forEach(function(card) {
+          var idx = parseInt(card.getAttribute('data-idx'));
+          setTimeout(function() {
+            card.style.transition = 'opacity 400ms ease-out, transform 400ms ease-out';
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
+            // Price badge pop
+            var badge = card.querySelector('.ts-price');
+            if (badge) {
+              badge.style.transform = 'scale(0)';
+              setTimeout(function() {
+                badge.style.transition = 'transform 200ms ease-out';
+                badge.style.transform = 'scale(1.08)';
+                setTimeout(function() {
+                  badge.style.transform = 'scale(1)';
+                }, 200);
+              }, 300);
+            }
+          }, idx * 40);
+        });
+        gridObserver.unobserve(entry.target);
+      });
+    }, { threshold: 0.15 });
+    gridObserver.observe(grid);
+
+    // Count-up animation
+    var totalEl = document.getElementById('tsTotalNum');
+    var yearlyEl = document.getElementById('tsYearly');
+    var totalTarget = 1146;
+    var totalObserver = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (!entry.isIntersecting) return;
+        var start = performance.now();
+        var duration = 1400;
+        function easeOutQuart(t) { return 1 - Math.pow(1 - t, 4); }
+        function tick(now) {
+          var elapsed = now - start;
+          var progress = Math.min(elapsed / duration, 1);
+          var value = Math.round(easeOutQuart(progress) * totalTarget);
+          totalEl.textContent = '$' + value.toLocaleString();
+          if (progress < 1) {
+            requestAnimationFrame(tick);
+          } else {
+            yearlyEl.textContent = '$' + (totalTarget * 12).toLocaleString() + ' per year. On tools that have never spoken to each other.';
+          }
+        }
+        requestAnimationFrame(tick);
+        totalObserver.unobserve(entry.target);
+      });
+    }, { threshold: 0.5 });
+    totalObserver.observe(totalEl);
+
+    // Closing lines fade in
+    var closings = document.querySelectorAll('.ts-closing');
+    closings.forEach(function(el) {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(16px)';
+    });
+    var closingObserver = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (!entry.isIntersecting) return;
+        setTimeout(function() {
+          entry.target.style.transition = 'opacity 500ms ease-out, transform 500ms ease-out';
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }, 200);
+        closingObserver.unobserve(entry.target);
+      });
+    }, { threshold: 0.3 });
+    closings.forEach(function(el) { closingObserver.observe(el); });
+  })();
+  </script>
 
   <!-- GROWTH INTERRUPT -->
   <section class="growth-interrupt" aria-label="Growth question">
