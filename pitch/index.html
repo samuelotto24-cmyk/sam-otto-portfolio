@@ -313,80 +313,78 @@ h3 { font-family: var(--serif); font-size: 26px; font-weight: 500; margin-bottom
 <div class="slide" data-slide="1" data-splash="Problem">
   <div class="section-title-splash"><div class="splash-text"></div></div>
   <div class="accent-bar"></div>
-  <div class="slide-content" style="display:flex;gap:64px;height:100%;padding:44px 60px;align-items:center;">
+  <div class="slide-content" style="display:flex;flex-direction:column;height:100%;padding:30px 50px 0 50px;overflow-y:auto;">
 
-    <!-- Left Column -->
-    <div style="flex:0 0 400px;display:flex;flex-direction:column;">
-      <div class="fade-up" style="font-family:var(--sans);font-size:10px;font-weight:400;letter-spacing:0.14em;color:rgba(235,231,223,0.35);text-transform:uppercase;margin-bottom:10px;">01 — PROBLEM</div>
-      <div class="fade-up" style="width:28px;height:3px;background:var(--accent);margin-bottom:22px;"></div>
-      <div style="margin-bottom:20px;">
-        <div class="slide-headline" style="font-size:clamp(44px,5.5vw,58px);font-weight:400;color:var(--text);">Creators are leaving money on the table.</div>
-        <div class="slide-headline" style="font-size:clamp(44px,5.5vw,58px);font-weight:600;color:#C0392B;">Every. Single. Day.</div>
+    <!-- Header Row -->
+    <div style="display:flex;gap:40px;align-items:flex-end;margin-bottom:16px;">
+      <div style="flex:1;">
+        <div class="fade-up" style="font-family:var(--sans);font-size:10px;font-weight:400;letter-spacing:0.14em;color:rgba(235,231,223,0.35);text-transform:uppercase;margin-bottom:6px;">01 — PROBLEM</div>
+        <div class="fade-up" style="width:28px;height:3px;background:var(--accent);margin-bottom:14px;"></div>
+        <div class="slide-headline" style="font-size:clamp(32px,4vw,44px);font-weight:400;color:var(--text);line-height:1.1;">Creators are leaving money on the table.</div>
+        <div class="slide-headline" style="font-size:clamp(32px,4vw,44px);font-weight:600;color:#C0392B;line-height:1.1;">Every. Single. Day.</div>
       </div>
-      <div class="fade-up" style="font-family:var(--sans);font-size:20px;font-weight:300;color:rgba(235,231,223,0.5);line-height:1.7;margin-bottom:32px;max-width:420px;">100K+ followers. 3+ disconnected apps. Zero visibility into what's actually making money.</div>
-      <div class="fade-up" style="display:flex;gap:28px;">
+      <div class="fade-up" style="display:flex;gap:28px;flex-shrink:0;">
         <div>
-          <div style="font-family:var(--serif);font-size:64px;font-weight:600;color:#C0392B;">3+</div>
-          <div style="font-family:var(--sans);font-size:15px;font-weight:300;color:rgba(235,231,223,0.4);letter-spacing:0.06em;">disconnected apps</div>
+          <div style="font-family:var(--serif);font-size:48px;font-weight:600;color:#C0392B;">15</div>
+          <div style="font-family:var(--sans);font-size:13px;font-weight:300;color:rgba(235,231,223,0.4);">disconnected tools</div>
         </div>
         <div>
-          <div style="font-family:var(--serif);font-size:64px;font-weight:600;color:#C0392B;">$500–2K</div>
-          <div style="font-family:var(--sans);font-size:15px;font-weight:300;color:rgba(235,231,223,0.4);letter-spacing:0.06em;">wasted/month on tools that don't talk</div>
+          <div style="font-family:var(--serif);font-size:48px;font-weight:600;color:#C0392B;" id="totalCounter">$0</div>
+          <div style="font-family:var(--sans);font-size:13px;font-weight:300;color:rgba(235,231,223,0.4);">wasted per month</div>
         </div>
       </div>
     </div>
 
-    <!-- Right Column -->
-    <div style="flex:1;display:flex;flex-direction:column;gap:14px;justify-content:center;">
-      <div class="fade-up" style="font-family:var(--sans);font-size:9px;font-weight:400;letter-spacing:0.16em;color:rgba(235,231,223,0.25);text-transform:uppercase;margin-bottom:4px;">YOUR TOOLS RIGHT NOW</div>
+    <!-- Tool Receipt Grid -->
+    <div class="fade-up" style="background:rgba(192,57,43,0.04);border-radius:14px;padding:16px;flex:1;overflow-y:auto;">
+      <style>
+        .tool-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:10px; }
+        .tool-card { background:#F8F8F8; border-radius:12px; padding:12px; position:relative; display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:100px; box-shadow:0 2px 12px rgba(0,0,0,0.10); }
+        .tool-card img { height:36px; max-width:60px; object-fit:contain; filter:grayscale(1) brightness(0.6); }
+        .tool-card .tool-name { font-family:var(--sans); font-size:10px; font-weight:600; text-transform:uppercase; letter-spacing:0.06em; color:#666; margin-top:6px; text-align:center; }
+        .tool-card .price-badge { position:absolute; bottom:6px; right:6px; background:#C0392B; color:#fff; font-family:var(--sans); font-size:12px; font-weight:700; padding:2px 8px; border-radius:6px; }
+        .tool-card .logo-fallback { width:48px; height:36px; border-radius:6px; display:flex; align-items:center; justify-content:center; font-family:var(--sans); font-size:9px; font-weight:700; color:#fff; text-align:center; line-height:1.1; }
+        .cat-label { font-family:var(--sans); font-size:9px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:rgba(235,231,223,0.35); grid-column:1/-1; margin-top:4px; }
+      </style>
 
-      <!-- Card 1: Analytics -->
-      <div class="fade-up" style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px 22px;display:flex;align-items:flex-start;gap:16px;position:relative;overflow:hidden;">
-        <div style="position:absolute;left:0;top:0;width:3px;height:100%;background:#C0392B;border-radius:3px 0 0 3px;"></div>
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#4F8EF7" stroke-width="1.5" stroke-linecap="round" style="flex-shrink:0;margin-top:2px;"><rect x="3" y="12" width="4" height="9"/><rect x="10" y="7" width="4" height="14"/><rect x="17" y="3" width="4" height="18"/></svg>
-        <div style="flex:1;">
-          <div style="font-family:var(--sans);font-size:18px;font-weight:700;color:var(--text);">Google Analytics / YouTube Studio</div>
-          <div style="margin-top:10px;display:flex;gap:8px;">
-            <span style="background:rgba(79,142,247,0.08);border:1px solid rgba(79,142,247,0.2);color:var(--blue);font-family:var(--sans);font-size:9px;letter-spacing:0.08em;padding:3px 9px;border-radius:20px;">SHOWS DATA</span>
-            <span style="background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);color:var(--red);font-family:var(--sans);font-size:9px;letter-spacing:0.08em;padding:3px 9px;border-radius:20px;">NO STRATEGY</span>
-          </div>
-          <div style="font-family:var(--sans);font-size:17px;font-style:italic;color:#C0392B;margin-top:10px;">You see what happened. You have no idea what to do next.</div>
-        </div>
+      <div class="tool-grid">
+        <div class="cat-label">Website & Link-in-Bio</div>
+        <div class="tool-card"><img src="https://logo.clearbit.com/linktr.ee" alt="Linktree" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="logo-fallback" style="display:none;background:#39E09B;">Linktree</div><div class="tool-name">Linktree</div><div class="price-badge">$24/mo</div></div>
+        <div class="tool-card"><img src="https://logo.clearbit.com/beacons.ai" alt="Beacons" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="logo-fallback" style="display:none;background:#5B5FC7;">Beacons</div><div class="tool-name">Beacons</div><div class="price-badge">$30/mo</div></div>
+        <div class="tool-card"><img src="https://logo.clearbit.com/squarespace.com" alt="Squarespace" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="logo-fallback" style="display:none;background:#000;">Squarespace</div><div class="tool-name">Squarespace</div><div class="price-badge">$49/mo</div></div>
+
+        <div class="cat-label" style="grid-column:4/-1;">Analytics & Scheduling</div>
+        <div class="tool-card"><img src="https://logo.clearbit.com/sproutsocial.com" alt="Sprout Social" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="logo-fallback" style="display:none;background:#59CB59;">Sprout</div><div class="tool-name">Sprout Social</div><div class="price-badge">$249/mo</div></div>
+        <div class="tool-card"><img src="https://logo.clearbit.com/later.com" alt="Later" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="logo-fallback" style="display:none;background:#F74967;">Later</div><div class="tool-name">Later</div><div class="price-badge">$80/mo</div></div>
+
+        <div class="tool-card"><img src="https://logo.clearbit.com/iconosquare.com" alt="Iconosquare" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="logo-fallback" style="display:none;background:#4353FF;">Icono</div><div class="tool-name">Iconosquare</div><div class="price-badge">$59/mo</div></div>
+        <div class="tool-card"><img src="https://logo.clearbit.com/convertkit.com" alt="ConvertKit" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="logo-fallback" style="display:none;background:#FB6970;">Kit</div><div class="tool-name">ConvertKit</div><div class="price-badge">$79/mo</div></div>
+        <div class="tool-card"><img src="https://logo.clearbit.com/beehiiv.com" alt="Beehiiv" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="logo-fallback" style="display:none;background:#FFD500;color:#000;">Beehiiv</div><div class="tool-name">Beehiiv</div><div class="price-badge">$42/mo</div></div>
+        <div class="tool-card"><img src="https://logo.clearbit.com/mailchimp.com" alt="Mailchimp" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="logo-fallback" style="display:none;background:#FFE01B;color:#000;">Mailchimp</div><div class="tool-name">Mailchimp</div><div class="price-badge">$100/mo</div></div>
+        <div class="tool-card"><img src="https://logo.clearbit.com/openai.com" alt="ChatGPT" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="logo-fallback" style="display:none;background:#10A37F;">ChatGPT</div><div class="tool-name">ChatGPT</div><div class="price-badge">$20/mo</div></div>
+
+        <div class="tool-card"><img src="https://logo.clearbit.com/jasper.ai" alt="Jasper" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="logo-fallback" style="display:none;background:#7B61FF;">Jasper</div><div class="tool-name">Jasper</div><div class="price-badge">$99/mo</div></div>
+        <div class="tool-card"><img src="https://logo.clearbit.com/notion.so" alt="Notion AI" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="logo-fallback" style="display:none;background:#000;">Notion</div><div class="tool-name">Notion AI</div><div class="price-badge">$16/mo</div></div>
+        <div class="tool-card"><img src="https://logo.clearbit.com/impact.com" alt="Impact" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="logo-fallback" style="display:none;background:#2B3990;">Impact</div><div class="tool-name">Impact</div><div class="price-badge">$150/mo</div></div>
+        <div class="tool-card"><img src="https://logo.clearbit.com/gumroad.com" alt="Gumroad" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="logo-fallback" style="display:none;background:#FF90E8;">Gumroad</div><div class="tool-name">Gumroad</div><div class="price-badge">$50/mo</div></div>
+        <div class="tool-card"><img src="https://logo.clearbit.com/stanstore.com" alt="Stan Store" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="logo-fallback" style="display:none;background:#5865F2;">Stan</div><div class="tool-name">Stan Store</div><div class="price-badge">$99/mo</div></div>
       </div>
 
-      <!-- Card 2: Link page -->
-      <div class="fade-up" style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px 22px;display:flex;align-items:flex-start;gap:16px;position:relative;overflow:hidden;">
-        <div style="position:absolute;left:0;top:0;width:3px;height:100%;background:#C0392B;border-radius:3px 0 0 3px;"></div>
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(235,231,223,0.4)" stroke-width="1.5" stroke-linecap="round" style="flex-shrink:0;margin-top:2px;"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-        <div style="flex:1;">
-          <div style="font-family:var(--sans);font-size:18px;font-weight:700;color:var(--text);">Linktree / Beacons</div>
-          <div style="margin-top:10px;display:flex;gap:8px;">
-            <span style="background:rgba(79,142,247,0.08);border:1px solid rgba(79,142,247,0.2);color:var(--blue);font-family:var(--sans);font-size:9px;letter-spacing:0.08em;padding:3px 9px;border-radius:20px;">SHOWS CLICKS</span>
-            <span style="background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);color:var(--red);font-family:var(--sans);font-size:9px;letter-spacing:0.08em;padding:3px 9px;border-radius:20px;">NO CONVERSION DATA</span>
-          </div>
-          <div style="font-family:var(--sans);font-size:17px;font-style:italic;color:#C0392B;margin-top:10px;">You know someone clicked. You have no idea if they bought.</div>
-        </div>
+      <!-- Total Bar -->
+      <div style="display:flex;align-items:center;gap:16px;margin-top:14px;padding:10px 0;border-top:2px dashed rgba(192,57,43,0.3);">
+        <div style="font-family:var(--sans);font-size:16px;font-weight:700;color:var(--text);white-space:nowrap;">15 disconnected tools</div>
+        <div style="flex:1;border-top:1px dashed rgba(235,231,223,0.15);"></div>
+        <div style="font-family:var(--serif);font-size:42px;font-weight:700;color:#C0392B;white-space:nowrap;" id="totalDisplay">$1,146 / month</div>
       </div>
+      <div style="text-align:center;margin-top:6px;">
+        <div style="font-family:var(--sans);font-size:16px;font-weight:700;color:#C0392B;">$13,752 per year. On tools that have never spoken to each other.</div>
+      </div>
+    </div>
 
-      <!-- Card 3: AI -->
-      <div class="fade-up" style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px 22px;display:flex;align-items:flex-start;gap:16px;position:relative;overflow:hidden;">
-        <div style="position:absolute;left:0;top:0;width:3px;height:100%;background:#C0392B;border-radius:3px 0 0 3px;"></div>
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#7C6AF7" stroke-width="1.5" stroke-linecap="round" style="flex-shrink:0;margin-top:2px;"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-        <div style="flex:1;">
-          <div style="font-family:var(--sans);font-size:18px;font-weight:700;color:var(--text);">ChatGPT</div>
-          <div style="margin-top:10px;display:flex;gap:8px;">
-            <span style="background:rgba(124,106,247,0.08);border:1px solid rgba(124,106,247,0.2);color:var(--purple);font-family:var(--sans);font-size:9px;letter-spacing:0.08em;padding:3px 9px;border-radius:20px;">GIVES ADVICE</span>
-            <span style="background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);color:var(--red);font-family:var(--sans);font-size:9px;letter-spacing:0.08em;padding:3px 9px;border-radius:20px;">DOESN'T KNOW YOU</span>
-          </div>
-          <div style="font-family:var(--sans);font-size:17px;font-style:italic;color:#C0392B;margin-top:10px;">It gives advice. It has never seen your data.</div>
-        </div>
-      </div>
-
-      <!-- Chaos indicator -->
-      <div class="fade-up" style="text-align:center;margin-top:8px;">
-        <div style="font-family:var(--serif);font-size:36px;font-weight:700;color:var(--text);margin-bottom:8px;">None of these connect.</div>
-        <div style="font-family:var(--sans);font-size:19px;color:rgba(235,231,223,0.5);line-height:1.6;max-width:520px;margin:0 auto;">The problem isn't your content. It's that you're running a business on tools built for hobbyists.</div>
-      </div>
+    <!-- Closing -->
+    <div class="fade-up" style="text-align:center;padding:12px 0;">
+      <div style="font-family:var(--serif);font-size:28px;font-weight:700;color:var(--text);">None of these connect. None of them tell you what's converting.</div>
+      <div style="font-family:var(--sans);font-size:17px;font-weight:700;color:#C0392B;margin-top:4px;">The problem isn't your content. It's that you're running a business on tools built for hobbyists.</div>
     </div>
   </div>
 
@@ -1198,11 +1196,36 @@ function goTo(n) {
     playSplash(slides[current]);
   }
 
+  // Counter animation on Problem slide
+  if (current === 1) {
+    setTimeout(function() { animateCounter(); }, 700);
+  }
+
   // Auto-play videos on their slides
   if (current === 3 && demoVideo) { demoVideo.currentTime = 0; demoVideo.play().catch(function(){}); }
   else if (demoVideo) { demoVideo.pause(); }
   if (current === 4 && hubVideo) { hubVideo.currentTime = 0; hubVideo.play().catch(function(){}); }
   else if (hubVideo) { hubVideo.pause(); }
+}
+
+// ── Counter animation ──
+var counterDone = false;
+function animateCounter() {
+  if (counterDone) return;
+  counterDone = true;
+  var el = document.getElementById('totalCounter');
+  if (!el) return;
+  var target = 1146;
+  var duration = 1200;
+  var start = performance.now();
+  function step(now) {
+    var progress = Math.min((now - start) / duration, 1);
+    var eased = 1 - Math.pow(1 - progress, 3);
+    var val = Math.round(eased * target);
+    el.textContent = '$' + val.toLocaleString();
+    if (progress < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
 }
 
 document.addEventListener('keydown', function(e) {
