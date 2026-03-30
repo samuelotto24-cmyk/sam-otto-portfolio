@@ -47,7 +47,7 @@ Return ONLY valid JSON. No markdown, no code fences, no explanation.`;
 
   try {
     const message = await client.messages.create({
-      model: 'claude-sonnet-4-20250514',
+      model: 'claude-sonnet-4-6-20250514',
       max_tokens: 1024,
       messages: [{ role: 'user', content: prompt }],
     });
@@ -57,8 +57,8 @@ Return ONLY valid JSON. No markdown, no code fences, no explanation.`;
 
     return res.status(200).json({ success: true, copy });
   } catch (e) {
-    console.error('AI copy generation failed:', e.message);
-    return res.status(500).json({ success: false, error: 'Copy generation failed' });
+    console.error('AI copy generation failed:', e.message, e.status, e.error);
+    return res.status(500).json({ success: false, error: 'Copy generation failed', detail: e.message });
   }
 }
 
