@@ -98,7 +98,7 @@ function buildFromTemplate(html, d) {
     },
     photoStrip: {
       enabled: d.postImages.length >= 3,
-      photos: d.postImages,
+      photos: d.postImages.map(function(url) { return '/api/proxy-image?url=' + encodeURIComponent(url); }),
       speed: '18s',
     },
     youtube: { enabled: false, headline: 'Watch My Latest', channelUrl: '', videoId: '' },
@@ -143,7 +143,8 @@ function buildFromTemplate(html, d) {
 
   // Inject profile photo
   if (d.photo) {
-    html = html.replace('</head>', `<style>.hero-avatar,.about-avatar{background-image:url('${d.photo}')!important}.hero-avatar img,.about-avatar img{content:url('${d.photo}')!important}</style></head>`);
+    const proxiedPhoto = '/api/proxy-image?url=' + encodeURIComponent(d.photo);
+    html = html.replace('</head>', `<style>.hero-avatar,.about-avatar{background-image:url('${proxiedPhoto}')!important}.hero-avatar img,.about-avatar img{content:url('${proxiedPhoto}')!important}</style></head>`);
   }
 
   // Disable tracking

@@ -3819,17 +3819,18 @@
   padding: 4px 10px;
 }
 .preview-browser-body {
-  height: 500px;
-  overflow: hidden;
+  height: 600px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
   position: relative;
 }
 .preview-browser-body iframe {
   width: 200%;
-  height: 200%;
+  height: 6000px;
   transform: scale(0.5);
   transform-origin: top left;
   border: none;
-  pointer-events: none;
 }
 .preview-browser-fade {
   position: absolute;
@@ -6295,8 +6296,8 @@ function showInlinePreview(previewUrl) {
     + '<div class="preview-browser-url">🔒 ' + quizData.name.toLowerCase().replace(/\s+/g, '') + '.com</div>'
     + '<div style="font-size:9px;color:var(--text-muted);margin-left:auto;letter-spacing:0.06em;text-transform:uppercase">Demo Preview</div>'
     + '</div>'
-    + '<div class="preview-browser-body" style="height:600px;overflow-y:auto;-webkit-overflow-scrolling:touch">'
-    + '<iframe src="' + previewUrl + '" loading="eager" style="pointer-events:none"></iframe>'
+    + '<div class="preview-browser-body">'
+    + '<iframe src="' + previewUrl + '" loading="eager"></iframe>'
     + '</div>'
     + '<div class="preview-browser-cta"><div style="font-size:11px;color:var(--text-muted);opacity:0.5">Scroll to explore the demo · This is a simplified preview of your finished site</div></div>'
     + '</div>'
