@@ -125,6 +125,136 @@ h3 { font-family: var(--serif); font-size: 26px; font-weight: 500; margin-bottom
 
 /* ── Insight box ── */
 .insight-box { border: 1px solid var(--accent-border); border-radius: 12px; padding: 18px 28px; text-align: center; font-size: 17px; color: var(--accent); font-weight: 500; background: rgba(16,185,129,0.05); }
+
+/* ══════════════════════════════════════════════
+   TYPEWRITER — Slide 1 intro
+   ══════════════════════════════════════════════ */
+.typewriter-line {
+  font-family: var(--serif);
+  font-size: clamp(48px, 7vw, 88px);
+  font-weight: 500;
+  line-height: 1.1;
+  color: var(--text);
+  overflow: hidden;
+  white-space: nowrap;
+  width: 0;
+  border-right: 3px solid var(--accent);
+  display: inline-block;
+}
+.typewriter-line.accent-line {
+  color: var(--accent);
+}
+.typewriter-line.typing {
+  animation: typeExpand var(--type-duration, 1.8s) steps(var(--char-count, 24), end) forwards,
+             blinkCaret 0.6s step-end infinite;
+}
+.typewriter-line.done {
+  border-right-color: transparent;
+  animation: none;
+}
+@keyframes typeExpand { from { width: 0; } to { width: 100%; } }
+@keyframes blinkCaret { 50% { border-right-color: transparent; } }
+
+/* Reveal line */
+.reveal-line {
+  font-family: var(--sans);
+  font-size: 22px;
+  color: var(--text-sub);
+  opacity: 0;
+  transform: scale(1.15);
+  transition: none;
+}
+.reveal-line.slam {
+  animation: slamIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@keyframes slamIn {
+  0% { opacity: 0; transform: scale(1.4); filter: brightness(2); }
+  40% { opacity: 1; transform: scale(0.97); filter: brightness(1.6); }
+  70% { transform: scale(1.02); filter: brightness(1.1); }
+  100% { opacity: 1; transform: scale(1); filter: brightness(1); }
+}
+
+/* Glow flash behind reveal */
+.reveal-glow {
+  position: absolute;
+  width: 600px;
+  height: 200px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(16,185,129,0.35) 0%, transparent 70%);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  pointer-events: none;
+  filter: blur(40px);
+}
+.reveal-glow.flash {
+  animation: glowFlash 1.2s ease-out forwards;
+}
+@keyframes glowFlash {
+  0% { opacity: 0; transform: translate(-50%,-50%) scale(0.5); }
+  15% { opacity: 1; transform: translate(-50%,-50%) scale(1.2); }
+  100% { opacity: 0; transform: translate(-50%,-50%) scale(1.5); }
+}
+
+/* Post-reveal fade-ins */
+.intro-after { opacity: 0; transform: translateY(15px); }
+.intro-after.show { animation: fadeUp 0.7s ease forwards; }
+
+/* ══════════════════════════════════════════════
+   SECTION TITLE ENTRANCE — Slides 2–9
+   ══════════════════════════════════════════════ */
+.section-title-splash {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  opacity: 0;
+}
+.section-title-splash .splash-text {
+  font-family: var(--serif);
+  font-size: clamp(80px, 12vw, 140px);
+  font-weight: 600;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  opacity: 0;
+  transform: scale(1);
+}
+.section-title-splash.playing {
+  opacity: 1;
+}
+.section-title-splash.playing .splash-text {
+  animation: splashIn 1.4s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+}
+@keyframes splashIn {
+  0% { opacity: 0; transform: scale(1.3); filter: blur(8px); }
+  20% { opacity: 1; transform: scale(1); filter: blur(0); }
+  55% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(0.6) translateY(-40px); filter: blur(4px); }
+}
+
+/* Slide content waits for splash */
+.slide-content { opacity: 0; transition: opacity 0.5s ease; }
+.slide-content.revealed { opacity: 1; }
+
+/* Bigger headlines on content slides */
+.slide-headline {
+  font-family: var(--serif);
+  line-height: 1.1;
+  opacity: 0;
+  transform: scale(0.92) translateY(10px);
+}
+.slide-headline.animate-in {
+  animation: headlineIn 0.7s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+}
+@keyframes headlineIn {
+  0% { opacity: 0; transform: scale(0.92) translateY(10px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
 </style>
 </head>
 <body>
@@ -141,34 +271,45 @@ h3 { font-family: var(--serif); font-size: 26px; font-weight: 500; margin-bottom
 <!-- ═══ SLIDE 1: TITLE ═══ -->
 <div class="slide active" data-slide="0">
   <div class="accent-bar"></div>
-  <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;height:100%;">
-    <div class="fade-up" style="margin-bottom:40px;">
+  <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;height:100%;position:relative;">
+    <div class="reveal-glow" id="revealGlow"></div>
+    <div id="introBlock" style="max-width:900px;margin:0 auto;">
+      <!-- Line 1 -->
+      <div style="margin-bottom:8px;overflow:hidden;">
+        <span class="typewriter-line" id="typeLine1" style="--char-count:25;--type-duration:1.6s;">Creators have audiences.</span>
+      </div>
+      <!-- Line 2 -->
+      <div style="margin-bottom:40px;overflow:hidden;">
+        <span class="typewriter-line accent-line" id="typeLine2" style="--char-count:27;--type-duration:1.6s;">They don't have a system.</span>
+      </div>
+      <!-- Reveal line -->
+      <div>
+        <p class="reveal-line" id="revealLine">What if one platform changed that?</p>
+      </div>
+    </div>
+    <!-- After-reveal elements -->
+    <div class="intro-after" id="introBrand" style="position:absolute;top:60px;left:50%;transform:translateX(-50%) translateY(15px);">
       <div style="font-family:var(--sans);font-size:18px;font-weight:600;letter-spacing:0.08em;color:var(--accent);">bysamotto</div>
     </div>
-    <div class="fade-up">
-      <h1 style="font-size:clamp(48px,7vw,88px);max-width:900px;margin:0 auto 28px;">Creators have audiences.<br><span class="accent">They don't have a system.</span></h1>
-    </div>
-    <div class="fade-up">
-      <p class="sub" style="text-align:center;margin:0 auto;font-size:20px;max-width:500px;">What if one platform changed that?</p>
-    </div>
-    <div class="fade-up" style="margin-top:48px;">
+    <div class="intro-after" id="introFooter" style="position:absolute;bottom:80px;left:50%;transform:translateX(-50%) translateY(15px);">
       <div style="font-size:13px;letter-spacing:0.2em;text-transform:uppercase;color:var(--text-muted);">Canyon Challenge · Grand Canyon University · 2026</div>
     </div>
   </div>
 </div>
 
 <!-- ═══ SLIDE 2: PROBLEM ═══ -->
-<div class="slide" data-slide="1">
+<div class="slide" data-slide="1" data-splash="Problem">
+  <div class="section-title-splash"><div class="splash-text"></div></div>
   <div class="accent-bar"></div>
-  <div style="display:flex;gap:64px;height:100%;padding:44px 60px;align-items:center;">
+  <div class="slide-content" style="display:flex;gap:64px;height:100%;padding:44px 60px;align-items:center;">
 
     <!-- Left Column -->
     <div style="flex:0 0 400px;display:flex;flex-direction:column;">
       <div class="fade-up" style="font-family:var(--sans);font-size:10px;font-weight:400;letter-spacing:0.14em;color:rgba(235,231,223,0.35);text-transform:uppercase;margin-bottom:10px;">01 — PROBLEM</div>
       <div class="fade-up" style="width:28px;height:3px;background:var(--accent);margin-bottom:22px;"></div>
       <div style="margin-bottom:20px;">
-        <div class="fade-up" style="font-family:var(--serif);font-size:48px;font-weight:400;line-height:1.1;color:var(--text);">Creators have views.</div>
-        <div class="fade-up" style="font-family:var(--serif);font-size:48px;font-weight:600;line-height:1.1;color:var(--red);">They can't convert them.</div>
+        <div class="slide-headline" style="font-size:clamp(44px,5.5vw,58px);font-weight:400;color:var(--text);">Creators have views.</div>
+        <div class="slide-headline" style="font-size:clamp(44px,5.5vw,58px);font-weight:600;color:var(--red);">They can't convert them.</div>
       </div>
       <div class="fade-up" style="font-family:var(--sans);font-size:14px;font-weight:300;color:rgba(235,231,223,0.5);line-height:1.7;margin-bottom:32px;max-width:360px;">100K+ followers. 3+ apps. No idea what's converting.</div>
       <div class="fade-up" style="display:flex;gap:28px;">
@@ -250,17 +391,18 @@ h3 { font-family: var(--serif); font-size: 26px; font-weight: 500; margin-bottom
 </div>
 
 <!-- ═══ SLIDE 3: COMPETITION ═══ -->
-<div class="slide" data-slide="2">
+<div class="slide" data-slide="2" data-splash="Competition">
+  <div class="section-title-splash"><div class="splash-text"></div></div>
   <div class="accent-bar"></div>
-  <div style="display:flex;gap:60px;height:100%;padding:44px 60px 0 60px;">
+  <div class="slide-content" style="display:flex;gap:60px;height:100%;padding:44px 60px 0 60px;">
 
     <!-- Left Column -->
     <div style="flex:0 0 420px;display:flex;flex-direction:column;justify-content:center;padding-bottom:44px;">
       <div class="fade-up" style="font-family:var(--sans);font-size:10px;font-weight:400;letter-spacing:0.14em;color:rgba(235,231,223,0.35);text-transform:uppercase;margin-bottom:10px;">02 — COMPETITION</div>
       <div class="fade-up" style="width:28px;height:3px;background:var(--accent);margin-bottom:22px;"></div>
       <div style="margin-bottom:28px;">
-        <div class="fade-up" style="font-family:var(--serif);font-size:40px;font-weight:400;line-height:1.15;color:var(--text);">They show you what happened.</div>
-        <div class="fade-up" style="font-family:var(--serif);font-size:40px;font-weight:600;line-height:1.15;color:var(--accent);">Never what to do next.</div>
+        <div class="slide-headline" style="font-size:clamp(40px,5vw,54px);font-weight:400;color:var(--text);">They show you what happened.</div>
+        <div class="slide-headline" style="font-size:clamp(40px,5vw,54px);font-weight:600;color:var(--accent);">Never what to do next.</div>
       </div>
       <div class="fade-up" style="background:rgba(239,68,68,0.06);border-left:3px solid var(--red);border-radius:0 6px 6px 0;padding:14px 18px;">
         <div style="font-family:var(--sans);font-size:12px;font-weight:400;color:var(--text-sub);line-height:1.65;">No competitor connects website + analytics + AI strategy. None tell you what to do next.</div>
@@ -328,96 +470,105 @@ h3 { font-family: var(--serif); font-size: 26px; font-weight: 500; margin-bottom
 </div>
 
 <!-- ═══ SLIDE 4: SOLUTION ═══ -->
-<div class="slide" data-slide="3">
-  <div class="fade-up">
-    <div class="slide-label">03 — Solution</div>
-    <div class="slide-label-line"></div>
-  </div>
-  <div class="row" style="align-items:center;">
-    <div class="col" style="max-width:40%;">
-      <div class="fade-up">
-        <h2>One platform.<br>Three layers.</h2>
-      </div>
-      <div class="fade-up mt" style="display:flex;flex-direction:column;gap:14px;">
-        <div class="card card-accent" style="padding:18px 22px;">
-          <div style="font-size:17px;font-weight:600;">🌐 Your Website</div>
-          <div style="font-size:14px;color:var(--text-muted);margin-top:4px;">Custom domain, affiliate codes, programs</div>
-        </div>
-        <div class="card card-purple" style="padding:18px 22px;">
-          <div style="font-size:17px;font-weight:600;">📊 Your Analytics</div>
-          <div style="font-size:14px;color:var(--text-muted);margin-top:4px;">YouTube, IG, TikTok — one dashboard</div>
-        </div>
-        <div class="card card-green" style="padding:18px 22px;">
-          <div style="font-size:17px;font-weight:600;">🤖 Your AI Strategist</div>
-          <div style="font-size:14px;color:var(--text-muted);margin-top:4px;">Reads your data. Tells you what to post.</div>
-        </div>
-        <div class="card card-gold" style="padding:18px 22px;">
-          <div style="font-size:17px;font-weight:600;">📬 Weekly Briefing</div>
-          <div style="font-size:14px;color:var(--text-muted);margin-top:4px;">Monday email with stats and action items.</div>
-        </div>
-      </div>
-      <div class="fade-up mt-sm" style="display:flex;gap:8px;flex-wrap:wrap;">
-        <span class="pill pill-accent">Live in 72 hours</span>
-        <span class="pill pill-accent">Done for you</span>
-        <span class="pill pill-accent">No templates</span>
-      </div>
+<div class="slide" data-slide="3" data-splash="Solution">
+  <div class="section-title-splash"><div class="splash-text"></div></div>
+  <div class="slide-content">
+    <div class="fade-up">
+      <div class="slide-label">03 — Solution</div>
+      <div class="slide-label-line"></div>
     </div>
-    <div class="col fade-up">
-      <div class="video-wrap">
-        <video muted loop playsinline autoplay id="demoVideo" preload="auto" style="display:block;width:100%;"><source src="/pitch/demo-video.mp4" type="video/mp4"></video>
+    <div class="row" style="align-items:center;">
+      <div class="col" style="max-width:40%;">
+        <div>
+          <div class="slide-headline" style="font-size:clamp(40px,5vw,58px);font-weight:500;">One platform.<br>Three layers.</div>
+        </div>
+        <div class="fade-up mt" style="display:flex;flex-direction:column;gap:14px;">
+          <div class="card card-accent" style="padding:18px 22px;">
+            <div style="font-size:17px;font-weight:600;">🌐 Your Website</div>
+            <div style="font-size:14px;color:var(--text-muted);margin-top:4px;">Custom domain, affiliate codes, programs</div>
+          </div>
+          <div class="card card-purple" style="padding:18px 22px;">
+            <div style="font-size:17px;font-weight:600;">📊 Your Analytics</div>
+            <div style="font-size:14px;color:var(--text-muted);margin-top:4px;">YouTube, IG, TikTok — one dashboard</div>
+          </div>
+          <div class="card card-green" style="padding:18px 22px;">
+            <div style="font-size:17px;font-weight:600;">🤖 Your AI Strategist</div>
+            <div style="font-size:14px;color:var(--text-muted);margin-top:4px;">Reads your data. Tells you what to post.</div>
+          </div>
+          <div class="card card-gold" style="padding:18px 22px;">
+            <div style="font-size:17px;font-weight:600;">📬 Weekly Briefing</div>
+            <div style="font-size:14px;color:var(--text-muted);margin-top:4px;">Monday email with stats and action items.</div>
+          </div>
+        </div>
+        <div class="fade-up mt-sm" style="display:flex;gap:8px;flex-wrap:wrap;">
+          <span class="pill pill-accent">Live in 72 hours</span>
+          <span class="pill pill-accent">Done for you</span>
+          <span class="pill pill-accent">No templates</span>
+        </div>
+      </div>
+      <div class="col fade-up">
+        <div class="video-wrap">
+          <video muted loop playsinline autoplay id="demoVideo" preload="auto" style="display:block;width:100%;"><source src="/pitch/demo-video.mp4" type="video/mp4"></video>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
 <!-- ═══ SLIDE 5: ICP ═══ -->
-<div class="slide" data-slide="4">
-  <div class="fade-up">
-    <div class="slide-label">04 — Ideal Customer Profile</div>
-    <div class="slide-label-line"></div>
-  </div>
-  <div class="row" style="align-items:center;">
-    <div class="col" style="max-width:55%;">
-      <div class="fade-up"><h2>Who needs this.</h2></div>
-      <div class="fade-up">
-        <div class="card mt" style="padding:24px 28px;">
-          <div style="font-size:12px;letter-spacing:0.15em;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:12px;">Primary ICP</div>
-          <div style="font-family:var(--serif);font-size:26px;font-weight:500;margin-bottom:16px;">Mid-tier to established creator<br>10K – 500K followers</div>
-          <div style="display:flex;flex-direction:column;gap:10px;font-size:15px;color:var(--text-sub);">
-            <div>💰 Revenue from brand deals & affiliates</div>
-            <div>📱 Active on IG, TikTok, or YouTube</div>
-            <div>🤷 No idea what's converting</div>
-            <div>🛠️ Juggling 3+ disconnected tools</div>
-            <div>⏰ Treats their brand as a business</div>
+<div class="slide" data-slide="4" data-splash="Customer">
+  <div class="section-title-splash"><div class="splash-text"></div></div>
+  <div class="slide-content">
+    <div class="fade-up">
+      <div class="slide-label">04 — Ideal Customer Profile</div>
+      <div class="slide-label-line"></div>
+    </div>
+    <div class="row" style="align-items:center;">
+      <div class="col" style="max-width:55%;">
+        <div>
+          <div class="slide-headline" style="font-size:clamp(40px,5vw,58px);font-weight:500;">Who needs this.</div>
+        </div>
+        <div class="fade-up">
+          <div class="card mt" style="padding:24px 28px;">
+            <div style="font-size:12px;letter-spacing:0.15em;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:12px;">Primary ICP</div>
+            <div style="font-family:var(--serif);font-size:26px;font-weight:500;margin-bottom:16px;">Mid-tier to established creator<br>10K – 500K followers</div>
+            <div style="display:flex;flex-direction:column;gap:10px;font-size:15px;color:var(--text-sub);">
+              <div>💰 Revenue from brand deals & affiliates</div>
+              <div>📱 Active on IG, TikTok, or YouTube</div>
+              <div>🤷 No idea what's converting</div>
+              <div>🛠️ Juggling 3+ disconnected tools</div>
+              <div>⏰ Treats their brand as a business</div>
+            </div>
+          </div>
+        </div>
+        <div class="fade-up mt-sm">
+          <div class="card card-green" style="padding:14px 22px;">
+            <div style="font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:var(--green);font-weight:600;margin-bottom:6px;">Live Client: Mandi Bagley</div>
+            <div style="font-size:15px;color:var(--text-sub);">1M+ followers · 64M+ TikTok likes · 4 active brand deals</div>
           </div>
         </div>
       </div>
-      <div class="fade-up mt-sm">
-        <div class="card card-green" style="padding:14px 22px;">
-          <div style="font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:var(--green);font-weight:600;margin-bottom:6px;">Live Client: Mandi Bagley</div>
-          <div style="font-size:15px;color:var(--text-sub);">1M+ followers · 64M+ TikTok likes · 4 active brand deals</div>
+      <div class="col fade-up">
+        <div class="video-wrap">
+          <video muted loop playsinline autoplay id="hubVideo" preload="auto" style="display:block;width:100%;"><source src="/pitch/hub-video.mp4" type="video/mp4"></video>
         </div>
-      </div>
-    </div>
-    <div class="col fade-up">
-      <div class="video-wrap">
-        <video muted loop playsinline autoplay id="hubVideo" preload="auto" style="display:block;width:100%;"><source src="/pitch/hub-video.mp4" type="video/mp4"></video>
       </div>
     </div>
   </div>
 </div>
 
 <!-- ═══ SLIDE 6: TRACTION ═══ -->
-<div class="slide" data-slide="5">
+<div class="slide" data-slide="5" data-splash="Traction">
+  <div class="section-title-splash"><div class="splash-text"></div></div>
   <div class="accent-bar"></div>
-  <div style="padding:44px 60px 0 60px;display:flex;flex-direction:column;height:100%;">
+  <div class="slide-content" style="padding:44px 60px 0 60px;display:flex;flex-direction:column;height:100%;">
 
     <!-- ROW 1: Header -->
     <div>
       <div class="fade-up" style="font-family:var(--sans);font-size:10px;font-weight:400;letter-spacing:0.14em;color:rgba(235,231,223,0.35);text-transform:uppercase;margin-bottom:10px;">05 — TRACTION</div>
       <div class="fade-up" style="width:28px;height:3px;background:var(--accent);margin-bottom:18px;"></div>
-      <div class="fade-up" style="font-family:var(--serif);line-height:1.1;margin-bottom:0;">
-        <span style="font-size:46px;font-weight:400;color:var(--text);">6 days live. </span><span style="font-size:46px;font-weight:600;color:var(--accent);">Here's what it found.</span>
+      <div style="margin-bottom:0;">
+        <span class="slide-headline" style="font-size:clamp(42px,5vw,56px);font-weight:400;color:var(--text);display:inline;">6 days live. </span><span class="slide-headline" style="font-size:clamp(42px,5vw,56px);font-weight:600;color:var(--accent);display:inline;">Here's what it found.</span>
       </div>
     </div>
 
@@ -487,32 +638,27 @@ h3 { font-family: var(--serif); font-size: 26px; font-weight: 500; margin-bottom
         <div style="font-family:var(--sans);font-size:10px;letter-spacing:0.1em;color:rgba(235,231,223,0.3);text-transform:uppercase;margin-bottom:14px;">Daily visitors</div>
         <svg width="100%" viewBox="0 0 260 150" fill="none">
           <line x1="0" y1="140" x2="260" y2="140" stroke="rgba(255,248,220,0.07)" stroke-width="1"/>
-          <!-- Day 1: 4123 -->
           <rect x="14" y="30" width="32" height="110" rx="3" fill="#10B981" opacity="1"/>
           <circle cx="30" cy="28" r="3" fill="#F59E0B"/>
           <text x="30" y="24" text-anchor="middle" fill="rgba(235,231,223,0.65)" font-family="DM Sans,sans-serif" font-size="9">4,123</text>
           <text x="30" y="152" text-anchor="middle" fill="rgba(235,231,223,0.25)" font-family="DM Sans,sans-serif" font-size="8">Mar 25</text>
-          <!-- Day 2: 2932 -->
           <rect x="66" y="62" width="32" height="78" rx="3" fill="#10B981" opacity="0.75"/>
           <text x="82" y="56" text-anchor="middle" fill="rgba(235,231,223,0.65)" font-family="DM Sans,sans-serif" font-size="9">2,932</text>
           <text x="82" y="152" text-anchor="middle" fill="rgba(235,231,223,0.25)" font-family="DM Sans,sans-serif" font-size="8">Mar 26</text>
-          <!-- Day 3: 780 -->
           <rect x="118" y="119" width="32" height="21" rx="3" fill="#10B981" opacity="0.5"/>
           <text x="134" y="113" text-anchor="middle" fill="rgba(235,231,223,0.65)" font-family="DM Sans,sans-serif" font-size="9">780</text>
           <text x="134" y="152" text-anchor="middle" fill="rgba(235,231,223,0.25)" font-family="DM Sans,sans-serif" font-size="8">Mar 27</text>
-          <!-- Day 4: 668 -->
           <rect x="170" y="122" width="32" height="18" rx="3" fill="#10B981" opacity="0.45"/>
           <text x="186" y="116" text-anchor="middle" fill="rgba(235,231,223,0.65)" font-family="DM Sans,sans-serif" font-size="9">668</text>
           <text x="186" y="152" text-anchor="middle" fill="rgba(235,231,223,0.25)" font-family="DM Sans,sans-serif" font-size="8">Mar 28</text>
-          <!-- Day 5: 176 -->
           <rect x="222" y="135" width="32" height="5" rx="3" fill="#10B981" opacity="0.35"/>
           <text x="238" y="130" text-anchor="middle" fill="rgba(235,231,223,0.65)" font-family="DM Sans,sans-serif" font-size="9">176+</text>
           <text x="238" y="152" text-anchor="middle" fill="#10B981" font-family="DM Sans,sans-serif" font-size="8" font-weight="600">Today</text>
         </svg>
         <div style="display:flex;justify-content:space-between;margin-top:8px;">
-          <div style="font-family:var(--sans);font-size:8px;color:rgba(235,231,223,0.3);">🚀 Launch</div>
-          <div style="font-family:var(--sans);font-size:8px;color:rgba(235,231,223,0.3);">🤖 Hub + AI</div>
-          <div style="font-family:var(--sans);font-size:8px;color:rgba(235,231,223,0.3);">📊 YouTube</div>
+          <div style="font-family:var(--sans);font-size:8px;color:rgba(235,231,223,0.3);">Launch</div>
+          <div style="font-family:var(--sans);font-size:8px;color:rgba(235,231,223,0.3);">Hub + AI</div>
+          <div style="font-family:var(--sans);font-size:8px;color:rgba(235,231,223,0.3);">YouTube</div>
         </div>
         <div style="margin-top:10px;text-align:center;"><span style="background:rgba(16,185,129,0.06);border:1px solid rgba(16,185,129,0.15);border-radius:20px;padding:4px 14px;font-family:var(--sans);font-size:10px;color:rgba(16,185,129,0.8);">6 days live · 8,679 total visitors</span></div>
       </div>
@@ -539,22 +685,22 @@ h3 { font-family: var(--serif); font-size: 26px; font-weight: 500; margin-bottom
 </div>
 
 <!-- ═══ SLIDE 7: TAM/SAM ═══ -->
-<div class="slide" data-slide="6">
+<div class="slide" data-slide="6" data-splash="Market">
+  <div class="section-title-splash"><div class="splash-text"></div></div>
   <div class="accent-bar"></div>
-  <div style="display:flex;gap:52px;height:100%;padding:44px 60px 52px 60px;align-items:center;">
+  <div class="slide-content" style="display:flex;gap:52px;height:100%;padding:44px 60px 52px 60px;align-items:center;">
 
     <!-- Left Column -->
     <div style="flex:0 0 440px;display:flex;flex-direction:column;justify-content:center;">
       <div class="fade-up" style="font-family:var(--sans);font-size:10px;font-weight:400;letter-spacing:0.14em;color:rgba(235,231,223,0.35);text-transform:uppercase;margin-bottom:10px;">06 — MARKET SIZE</div>
       <div class="fade-up" style="width:28px;height:3px;background:var(--accent);margin-bottom:20px;"></div>
       <div style="margin-bottom:28px;">
-        <div class="fade-up" style="font-family:var(--serif);font-size:48px;font-weight:400;line-height:1.1;color:var(--text);">A $250B market.</div>
-        <div class="fade-up" style="font-family:var(--serif);font-size:48px;font-weight:600;line-height:1.1;color:var(--accent);">We need 0.001% of it.</div>
+        <div class="slide-headline" style="font-size:clamp(44px,5.5vw,58px);font-weight:400;color:var(--text);">A $250B market.</div>
+        <div class="slide-headline" style="font-size:clamp(44px,5.5vw,58px);font-weight:600;color:var(--accent);">We need 0.001% of it.</div>
       </div>
 
       <!-- Three Market Blocks -->
       <div style="display:flex;flex-direction:column;gap:10px;">
-        <!-- TAM -->
         <div class="fade-up" style="background:rgba(255,248,220,0.02);border:1px solid rgba(255,248,220,0.07);border-radius:10px;padding:14px 18px;display:flex;align-items:center;gap:16px;">
           <span style="font-family:var(--sans);font-size:9px;font-weight:600;letter-spacing:0.12em;color:rgba(235,231,223,0.3);text-transform:uppercase;background:rgba(255,248,220,0.05);border-radius:4px;padding:3px 8px;">TAM</span>
           <div style="flex:1;">
@@ -563,7 +709,6 @@ h3 { font-family: var(--serif); font-size: 26px; font-weight: 500; margin-bottom
           </div>
           <div style="color:rgba(235,231,223,0.15);font-size:14px;">→</div>
         </div>
-        <!-- SAM -->
         <div class="fade-up" style="background:rgba(16,185,129,0.06);border:1px solid rgba(16,185,129,0.2);border-radius:10px;padding:16px 18px;position:relative;overflow:hidden;display:flex;align-items:center;gap:16px;">
           <div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent);"></div>
           <span style="font-family:var(--sans);font-size:9px;font-weight:600;letter-spacing:0.12em;color:var(--accent);text-transform:uppercase;background:rgba(16,185,129,0.1);border-radius:4px;padding:3px 8px;">SAM</span>
@@ -573,7 +718,6 @@ h3 { font-family: var(--serif); font-size: 26px; font-weight: 500; margin-bottom
             <div style="font-family:var(--sans);font-size:10px;color:var(--accent);margin-top:3px;">1% capture = $27M ARR</div>
           </div>
         </div>
-        <!-- Year 1 -->
         <div class="fade-up" style="background:rgba(245,158,11,0.06);border:1px solid rgba(245,158,11,0.22);border-radius:10px;padding:16px 18px;position:relative;overflow:hidden;display:flex;align-items:center;gap:16px;">
           <div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--gold);"></div>
           <span style="font-family:var(--sans);font-size:9px;font-weight:600;letter-spacing:0.12em;color:var(--gold);text-transform:uppercase;background:rgba(245,158,11,0.1);border-radius:4px;padding:3px 8px;">YEAR 1</span>
@@ -585,53 +729,40 @@ h3 { font-family: var(--serif); font-size: 26px; font-weight: 500; margin-bottom
         </div>
       </div>
 
-      <!-- Closing line -->
       <div class="fade-up" style="margin-top:16px;font-family:var(--sans);font-size:12px;font-weight:300;color:rgba(235,231,223,0.35);font-style:italic;line-height:1.5;">20 clients to hit Year 1.<span style="color:var(--accent);font-style:normal;font-weight:500;">We have one.</span> Launched 6 days ago.</div>
     </div>
 
     <!-- Right Column -->
     <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:12px;">
-
-      <!-- Area Chart Card -->
       <div class="fade-up" style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:24px 28px;">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
           <div style="font-family:var(--sans);font-size:10px;letter-spacing:0.1em;color:rgba(235,231,223,0.3);text-transform:uppercase;">Creator economy growth</div>
           <div style="font-family:var(--sans);font-size:8px;color:rgba(235,231,223,0.2);font-style:italic;">Source: Precedence Research, Grand View Research</div>
         </div>
         <div style="text-align:right;font-family:var(--sans);font-size:9px;color:rgba(235,231,223,0.2);margin-bottom:4px;">$469B</div>
-
         <svg width="100%" viewBox="0 0 500 200" fill="none">
-          <!-- Baseline -->
           <line x1="20" y1="185" x2="460" y2="185" stroke="rgba(255,248,220,0.06)" stroke-width="1"/>
-          <!-- Area fill -->
           <path d="M40,162 C87,150 135,138 135,138 C182,123 230,108 230,108 C277,89 325,71 325,71 C372,48 420,25 420,25 L420,185 L40,185 Z" fill="#10B981" opacity="0.08"/>
-          <!-- Area stroke (animated) -->
           <path d="M40,162 C87,150 135,138 135,138 C182,123 230,108 230,108 C277,89 325,71 325,71 C372,48 420,25 420,25" stroke="#10B981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none" stroke-dasharray="600" stroke-dashoffset="600" style="animation:drawLine 1.2s ease-out 0.6s forwards;"/>
-          <!-- bysamotto enters marker -->
           <line x1="135" y1="138" x2="135" y2="185" stroke="rgba(245,158,11,0.4)" stroke-width="1" stroke-dasharray="3,3"/>
           <rect x="88" y="110" width="94" height="18" rx="4" fill="rgba(245,158,11,0.1)" stroke="rgba(245,158,11,0.3)" stroke-width="0.5"/>
           <text x="135" y="122" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8" font-weight="600" fill="#F59E0B">bysamotto enters</text>
-          <!-- Data dots -->
           <circle cx="40" cy="162" r="3.5" fill="#10B981" opacity="0.6"/>
           <circle cx="135" cy="138" r="3.5" fill="#10B981" opacity="0.6"/>
           <circle cx="230" cy="108" r="3.5" fill="#10B981" opacity="0.6"/>
           <circle cx="325" cy="71" r="3.5" fill="#10B981" opacity="0.6"/>
           <circle cx="420" cy="25" r="3.5" fill="#10B981"/>
-          <!-- Value labels -->
           <text x="40" y="150" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="rgba(235,231,223,0.45)">$205B</text>
           <text x="135" y="126" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="rgba(235,231,223,0.45)">$252B</text>
           <text x="230" y="96" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="rgba(235,231,223,0.45)">$310B</text>
           <text x="325" y="59" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="rgba(235,231,223,0.45)">$381B</text>
           <text x="420" y="13" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="#10B981" font-weight="600">$469B</text>
-          <!-- Year labels -->
           <text x="40" y="196" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="rgba(235,231,223,0.25)">2024</text>
           <text x="135" y="196" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="rgba(235,231,223,0.25)">2025</text>
           <text x="230" y="196" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="rgba(235,231,223,0.25)">2026</text>
           <text x="325" y="196" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="rgba(235,231,223,0.25)">2027</text>
           <text x="420" y="196" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="rgba(235,231,223,0.25)">2028</text>
         </svg>
-
-        <!-- Growth pills -->
         <div style="display:flex;gap:10px;margin-top:14px;justify-content:center;">
           <span style="background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.2);border-radius:20px;padding:5px 14px;font-family:var(--sans);font-size:11px;font-weight:500;color:var(--accent);">23% CAGR</span>
           <span style="background:rgba(255,248,220,0.03);border:1px solid rgba(255,248,220,0.1);border-radius:20px;padding:5px 14px;font-family:var(--sans);font-size:11px;color:rgba(235,231,223,0.55);">$1.35T by 2033</span>
@@ -648,18 +779,18 @@ h3 { font-family: var(--serif); font-size: 26px; font-weight: 500; margin-bottom
 </div>
 
 <!-- ═══ SLIDE 8: MARKETING ═══ -->
-<div class="slide" data-slide="7">
+<div class="slide" data-slide="7" data-splash="Marketing">
+  <div class="section-title-splash"><div class="splash-text"></div></div>
   <div class="accent-bar"></div>
   <style>@keyframes spinIn{from{opacity:0;transform:rotate(-15deg) scale(0.92);}to{opacity:1;transform:rotate(0deg) scale(1);}}</style>
-  <div style="display:flex;gap:60px;height:100%;padding:44px 60px 52px 60px;align-items:center;">
+  <div class="slide-content" style="display:flex;gap:60px;height:100%;padding:44px 60px 52px 60px;align-items:center;">
 
     <!-- Left Column -->
     <div style="flex:0 0 460px;display:flex;flex-direction:column;justify-content:center;">
       <div class="fade-up" style="font-family:var(--sans);font-size:12px;font-weight:400;letter-spacing:0.14em;color:rgba(235,231,223,0.35);text-transform:uppercase;margin-bottom:10px;">07 — MARKETING</div>
       <div class="fade-up" style="width:28px;height:3px;background:var(--accent);margin-bottom:20px;"></div>
-      <div class="fade-up" style="font-family:var(--serif);font-size:56px;font-weight:400;color:var(--text);line-height:1.1;margin-bottom:32px;">Built to grow itself.</div>
+      <div class="slide-headline" style="font-size:clamp(48px,6vw,64px);font-weight:400;color:var(--text);margin-bottom:32px;">Built to grow itself.</div>
 
-      <!-- Channel Rows -->
       <div style="display:flex;flex-direction:column;">
         <div class="fade-up" style="display:flex;align-items:baseline;gap:16px;padding:14px 0;border-bottom:1px solid rgba(255,248,220,0.06);">
           <span style="font-family:var(--sans);font-size:13px;color:var(--accent);letter-spacing:0.1em;width:28px;flex-shrink:0;">01</span>
@@ -683,7 +814,6 @@ h3 { font-family: var(--serif); font-size: 26px; font-weight: 500; margin-bottom
         </div>
       </div>
 
-      <!-- Retention pill -->
       <div class="fade-up" style="margin-top:20px;background:rgba(245,158,11,0.06);border:1px solid rgba(245,158,11,0.2);border-radius:8px;padding:10px 16px;display:flex;align-items:center;gap:10px;">
         <div style="width:6px;height:6px;border-radius:50%;background:var(--gold);flex-shrink:0;"></div>
         <div style="font-family:var(--sans);font-size:14px;font-weight:300;color:rgba(235,231,223,0.55);line-height:1.5;"><span style="font-weight:500;color:var(--gold);">Weekly Monday briefing</span> keeps clients engaged — and referring.</div>
@@ -698,34 +828,22 @@ h3 { font-family: var(--serif); font-size: 26px; font-weight: 500; margin-bottom
             <path d="M0,0 L6,3 L0,6 Z" fill="#10B981" opacity="0.7"/>
           </marker>
         </defs>
-
-        <!-- Outer ring -->
         <circle cx="190" cy="190" r="140" stroke="rgba(255,248,220,0.06)" stroke-width="1" stroke-dasharray="4,4"/>
-
-        <!-- Connector spokes -->
         <line x1="190" y1="138" x2="190" y2="86" stroke="rgba(16,185,129,0.12)" stroke-width="1" stroke-dasharray="3,3"/>
         <line x1="242" y1="190" x2="294" y2="190" stroke="rgba(16,185,129,0.12)" stroke-width="1" stroke-dasharray="3,3"/>
         <line x1="190" y1="242" x2="190" y2="294" stroke="rgba(16,185,129,0.12)" stroke-width="1" stroke-dasharray="3,3"/>
         <line x1="138" y1="190" x2="86" y2="190" stroke="rgba(16,185,129,0.18)" stroke-width="1" stroke-dasharray="3,3"/>
-
-        <!-- Center hub -->
         <circle cx="190" cy="190" r="52" fill="rgba(16,185,129,0.08)" stroke="#10B981" stroke-width="1.5"/>
         <text x="190" y="185" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" font-weight="600" fill="#10B981">bysamotto</text>
         <text x="190" y="200" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="rgba(16,185,129,0.6)">platform</text>
-
-        <!-- Curved arrows -->
         <path d="M 218,72 A 140,140 0 0,1 308,162" stroke="#10B981" stroke-width="1.5" fill="none" opacity="0.5" marker-end="url(#arrowhead)"/>
         <path d="M 308,218 A 140,140 0 0,1 218,308" stroke="#10B981" stroke-width="1.5" fill="none" opacity="0.5" marker-end="url(#arrowhead)"/>
         <path d="M 162,308 A 140,140 0 0,1 72,218" stroke="#10B981" stroke-width="1.5" fill="none" opacity="0.5" marker-end="url(#arrowhead)"/>
         <path d="M 72,162 A 140,140 0 0,1 162,72" stroke="#10B981" stroke-width="2" fill="none" opacity="1" marker-end="url(#arrowhead)"/>
-
-        <!-- Node circles -->
         <circle cx="190" cy="50" r="36" fill="#0E0D0B" stroke="rgba(255,248,220,0.12)" stroke-width="1"/>
         <circle cx="330" cy="190" r="36" fill="#0E0D0B" stroke="rgba(255,248,220,0.12)" stroke-width="1"/>
         <circle cx="190" cy="330" r="36" fill="#0E0D0B" stroke="rgba(255,248,220,0.12)" stroke-width="1"/>
         <circle cx="50" cy="190" r="36" fill="#0E0D0B" stroke="#10B981" stroke-width="1.5"/>
-
-        <!-- Node labels -->
         <text x="190" y="46" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" font-weight="600" fill="#EBE7DF">Direct</text>
         <text x="190" y="59" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" font-weight="600" fill="#EBE7DF">Outreach</text>
         <text x="330" y="186" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" font-weight="600" fill="#EBE7DF">Client</text>
@@ -734,8 +852,6 @@ h3 { font-family: var(--serif); font-size: 26px; font-weight: 500; margin-bottom
         <text x="190" y="339" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" font-weight="600" fill="#EBE7DF">Value</text>
         <text x="50" y="186" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" font-weight="600" fill="#10B981">Refers</text>
         <text x="50" y="199" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" font-weight="600" fill="#10B981">Others</text>
-
-        <!-- Transition labels -->
         <text x="295" y="105" font-family="DM Sans,sans-serif" font-size="8" fill="rgba(235,231,223,0.25)" text-anchor="middle">portfolio</text>
         <text x="308" y="275" font-family="DM Sans,sans-serif" font-size="8" fill="rgba(235,231,223,0.25)" text-anchor="middle">platform</text>
         <text x="78" y="295" font-family="DM Sans,sans-serif" font-size="8" fill="rgba(16,185,129,0.5)" text-anchor="middle">weekly email</text>
@@ -751,18 +867,19 @@ h3 { font-family: var(--serif); font-size: 26px; font-weight: 500; margin-bottom
 </div>
 
 <!-- ═══ SLIDE 9: COST STRUCTURE ═══ -->
-<div class="slide" data-slide="8">
+<div class="slide" data-slide="8" data-splash="Revenue">
+  <div class="section-title-splash"><div class="splash-text"></div></div>
   <div class="accent-bar"></div>
   <style>@keyframes growBar{from{width:0%;}to{width:var(--bar-width);}}</style>
-  <div style="display:flex;gap:52px;height:100%;padding:44px 60px 52px 60px;align-items:center;">
+  <div class="slide-content" style="display:flex;gap:52px;height:100%;padding:44px 60px 52px 60px;align-items:center;">
 
     <!-- Left Column -->
     <div style="flex:0 0 480px;display:flex;flex-direction:column;justify-content:center;">
       <div class="fade-up" style="font-family:var(--sans);font-size:10px;font-weight:400;letter-spacing:0.14em;color:rgba(235,231,223,0.35);text-transform:uppercase;margin-bottom:10px;">08 — COST STRUCTURE</div>
       <div class="fade-up" style="width:28px;height:3px;background:var(--accent);margin-bottom:20px;"></div>
       <div style="margin-bottom:28px;">
-        <div class="fade-up" style="font-family:var(--serif);font-size:48px;font-weight:400;line-height:1.1;color:var(--text);">Strong margins.</div>
-        <div class="fade-up" style="font-family:var(--serif);font-size:48px;font-weight:600;line-height:1.1;color:var(--accent);">Recurring revenue.</div>
+        <div class="slide-headline" style="font-size:clamp(44px,5.5vw,58px);font-weight:400;color:var(--text);">Strong margins.</div>
+        <div class="slide-headline" style="font-size:clamp(44px,5.5vw,58px);font-weight:600;color:var(--accent);">Recurring revenue.</div>
       </div>
 
       <!-- Pricing Cards -->
@@ -771,7 +888,7 @@ h3 { font-family: var(--serif); font-size: 26px; font-weight: 500; margin-bottom
           <div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent);"></div>
           <div style="display:flex;align-items:center;justify-content:space-between;">
             <div>
-              <div style="font-family:var(--sans);font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px;">⭐  Full Platform</div>
+              <div style="font-family:var(--sans);font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px;">Full Platform</div>
               <div style="font-family:var(--sans);font-size:11px;color:rgba(235,231,223,0.4);">For creators ready to scale</div>
             </div>
             <div style="text-align:right;">
@@ -853,7 +970,7 @@ h3 { font-family: var(--serif); font-size: 26px; font-weight: 500; margin-bottom
           </div>
         </div>
         <div style="display:flex;justify-content:center;margin-top:16px;">
-          <div style="font-family:var(--sans);font-size:10px;color:rgba(235,231,223,0.2);letter-spacing:0.04em;">Full Platform: $150/mo × client = $1,800/yr per client</div>
+          <div style="font-family:var(--sans);font-size:10px;color:rgba(235,231,223,0.2);letter-spacing:0.04em;">Full Platform: $150/mo x client = $1,800/yr per client</div>
         </div>
       </div>
     </div>
@@ -868,13 +985,10 @@ h3 { font-family: var(--serif); font-size: 26px; font-weight: 500; margin-bottom
 <!-- ═══ SLIDE 10: OUTRO ═══ -->
 <div class="slide" data-slide="9">
   <style>@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}</style>
-  <!-- Background circles -->
   <div style="position:absolute;width:560px;height:560px;border-radius:50%;border:1px solid rgba(235,231,223,0.025);top:-120px;right:-80px;pointer-events:none;opacity:0;animation:fadeIn 1.2s ease-out 0.1s forwards;"></div>
   <div style="position:absolute;width:360px;height:360px;border-radius:50%;border:1px solid rgba(235,231,223,0.035);top:-20px;right:20px;pointer-events:none;opacity:0;animation:fadeIn 1.2s ease-out 0.1s forwards;"></div>
 
   <div style="display:flex;flex-direction:column;justify-content:center;align-items:center;height:100%;text-align:center;">
-
-    <!-- Logo Mark -->
     <div class="fade-up" style="margin-bottom:20px;">
       <svg width="72" height="72" viewBox="0 0 160 160" fill="none">
         <rect x="18" y="18" width="52" height="52" rx="10" fill="none" stroke="#EBE7DF" stroke-width="7"/>
@@ -889,17 +1003,9 @@ h3 { font-family: var(--serif); font-size: 26px; font-weight: 500; margin-bottom
         <line x1="116" y1="70" x2="116" y2="90" stroke="#EBE7DF" stroke-width="3" stroke-linecap="round" opacity="0.15"/>
       </svg>
     </div>
-
-    <!-- Wordmark -->
     <div class="fade-up" style="font-family:var(--sans);font-size:42px;font-weight:600;color:var(--text);letter-spacing:-0.02em;margin-bottom:24px;">bysamotto</div>
-
-    <!-- Brand line -->
     <div class="fade-up" style="font-family:var(--serif);font-size:22px;font-weight:400;color:rgba(235,231,223,0.45);font-style:italic;text-align:center;max-width:560px;margin-bottom:40px;">Your brand doesn't fit a template. Your platform shouldn't either.</div>
-
-    <!-- Divider -->
     <div class="fade-up" style="width:40px;height:1px;background:rgba(16,185,129,0.4);margin-bottom:28px;"></div>
-
-    <!-- Contact row -->
     <div class="fade-up" style="display:flex;align-items:center;gap:28px;">
       <div style="display:flex;align-items:center;gap:8px;">
         <div style="width:5px;height:5px;border-radius:50%;background:var(--accent);"></div>
@@ -911,7 +1017,6 @@ h3 { font-family: var(--serif); font-size: 26px; font-weight: 500; margin-bottom
         <div style="font-family:var(--sans);font-size:13px;font-weight:400;color:rgba(235,231,223,0.45);letter-spacing:0.02em;">Sam Otto</div>
       </div>
     </div>
-
   </div>
 </div>
 
@@ -928,20 +1033,114 @@ var total = 10;
 var slides = document.querySelectorAll('.slide');
 var demoVideo = document.getElementById('demoVideo');
 var hubVideo = document.getElementById('hubVideo');
+var introPlayed = false;
+var splashPlaying = false;
+
+// ── Intro typewriter sequence ──
+function playIntro() {
+  if (introPlayed) return;
+  introPlayed = true;
+  var line1 = document.getElementById('typeLine1');
+  var line2 = document.getElementById('typeLine2');
+  var reveal = document.getElementById('revealLine');
+  var glow = document.getElementById('revealGlow');
+  var brand = document.getElementById('introBrand');
+  var footer = document.getElementById('introFooter');
+
+  // Phase 1: type line 1
+  setTimeout(function() {
+    line1.classList.add('typing');
+  }, 400);
+
+  // Phase 2: finish line 1, type line 2
+  setTimeout(function() {
+    line1.classList.add('done');
+    line2.classList.add('typing');
+  }, 2200);
+
+  // Phase 3: finish line 2, slam reveal
+  setTimeout(function() {
+    line2.classList.add('done');
+    glow.classList.add('flash');
+    reveal.classList.add('slam');
+  }, 4000);
+
+  // Phase 4: show brand + footer
+  setTimeout(function() {
+    brand.classList.add('show');
+  }, 4600);
+  setTimeout(function() {
+    footer.classList.add('show');
+  }, 4900);
+}
+
+// ── Section title splash ──
+function playSplash(slideEl, callback) {
+  var splashWord = slideEl.getAttribute('data-splash');
+  if (!splashWord) { callback(); return; }
+
+  var splashContainer = slideEl.querySelector('.section-title-splash');
+  var splashText = splashContainer.querySelector('.splash-text');
+  var slideContent = slideEl.querySelector('.slide-content');
+  var headlines = slideEl.querySelectorAll('.slide-headline');
+
+  splashText.textContent = splashWord;
+  splashContainer.classList.add('playing');
+  splashPlaying = true;
+
+  // After splash shrinks away, reveal content
+  setTimeout(function() {
+    splashContainer.classList.remove('playing');
+    if (slideContent) slideContent.classList.add('revealed');
+    splashPlaying = false;
+
+    // Animate headlines with stagger
+    headlines.forEach(function(h, i) {
+      setTimeout(function() {
+        h.classList.add('animate-in');
+      }, i * 150);
+    });
+
+    if (callback) callback();
+  }, 1200);
+}
+
+// ── Reset slide state ──
+function resetSlide(slideEl) {
+  var splashContainer = slideEl.querySelector('.section-title-splash');
+  var slideContent = slideEl.querySelector('.slide-content');
+  var headlines = slideEl.querySelectorAll('.slide-headline');
+
+  if (splashContainer) splashContainer.classList.remove('playing');
+  if (slideContent) slideContent.classList.remove('revealed');
+  headlines.forEach(function(h) { h.classList.remove('animate-in'); });
+}
 
 function goTo(n) {
-  if (n < 0 || n >= total) return;
+  if (n < 0 || n >= total || splashPlaying) return;
   slides[current].classList.remove('active');
   slides[current].classList.add('exit-up');
-  setTimeout(function() { slides[current === n ? current : (current < n ? current : current)].classList.remove('exit-up'); }, 600);
   var prev = current;
   current = n;
+
+  // Reset the new slide before showing
+  resetSlide(slides[current]);
+
   slides[current].classList.remove('exit-up');
   slides[current].classList.add('active');
   document.getElementById('slideNum').textContent = current + 1;
   document.getElementById('progress').style.width = ((current + 1) / total * 100) + '%';
-  // Remove exit class from previous after transition
+
   setTimeout(function() { slides[prev].classList.remove('exit-up'); }, 700);
+
+  // Intro typewriter on slide 0
+  if (current === 0) playIntro();
+
+  // Section title splash on slides with data-splash
+  if (slides[current].getAttribute('data-splash')) {
+    playSplash(slides[current]);
+  }
+
   // Auto-play videos on their slides
   if (current === 3 && demoVideo) { demoVideo.currentTime = 0; demoVideo.play().catch(function(){}); }
   else if (demoVideo) { demoVideo.pause(); }
@@ -966,7 +1165,7 @@ document.addEventListener('touchend', function(e) {
   if (Math.abs(diff) > 50) { diff < 0 ? goTo(current + 1) : goTo(current - 1); }
 });
 
-// Play video on click — bulletproof across all browsers
+// Play video on click
 function playVideo(id, wrapper) {
   var vid = document.getElementById(id);
   if (!vid) return;
@@ -980,7 +1179,6 @@ function playVideo(id, wrapper) {
       setTimeout(function() { if (overlay) overlay.style.display = 'none'; }, 300);
     }).catch(function(e) { console.error('Play failed:', e); });
   });
-  // Fallback — try playing immediately too
   setTimeout(function() {
     vid.play().then(function() {
       var overlay = wrapper.querySelector('.play-overlay');
@@ -991,6 +1189,9 @@ function playVideo(id, wrapper) {
 
 // Init
 document.getElementById('progress').style.width = (1 / total * 100) + '%';
+
+// Play intro on load
+setTimeout(function() { playIntro(); }, 300);
 </script>
 
 </body>
