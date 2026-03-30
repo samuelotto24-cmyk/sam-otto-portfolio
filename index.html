@@ -3265,6 +3265,12 @@
       padding: 16px;
     }
     .layer-card:nth-child(even) .layer-copy { order: 0; }
+    /* Merged layer cards: stack inner grids on mobile */
+    .layer-card > div[style*="grid-template-columns: 1fr 1fr"] { grid-template-columns: 1fr !important; gap: 16px !important; padding: 16px !important; }
+    .layer-card > div[style*="grid-template-columns:1fr 1fr"] { grid-template-columns: 1fr !important; gap: 16px !important; padding: 16px !important; }
+    /* Stack dashboard stats 2x2 on mobile */
+    .layer-card > div[style*="grid-template-columns:repeat(4"] { grid-template-columns: repeat(2, 1fr) !important; }
+    .layer-card > div[style*="grid-template-columns: repeat(4"] { grid-template-columns: repeat(2, 1fr) !important; }
   }
 
 
@@ -4260,98 +4266,104 @@
         </div>
       </div>
 
-      <div class="layer-card">
-        <div class="layer-video-frame">
-          <div class="layer-browser-bar">
-            <span style="background:#ff5f57"></span>
-            <span style="background:#febc2e"></span>
-            <span style="background:#28c840"></span>
+      <!-- Layer 02: Analytics — video + embedded dashboard -->
+      <div class="layer-card" style="grid-template-columns:1fr;gap:0">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:center;padding:24px">
+          <div>
+            <div class="layer-num">02</div>
+            <h3 class="layer-name">Your Analytics</h3>
+            <p class="layer-desc">YouTube, Instagram, TikTok and your website — one dashboard. Live data, not yesterday's numbers.</p>
+            <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:12px">
+              <span style="font-size:10px;padding:4px 10px;border-radius:20px;background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.18);color:var(--rose-light)">Cross-platform</span>
+              <span style="font-size:10px;padding:4px 10px;border-radius:20px;background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.18);color:var(--rose-light)">Live data</span>
+              <span style="font-size:10px;padding:4px 10px;border-radius:20px;background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.18);color:var(--rose-light)">Private</span>
+            </div>
           </div>
-          <video autoplay muted loop playsinline>
-            <source src="assets/analytics-recording.mp4" type="video/mp4">
-          </video>
+          <div class="layer-video-frame">
+            <div class="layer-browser-bar">
+              <span style="background:#ff5f57"></span>
+              <span style="background:#febc2e"></span>
+              <span style="background:#28c840"></span>
+            </div>
+            <video autoplay muted loop playsinline>
+              <source src="assets/analytics-recording.mp4" type="video/mp4">
+            </video>
+          </div>
         </div>
-        <div class="layer-copy">
-          <div class="layer-num">02</div>
-          <h3 class="layer-name">Your Analytics</h3>
-          <p class="layer-desc">YouTube, Instagram, TikTok and your website — one dashboard. Live data, not yesterday's numbers.</p>
+        <!-- Embedded dashboard stats -->
+        <div style="border-top:1px solid var(--border);padding:16px 24px;display:grid;grid-template-columns:repeat(4,1fr);gap:8px">
+          <div style="text-align:center;padding:10px 0"><div style="font-family:var(--serif);font-size:20px;color:var(--text)">48.2k</div><div style="font-size:8px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.1em;margin-top:2px">Followers</div><div style="font-size:9px;color:#4ade80">↑ 1,240</div></div>
+          <div style="text-align:center;padding:10px 0"><div style="font-family:var(--serif);font-size:20px;color:var(--text)">284k</div><div style="font-size:8px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.1em;margin-top:2px">Views</div><div style="font-size:9px;color:#4ade80">↑ 23%</div></div>
+          <div style="text-align:center;padding:10px 0"><div style="font-family:var(--serif);font-size:20px;color:var(--text)">8.4%</div><div style="font-size:8px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.1em;margin-top:2px">Engagement</div><div style="font-size:9px;color:#4ade80">↑ 2.1%</div></div>
+          <div style="text-align:center;padding:10px 0"><div style="font-family:var(--serif);font-size:20px;color:var(--text)">$4,280</div><div style="font-size:8px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.1em;margin-top:2px">Revenue</div><div style="font-size:9px;color:#4ade80">↑ 34%</div></div>
         </div>
       </div>
 
-      <div class="layer-card">
-        <div class="layer-video-frame">
-          <div class="layer-browser-bar">
-            <span style="background:#ff5f57"></span>
-            <span style="background:#febc2e"></span>
-            <span style="background:#28c840"></span>
+      <!-- Layer 03: AI Strategist — video + embedded chat -->
+      <div class="layer-card" style="grid-template-columns:1fr;gap:0">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:center;padding:24px">
+          <div class="layer-video-frame">
+            <div class="layer-browser-bar">
+              <span style="background:#ff5f57"></span>
+              <span style="background:#febc2e"></span>
+              <span style="background:#28c840"></span>
+            </div>
+            <video autoplay muted loop playsinline>
+              <source src="assets/ai-strategist.mp4" type="video/mp4">
+            </video>
           </div>
-          <video autoplay muted loop playsinline>
-            <source src="assets/ai-strategist.mp4" type="video/mp4">
-          </video>
+          <div>
+            <div class="layer-num">03</div>
+            <h3 class="layer-name">Your AI Strategist</h3>
+            <p class="layer-desc">Not ChatGPT guessing. An AI trained on your actual analytics — tells you what to post, when, and why.</p>
+            <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:12px">
+              <span style="font-size:10px;padding:4px 10px;border-radius:20px;background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.18);color:var(--rose-light)">Captions &amp; hashtags</span>
+              <span style="font-size:10px;padding:4px 10px;border-radius:20px;background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.18);color:var(--rose-light)">Best time to post</span>
+              <span style="font-size:10px;padding:4px 10px;border-radius:20px;background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.18);color:var(--rose-light)">Photo → post</span>
+            </div>
+          </div>
         </div>
-        <div class="layer-copy">
-          <div class="layer-num">03</div>
-          <h3 class="layer-name">Your AI Strategist</h3>
-          <p class="layer-desc">Not generic advice. An AI that reads your actual data and tells you exactly what to post, when, and why.</p>
+        <!-- Embedded chat mockup -->
+        <div style="border-top:1px solid var(--border);padding:16px 24px;display:flex;flex-direction:column;gap:8px">
+          <div style="align-self:flex-end;background:rgba(16,185,129,0.12);color:var(--text);padding:8px 14px;border-radius:12px 12px 4px 12px;font-size:13px;max-width:75%">Write me a caption for my new reel</div>
+          <div style="align-self:flex-start;background:var(--dark);border:1px solid var(--border);color:var(--text-sub);padding:8px 14px;border-radius:12px 12px 12px 4px;font-size:13px;max-width:85%;line-height:1.5">"Your mornings don't have to be perfect to be powerful. Here's what actually changed my energy this month." <span style="opacity:0.4">#morningroutine #wellnesstips</span></div>
         </div>
       </div>
 
-      <div class="layer-card">
-        <div class="layer-email-preview">
-          <div class="layer-email-header">
-            <div class="layer-email-dot"></div>
-            <div class="layer-email-meta">
-              <div class="layer-email-from">Your AI Strategist</div>
-              <div class="layer-email-subj">Your Monday Briefing — Mar 24</div>
+      <!-- Layer 04: Weekly Briefing — email preview -->
+      <div class="layer-card" style="grid-template-columns:1fr;gap:0">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:center;padding:24px">
+          <div>
+            <div class="layer-num">04</div>
+            <h3 class="layer-name">Your Weekly Briefing</h3>
+            <p class="layer-desc">Every Monday, an AI-written strategy email — your numbers, your wins, and exactly what to do next. No login required.</p>
+          </div>
+          <div class="layer-email-preview">
+            <div class="layer-email-header">
+              <div class="layer-email-dot"></div>
+              <div class="layer-email-meta">
+                <div class="layer-email-from">Your AI Strategist</div>
+                <div class="layer-email-subj">Monday Briefing — Mar 24</div>
+              </div>
+            </div>
+            <div class="layer-email-body">
+              <div class="layer-email-stats">
+                <span><i class="fa-brands fa-youtube" style="color:#FF0000"></i> 42.1k ↑12%</span>
+                <span><i class="fa-brands fa-instagram" style="color:#E1306C"></i> 8.4% ↑6%</span>
+                <span><i class="fa-brands fa-tiktok"></i> 118k ↑31%</span>
+              </div>
+              <div class="layer-email-action">
+                <strong>This week:</strong> Post Tuesday 7pm — your highest engagement window this month.
+              </div>
             </div>
           </div>
-          <div class="layer-email-body">
-            <div class="layer-email-stats">
-              <span><i class="fa-brands fa-youtube" style="color:#FF0000"></i> 42.1k views ↑12%</span>
-              <span><i class="fa-brands fa-instagram" style="color:#E1306C"></i> 8.4% eng ↑6%</span>
-              <span><i class="fa-brands fa-tiktok"></i> 118k views ↑31%</span>
-            </div>
-            <div class="layer-email-action">
-              <strong>This week:</strong> Post your workout reel Tuesday 7pm — your highest engagement window this month.
-            </div>
-          </div>
-        </div>
-        <div class="layer-copy">
-          <div class="layer-num">04</div>
-          <h3 class="layer-name">Your Weekly Briefing</h3>
-          <p class="layer-desc">Every Monday, an AI-written strategy email lands in your inbox — your numbers, your wins, and exactly what to do next. No login required.</p>
         </div>
       </div>
 
     </div>
   </section>
 
-  <!-- AI STRATEGIST SPOTLIGHT -->
-  <section class="ai-spotlight">
-    <div class="inner">
-      <div class="ai-spotlight-inner fade-up">
-        <div class="ai-spotlight-copy">
-          <span class="platform-label">AI Strategist</span>
-          <h2 class="ai-spotlight-title">Ask it anything.<br><em>It knows your data.</em></h2>
-          <p class="ai-spotlight-sub">Not generic advice. Not ChatGPT guessing. An AI trained on your actual analytics — your views, your engagement, your audience — telling you exactly what to post, when, and why.</p>
-          <div class="ai-caps">
-            <div class="ai-cap"><i class="fa-solid fa-pen-fancy"></i> Writes captions that hit the algorithm</div>
-            <div class="ai-cap"><i class="fa-solid fa-clock"></i> Best times to post from your data</div>
-            <div class="ai-cap"><i class="fa-solid fa-lightbulb"></i> Content ideas based on what's working</div>
-            <div class="ai-cap"><i class="fa-solid fa-calendar"></i> Helps you plan and schedule posts</div>
-          </div>
-        </div>
-        <div class="ai-spotlight-visual">
-          <div class="ai-chat-mockup">
-            <div class="ai-chat-msg ai-chat-user">Write me a caption for my new reel</div>
-            <div class="ai-chat-msg ai-chat-bot"><span class="ai-chat-label"><i class="fa-solid fa-brain"></i> AI Strategist</span>"Your mornings don't have to be perfect to be powerful. Here's what actually changed my energy this month." <span class="ai-chat-hashtags">#morningroutine #wellnesstips #realresults</span></div>
-            <div class="ai-chat-msg ai-chat-user">When should I post this week?</div>
-            <div class="ai-chat-msg ai-chat-bot"><span class="ai-chat-label"><i class="fa-solid fa-brain"></i> AI Strategist</span>Based on your engagement data: <strong>Tuesday 7pm</strong> and <strong>Thursday 12pm</strong> — those are your highest click windows this month.</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+  <!-- AI Spotlight removed — merged into Layer 03 card -->
 
   <!-- CREATOR TOOL STACK (compact) -->
   <section id="tool-stack" style="padding:clamp(32px,5vw,60px) 0;background:var(--black)">
@@ -4476,140 +4488,9 @@
   })();
   </script>
 
-  <!-- GROWTH INTERRUPT -->
-  <section class="growth-interrupt" aria-label="Growth question">
-    <div class="growth-interrupt-inner">
-      <h2 class="growth-interrupt-headline fade-up">You're creating every day.<br><em>We'll scale everything behind it.</em></h2>
-      <p class="growth-interrupt-sub fade-up">Your audience, your programs, your revenue — one system that grows the whole brand, not just the numbers.</p>
-    </div>
-  </section>
+  <!-- Growth Interrupt removed — redundant with hero -->
 
-  <!-- ANALYTICS SHOWCASE -->
-  <section id="analytics">
-    <canvas id="analytics-canvas" aria-hidden="true"></canvas>
-
-    <div class="inner">
-      <div class="analytics-inner">
-
-        <!-- Left: headline + 4 benefit cards -->
-        <div class="analytics-left">
-          <span class="work-label">Cross-Platform Analytics</span>
-          <h2 class="analytics-title">YouTube. Instagram. TikTok.<br><em>All in one dashboard.</em></h2>
-          <p class="analytics-sub">Real data from every platform you're on — views, engagement, follower growth, and conversions — pulled live into a private dashboard only you can see.</p>
-          <div class="analytics-cards">
-            <div class="analytics-card">
-              <div class="analytics-card-icon"><i class="fa-brands fa-youtube" style="color:#FF0000"></i></div>
-              <div class="analytics-card-title">YouTube analytics</div>
-              <div class="analytics-card-body">Views, watch time, subscriber growth, and top-performing videos — updated live.</div>
-            </div>
-            <div class="analytics-card">
-              <div class="analytics-card-icon"><i class="fa-brands fa-instagram" style="color:#E1306C"></i></div>
-              <div class="analytics-card-title">Instagram analytics</div>
-              <div class="analytics-card-body">Reach, engagement rate, story performance, and follower trends across posts and reels.</div>
-            </div>
-            <div class="analytics-card">
-              <div class="analytics-card-icon"><i class="fa-brands fa-tiktok"></i></div>
-              <div class="analytics-card-title">TikTok analytics</div>
-              <div class="analytics-card-body">Video views, profile visits, likes, and shares — see what's gaining traction.</div>
-            </div>
-            <div class="analytics-card">
-              <div class="analytics-card-icon">🌍</div>
-              <div class="analytics-card-title">Website + audience map</div>
-              <div class="analytics-card-body">Pageviews, conversions, traffic sources, and a live world map of your audience.</div>
-            </div>
-          </div>
-
-          <!-- Mobile-only stat strip (dashboard browser hidden on mobile) -->
-          <div class="dash-stats-strip">
-            <div class="dss-item"><div class="dss-val">12.8K</div><div class="dss-label">Pageviews</div></div>
-            <div class="dss-item"><div class="dss-val">3.4K</div><div class="dss-label">Visitors</div></div>
-            <div class="dss-item"><div class="dss-val">Instagram</div><div class="dss-label">Top Source</div></div>
-            <div class="dss-item"><div class="dss-val">🇺🇸 USA</div><div class="dss-label">Top Country</div></div>
-          </div>
-
-        </div>
-
-        <!-- Right: Dashboard browser mockup -->
-        <div class="analytics-right">
-          <div class="dash-browser">
-
-            <div class="dash-chrome">
-              <div class="dash-dots"><span></span><span></span><span></span></div>
-              <div class="dash-url"><span class="dash-lock">🔒</span> mandibagley.com/hub</div>
-            </div>
-
-            <div class="dash-body">
-              <div class="dash-header">
-                <div class="dash-site-name">Growth Overview</div>
-                <div class="dash-period">Last 30 days</div>
-              </div>
-
-              <!-- Row 1: Big growth metrics -->
-              <div class="dash-stats">
-                <div class="dash-stat">
-                  <div class="dash-stat-label"><i class="fa-solid fa-users" style="margin-right:4px;font-size:10px;opacity:0.5"></i> Followers</div>
-                  <div class="dash-stat-val">48.2k</div>
-                  <div class="dash-stat-trend up">↑ 1,240 this month</div>
-                </div>
-                <div class="dash-stat">
-                  <div class="dash-stat-label"><i class="fa-solid fa-eye" style="margin-right:4px;font-size:10px;opacity:0.5"></i> Total Views</div>
-                  <div class="dash-stat-val">284k</div>
-                  <div class="dash-stat-trend up">↑ 23%</div>
-                </div>
-                <div class="dash-stat">
-                  <div class="dash-stat-label"><i class="fa-solid fa-heart" style="margin-right:4px;font-size:10px;opacity:0.5"></i> Engagement</div>
-                  <div class="dash-stat-val">8.4%</div>
-                  <div class="dash-stat-trend up">↑ 2.1%</div>
-                </div>
-                <div class="dash-stat">
-                  <div class="dash-stat-label"><i class="fa-solid fa-dollar-sign" style="margin-right:4px;font-size:10px;opacity:0.5"></i> Link Revenue</div>
-                  <div class="dash-stat-val">$4,280</div>
-                  <div class="dash-stat-trend up">↑ 34%</div>
-                </div>
-              </div>
-
-              <!-- Growth chart -->
-              <div class="dash-chart">
-                <div class="dash-chart-label">Follower growth — 30 days</div>
-                <svg viewBox="0 0 400 52" preserveAspectRatio="none" class="dash-sparkline">
-                  <defs>
-                    <linearGradient id="spark-grad" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stop-color="rgba(16,185,129,0.28)"/>
-                      <stop offset="100%" stop-color="rgba(16,185,129,0)"/>
-                    </linearGradient>
-                  </defs>
-                  <path d="M0,48 L14,46 L28,45 L42,43 L56,42 L70,40 L84,38 L98,36 L112,34 L126,32 L140,30 L154,28 L168,26 L182,24 L196,22 L210,20 L224,18 L238,16 L252,15 L266,13 L280,11 L294,10 L308,8 L322,7 L336,6 L350,5 L364,4 L378,3 L400,2 L400,52 L0,52 Z" fill="url(#spark-grad)"/>
-                  <path d="M0,48 L14,46 L28,45 L42,43 L56,42 L70,40 L84,38 L98,36 L112,34 L126,32 L140,30 L154,28 L168,26 L182,24 L196,22 L210,20 L224,18 L238,16 L252,15 L266,13 L280,11 L294,10 L308,8 L322,7 L336,6 L350,5 L364,4 L378,3 L400,2" fill="none" stroke="#10B981" stroke-width="1.5" stroke-linejoin="round"/>
-                </svg>
-              </div>
-
-              <!-- Top performing content -->
-              <div class="dash-links">
-                <div class="dash-chart-label" style="margin-bottom:8px">Top performing content</div>
-                <div class="dash-link-row">
-                  <div class="dash-link-name"><i class="fa-brands fa-youtube" style="color:#FF0000;margin-right:5px"></i> "Morning Routine" vlog</div>
-                  <div class="dash-link-bar-wrap"><div class="dash-link-bar" style="width:82%"></div></div>
-                  <div class="dash-link-pct">42k</div>
-                </div>
-                <div class="dash-link-row">
-                  <div class="dash-link-name"><i class="fa-brands fa-instagram" style="color:#E1306C;margin-right:5px"></i> Reel: "what I actually eat"</div>
-                  <div class="dash-link-bar-wrap"><div class="dash-link-bar" style="width:64%"></div></div>
-                  <div class="dash-link-pct">28k</div>
-                </div>
-                <div class="dash-link-row">
-                  <div class="dash-link-name"><i class="fa-brands fa-tiktok" style="margin-right:5px"></i> "3 things I stopped doing"</div>
-                  <div class="dash-link-bar-wrap"><div class="dash-link-bar" style="width:48%"></div></div>
-                  <div class="dash-link-pct">19k</div>
-                </div>
-              </div>
-
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
+  <!-- Analytics Showcase removed — merged into Layer 02 card -->
 
   <!-- WORK -->
   <section id="work">
@@ -4659,97 +4540,7 @@
     </div>
   </section>
 
-  <!-- WEEKLY RECAP -->
-  <section id="recap">
-    <div class="inner">
-      <div class="recap-layout fade-up">
-        <div class="recap-copy">
-          <span class="platform-label">Weekly Intelligence</span>
-          <h2 class="recap-title">A strategist in your inbox,<br><em>every Monday.</em></h2>
-          <p class="recap-sub">Even if you never open the Hub, the Hub comes to you.</p>
-          <ul class="recap-list">
-            <li>Your growth at a glance — followers, views, engagement, and revenue across YouTube, IG &amp; TikTok</li>
-            <li>Two AI-generated action items from your real data — what to post, when, and why</li>
-            <li>Reply to request updates — new codes, links, partners, anything</li>
-          </ul>
-        </div>
-        <div class="recap-visual">
-          <div class="recap-card">
-            <div class="rc-header">
-              <span class="rc-badge">Monday Briefing</span>
-              <span class="rc-date">Mar 24, 2026</span>
-            </div>
-
-            <div class="rc-platforms">
-              <div class="rc-plat">
-                <div class="rc-plat-icon"><i class="fa-brands fa-youtube" style="color:#FF0000"></i></div>
-                <span class="rc-plat-val">42.1k</span>
-                <span class="rc-plat-delta">↑ 12%</span>
-                <div class="rc-plat-label">Views</div>
-              </div>
-              <div class="rc-plat">
-                <div class="rc-plat-icon"><i class="fa-brands fa-instagram" style="color:#E1306C"></i></div>
-                <span class="rc-plat-val">8,340</span>
-                <span class="rc-plat-delta">↑ 6.2%</span>
-                <div class="rc-plat-label">Engagement</div>
-              </div>
-              <div class="rc-plat">
-                <div class="rc-plat-icon"><i class="fa-brands fa-tiktok" style="color:#fff"></i></div>
-                <span class="rc-plat-val">118k</span>
-                <span class="rc-plat-delta">↑ 24%</span>
-                <div class="rc-plat-label">Views</div>
-              </div>
-            </div>
-
-            <div class="rc-section-label">AI Action Items</div>
-            <div class="rc-actions">
-              <div class="rc-action">
-                <span class="rc-action-dot"></span>
-                <span>Post Tuesday 7pm — your highest click window this week. Your last 3 Tuesday posts averaged 2.4x more saves.</span>
-              </div>
-              <div class="rc-action">
-                <span class="rc-action-dot"></span>
-                <span>Double down on Reels — they drove 3x more profile visits than carousels over the last 14 days.</span>
-              </div>
-            </div>
-
-            <a href="#contact" class="rc-cta">Open Your Hub →</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- PAIN TICKER -->
-  <div class="pain-ticker" aria-hidden="true">
-    <div class="pain-ticker-track">
-      <span class="pain-ticker-item">Posting every day but followers are flat</span>
-      <span class="pain-ticker-sep">·</span>
-      <span class="pain-ticker-item">Checking 3 apps and still guessing</span>
-      <span class="pain-ticker-sep">·</span>
-      <span class="pain-ticker-item">Your best content is buried and you don't know it</span>
-      <span class="pain-ticker-sep">·</span>
-      <span class="pain-ticker-item">No idea which platform is actually growing</span>
-      <span class="pain-ticker-sep">·</span>
-      <span class="pain-ticker-item">Making content but not making money</span>
-      <span class="pain-ticker-sep">·</span>
-      <span class="pain-ticker-item">Your audience is growing somewhere — do you know where?</span>
-      <span class="pain-ticker-sep">·</span>
-      <!-- duplicate for seamless loop -->
-      <span class="pain-ticker-item">Posting every day but followers are flat</span>
-      <span class="pain-ticker-sep">·</span>
-      <span class="pain-ticker-item">Checking 3 apps and still guessing</span>
-      <span class="pain-ticker-sep">·</span>
-      <span class="pain-ticker-item">Your best content is buried and you don't know it</span>
-      <span class="pain-ticker-sep">·</span>
-      <span class="pain-ticker-item">No idea which platform is actually growing</span>
-      <span class="pain-ticker-sep">·</span>
-      <span class="pain-ticker-item">Making content but not making money</span>
-      <span class="pain-ticker-sep">·</span>
-      <span class="pain-ticker-item">Your audience is growing somewhere — do you know where?</span>
-      <span class="pain-ticker-sep">·</span>
-    </div>
-  </div>
+  <!-- Weekly Recap + Pain Ticker removed — briefing merged into Layer 04 card -->
 
   <!-- CONTACT -->
   <section id="contact">
