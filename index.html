@@ -646,109 +646,153 @@
       width: 6px; height: 6px; border-radius: 50%;
       background: var(--rose); box-shadow: 0 0 6px rgba(16,185,129,0.4);
     }
-    .recap-visual { display: flex; justify-content: center; position: relative; }
+    .recap-visual { display: flex; justify-content: center; position: relative; overflow: hidden; }
 
-    /* ── Paper airplane animation ── */
+    /* ── Paper airplane animation — DRAMATIC ── */
     .plane-scene {
       position: relative;
       width: 100%;
-      max-width: 420px;
-      min-height: 100px;
+      max-width: 440px;
+      min-height: 60px;
+      perspective: 1200px;
     }
 
-    /* The airplane */
+    /* The airplane — BIG */
     .paper-plane {
       position: absolute;
       top: 50%;
       left: 50%;
-      width: 60px;
-      height: 40px;
-      transform: translate(300px, -200px) rotate(-30deg) scale(1);
-      opacity: 0;
+      width: 220px;
+      height: 140px;
+      margin-left: -110px;
+      margin-top: -70px;
       z-index: 10;
-      filter: drop-shadow(0 4px 12px rgba(0,0,0,0.4));
-      transition: none;
+      filter: drop-shadow(0 20px 40px rgba(0,0,0,0.6));
+      opacity: 0;
+      transform: translate(500px, -300px) rotate(-40deg) scale(0.6);
     }
-    .paper-plane svg {
-      width: 100%;
-      height: 100%;
+    .paper-plane svg { width: 100%; height: 100%; }
+
+    /* Shadow on the ground */
+    .plane-shadow {
+      position: absolute;
+      top: 55%;
+      left: 50%;
+      width: 180px;
+      height: 30px;
+      margin-left: -90px;
+      border-radius: 50%;
+      background: radial-gradient(ellipse, rgba(0,0,0,0.35) 0%, transparent 70%);
+      opacity: 0;
+      transform: translate(400px, 0) scale(0.3);
+      z-index: 1;
+      filter: blur(8px);
     }
 
-    /* Flight path animation */
-    @keyframes flyIn {
-      0% { transform: translate(300px, -200px) rotate(-30deg) scale(0.8); opacity: 0; }
-      15% { opacity: 1; }
-      40% { transform: translate(80px, -80px) rotate(-15deg) scale(0.9); }
-      70% { transform: translate(-10px, 10px) rotate(5deg) scale(1); }
-      85% { transform: translate(5px, -5px) rotate(-2deg) scale(1); }
-      100% { transform: translate(0, -20px) rotate(0deg) scale(1); opacity: 1; }
+    /* Phase 1: Fly in with barrel roll */
+    @keyframes planefly {
+      0%   { transform: translate(500px, -300px) rotate(-40deg) scale(0.6); opacity: 0; }
+      8%   { opacity: 1; }
+      25%  { transform: translate(200px, -150px) rotate(30deg) scale(0.8); }
+      40%  { transform: translate(60px, -60px) rotate(210deg) scale(0.9); }
+      55%  { transform: translate(-20px, 10px) rotate(340deg) scale(1); }
+      70%  { transform: translate(10px, -15px) rotate(355deg) scale(1); }
+      85%  { transform: translate(-3px, 5px) rotate(360deg) scale(1); }
+      100% { transform: translate(0, 0) rotate(360deg) scale(1); opacity: 1; }
+    }
+    @keyframes shadowfly {
+      0%   { transform: translate(400px, 0) scale(0.3); opacity: 0; }
+      8%   { opacity: 0.3; }
+      25%  { transform: translate(160px, 0) scale(0.5); }
+      55%  { transform: translate(-15px, 0) scale(0.8); opacity: 0.5; }
+      100% { transform: translate(0, 0) scale(1); opacity: 0.4; }
     }
     .plane-scene.flying .paper-plane {
-      animation: flyIn 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+      animation: planefly 1.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+    .plane-scene.flying .plane-shadow {
+      animation: shadowfly 1.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
     }
 
-    /* Unfold stages */
-    @keyframes unfoldPlane {
-      0% { transform: translate(0, -20px) rotate(0deg) scale(1); opacity: 1; }
-      30% { transform: translate(0, -10px) rotate(0deg) scale(1.2); opacity: 0.8; }
-      100% { transform: translate(0, 0px) rotate(0deg) scale(0); opacity: 0; }
+    /* Phase 2: Airplane dissolves */
+    @keyframes planefade {
+      0%   { transform: translate(0, 0) rotate(360deg) scale(1); opacity: 1; }
+      100% { transform: translate(0, 0) rotate(360deg) scale(0.3); opacity: 0; }
+    }
+    @keyframes shadowfade {
+      0%   { opacity: 0.4; }
+      100% { opacity: 0; }
     }
     .plane-scene.unfolding .paper-plane {
-      animation: unfoldPlane 0.5s ease-in forwards;
+      animation: planefade 0.4s ease-in forwards;
+    }
+    .plane-scene.unfolding .plane-shadow {
+      animation: shadowfade 0.4s ease-in forwards;
     }
 
-    /* The unfolded letter */
+    /* The letter — 4-stage origami unfold */
     .letter-frame {
+      position: relative;
       background: var(--dark-card);
       border: 1px solid var(--border-mid);
       border-radius: 14px;
       padding: 0;
       overflow: hidden;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 40px rgba(16,185,129,0.04);
-      transform: scale(0.3) rotateX(20deg);
+      box-shadow: 0 24px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.03), 0 0 40px rgba(16,185,129,0.04);
+      transform: scale(0) rotateX(40deg) rotateY(10deg);
       opacity: 0;
       transform-origin: center center;
-      transition: none;
-    }
-    @keyframes unfoldLetter {
-      0% { transform: scale(0.3) rotateX(20deg); opacity: 0; }
-      40% { transform: scale(0.7) rotateX(10deg); opacity: 0.6; }
-      70% { transform: scale(1.02) rotateX(-2deg); opacity: 1; }
-      100% { transform: scale(1) rotateX(0deg); opacity: 1; }
-    }
-    .plane-scene.unfolding .letter-frame {
-      animation: unfoldLetter 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.2s forwards;
     }
 
-    /* Fold lines on the letter */
-    .letter-frame::before {
-      content: '';
-      position: absolute;
-      top: 33%;
-      left: 5%;
-      right: 5%;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.04), transparent);
-      pointer-events: none;
-      z-index: 1;
+    /* Fold 1: initial small square appears */
+    @keyframes fold1 {
+      0%   { transform: scale(0) rotateX(40deg) rotateY(10deg); opacity: 0; }
+      100% { transform: scale(0.5) rotateX(20deg) rotateY(5deg); opacity: 0.5; }
     }
-    .letter-frame::after {
-      content: '';
-      position: absolute;
-      top: 66%;
-      left: 5%;
-      right: 5%;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.04), transparent);
-      pointer-events: none;
-      z-index: 1;
+    /* Fold 2: opens wider */
+    @keyframes fold2 {
+      0%   { transform: scale(0.5) rotateX(20deg) rotateY(5deg); opacity: 0.5; }
+      100% { transform: scale(0.75) rotateX(10deg) rotateY(-3deg); opacity: 0.7; }
+    }
+    /* Fold 3: almost flat */
+    @keyframes fold3 {
+      0%   { transform: scale(0.75) rotateX(10deg) rotateY(-3deg); opacity: 0.7; }
+      100% { transform: scale(0.95) rotateX(-3deg) rotateY(1deg); opacity: 0.9; }
+    }
+    /* Fold 4: fully open with slight bounce */
+    @keyframes fold4 {
+      0%   { transform: scale(0.95) rotateX(-3deg) rotateY(1deg); opacity: 0.9; }
+      60%  { transform: scale(1.02) rotateX(0deg) rotateY(0deg); opacity: 1; }
+      100% { transform: scale(1) rotateX(0deg) rotateY(0deg); opacity: 1; }
     }
 
-    /* Content reveal inside the letter */
+    .plane-scene.fold1 .letter-frame { animation: fold1 0.3s ease-out forwards; }
+    .plane-scene.fold2 .letter-frame { animation: fold2 0.3s ease-out forwards; }
+    .plane-scene.fold3 .letter-frame { animation: fold3 0.3s ease-out forwards; }
+    .plane-scene.fold4 .letter-frame { animation: fold4 0.4s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+
+    /* Fold lines (visible during unfold) */
+    .letter-frame::before, .letter-frame::after {
+      content: '';
+      position: absolute;
+      left: 5%; right: 5%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0;
+      transition: opacity 0.5s ease 0.3s;
+    }
+    .letter-frame::before { top: 33%; }
+    .letter-frame::after { top: 66%; }
+    .plane-scene.fold4 .letter-frame::before,
+    .plane-scene.fold4 .letter-frame::after { opacity: 1; }
+
+    /* Content reveal */
     .letter-content {
       opacity: 0;
-      transform: translateY(10px);
-      transition: opacity 0.5s ease, transform 0.5s ease;
+      transform: translateY(16px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
     }
     .plane-scene.revealed .letter-content {
       opacity: 1;
@@ -765,9 +809,11 @@
       box-shadow: none;
       transition: none;
     }
-    .recap-card:hover {
-      transform: none;
-      box-shadow: none;
+    .recap-card:hover { transform: none; box-shadow: none; }
+
+    @media (max-width: 768px) {
+      .paper-plane { width: 160px; height: 100px; margin-left: -80px; margin-top: -50px; }
+      .plane-shadow { width: 120px; margin-left: -60px; }
     }
     .rc-header {
       display: flex; align-items: center; justify-content: space-between;
@@ -4786,15 +4832,26 @@
         <div class="recap-visual">
           <div class="plane-scene" id="planeScene">
 
-            <!-- Paper airplane SVG -->
+            <!-- Paper airplane SVG — large, detailed -->
             <div class="paper-plane">
-              <svg viewBox="0 0 60 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M0 20 L55 2 L30 20 Z" fill="rgba(235,231,223,0.9)" stroke="rgba(255,255,255,0.15)" stroke-width="0.5"/>
-                <path d="M0 20 L55 2 L30 20 L40 38 Z" fill="rgba(235,231,223,0.7)" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/>
-                <path d="M30 20 L55 2" stroke="rgba(255,255,255,0.2)" stroke-width="0.5"/>
-                <path d="M30 20 L40 38 L55 2" fill="rgba(200,196,188,0.5)" stroke="rgba(255,255,255,0.08)" stroke-width="0.5"/>
+              <svg viewBox="0 0 220 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Top wing (lighter) -->
+                <path d="M10 70 L210 8 L100 70 Z" fill="rgba(235,231,223,0.95)" stroke="rgba(255,255,255,0.2)" stroke-width="0.8"/>
+                <!-- Bottom wing (slightly darker) -->
+                <path d="M10 70 L210 8 L100 70 L140 132 Z" fill="rgba(215,211,203,0.85)" stroke="rgba(255,255,255,0.12)" stroke-width="0.8"/>
+                <!-- Center fold line -->
+                <path d="M10 70 L210 8" stroke="rgba(255,255,255,0.25)" stroke-width="1"/>
+                <!-- Tail fold -->
+                <path d="M100 70 L140 132 L210 8" fill="rgba(195,191,183,0.65)" stroke="rgba(255,255,255,0.1)" stroke-width="0.8"/>
+                <!-- Inner fold detail -->
+                <path d="M100 70 L170 45" stroke="rgba(255,255,255,0.1)" stroke-width="0.5" stroke-dasharray="4 3"/>
+                <!-- Subtle shadow on fold -->
+                <path d="M10 70 L100 70 L210 8" stroke="rgba(0,0,0,0.08)" stroke-width="2" fill="none"/>
               </svg>
             </div>
+
+            <!-- Shadow on ground -->
+            <div class="plane-shadow"></div>
 
             <!-- The unfolded letter (appears during unfold) -->
             <div class="letter-frame">
@@ -6042,20 +6099,28 @@
       animated = true;
       obs.unobserve(scene);
 
-      // Phase 1: Paper airplane flies in (0ms)
+      // Phase 1: Airplane flies in with barrel roll (0-1.4s)
       scene.classList.add('flying');
 
-      // Phase 2: Airplane shrinks + letter unfolds (800ms)
+      // Phase 2: Airplane dissolves (1.5s)
       setTimeout(function() {
         scene.classList.add('unfolding');
-      }, 800);
+      }, 1500);
 
-      // Phase 3: Content fades in on the letter (1600ms)
-      setTimeout(function() {
-        scene.classList.add('revealed');
-      }, 1600);
+      // Phase 3: Origami unfold — 4 stages
+      // Fold 1: small square appears (1.7s)
+      setTimeout(function() { scene.classList.add('fold1'); }, 1700);
+      // Fold 2: opens wider (2.0s)
+      setTimeout(function() { scene.classList.add('fold2'); }, 2000);
+      // Fold 3: almost flat (2.3s)
+      setTimeout(function() { scene.classList.add('fold3'); }, 2300);
+      // Fold 4: fully open with bounce (2.6s)
+      setTimeout(function() { scene.classList.add('fold4'); }, 2600);
 
-    }, { threshold: 0.2 });
+      // Phase 4: Content reveals on the letter (3.2s)
+      setTimeout(function() { scene.classList.add('revealed'); }, 3200);
+
+    }, { threshold: 0.15 });
 
     obs.observe(scene);
   })();
