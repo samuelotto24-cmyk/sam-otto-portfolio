@@ -2,3 +2,5 @@
 .superpowers/
 .DS_Store
 pitch/
+node_modules/
+.env.local
