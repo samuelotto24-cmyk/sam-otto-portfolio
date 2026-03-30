@@ -448,30 +448,113 @@ h3 { font-family: var(--serif); font-size: 26px; font-weight: 500; margin-bottom
 <!-- ═══ SLIDE 3: ICP (was slide 5) ═══ -->
 <div class="slide" data-slide="2" data-splash="Customer">
   <div class="section-title-splash"><div class="splash-text"></div></div>
-  <div class="slide-content" style="padding:20px 50px 50px;">
-    <div class="fade-up">
+  <div class="slide-content" style="padding:20px 40px 50px;display:flex;flex-direction:column;height:100%;overflow:hidden;">
+    <div class="fade-up" style="flex-shrink:0;">
       <div class="slide-label">02 — Ideal Customer Profile</div>
-      <div class="slide-label-line" style="margin-bottom:8px;"></div>
+      <div class="slide-label-line" style="margin-bottom:6px;"></div>
     </div>
-    <div class="row" style="align-items:center;">
-      <div class="col" style="max-width:52%;">
-        <div>
-          <div class="slide-headline" style="font-size:clamp(28px,3.5vw,40px);font-weight:500;">1.8 Million Creators.</div>
-          <div class="slide-headline" style="font-size:clamp(28px,3.5vw,40px);font-weight:500;color:var(--accent);">All Leaving Money on the Table.</div>
+    <div style="display:flex;gap:28px;flex:1;align-items:center;">
+
+      <!-- Left: Creator Profile Card -->
+      <div class="fade-up" style="flex:0 0 58%;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px 28px;position:relative;overflow:hidden;">
+        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent);"></div>
+
+        <!-- Profile header -->
+        <div style="display:flex;align-items:center;gap:16px;margin-bottom:16px;">
+          <div style="width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--purple));display:flex;align-items:center;justify-content:center;">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          </div>
+          <div>
+            <div style="font-family:var(--sans);font-size:20px;font-weight:700;color:var(--text);">@midtiercreator</div>
+            <div style="font-family:var(--sans);font-size:14px;color:var(--text-muted);">Lifestyle & Fitness · Full-time creator</div>
+          </div>
         </div>
-        <div class="fade-up">
-          <div class="card" style="margin-top:10px;padding:14px 20px;">
-            <div style="font-size:14px;letter-spacing:0.15em;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:6px;">Primary ICP — 10K–500K followers</div>
-            <div style="display:flex;flex-direction:column;gap:4px;font-size:17px;color:var(--text-sub);">
-              <div>💰 Earning from brand deals — zero visibility into what's converting</div>
-              <div>📱 Posting across IG, TikTok, YouTube with no unified analytics</div>
-              <div>🤷 Making revenue despite their tools — not because of them</div>
-              <div>🛠️ Paying $500–$2K/mo for tools that don't connect</div>
-              <div>⏰ Ready to replace guesswork with a revenue system</div>
-            </div>
+
+        <!-- Platform stats row -->
+        <div style="display:flex;gap:12px;margin-bottom:14px;">
+          <div style="flex:1;background:rgba(255,248,220,0.03);border-radius:8px;padding:8px 12px;text-align:center;">
+            <div style="font-size:12px;color:var(--text-muted);margin-bottom:2px;">Instagram</div>
+            <div style="font-family:var(--serif);font-size:24px;font-weight:600;color:var(--text);">142K</div>
+          </div>
+          <div style="flex:1;background:rgba(255,248,220,0.03);border-radius:8px;padding:8px 12px;text-align:center;">
+            <div style="font-size:12px;color:var(--text-muted);margin-bottom:2px;">TikTok</div>
+            <div style="font-family:var(--serif);font-size:24px;font-weight:600;color:var(--text);">89K</div>
+          </div>
+          <div style="flex:1;background:rgba(255,248,220,0.03);border-radius:8px;padding:8px 12px;text-align:center;">
+            <div style="font-size:12px;color:var(--text-muted);margin-bottom:2px;">YouTube</div>
+            <div style="font-family:var(--serif);font-size:24px;font-weight:600;color:var(--text);">16K</div>
+          </div>
+        </div>
+
+        <!-- Revenue + Deals -->
+        <div style="display:flex;gap:12px;margin-bottom:14px;">
+          <div style="flex:1;background:rgba(16,185,129,0.06);border:1px solid rgba(16,185,129,0.15);border-radius:8px;padding:8px 12px;">
+            <div style="font-size:12px;color:var(--accent);margin-bottom:2px;">Monthly Revenue</div>
+            <div style="font-family:var(--serif);font-size:22px;font-weight:600;color:var(--accent);">$3,200</div>
+            <div style="font-size:11px;color:var(--text-muted);">affiliates + sponsorships</div>
+          </div>
+          <div style="flex:1;background:rgba(245,158,11,0.06);border:1px solid rgba(245,158,11,0.15);border-radius:8px;padding:8px 12px;">
+            <div style="font-size:12px;color:var(--gold);margin-bottom:2px;">Active Brand Deals</div>
+            <div style="font-family:var(--serif);font-size:22px;font-weight:600;color:var(--gold);">4</div>
+            <div style="font-size:11px;color:var(--text-muted);">DFYNE, Gymshark, +2</div>
+          </div>
+        </div>
+
+        <!-- Tool spend (pain) -->
+        <div style="background:rgba(192,57,43,0.06);border:1px solid rgba(192,57,43,0.15);border-radius:8px;padding:10px 14px;margin-bottom:10px;">
+          <div style="font-size:12px;color:#C0392B;font-weight:600;margin-bottom:6px;">TOOLS PAYING FOR</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;">
+            <span style="background:rgba(255,255,255,0.08);border-radius:4px;padding:3px 8px;font-size:11px;color:var(--text-sub);">Linktree</span>
+            <span style="background:rgba(255,255,255,0.08);border-radius:4px;padding:3px 8px;font-size:11px;color:var(--text-sub);">Later</span>
+            <span style="background:rgba(255,255,255,0.08);border-radius:4px;padding:3px 8px;font-size:11px;color:var(--text-sub);">Mailchimp</span>
+            <span style="background:rgba(255,255,255,0.08);border-radius:4px;padding:3px 8px;font-size:11px;color:var(--text-sub);">ChatGPT</span>
+            <span style="background:rgba(255,255,255,0.08);border-radius:4px;padding:3px 8px;font-size:11px;color:var(--text-sub);">Squarespace</span>
+            <span style="background:rgba(255,255,255,0.08);border-radius:4px;padding:3px 8px;font-size:11px;color:var(--text-sub);">Iconosquare</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:baseline;">
+            <div style="font-size:14px;font-weight:600;color:#C0392B;">$847/month on tools</div>
+            <div style="font-size:14px;font-weight:700;color:#C0392B;">Revenue she can attribute to a specific post: $0</div>
           </div>
         </div>
       </div>
+
+      <!-- Right: Follower Range + Market Size -->
+      <div class="fade-up" style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+        <div style="font-family:var(--sans);font-size:14px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:16px;">YOUR ICP SWEET SPOT</div>
+
+        <!-- Vertical range bar -->
+        <div style="position:relative;width:100%;max-width:280px;height:320px;">
+          <!-- Background bar -->
+          <div style="position:absolute;left:50%;transform:translateX(-50%);width:60px;height:100%;background:rgba(255,248,220,0.04);border-radius:30px;border:1px solid var(--border);"></div>
+          <!-- Sweet spot highlight -->
+          <div style="position:absolute;left:50%;transform:translateX(-50%);width:60px;top:20%;height:50%;background:rgba(16,185,129,0.15);border:2px solid var(--accent);border-radius:30px;"></div>
+
+          <!-- Labels -->
+          <div style="position:absolute;right:calc(50% + 44px);top:0;text-align:right;">
+            <div style="font-family:var(--serif);font-size:20px;font-weight:600;color:rgba(235,231,223,0.3);">500K+</div>
+            <div style="font-size:11px;color:var(--text-muted);">Enterprise teams</div>
+          </div>
+          <div style="position:absolute;left:calc(50% + 44px);top:22%;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.25);border-radius:8px;padding:8px 14px;">
+            <div style="font-family:var(--serif);font-size:22px;font-weight:600;color:var(--accent);">10K–500K</div>
+            <div style="font-size:13px;color:var(--accent);font-weight:600;">YOUR ICP</div>
+          </div>
+          <div style="position:absolute;right:calc(50% + 44px);top:52%;text-align:right;">
+            <div style="font-family:var(--serif);font-size:18px;font-weight:600;color:rgba(235,231,223,0.3);">10K</div>
+          </div>
+          <div style="position:absolute;right:calc(50% + 44px);bottom:0;text-align:right;">
+            <div style="font-family:var(--serif);font-size:18px;font-weight:600;color:rgba(235,231,223,0.2);">1K</div>
+            <div style="font-size:11px;color:var(--text-muted);">Hobbyists</div>
+          </div>
+        </div>
+
+        <!-- Market size callout -->
+        <div style="margin-top:20px;text-align:center;">
+          <div style="font-family:var(--serif);font-size:36px;font-weight:600;color:var(--text);">1.8M</div>
+          <div style="font-size:15px;color:var(--text-sub);">creators in this range</div>
+          <div style="font-size:14px;color:var(--accent);font-weight:600;margin-top:4px;">All with the same problem.</div>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>
