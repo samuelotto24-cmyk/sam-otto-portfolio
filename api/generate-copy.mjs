@@ -1,9 +1,3 @@
-import Anthropic from '@anthropic-ai/sdk';
-
-const client = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY,
-});
-
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
@@ -12,6 +6,11 @@ export default async function handler(req, res) {
   const { name, niche, sells, followers } = req.body || {};
   if (!name || !niche) {
     return res.status(400).json({ error: 'Name and niche required' });
+  }
+
+  const apiKey = process.env.ANTHROPIC_API_KEY;
+  if (!apiKey) {
+    return res.status(500).json({ success: false, error: 'API key not configured' });
   }
 
   const followerLabel = formatFollowers(followers || 0);
@@ -48,18 +47,33 @@ Generate the following in JSON format. All copy should be warm, confident, and s
 Return ONLY valid JSON. No markdown, no code fences, no explanation.`;
 
   try {
-    const message = await client.messages.create({
-      model: 'claude-sonnet-4-6-20250514',
-      max_tokens: 1024,
-      messages: [{ role: 'user', content: prompt }],
+    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': apiKey,
+        'anthropic-version': '2023-06-01',
+      },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6-20250514',
+        max_tokens: 1024,
+        messages: [{ role: 'user', content: prompt }],
+      }),
     });
 
+    if (!resp.ok) {
+      const errText = await resp.text();
+      console.error('Anthropic API error:', resp.status, errText);
+      return res.status(500).json({ success: false, error: 'Copy generation failed', detail: errText });
+    }
+
+    const message = await resp.json();
     const text = message.content[0].text;
     const copy = JSON.parse(text);
 
     return res.status(200).json({ success: true, copy });
   } catch (e) {
-    console.error('AI copy generation failed:', e.message, e.status, e.error);
+    console.error('AI copy generation failed:', e.message);
     return res.status(500).json({ success: false, error: 'Copy generation failed', detail: e.message });
   }
 }
