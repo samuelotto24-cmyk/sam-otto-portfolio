@@ -3452,6 +3452,12 @@
   align-items: center;
   justify-content: center;
   padding: 40px 24px;
+  overflow: hidden;
+}
+.quiz-overlay.preview-mode .quiz-body {
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  align-items: flex-start;
 }
 
 .quiz-step {
@@ -3735,10 +3741,7 @@
 .quiz-preview {
   display: none;
   width: 100%;
-  height: 100%;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  padding: 40px 24px 60px;
+  padding: 40px 24px 80px;
 }
 .quiz-preview.show { display: block; }
 
@@ -6023,8 +6026,13 @@ function openQuiz() {
 }
 
 function closeQuiz() {
-  document.getElementById('quizOverlay').classList.remove('open');
+  var overlay = document.getElementById('quizOverlay');
+  overlay.classList.remove('open');
+  overlay.classList.remove('preview-mode');
   document.body.style.overflow = '';
+  // Reset preview panel
+  var preview = document.getElementById('quizPreview');
+  if (preview) { preview.classList.remove('show'); preview.innerHTML = ''; }
 }
 
 function quizNext(step) {
@@ -6254,8 +6262,9 @@ function submitQuiz() {
 }
 
 function showInlinePreview(previewUrl) {
-  // Hide generating animation
+  // Hide generating animation, switch to preview mode
   document.getElementById('quizGenerating').classList.remove('show');
+  document.getElementById('quizOverlay').classList.add('preview-mode');
 
   // Build the inline preview
   var preview = document.getElementById('quizPreview');

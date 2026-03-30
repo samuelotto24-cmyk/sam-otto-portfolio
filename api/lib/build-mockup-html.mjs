@@ -22,7 +22,7 @@ function getTemplate() {
 }
 
 export function buildMockupHtml(data) {
-  const { name, niche, photo, colors, sells, followers, copy, handle } = data;
+  const { name, niche, photo, colors, sells, followers, copy, handle, postImages } = data;
   const analytics = scaleAnalytics(followers);
 
   const accent = pickAccentColor(colors);
@@ -44,7 +44,7 @@ export function buildMockupHtml(data) {
   if (template) {
     return buildFromTemplate(template, {
       name, handle, niche: nicheLabel, photo, accent, bg, textColor, mutedColor, surfaceColor, borderColor,
-      followerLabel, showPrograms, showCodes, sellsSet, copy, analytics,
+      followerLabel, showPrograms, showCodes, sellsSet, copy, analytics, postImages: postImages || [],
     });
   }
 
@@ -96,7 +96,11 @@ function buildFromTemplate(html, d) {
         outlineBtn: { text: 'Learn More', href: '#' },
       })),
     },
-    photoStrip: { enabled: false, photos: [], speed: '18s' },
+    photoStrip: {
+      enabled: d.postImages.length >= 3,
+      photos: d.postImages,
+      speed: '18s',
+    },
     youtube: { enabled: false, headline: 'Watch My Latest', channelUrl: '', videoId: '' },
     partners: {
       enabled: d.showCodes,
