@@ -646,91 +646,93 @@
       width: 6px; height: 6px; border-radius: 50%;
       background: var(--rose); box-shadow: 0 0 6px rgba(16,185,129,0.4);
     }
-    .recap-visual { display: flex; justify-content: center; position: relative; overflow: hidden; }
+    .recap-visual { display: flex; justify-content: center; position: relative; overflow: visible; }
 
-    /* ── Paper airplane animation — DRAMATIC ── */
+    /* ── Paper airplane → letter (one continuous transformation) ── */
     .plane-scene {
       position: relative;
       width: 100%;
       max-width: 440px;
       min-height: 60px;
-      perspective: 1200px;
+      perspective: 1400px;
     }
 
-    /* The airplane — BIG */
+    /* The airplane — starts big, becomes the letter */
     .paper-plane {
       position: absolute;
-      top: 50%;
+      top: 0;
       left: 50%;
-      width: 220px;
-      height: 140px;
-      margin-left: -110px;
-      margin-top: -70px;
+      width: 240px;
+      height: 150px;
+      margin-left: -120px;
       z-index: 10;
-      filter: drop-shadow(0 20px 40px rgba(0,0,0,0.6));
       opacity: 0;
-      transform: translate(500px, -300px) rotate(-40deg) scale(0.6);
+      filter: drop-shadow(0 24px 48px rgba(0,0,0,0.5));
     }
     .paper-plane svg { width: 100%; height: 100%; }
 
-    /* Shadow on the ground */
+    /* Shadow tracks the plane */
     .plane-shadow {
       position: absolute;
-      top: 55%;
+      top: 160px;
       left: 50%;
-      width: 180px;
-      height: 30px;
-      margin-left: -90px;
+      width: 200px;
+      height: 24px;
+      margin-left: -100px;
       border-radius: 50%;
-      background: radial-gradient(ellipse, rgba(0,0,0,0.35) 0%, transparent 70%);
+      background: radial-gradient(ellipse, rgba(0,0,0,0.4) 0%, transparent 70%);
       opacity: 0;
-      transform: translate(400px, 0) scale(0.3);
+      filter: blur(10px);
       z-index: 1;
-      filter: blur(8px);
     }
 
-    /* Phase 1: Fly in with barrel roll */
+    /* ─── PHASE 1: Fly in fast with barrel roll (0.8s) ─── */
     @keyframes planefly {
-      0%   { transform: translate(500px, -300px) rotate(-40deg) scale(0.6); opacity: 0; }
-      8%   { opacity: 1; }
-      25%  { transform: translate(200px, -150px) rotate(30deg) scale(0.8); }
-      40%  { transform: translate(60px, -60px) rotate(210deg) scale(0.9); }
-      55%  { transform: translate(-20px, 10px) rotate(340deg) scale(1); }
-      70%  { transform: translate(10px, -15px) rotate(355deg) scale(1); }
-      85%  { transform: translate(-3px, 5px) rotate(360deg) scale(1); }
+      0%   { transform: translate(450px, -280px) rotate(-35deg) scale(0.5); opacity: 0; }
+      6%   { opacity: 1; }
+      30%  { transform: translate(120px, -100px) rotate(120deg) scale(0.85); }
+      55%  { transform: translate(-10px, -10px) rotate(300deg) scale(1); }
+      75%  { transform: translate(8px, 5px) rotate(350deg) scale(1); }
       100% { transform: translate(0, 0) rotate(360deg) scale(1); opacity: 1; }
     }
     @keyframes shadowfly {
-      0%   { transform: translate(400px, 0) scale(0.3); opacity: 0; }
-      8%   { opacity: 0.3; }
-      25%  { transform: translate(160px, 0) scale(0.5); }
-      55%  { transform: translate(-15px, 0) scale(0.8); opacity: 0.5; }
-      100% { transform: translate(0, 0) scale(1); opacity: 0.4; }
+      0%   { transform: translateX(350px) scale(0.2); opacity: 0; }
+      6%   { opacity: 0.2; }
+      55%  { transform: translateX(-8px) scale(0.9); opacity: 0.4; }
+      100% { transform: translateX(0) scale(1); opacity: 0.35; }
     }
-    .plane-scene.flying .paper-plane {
-      animation: planefly 1.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-    }
-    .plane-scene.flying .plane-shadow {
-      animation: shadowfly 1.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-    }
+    .plane-scene.phase1 .paper-plane { animation: planefly 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+    .plane-scene.phase1 .plane-shadow { animation: shadowfly 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
 
-    /* Phase 2: Airplane dissolves */
-    @keyframes planefade {
-      0%   { transform: translate(0, 0) rotate(360deg) scale(1); opacity: 1; }
-      100% { transform: translate(0, 0) rotate(360deg) scale(0.3); opacity: 0; }
+    /* ─── PHASE 2: Airplane morphs into letter (one smooth unfold, 1s) ─── */
+    @keyframes planeToLetter {
+      /* Airplane is at center, scale 1, rotate 360 */
+      0%   { transform: translate(0, 0) rotate(360deg) scale(1); opacity: 1;
+             clip-path: polygon(5% 47%, 95% 5%, 45% 47%, 64% 95%); }
+      /* Tips forward, starts widening */
+      20%  { transform: translate(0, 10px) rotate(360deg) scale(1) rotateX(30deg);
+             clip-path: polygon(2% 42%, 98% 2%, 50% 42%, 70% 98%); opacity: 1; }
+      /* Flattening, wings spreading */
+      45%  { transform: translate(0, 20px) rotate(360deg) scale(1.1) rotateX(15deg);
+             clip-path: polygon(0% 30%, 100% 0%, 55% 35%, 80% 100%); }
+      /* Almost rectangular */
+      70%  { transform: translate(0, 30px) rotate(360deg) scale(1.15) rotateX(5deg);
+             clip-path: polygon(0% 5%, 100% 0%, 100% 90%, 0% 95%); }
+      /* Fully flat rectangle with slight bounce */
+      90%  { transform: translate(0, 30px) rotate(360deg) scale(1.02) rotateX(0deg);
+             clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%); opacity: 0; }
+      100% { transform: translate(0, 30px) rotate(360deg) scale(1) rotateX(0deg);
+             clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%); opacity: 0; }
     }
-    @keyframes shadowfade {
-      0%   { opacity: 0.4; }
-      100% { opacity: 0; }
+    @keyframes shadowmorph {
+      0%   { opacity: 0.35; transform: translateX(0) scale(1); }
+      50%  { opacity: 0.25; transform: translateX(0) scale(1.3); }
+      100% { opacity: 0; transform: translateX(0) scale(1.5); }
     }
-    .plane-scene.unfolding .paper-plane {
-      animation: planefade 0.4s ease-in forwards;
-    }
-    .plane-scene.unfolding .plane-shadow {
-      animation: shadowfade 0.4s ease-in forwards;
-    }
+    .plane-scene.phase2 .paper-plane { animation: planeToLetter 1s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+    .plane-scene.phase2 .plane-shadow { animation: shadowmorph 1s ease-out forwards; }
 
-    /* The letter — 4-stage origami unfold */
+    /* Letter appears as the airplane becomes rectangular */
     .letter-frame {
       position: relative;
       background: var(--dark-card);
@@ -739,39 +741,21 @@
       padding: 0;
       overflow: hidden;
       box-shadow: 0 24px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.03), 0 0 40px rgba(16,185,129,0.04);
-      transform: scale(0) rotateX(40deg) rotateY(10deg);
+      transform: scale(0.85) rotateX(8deg);
       opacity: 0;
-      transform-origin: center center;
+      transform-origin: center top;
+    }
+    @keyframes letterReveal {
+      0%   { transform: scale(0.85) rotateX(8deg); opacity: 0; }
+      40%  { transform: scale(0.95) rotateX(3deg); opacity: 0.7; }
+      70%  { transform: scale(1.01) rotateX(-1deg); opacity: 1; }
+      100% { transform: scale(1) rotateX(0deg); opacity: 1; }
+    }
+    .plane-scene.phase2 .letter-frame {
+      animation: letterReveal 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.25s forwards;
     }
 
-    /* Fold 1: initial small square appears */
-    @keyframes fold1 {
-      0%   { transform: scale(0) rotateX(40deg) rotateY(10deg); opacity: 0; }
-      100% { transform: scale(0.5) rotateX(20deg) rotateY(5deg); opacity: 0.5; }
-    }
-    /* Fold 2: opens wider */
-    @keyframes fold2 {
-      0%   { transform: scale(0.5) rotateX(20deg) rotateY(5deg); opacity: 0.5; }
-      100% { transform: scale(0.75) rotateX(10deg) rotateY(-3deg); opacity: 0.7; }
-    }
-    /* Fold 3: almost flat */
-    @keyframes fold3 {
-      0%   { transform: scale(0.75) rotateX(10deg) rotateY(-3deg); opacity: 0.7; }
-      100% { transform: scale(0.95) rotateX(-3deg) rotateY(1deg); opacity: 0.9; }
-    }
-    /* Fold 4: fully open with slight bounce */
-    @keyframes fold4 {
-      0%   { transform: scale(0.95) rotateX(-3deg) rotateY(1deg); opacity: 0.9; }
-      60%  { transform: scale(1.02) rotateX(0deg) rotateY(0deg); opacity: 1; }
-      100% { transform: scale(1) rotateX(0deg) rotateY(0deg); opacity: 1; }
-    }
-
-    .plane-scene.fold1 .letter-frame { animation: fold1 0.3s ease-out forwards; }
-    .plane-scene.fold2 .letter-frame { animation: fold2 0.3s ease-out forwards; }
-    .plane-scene.fold3 .letter-frame { animation: fold3 0.3s ease-out forwards; }
-    .plane-scene.fold4 .letter-frame { animation: fold4 0.4s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
-
-    /* Fold lines (visible during unfold) */
+    /* Fold lines appear */
     .letter-frame::before, .letter-frame::after {
       content: '';
       position: absolute;
@@ -781,20 +765,20 @@
       pointer-events: none;
       z-index: 1;
       opacity: 0;
-      transition: opacity 0.5s ease 0.3s;
+      transition: opacity 0.6s ease;
     }
     .letter-frame::before { top: 33%; }
     .letter-frame::after { top: 66%; }
-    .plane-scene.fold4 .letter-frame::before,
-    .plane-scene.fold4 .letter-frame::after { opacity: 1; }
+    .plane-scene.phase3 .letter-frame::before,
+    .plane-scene.phase3 .letter-frame::after { opacity: 1; }
 
-    /* Content reveal */
+    /* Content fades in immediately after letter opens */
     .letter-content {
       opacity: 0;
-      transform: translateY(16px);
-      transition: opacity 0.6s ease, transform 0.6s ease;
+      transform: translateY(12px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
     }
-    .plane-scene.revealed .letter-content {
+    .plane-scene.phase3 .letter-content {
       opacity: 1;
       transform: translateY(0);
     }
@@ -812,8 +796,8 @@
     .recap-card:hover { transform: none; box-shadow: none; }
 
     @media (max-width: 768px) {
-      .paper-plane { width: 160px; height: 100px; margin-left: -80px; margin-top: -50px; }
-      .plane-shadow { width: 120px; margin-left: -60px; }
+      .paper-plane { width: 180px; height: 110px; margin-left: -90px; }
+      .plane-shadow { width: 140px; margin-left: -70px; }
     }
     .rc-header {
       display: flex; align-items: center; justify-content: space-between;
@@ -6099,26 +6083,18 @@
       animated = true;
       obs.unobserve(scene);
 
-      // Phase 1: Airplane flies in with barrel roll (0-1.4s)
-      scene.classList.add('flying');
+      // Phase 1: Fly in with barrel roll (0.8s)
+      scene.classList.add('phase1');
 
-      // Phase 2: Airplane dissolves (1.5s)
+      // Phase 2: Airplane morphs into letter (starts at 0.9s)
       setTimeout(function() {
-        scene.classList.add('unfolding');
-      }, 1500);
+        scene.classList.add('phase2');
+      }, 900);
 
-      // Phase 3: Origami unfold — 4 stages
-      // Fold 1: small square appears (1.7s)
-      setTimeout(function() { scene.classList.add('fold1'); }, 1700);
-      // Fold 2: opens wider (2.0s)
-      setTimeout(function() { scene.classList.add('fold2'); }, 2000);
-      // Fold 3: almost flat (2.3s)
-      setTimeout(function() { scene.classList.add('fold3'); }, 2300);
-      // Fold 4: fully open with bounce (2.6s)
-      setTimeout(function() { scene.classList.add('fold4'); }, 2600);
-
-      // Phase 4: Content reveals on the letter (3.2s)
-      setTimeout(function() { scene.classList.add('revealed'); }, 3200);
+      // Phase 3: Content appears + fold lines (1.8s)
+      setTimeout(function() {
+        scene.classList.add('phase3');
+      }, 1800);
 
     }, { threshold: 0.15 });
 
