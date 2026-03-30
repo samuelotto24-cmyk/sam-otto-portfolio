@@ -6282,35 +6282,36 @@ function showInlinePreview(previewUrl) {
   preview.innerHTML = ''
     // Header
     + '<div class="preview-header">'
-    + '<div class="preview-header-label">Your Preview</div>'
-    + '<h2 class="preview-header-title">Here\'s what I\'d build for you, <em style="color:' + accent + '">' + quizData.name + '</em></h2>'
-    + '<div class="preview-header-sub">Scroll through your personalized platform preview</div>'
-    + '<div class="preview-disclaimer">This is a preview built from your public profile. All data is illustrative — your real analytics will be connected once we build your platform.</div>'
+    + '<div class="preview-header-label">Demo Preview</div>'
+    + '<h2 class="preview-header-title">Here\'s a taste of what I\'d build for you, <em style="color:' + accent + '">' + quizData.name + '</em></h2>'
+    + '<div class="preview-header-sub">This is a simplified demo — your finished platform will be fully customized with professional design, your real content, and live data.</div>'
+    + '<div class="preview-disclaimer">All data below is illustrative. Your real analytics, AI recommendations, and briefings will use your actual connected accounts.</div>'
     + '</div>'
 
-    // Browser frame with iframe
+    // Browser frame with scrollable iframe
     + '<div class="preview-browser">'
     + '<div class="preview-browser-chrome">'
     + '<div class="preview-browser-dots"><span style="background:#ff5f57"></span><span style="background:#febc2e"></span><span style="background:#28c840"></span></div>'
     + '<div class="preview-browser-url">🔒 ' + quizData.name.toLowerCase().replace(/\s+/g, '') + '.com</div>'
+    + '<div style="font-size:9px;color:var(--text-muted);margin-left:auto;letter-spacing:0.06em;text-transform:uppercase">Demo Preview</div>'
     + '</div>'
-    + '<div class="preview-browser-body">'
-    + '<iframe src="' + previewUrl + '" loading="eager"></iframe>'
-    + '<div class="preview-browser-fade"></div>'
+    + '<div class="preview-browser-body" style="height:600px;overflow-y:auto;-webkit-overflow-scrolling:touch">'
+    + '<iframe src="' + previewUrl + '" loading="eager" style="pointer-events:none"></iframe>'
     + '</div>'
-    + '<div class="preview-browser-cta"><a href="' + previewUrl + '" target="_blank">Open full preview →</a></div>'
+    + '<div class="preview-browser-cta"><div style="font-size:11px;color:var(--text-muted);opacity:0.5">Scroll to explore the demo · This is a simplified preview of your finished site</div></div>'
     + '</div>'
 
     // Photo grid from their Instagram
     + (quizData.postImages.length ? (
       '<div style="max-width:700px;margin:0 auto 32px">'
-      + '<div style="font-size:11px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--rose);margin-bottom:12px;text-align:center">Your content, featured on your site</div>'
+      + '<div style="font-size:11px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--rose);margin-bottom:8px;text-align:center">YOUR CONTENT · PULLED FROM INSTAGRAM</div>'
+      + '<div style="font-size:11px;color:var(--text-muted);text-align:center;margin-bottom:12px">These photos would be featured throughout your finished site</div>'
       + '<div style="display:grid;grid-template-columns:repeat(' + Math.min(quizData.postImages.length, 4) + ',1fr);gap:6px;border-radius:12px;overflow:hidden">'
       + quizData.postImages.slice(0, 8).map(function(url) {
-          return '<img src="' + url + '" style="width:100%;aspect-ratio:1;object-fit:cover;display:block" onerror="this.style.display=\'none\'">';
+          return '<img src="' + url + '" referrerpolicy="no-referrer" crossorigin="anonymous" style="width:100%;aspect-ratio:1;object-fit:cover;display:block" onerror="this.parentElement.removeChild(this)">';
         }).join('')
       + '</div>'
-      + '<div style="font-size:11px;color:var(--text-muted);text-align:center;margin-top:8px">Pulled from your Instagram · These would be featured throughout your site</div>'
+      + '<div style="font-size:10px;color:var(--text-muted);text-align:center;margin-top:8px;opacity:0.5">Demo only · Final site will include professional photo direction</div>'
       + '</div>'
     ) : '')
 
@@ -6319,7 +6320,7 @@ function showInlinePreview(previewUrl) {
 
     // ── ANALYTICS ──
     + '<div class="preview-layer">'
-    + '<div class="preview-layer-num">Layer 02 — Your Private Analytics Dashboard</div>'
+    + '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px"><div class="preview-layer-num" style="margin-bottom:0">Layer 02 — Your Private Analytics Dashboard</div><span style="font-size:9px;padding:3px 8px;border-radius:6px;background:rgba(255,255,255,0.06);color:var(--text-muted);letter-spacing:0.08em">DEMO</span></div>'
     + '<div class="preview-layer-title">Every number that matters. One screen.</div>'
     + '<div style="font-size:13px;color:var(--text-sub);margin-bottom:20px;line-height:1.6">YouTube, Instagram, TikTok, and your website — all pulled live into a private dashboard only you can see. No more checking three apps.</div>'
 
@@ -6352,7 +6353,7 @@ function showInlinePreview(previewUrl) {
 
     // ── AI STRATEGIST ──
     + '<div class="preview-layer">'
-    + '<div class="preview-layer-num">Layer 03 — Your AI Strategist</div>'
+    + '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px"><div class="preview-layer-num" style="margin-bottom:0">Layer 03 — Your AI Strategist</div><span style="font-size:9px;padding:3px 8px;border-radius:6px;background:rgba(255,255,255,0.06);color:var(--text-muted);letter-spacing:0.08em">DEMO</span></div>'
     + '<div class="preview-layer-title">Not ChatGPT. An AI trained on <em style="color:' + accent + '">your</em> data.</div>'
     + '<div style="font-size:13px;color:var(--text-sub);margin-bottom:20px;line-height:1.6">It reads your actual analytics — your views, your engagement, your audience — and tells you exactly what to post, when, and why.</div>'
 
@@ -6390,7 +6391,7 @@ function showInlinePreview(previewUrl) {
 
     // ── WEEKLY BRIEFING ──
     + '<div class="preview-layer">'
-    + '<div class="preview-layer-num">Layer 04 — Your Weekly Briefing</div>'
+    + '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px"><div class="preview-layer-num" style="margin-bottom:0">Layer 04 — Your Weekly Briefing</div><span style="font-size:9px;padding:3px 8px;border-radius:6px;background:rgba(255,255,255,0.06);color:var(--text-muted);letter-spacing:0.08em">DEMO</span></div>'
     + '<div class="preview-layer-title">A strategist in your inbox, every Monday.</div>'
     + '<div style="font-size:13px;color:var(--text-sub);margin-bottom:20px;line-height:1.6">Even if you never log in, the system comes to you. Every Monday morning — your numbers, your wins, and exactly what to do next.</div>'
 
@@ -6423,14 +6424,13 @@ function showInlinePreview(previewUrl) {
 
     // CTA
     + '<div class="preview-cta">'
-    + '<h3 class="preview-cta-title">Ready to make it real?</h3>'
-    + '<div class="preview-cta-sub">I\'ll fully customize this to your brand and have it live within 72 hours.</div>'
+    + '<h3 class="preview-cta-title">This is just the demo.</h3>'
+    + '<div class="preview-cta-sub">The real thing is fully customized — your photos, your content, your data, professionally designed and live within 72 hours.</div>'
     + '<div class="preview-cta-buttons">'
     + '<a class="preview-cta-primary" href="#contact" onclick="closeQuiz()">Build mine →</a>'
     + '<a class="preview-cta-secondary" href="#contact" onclick="closeQuiz()">Book a call →</a>'
     + '</div>'
-    + '<div class="preview-expiry">This preview expires in 7 days</div>'
-    + '<div class="preview-share">Share this preview: <a href="https://bysamotto.com' + previewUrl + '" target="_blank">bysamotto.com' + previewUrl + '</a></div>'
+    + '<div class="preview-expiry">This demo expires in 7 days · Check your email for the link</div>'
     + '</div>';
 
   preview.classList.add('show');
