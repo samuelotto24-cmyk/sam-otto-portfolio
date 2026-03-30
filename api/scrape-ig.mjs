@@ -62,7 +62,7 @@ export default async function handler(req, res) {
 async function fetchWithGooglebot(handle) {
   const resp = await fetch(`https://www.instagram.com/${handle}/`, {
     headers: {
-      'User-Agent': 'Googlebot/2.1 (+http://www.google.com/bot.html)',
+      'User-Agent': 'facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_uatext.php)',
     },
     redirect: 'follow',
   });
