@@ -6108,13 +6108,40 @@
 
 <!-- QUIZ OVERLAY -->
 <div class="quiz-overlay" id="quizOverlay">
-  <div class="quiz-progress"><div class="quiz-progress-fill" id="quizProgress" style="width:16.6%"></div></div>
+  <div class="quiz-progress"><div class="quiz-progress-fill" id="quizProgress" style="width:0%"></div></div>
   <button class="quiz-close" onclick="closeQuiz()">&times;</button>
 
   <div class="quiz-body">
 
+    <!-- Step 0: Intro -->
+    <div class="quiz-step active" data-step="0">
+      <div class="quiz-question">See what your platform could look like.</div>
+      <div style="max-width:440px;margin:0 auto;text-align:left">
+        <div style="display:flex;flex-direction:column;gap:14px;margin-bottom:24px">
+          <div style="display:flex;align-items:flex-start;gap:12px">
+            <span style="font-size:18px;flex-shrink:0;margin-top:1px">🌐</span>
+            <div><div style="font-size:14px;font-weight:600;color:var(--text)">Your custom website</div><div style="font-size:12px;color:var(--text-muted);line-height:1.5;margin-top:2px">A preview of your site — your name, your colors, your brand — built in real time from your Instagram.</div></div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:12px">
+            <span style="font-size:18px;flex-shrink:0;margin-top:1px">📊</span>
+            <div><div style="font-size:14px;font-weight:600;color:var(--text)">Your private analytics dashboard</div><div style="font-size:12px;color:var(--text-muted);line-height:1.5;margin-top:2px">YouTube, Instagram, TikTok, and your website — one dashboard with real numbers scaled from your actual follower count.</div></div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:12px">
+            <span style="font-size:18px;flex-shrink:0;margin-top:1px">🤖</span>
+            <div><div style="font-size:14px;font-weight:600;color:var(--text)">Your AI strategist</div><div style="font-size:12px;color:var(--text-muted);line-height:1.5;margin-top:2px">A sample recommendation tailored to your niche — captions, posting times, content strategy — all from your data, not generic tips.</div></div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:12px">
+            <span style="font-size:18px;flex-shrink:0;margin-top:1px">✉️</span>
+            <div><div style="font-size:14px;font-weight:600;color:var(--text)">Your weekly briefing</div><div style="font-size:12px;color:var(--text-muted);line-height:1.5;margin-top:2px">A preview of the Monday email that lands in your inbox — your numbers, your wins, and exactly what to post next.</div></div>
+          </div>
+        </div>
+        <div style="background:var(--dark-card);border:1px solid var(--border);border-radius:10px;padding:12px 16px;font-size:11px;color:var(--text-muted);line-height:1.55;text-align:center;margin-bottom:24px">This is a simplified demo. Your finished platform will be fully custom — designed around your exact vision, your real data, and your goals.</div>
+      </div>
+      <button class="quiz-next" onclick="quizNext(1)">Let's build it <i class="fa-solid fa-arrow-right"></i></button>
+    </div>
+
     <!-- Step 1: Name -->
-    <div class="quiz-step active" data-step="1">
+    <div class="quiz-step" data-step="1">
       <div class="quiz-question">What's your name?</div>
       <input class="quiz-input" id="qName" placeholder="Your name" autofocus>
       <br>
@@ -6284,7 +6311,7 @@ function quizNext(step) {
   if (target) target.classList.add('active');
 
   // Update progress bar
-  document.getElementById('quizProgress').style.width = (step / 6 * 100) + '%';
+  document.getElementById('quizProgress').style.width = (step / 7 * 100) + '%';
 
   // Pre-populate niche if detected
   if (step === 3 && quizData.niche) {
@@ -6705,7 +6732,8 @@ document.addEventListener('keydown', function(e) {
   if (!active) return;
   var step = parseInt(active.dataset.step);
 
-  if (step === 1) quizNext(2);
+  if (step === 0) quizNext(1);
+  else if (step === 1) quizNext(2);
   else if (step === 2) scrapeProfile();
   else if (step === 6) submitQuiz();
 });
