@@ -144,7 +144,14 @@ function buildFromTemplate(html, d) {
   // Inject profile photo
   if (d.photo) {
     const proxiedPhoto = '/api/proxy-image?url=' + encodeURIComponent(d.photo);
-    html = html.replace('</head>', `<style>.hero-avatar,.about-avatar{background-image:url('${proxiedPhoto}')!important}.hero-avatar img,.about-avatar img{content:url('${proxiedPhoto}')!important}</style></head>`);
+    // Replace all image src references to hero.jpg and about.jpg with the proxied profile photo
+    html = html.replace(/src="assets\/hero\.jpg"/g, 'src="' + proxiedPhoto + '"');
+    html = html.replace(/src="assets\/about\.jpg"/g, 'src="' + proxiedPhoto + '"');
+    // Also handle any CSS background-image references
+    html = html.replace('</head>', `<style>
+      .hero-photo img, .about-photo img { content: url('${proxiedPhoto}') !important; }
+      .hero-photo, .about-photo { background-image: url('${proxiedPhoto}'); background-size: cover; background-position: center; }
+    </style></head>`);
   }
 
   // Disable tracking

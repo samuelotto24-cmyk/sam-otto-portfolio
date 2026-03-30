@@ -3819,7 +3819,7 @@
   padding: 4px 10px;
 }
 .preview-browser-body {
-  height: 600px;
+  height: 500px;
   overflow-y: auto;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
@@ -3827,10 +3827,20 @@
 }
 .preview-browser-body iframe {
   width: 200%;
-  height: 6000px;
+  height: 3600px;
   transform: scale(0.5);
   transform-origin: top left;
   border: none;
+}
+.preview-browser-body::after {
+  content: '';
+  position: sticky;
+  bottom: 0;
+  display: block;
+  height: 60px;
+  background: linear-gradient(transparent, var(--dark-card));
+  pointer-events: none;
+  margin-top: -60px;
 }
 .preview-browser-fade {
   position: absolute;
@@ -6285,8 +6295,12 @@ function showInlinePreview(previewUrl) {
     + '<div class="preview-header">'
     + '<div class="preview-header-label">Demo Preview</div>'
     + '<h2 class="preview-header-title">Here\'s a taste of what I\'d build for you, <em style="color:' + accent + '">' + quizData.name + '</em></h2>'
-    + '<div class="preview-header-sub">This is a simplified demo — your finished platform will be fully customized with professional design, your real content, and live data.</div>'
-    + '<div class="preview-disclaimer">All data below is illustrative. Your real analytics, AI recommendations, and briefings will use your actual connected accounts.</div>'
+
+    // Bold disclaimer box
+    + '<div style="background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.2);border-radius:14px;padding:20px 24px;margin-top:20px;text-align:left;max-width:560px;margin-left:auto;margin-right:auto">'
+    + '<div style="font-size:14px;font-weight:700;color:var(--rose-light);margin-bottom:8px">This is a demo, not your finished site.</div>'
+    + '<div style="font-size:13px;color:var(--text-sub);line-height:1.65">The images, text, and data below are generated for illustration only. <strong style="color:var(--text)">Your actual site will be completely custom</strong> — designed around your brand, your content, and exactly what you want. I don\'t use templates. Every site I build is a one-of-one, tailored to your specific vision and goals.</div>'
+    + '</div>'
     + '</div>'
 
     // Browser frame with scrollable iframe
@@ -6299,7 +6313,7 @@ function showInlinePreview(previewUrl) {
     + '<div class="preview-browser-body">'
     + '<iframe src="' + previewUrl + '" loading="eager"></iframe>'
     + '</div>'
-    + '<div class="preview-browser-cta"><div style="font-size:11px;color:var(--text-muted);opacity:0.5">Scroll to explore the demo · This is a simplified preview of your finished site</div></div>'
+    + '<div class="preview-browser-cta"><div style="font-size:11px;color:var(--text-muted);opacity:0.6">↕ Scroll to explore · <strong style="color:var(--rose-light);opacity:1">Illustration only</strong> — your real site will be fully custom-designed</div></div>'
     + '</div>'
 
     // Photo grid from their Instagram
@@ -6425,8 +6439,8 @@ function showInlinePreview(previewUrl) {
 
     // CTA
     + '<div class="preview-cta">'
-    + '<h3 class="preview-cta-title">This is just the demo.</h3>'
-    + '<div class="preview-cta-sub">The real thing is fully customized — your photos, your content, your data, professionally designed and live within 72 hours.</div>'
+    + '<h3 class="preview-cta-title">Imagine this, but built entirely around you.</h3>'
+    + '<div class="preview-cta-sub">This demo is just a starting point. Your finished platform will be designed from scratch — your aesthetic, your content, your goals. No templates. No recycled layouts. A complete one-of-one build, live within 72 hours.</div>'
     + '<div class="preview-cta-buttons">'
     + '<a class="preview-cta-primary" href="#contact" onclick="closeQuiz()">Build mine →</a>'
     + '<a class="preview-cta-secondary" href="#contact" onclick="closeQuiz()">Book a call →</a>'
