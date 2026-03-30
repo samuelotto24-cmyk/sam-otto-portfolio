@@ -1,13 +1,5 @@
 import sharp from 'sharp';
 
-const USER_AGENTS = [
-  'facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_uatext.php)',
-  'Mozilla/5.0 (compatible; Discordbot/2.0; +https://discordapp.com)',
-  'Twitterbot/1.0',
-  'LinkedInBot/1.0 (compatible; Mozilla/5.0)',
-  'Slackbot-LinkExpanding 1.0 (+https://api.slack.com/robots)',
-];
-
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
@@ -19,53 +11,69 @@ export default async function handler(req, res) {
   }
 
   const cleanHandle = handle.replace(/^@/, '').trim();
+  const apifyToken = process.env.APIFY_API_TOKEN;
 
-  // Try multiple crawler UAs — Instagram allows some but blocks others
-  let profileData = null;
-  for (const ua of USER_AGENTS) {
-    try {
-      profileData = await fetchWithCrawlerUA(cleanHandle, ua);
-      if (profileData) break;
-    } catch (e) {
-      console.error(`Scrape with ${ua.split('/')[0]} failed:`, e.message);
+  if (!apifyToken) {
+    return res.status(200).json({ success: false, error: 'Scraper not configured' });
+  }
+
+  try {
+    // Run the Apify Instagram Profile Scraper (synchronous, waits up to 30s)
+    const runResp = await fetch(
+      `https://api.apify.com/v2/acts/apify~instagram-profile-scraper/runs?token=${apifyToken}&waitForFinish=30`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ usernames: [cleanHandle] }),
+      }
+    );
+
+    const run = await runResp.json();
+
+    if (run.data?.status !== 'SUCCEEDED') {
+      console.error('Apify run did not succeed:', run.data?.status);
+      return res.status(200).json({ success: false });
     }
-  }
 
-  // Fallback: Instagram mobile API
-  if (!profileData) {
-    try {
-      profileData = await fetchProfileApi(cleanHandle);
-    } catch (e) {
-      console.error('API scrape failed:', e.message);
+    // Fetch the results
+    const dataResp = await fetch(
+      `https://api.apify.com/v2/datasets/${run.data.defaultDatasetId}/items?token=${apifyToken}`
+    );
+    const items = await dataResp.json();
+
+    if (!items.length) {
+      return res.status(200).json({ success: false });
     }
-  }
 
-  if (!profileData) {
-    return res.status(200).json({ success: false });
-  }
+    const profile = items[0];
 
-  // Extract colors from profile photo
-  let colors = [];
-  if (profileData.photo) {
-    try {
-      colors = await extractColors(profileData.photo);
-    } catch (e) {
-      console.error('Color extraction failed:', e.message);
+    // Extract colors from profile photo
+    let colors = [];
+    const photoUrl = profile.profilePicUrlHD || profile.profilePicUrl || '';
+    if (photoUrl) {
+      try {
+        colors = await extractColors(photoUrl);
+      } catch (e) {
+        console.error('Color extraction failed:', e.message);
+        colors = defaultColors();
+      }
+    } else {
       colors = defaultColors();
     }
-  } else {
-    colors = defaultColors();
-  }
 
-  return res.status(200).json({
-    success: true,
-    name: profileData.name,
-    photo: profileData.photo,
-    followers: profileData.followers,
-    bio: profileData.bio,
-    category: profileData.category,
-    colors,
-  });
+    return res.status(200).json({
+      success: true,
+      name: profile.fullName || cleanHandle,
+      photo: photoUrl,
+      followers: profile.followersCount || 0,
+      bio: profile.biography || '',
+      category: profile.businessCategoryName || detectNicheFromBio(profile.biography || ''),
+      colors,
+    });
+  } catch (e) {
+    console.error('Apify scrape failed:', e.message);
+    return res.status(200).json({ success: false });
+  }
 }
 
 function defaultColors() {
@@ -76,81 +84,6 @@ function defaultColors() {
     { hex: '#E8DDD7', rgb: { r: 232, g: 221, b: 215 }, weight: 0.15 },
     { hex: '#8B7B74', rgb: { r: 139, g: 123, b: 116 }, weight: 0.1 },
   ];
-}
-
-async function fetchWithCrawlerUA(handle, ua) {
-  const resp = await fetch(`https://www.instagram.com/${handle}/`, {
-    headers: { 'User-Agent': ua },
-    redirect: 'follow',
-  });
-
-  if (!resp.ok) throw new Error(`Fetch returned ${resp.status}`);
-  const html = await resp.text();
-
-  // Look for description with follower count
-  const description = html.match(/content="([^"]*\d+[KMkm]?\s*Followers[^"]*)"/i)?.[1] || '';
-  if (!description) throw new Error('No follower description found');
-
-  let followers = 0;
-  const followerMatch = description.match(/([\d,.]+[KMkm]?)\s*Followers/i);
-  if (followerMatch) {
-    followers = parseFollowerCount(followerMatch[1]);
-  }
-  if (followers === 0) throw new Error('Could not parse follower count');
-
-  // Name
-  const descNameMatch = description.match(/from\s+([^(]+)\s*\(/);
-  const titleMatch = html.match(/<title>([^(]+)\(/);
-  const name = descNameMatch ? descNameMatch[1].trim()
-    : titleMatch ? titleMatch[1].trim()
-    : handle;
-
-  // Photo
-  let photo = '';
-  const ogImageMatch = html.match(/<meta\s+property="og:image"\s+content="([^"]+)"/);
-  if (ogImageMatch) {
-    photo = ogImageMatch[1].replace(/&amp;/g, '&');
-  }
-
-  const category = detectNicheFromBio(description);
-
-  return { name, photo, followers, bio: description, category };
-}
-
-async function fetchProfileApi(handle) {
-  const url = `https://i.instagram.com/api/v1/users/web_profile_info/?username=${handle}`;
-  const resp = await fetch(url, {
-    headers: {
-      'User-Agent': 'Instagram 278.0.0.19.115 Android',
-      'X-IG-App-ID': '936619743392459',
-      'Sec-Fetch-Dest': 'empty',
-      'Sec-Fetch-Mode': 'cors',
-      'Sec-Fetch-Site': 'same-origin',
-    },
-  });
-
-  if (!resp.ok) throw new Error(`API returned ${resp.status}`);
-
-  const data = await resp.json();
-  const user = data?.data?.user;
-  if (!user || (!user.full_name && !user.edge_followed_by?.count)) {
-    throw new Error('API returned empty profile');
-  }
-
-  return {
-    name: user.full_name || handle,
-    photo: user.profile_pic_url_hd || user.profile_pic_url || '',
-    followers: user.edge_followed_by?.count || 0,
-    bio: user.biography || '',
-    category: user.category_name || detectNicheFromBio(user.biography || ''),
-  };
-}
-
-function parseFollowerCount(str) {
-  const num = parseFloat(str.replace(/,/g, ''));
-  if (/[Mm]/.test(str)) return Math.round(num * 1000000);
-  if (/[Kk]/.test(str)) return Math.round(num * 1000);
-  return Math.round(num);
 }
 
 function detectNicheFromBio(bio) {
