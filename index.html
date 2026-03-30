@@ -647,18 +647,116 @@
       background: var(--rose); box-shadow: 0 0 6px rgba(16,185,129,0.4);
     }
     .recap-visual { display: flex; justify-content: center; }
-    .recap-card {
-      width: 100%; max-width: 400px;
+
+    /* ── Envelope animation ── */
+    .envelope-wrap {
+      perspective: 900px;
+      display: flex;
+      justify-content: center;
+    }
+    .envelope {
+      position: relative;
+      width: 100%;
+      max-width: 420px;
+      transform: translateY(60px);
+      opacity: 0;
+      transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.6s ease;
+    }
+    .envelope.risen {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* Envelope body (back) */
+    .envelope-body {
       background: var(--dark-card);
       border: 1px solid var(--border-mid);
-      border-radius: 16px;
-      padding: 28px 24px;
-      transform: perspective(800px) rotateY(-4deg) rotateX(2deg);
-      box-shadow:
-        0 20px 60px rgba(0,0,0,0.5),
-        0 0 0 1px rgba(255,255,255,0.04),
-        0 0 40px rgba(16,185,129,0.06);
-      transition: transform 0.4s ease, box-shadow 0.4s ease;
+      border-radius: 0 0 16px 16px;
+      padding: 0;
+      position: relative;
+      z-index: 2;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 40px rgba(16,185,129,0.04);
+      overflow: hidden;
+    }
+
+    /* Envelope flap (top triangle) */
+    .envelope-flap {
+      position: relative;
+      z-index: 3;
+      height: 80px;
+      overflow: hidden;
+    }
+    .envelope-flap-inner {
+      width: 100%;
+      height: 160px;
+      background: var(--surface-hi);
+      border: 1px solid var(--border-mid);
+      border-radius: 4px;
+      transform-origin: top center;
+      transform: rotateX(0deg);
+      transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+      clip-path: polygon(0 0, 50% 100%, 100% 0);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+    }
+    .envelope.opened .envelope-flap-inner {
+      transform: rotateX(180deg);
+    }
+
+    /* Seal on the flap */
+    .envelope-seal {
+      position: absolute;
+      top: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--rose);
+      box-shadow: 0 0 12px rgba(16,185,129,0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      z-index: 4;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    .envelope.opened .envelope-seal {
+      opacity: 0;
+      transform: translateX(-50%) scale(0.5);
+    }
+
+    /* Content slides up out of envelope */
+    .envelope-content {
+      transform: translateY(40px);
+      opacity: 0;
+      transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.3s, opacity 0.5s ease 0.3s;
+    }
+    .envelope.revealed .envelope-content {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* Envelope side edges (depth illusion) */
+    .envelope-body::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 40px;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.03), transparent);
+      pointer-events: none;
+    }
+
+    .recap-card {
+      width: 100%;
+      background: transparent;
+      border: none;
+      border-radius: 0;
+      padding: 24px 20px;
+      transform: none;
+      box-shadow: none;
+      transition: none;
     }
     .recap-card:hover {
       transform: perspective(800px) rotateY(-1deg) rotateX(1deg) translateY(-4px);
@@ -4682,46 +4780,63 @@
           </ul>
         </div>
         <div class="recap-visual">
-          <div class="recap-card">
-            <div class="rc-header">
-              <span class="rc-badge">Monday Briefing</span>
-              <span class="rc-date">Mar 24, 2026</span>
-            </div>
+          <div class="envelope-wrap">
+            <div class="envelope" id="mailEnvelope">
 
-            <div class="rc-platforms">
-              <div class="rc-plat">
-                <div class="rc-plat-icon"><i class="fa-brands fa-youtube" style="color:#FF0000"></i></div>
-                <span class="rc-plat-val">42.1k</span>
-                <span class="rc-plat-delta">↑ 12%</span>
-                <div class="rc-plat-label">Views</div>
+              <!-- Flap -->
+              <div class="envelope-flap">
+                <div class="envelope-flap-inner"></div>
               </div>
-              <div class="rc-plat">
-                <div class="rc-plat-icon"><i class="fa-brands fa-instagram" style="color:#E1306C"></i></div>
-                <span class="rc-plat-val">8,340</span>
-                <span class="rc-plat-delta">↑ 6.2%</span>
-                <div class="rc-plat-label">Engagement</div>
-              </div>
-              <div class="rc-plat">
-                <div class="rc-plat-icon"><i class="fa-brands fa-tiktok" style="color:#fff"></i></div>
-                <span class="rc-plat-val">118k</span>
-                <span class="rc-plat-delta">↑ 24%</span>
-                <div class="rc-plat-label">Views</div>
-              </div>
-            </div>
+              <div class="envelope-seal">✉</div>
 
-            <div class="rc-section-label">AI Action Items</div>
-            <div class="rc-actions">
-              <div class="rc-action">
-                <span class="rc-action-dot"></span>
-                <span>Post Tuesday 7pm — your highest click window this week. Your last 3 Tuesday posts averaged 2.4x more saves.</span>
-              </div>
-              <div class="rc-action">
-                <span class="rc-action-dot"></span>
-                <span>Double down on Reels — they drove 3x more profile visits than carousels over the last 14 days.</span>
-              </div>
-            </div>
+              <!-- Body with card inside -->
+              <div class="envelope-body">
+                <div class="envelope-content">
+                  <div class="recap-card">
+                    <div class="rc-header">
+                      <span class="rc-badge">Monday Briefing</span>
+                      <span class="rc-date">Mar 24, 2026</span>
+                    </div>
 
-            <a href="#contact" class="rc-cta">Open Your Hub →</a>
+                    <div class="rc-platforms">
+                      <div class="rc-plat">
+                        <div class="rc-plat-icon"><i class="fa-brands fa-youtube" style="color:#FF0000"></i></div>
+                        <span class="rc-plat-val">42.1k</span>
+                        <span class="rc-plat-delta">↑ 12%</span>
+                        <div class="rc-plat-label">Views</div>
+                      </div>
+                      <div class="rc-plat">
+                        <div class="rc-plat-icon"><i class="fa-brands fa-instagram" style="color:#E1306C"></i></div>
+                        <span class="rc-plat-val">8,340</span>
+                        <span class="rc-plat-delta">↑ 6.2%</span>
+                        <div class="rc-plat-label">Engagement</div>
+                      </div>
+                      <div class="rc-plat">
+                        <div class="rc-plat-icon"><i class="fa-brands fa-tiktok" style="color:#fff"></i></div>
+                        <span class="rc-plat-val">118k</span>
+                        <span class="rc-plat-delta">↑ 24%</span>
+                        <div class="rc-plat-label">Views</div>
+                      </div>
+                    </div>
+
+                    <div class="rc-section-label">AI Action Items</div>
+                    <div class="rc-actions">
+                      <div class="rc-action">
+                        <span class="rc-action-dot"></span>
+                        <span>Post Tuesday 7pm — your highest click window this week. Your last 3 Tuesday posts averaged 2.4x more saves.</span>
+                      </div>
+                      <div class="rc-action">
+                        <span class="rc-action-dot"></span>
+                        <span>Double down on Reels — they drove 3x more profile visits than carousels over the last 14 days.</span>
+                      </div>
+                    </div>
+
+                    <a href="#contact" class="rc-cta">Open Your Hub →</a>
+                  </div>
+                </div>
+              </div>
+
+            </div>
           </div>
         </div>
       </div>
@@ -5906,6 +6021,37 @@
     }, { threshold: 0.15 });
 
     cards.forEach(function(card) { observer.observe(card); });
+  })();
+  </script>
+
+  <!-- ── ENVELOPE ANIMATION ── -->
+  <script>
+  (function() {
+    var envelope = document.getElementById('mailEnvelope');
+    if (!envelope) return;
+
+    var animated = false;
+    var obs = new IntersectionObserver(function(entries) {
+      if (!entries[0].isIntersecting || animated) return;
+      animated = true;
+      obs.unobserve(envelope);
+
+      // Phase 1: Envelope rises into view (0ms)
+      envelope.classList.add('risen');
+
+      // Phase 2: Flap opens (600ms after rise)
+      setTimeout(function() {
+        envelope.classList.add('opened');
+      }, 600);
+
+      // Phase 3: Content slides up out of envelope (1100ms)
+      setTimeout(function() {
+        envelope.classList.add('revealed');
+      }, 1100);
+
+    }, { threshold: 0.25 });
+
+    obs.observe(envelope);
   })();
   </script>
 
