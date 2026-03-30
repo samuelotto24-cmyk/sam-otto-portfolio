@@ -135,25 +135,24 @@ h3 { font-family: var(--serif); font-size: 26px; font-weight: 500; margin-bottom
   font-weight: 500;
   line-height: 1.1;
   color: var(--text);
-  overflow: hidden;
-  white-space: nowrap;
-  width: 0;
-  border-right: 3px solid var(--accent);
-  display: inline-block;
+  min-height: 1.1em;
 }
 .typewriter-line.accent-line {
   color: var(--accent);
 }
-.typewriter-line.typing {
-  animation: typeExpand var(--type-duration, 1.8s) steps(var(--char-count, 24), end) forwards,
-             blinkCaret 0.6s step-end infinite;
+.typewriter-cursor {
+  display: inline-block;
+  width: 3px;
+  height: 0.85em;
+  background: var(--accent);
+  margin-left: 2px;
+  vertical-align: baseline;
+  position: relative;
+  top: 0.05em;
+  animation: blinkCaret 0.7s step-end infinite;
 }
-.typewriter-line.done {
-  border-right-color: transparent;
-  animation: none;
-}
-@keyframes typeExpand { from { width: 0; } to { width: 100%; } }
-@keyframes blinkCaret { 50% { border-right-color: transparent; } }
+.typewriter-cursor.hidden { display: none; }
+@keyframes blinkCaret { 50% { opacity: 0; } }
 
 /* Reveal line */
 .reveal-line {
@@ -228,13 +227,13 @@ h3 { font-family: var(--serif); font-size: 26px; font-weight: 500; margin-bottom
   opacity: 1;
 }
 .section-title-splash.playing .splash-text {
-  animation: splashIn 1.4s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+  animation: splashIn 0.7s cubic-bezier(0.23, 1, 0.32, 1) forwards;
 }
 @keyframes splashIn {
-  0% { opacity: 0; transform: scale(1.3); filter: blur(8px); }
-  20% { opacity: 1; transform: scale(1); filter: blur(0); }
-  55% { opacity: 1; transform: scale(1); }
-  100% { opacity: 0; transform: scale(0.6) translateY(-40px); filter: blur(4px); }
+  0% { opacity: 0; transform: scale(1.2); filter: blur(6px); }
+  30% { opacity: 1; transform: scale(1); filter: blur(0); }
+  60% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(0.7) translateY(-30px); filter: blur(3px); }
 }
 
 /* Slide content waits for splash */
@@ -275,12 +274,12 @@ h3 { font-family: var(--serif); font-size: 26px; font-weight: 500; margin-bottom
     <div class="reveal-glow" id="revealGlow"></div>
     <div id="introBlock" style="max-width:900px;margin:0 auto;">
       <!-- Line 1 -->
-      <div style="margin-bottom:8px;overflow:hidden;">
-        <span class="typewriter-line" id="typeLine1" style="--char-count:25;--type-duration:1.6s;">Creators have audiences.</span>
+      <div style="margin-bottom:8px;">
+        <span class="typewriter-line" id="typeLine1"></span><span class="typewriter-cursor hidden" id="cursor1"></span>
       </div>
       <!-- Line 2 -->
-      <div style="margin-bottom:40px;overflow:hidden;">
-        <span class="typewriter-line accent-line" id="typeLine2" style="--char-count:27;--type-duration:1.6s;">They don't have a system.</span>
+      <div style="margin-bottom:40px;">
+        <span class="typewriter-line accent-line" id="typeLine2"></span><span class="typewriter-cursor hidden" id="cursor2"></span>
       </div>
       <!-- Reveal line -->
       <div>
@@ -1037,11 +1036,28 @@ var introPlayed = false;
 var splashPlaying = false;
 
 // ── Intro typewriter sequence ──
+function typeText(el, text, cursor, speed, callback) {
+  var i = 0;
+  cursor.classList.remove('hidden');
+  function tick() {
+    if (i < text.length) {
+      el.textContent += text.charAt(i);
+      i++;
+      setTimeout(tick, speed);
+    } else {
+      if (callback) callback();
+    }
+  }
+  tick();
+}
+
 function playIntro() {
   if (introPlayed) return;
   introPlayed = true;
   var line1 = document.getElementById('typeLine1');
   var line2 = document.getElementById('typeLine2');
+  var cursor1 = document.getElementById('cursor1');
+  var cursor2 = document.getElementById('cursor2');
   var reveal = document.getElementById('revealLine');
   var glow = document.getElementById('revealGlow');
   var brand = document.getElementById('introBrand');
@@ -1049,29 +1065,24 @@ function playIntro() {
 
   // Phase 1: type line 1
   setTimeout(function() {
-    line1.classList.add('typing');
+    typeText(line1, 'Creators have audiences.', cursor1, 50, function() {
+      // Phase 2: move cursor to line 2, type it
+      cursor1.classList.add('hidden');
+      setTimeout(function() {
+        typeText(line2, "They don't have a system.", cursor2, 50, function() {
+          // Phase 3: hide cursor, slam reveal
+          cursor2.classList.add('hidden');
+          setTimeout(function() {
+            glow.classList.add('flash');
+            reveal.classList.add('slam');
+            // Phase 4: show brand + footer
+            setTimeout(function() { brand.classList.add('show'); }, 500);
+            setTimeout(function() { footer.classList.add('show'); }, 800);
+          }, 400);
+        });
+      }, 300);
+    });
   }, 400);
-
-  // Phase 2: finish line 1, type line 2
-  setTimeout(function() {
-    line1.classList.add('done');
-    line2.classList.add('typing');
-  }, 2200);
-
-  // Phase 3: finish line 2, slam reveal
-  setTimeout(function() {
-    line2.classList.add('done');
-    glow.classList.add('flash');
-    reveal.classList.add('slam');
-  }, 4000);
-
-  // Phase 4: show brand + footer
-  setTimeout(function() {
-    brand.classList.add('show');
-  }, 4600);
-  setTimeout(function() {
-    footer.classList.add('show');
-  }, 4900);
 }
 
 // ── Section title splash ──
@@ -1098,11 +1109,11 @@ function playSplash(slideEl, callback) {
     headlines.forEach(function(h, i) {
       setTimeout(function() {
         h.classList.add('animate-in');
-      }, i * 150);
+      }, i * 120);
     });
 
     if (callback) callback();
-  }, 1200);
+  }, 600);
 }
 
 // ── Reset slide state ──
