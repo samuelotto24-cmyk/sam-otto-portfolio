@@ -626,27 +626,72 @@ h3 { font-family: var(--serif); font-size: 26px; font-weight: 500; margin-bottom
 <!-- ═══ SLIDE 5: LIVE CLIENT (NEW) ═══ -->
 <div class="slide" data-slide="4" data-splash="Proof">
   <div class="section-title-splash"><div class="splash-text"></div></div>
-  <div class="slide-content" style="padding:20px 50px 50px;">
-    <div class="fade-up">
+  <div class="slide-content" style="padding:20px 40px 50px;display:flex;flex-direction:column;height:100%;overflow:hidden;">
+    <div class="fade-up" style="flex-shrink:0;">
       <div class="slide-label">04 — LIVE CLIENT</div>
-      <div class="slide-label-line" style="margin-bottom:8px;"></div>
+      <div class="slide-label-line" style="margin-bottom:6px;"></div>
     </div>
-    <div class="row" style="align-items:center;">
-      <div class="col" style="max-width:55%;">
+    <div style="display:flex;gap:24px;flex:1;align-items:stretch;">
+
+      <!-- Left Column: Mandi info + brand codes + before/after -->
+      <div style="flex:0 0 55%;display:flex;flex-direction:column;gap:8px;">
+        <!-- Headline + stats -->
         <div>
-          <div class="slide-headline" style="font-size:clamp(28px,3.5vw,40px);font-weight:500;color:var(--text);">Meet Mandi Bagley.</div>
-          <div class="slide-headline" style="font-size:clamp(28px,3.5vw,40px);font-weight:500;color:var(--accent);">Our first client. Live in 72 hours.</div>
+          <div class="slide-headline" style="font-size:clamp(26px,3vw,36px);font-weight:500;color:var(--text);">Meet Mandi Bagley.</div>
+          <div class="slide-headline" style="font-size:clamp(26px,3vw,36px);font-weight:500;color:var(--accent);">Our first client. Live in 72 hours.</div>
         </div>
-        <div class="fade-up" style="margin-top:10px;">
-          <div class="card card-green" style="padding:14px 20px;">
-            <div style="font-size:14px;letter-spacing:0.12em;text-transform:uppercase;color:var(--green);font-weight:600;margin-bottom:3px;">Live Client: Mandi Bagley</div>
-            <div style="font-size:18px;font-weight:700;color:var(--text-sub);">1M+ followers · 64M+ TikTok likes · 4 active brand deals</div>
-            <div style="font-size:16px;font-weight:700;color:#1A7A4A;margin-top:3px;">bysamotto fixed that in 72 hours.</div>
+        <div class="fade-up" style="display:flex;gap:16px;">
+          <div style="font-family:var(--serif);font-size:20px;font-weight:600;color:var(--text);">1M+ <span style="font-size:13px;color:var(--text-muted);font-family:var(--sans);font-weight:400;">followers</span></div>
+          <div style="font-family:var(--serif);font-size:20px;font-weight:600;color:var(--text);">64M+ <span style="font-size:13px;color:var(--text-muted);font-family:var(--sans);font-weight:400;">TikTok likes</span></div>
+          <div style="font-family:var(--serif);font-size:20px;font-weight:600;color:var(--gold);">4 <span style="font-size:13px;color:var(--text-muted);font-family:var(--sans);font-weight:400;">brand deals</span></div>
+        </div>
+
+        <!-- Before/After -->
+        <div class="fade-up" style="display:flex;gap:8px;">
+          <div style="flex:1;border-left:3px solid #C0392B;background:rgba(192,57,43,0.06);border-radius:0 8px 8px 0;padding:8px 12px;">
+            <div style="font-size:14px;font-weight:700;color:#C0392B;margin-bottom:3px;">BEFORE</div>
+            <div style="font-size:13px;color:rgba(235,231,223,0.5);line-height:1.5;">0 outside traffic · Brand codes untracked · No strategy</div>
+          </div>
+          <div style="flex:1;border-left:3px solid #1A7A4A;background:rgba(26,122,74,0.06);border-radius:0 8px 8px 0;padding:8px 12px;">
+            <div style="font-size:14px;font-weight:700;color:#1A7A4A;margin-bottom:3px;">AFTER (72 hrs)</div>
+            <div style="font-size:13px;color:rgba(235,231,223,0.5);line-height:1.5;">8,679 visitors · Real-time attribution · AI strategy live</div>
           </div>
         </div>
+
+        <!-- Brand Codes -->
+        <div class="fade-up" style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 16px;position:relative;overflow:hidden;">
+          <div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--gold);"></div>
+          <div style="font-size:12px;letter-spacing:0.1em;color:rgba(235,231,223,0.3);text-transform:uppercase;margin-bottom:8px;">Brand Code Tracking — Live</div>
+          <div style="display:flex;gap:12px;">
+            <div style="flex:1;background:rgba(255,248,220,0.03);border-radius:6px;padding:8px 10px;text-align:center;">
+              <div style="font-size:13px;font-weight:600;color:var(--text);">DFYNE</div>
+              <div style="font-family:var(--serif);font-size:28px;font-weight:600;color:var(--gold);">45</div>
+              <div style="font-size:11px;color:var(--text-muted);">code uses</div>
+            </div>
+            <div style="flex:1;background:rgba(255,248,220,0.03);border-radius:6px;padding:8px 10px;text-align:center;">
+              <div style="font-size:13px;font-weight:600;color:var(--text);">Gymshark</div>
+              <div style="font-family:var(--serif);font-size:28px;font-weight:600;color:var(--accent);">32</div>
+              <div style="font-size:11px;color:var(--text-muted);">code uses</div>
+            </div>
+            <div style="flex:1;background:rgba(255,248,220,0.03);border-radius:6px;padding:8px 10px;text-align:center;">
+              <div style="font-size:13px;font-weight:600;color:var(--text);">Teveo</div>
+              <div style="font-family:var(--serif);font-size:28px;font-weight:600;color:var(--purple);">23</div>
+              <div style="font-size:11px;color:var(--text-muted);">code uses</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- AI Newsletter Quote -->
+        <div class="fade-up" style="background:rgba(245,158,11,0.06);border:1px solid rgba(245,158,11,0.15);border-radius:8px;padding:8px 14px;">
+          <div style="font-size:12px;font-weight:600;color:var(--gold);margin-bottom:4px;">AI BRIEFING SENT TO MANDI</div>
+          <div style="font-family:var(--serif);font-size:16px;font-style:italic;color:var(--text);line-height:1.4;">"Double down on Reels — they drove 3x more profile visits than carousels."</div>
+          <div style="font-size:13px;font-weight:600;color:#1A7A4A;margin-top:3px;">She acted on it. Engagement jumped the next day.</div>
+        </div>
       </div>
-      <div class="col fade-up">
-        <div class="video-wrap">
+
+      <!-- Right Column: Hub Video -->
+      <div class="fade-up" style="flex:1;display:flex;align-items:center;">
+        <div class="video-wrap" style="width:100%;">
           <video muted loop playsinline autoplay id="hubVideo" preload="auto" style="display:block;width:100%;"><source src="/pitch/hub-video.mp4" type="video/mp4"></video>
         </div>
       </div>
@@ -655,7 +700,7 @@ h3 { font-family: var(--serif); font-size: 26px; font-weight: 500; margin-bottom
 
   <!-- Bottom strip -->
   <div class="fade-up" style="position:absolute;bottom:0;left:0;right:0;height:40px;background:var(--surface);display:flex;align-items:center;justify-content:center;">
-    <div style="font-family:var(--sans);font-size:16px;font-weight:400;letter-spacing:0.08em;color:rgba(235,231,223,0.25);">Real client. Real data. Real results.</div>
+    <div style="font-family:var(--sans);font-size:14px;font-weight:400;letter-spacing:0.08em;color:rgba(235,231,223,0.25);">Real client. Real data. Real results. — mandibagley.com</div>
   </div>
 </div>
 
@@ -669,86 +714,39 @@ h3 { font-family: var(--serif); font-size: 26px; font-weight: 500; margin-bottom
     <div style="flex-shrink:0;">
       <div class="fade-up" style="font-family:var(--sans);font-size:16px;font-weight:600;letter-spacing:0.14em;color:rgba(235,231,223,0.35);text-transform:uppercase;margin-bottom:6px;">05 — TRACTION</div>
       <div style="margin-bottom:0;">
-        <span class="slide-headline" style="font-size:clamp(30px,4vw,44px);font-weight:400;color:var(--text);display:inline;">6 days live. </span><span class="slide-headline" style="font-size:clamp(30px,4vw,44px);font-weight:600;color:var(--accent);display:inline;">Real revenue moving.</span>
+        <span class="slide-headline" style="font-size:clamp(30px,4vw,44px);font-weight:400;color:var(--text);display:inline;">6 days live. </span><span class="slide-headline" style="font-size:clamp(30px,4vw,44px);font-weight:600;color:var(--accent);display:inline;">Platform-wide results.</span>
       </div>
     </div>
 
-    <!-- BEFORE/AFTER ROW -->
-    <div style="display:flex;gap:10px;margin-top:8px;margin-bottom:8px;flex-shrink:0;">
-      <div class="fade-up" style="flex:1;border-left:3px solid #C0392B;background:rgba(192,57,43,0.06);border-radius:0 8px 8px 0;padding:8px 14px;">
-        <div style="font-family:var(--sans);font-size:16px;font-weight:700;color:#C0392B;margin-bottom:4px;">BEFORE</div>
-        <div style="font-size:14px;color:rgba(235,231,223,0.5);line-height:1.6;">0 outside traffic · No conversion tracking · Brand codes untracked · No strategy</div>
-      </div>
-      <div class="fade-up" style="flex:1;border-left:3px solid #1A7A4A;background:rgba(26,122,74,0.06);border-radius:0 8px 8px 0;padding:8px 14px;">
-        <div style="font-family:var(--sans);font-size:16px;font-weight:700;color:#1A7A4A;margin-bottom:4px;">AFTER (72 hrs)</div>
-        <div style="font-size:14px;color:rgba(235,231,223,0.5);line-height:1.6;">8,679 visitors · 1,692 tracked clicks · Real-time brand attribution · AI strategy deployed</div>
-      </div>
-    </div>
+    <!-- ROW 2: Two Columns — Traffic + Chart -->
+    <div style="display:flex;gap:14px;flex:1;align-items:stretch;overflow:hidden;margin-top:10px;">
 
-    <!-- ROW 2: Three Columns -->
-    <div style="display:flex;gap:10px;flex:1;align-items:stretch;overflow:hidden;">
-
-      <!-- Column 1: Traffic & Source -->
+      <!-- Column 1: Traffic Stats -->
       <div class="fade-up" style="flex:1;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;position:relative;overflow:hidden;">
         <div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent);"></div>
-        <div style="font-family:var(--sans);font-size:16px;letter-spacing:0.1em;color:rgba(235,231,223,0.3);text-transform:uppercase;margin-bottom:14px;">Traffic</div>
+        <div style="font-family:var(--sans);font-size:14px;letter-spacing:0.1em;color:rgba(235,231,223,0.3);text-transform:uppercase;margin-bottom:12px;">Platform Traffic</div>
         <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:4px;">
-          <div style="font-family:var(--serif);font-size:52px;font-weight:600;color:var(--text);">8,679</div>
-          <div style="font-family:var(--sans);font-size:18px;color:rgba(235,231,223,0.4);">monetizable visitors</div>
+          <div style="font-family:var(--serif);font-size:56px;font-weight:600;color:var(--text);">8,679</div>
+          <div style="font-family:var(--sans);font-size:18px;color:rgba(235,231,223,0.4);">visitors</div>
         </div>
-        <div style="font-family:var(--sans);font-size:22px;font-weight:700;color:rgba(235,231,223,0.6);margin-bottom:16px;">1,692 tracked conversions</div>
-        <div style="font-family:var(--sans);font-size:14px;letter-spacing:0.08em;color:rgba(235,231,223,0.28);text-transform:uppercase;margin-bottom:8px;">Top links</div>
+        <div style="font-family:var(--sans);font-size:22px;font-weight:700;color:rgba(235,231,223,0.6);margin-bottom:20px;">1,692 tracked link clicks</div>
+        <div style="font-family:var(--sans);font-size:14px;letter-spacing:0.08em;color:rgba(235,231,223,0.28);text-transform:uppercase;margin-bottom:8px;">Top traffic sources</div>
         <div style="padding:6px 0;border-bottom:1px solid rgba(255,248,220,0.05);">
-          <div style="display:flex;justify-content:space-between;"><span style="font-family:var(--sans);font-size:16px;color:var(--text);font-weight:500;">Instagram Munchies</span><span style="font-family:var(--sans);font-size:16px;color:var(--accent);font-weight:600;">516 clicks</span></div>
-          <div style="font-family:var(--sans);font-size:14px;color:var(--accent);opacity:0.7;margin-top:2px;">&#8593; Zero outside traffic before launch</div>
+          <div style="display:flex;justify-content:space-between;"><span style="font-family:var(--sans);font-size:16px;color:var(--text);font-weight:500;">Instagram</span><span style="font-family:var(--sans);font-size:16px;color:var(--accent);font-weight:600;">61%</span></div>
         </div>
         <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(255,248,220,0.05);">
-          <span style="font-family:var(--sans);font-size:16px;color:rgba(235,231,223,0.6);">Snapchat</span><span style="font-family:var(--sans);font-size:16px;color:rgba(235,231,223,0.5);">367 clicks</span>
+          <span style="font-family:var(--sans);font-size:16px;color:rgba(235,231,223,0.6);">Snapchat</span><span style="font-family:var(--sans);font-size:16px;color:rgba(235,231,223,0.5);">22%</span>
         </div>
         <div style="display:flex;justify-content:space-between;padding:6px 0;">
-          <span style="font-family:var(--sans);font-size:16px;color:rgba(235,231,223,0.6);">Instagram Main</span><span style="font-family:var(--sans);font-size:16px;color:rgba(235,231,223,0.5);">332 clicks</span>
+          <span style="font-family:var(--sans);font-size:16px;color:rgba(235,231,223,0.6);">Direct / Other</span><span style="font-family:var(--sans);font-size:16px;color:rgba(235,231,223,0.5);">17%</span>
         </div>
-        <div style="margin-top:12px;"><span style="background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.2);border-radius:20px;padding:4px 12px;font-family:var(--sans);font-size:16px;color:var(--accent);">61% from Instagram</span></div>
+        <div style="margin-top:14px;font-family:var(--sans);font-size:14px;color:var(--accent);font-weight:600;">↑ Zero outside traffic before bysamotto launched</div>
       </div>
 
-      <!-- Column 2: Brand Codes -->
-      <div class="fade-up" style="flex:1;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;position:relative;overflow:hidden;">
-        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--gold);"></div>
-        <div style="font-family:var(--sans);font-size:16px;letter-spacing:0.1em;color:rgba(235,231,223,0.3);text-transform:uppercase;margin-bottom:14px;">Brand codes</div>
-        <div style="font-family:var(--sans);font-size:20px;color:rgba(235,231,223,0.4);line-height:1.5;margin-bottom:14px;">Tracked in real time.</div>
-        <div style="display:flex;flex-direction:column;gap:10px;">
-          <!-- DFYNE -->
-          <div style="background:rgba(255,248,220,0.03);border-radius:8px;padding:10px 14px;">
-            <div style="display:flex;align-items:center;justify-content:space-between;">
-              <div><div style="font-family:var(--sans);font-size:16px;font-weight:600;color:var(--text);">DFYNE</div><div style="font-family:var(--sans);font-size:16px;color:rgba(235,231,223,0.35);margin-top:1px;">MANDI</div></div>
-              <div style="text-align:right;"><div style="font-family:var(--serif);font-size:28px;font-weight:600;color:var(--gold);">45</div><div style="font-family:var(--sans);font-size:14px;color:rgba(235,231,223,0.3);">uses</div></div>
-            </div>
-            <div style="width:100%;height:2px;background:rgba(255,248,220,0.06);border-radius:2px;margin-top:6px;"><div style="width:45%;height:100%;background:var(--gold);border-radius:2px;"></div></div>
-          </div>
-          <!-- Gymshark -->
-          <div style="background:rgba(255,248,220,0.03);border-radius:8px;padding:10px 14px;">
-            <div style="display:flex;align-items:center;justify-content:space-between;">
-              <div><div style="font-family:var(--sans);font-size:16px;font-weight:600;color:var(--text);">Gymshark</div><div style="font-family:var(--sans);font-size:16px;color:rgba(235,231,223,0.35);margin-top:1px;">MANDB</div></div>
-              <div style="text-align:right;"><div style="font-family:var(--serif);font-size:28px;font-weight:600;color:var(--accent);">32</div><div style="font-family:var(--sans);font-size:14px;color:rgba(235,231,223,0.3);">uses</div></div>
-            </div>
-            <div style="width:100%;height:2px;background:rgba(255,248,220,0.06);border-radius:2px;margin-top:6px;"><div style="width:32%;height:100%;background:var(--accent);border-radius:2px;"></div></div>
-          </div>
-          <!-- Teveo -->
-          <div style="background:rgba(255,248,220,0.03);border-radius:8px;padding:10px 14px;">
-            <div style="display:flex;align-items:center;justify-content:space-between;">
-              <div><div style="font-family:var(--sans);font-size:16px;font-weight:600;color:var(--text);">Teveo</div><div style="font-family:var(--sans);font-size:16px;color:rgba(235,231,223,0.35);margin-top:1px;">MANDIBAGLEY</div></div>
-              <div style="text-align:right;"><div style="font-family:var(--serif);font-size:28px;font-weight:600;color:var(--purple);">23</div><div style="font-family:var(--sans);font-size:14px;color:rgba(235,231,223,0.3);">uses</div></div>
-            </div>
-            <div style="width:100%;height:2px;background:rgba(255,248,220,0.06);border-radius:2px;margin-top:6px;"><div style="width:23%;height:100%;background:var(--purple);border-radius:2px;"></div></div>
-          </div>
-        </div>
-        <div style="font-family:var(--sans);font-size:16px;font-style:italic;color:rgba(235,231,223,0.28);margin-top:10px;">Revenue intelligence — new.</div>
-      </div>
-
-      <!-- Column 3: AI Newsletter -->
+      <!-- Column 2: Daily Visitors Chart -->
       <div class="fade-up" style="flex:1;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;position:relative;overflow:hidden;">
         <div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--blue);"></div>
-        <div style="font-family:var(--sans);font-size:16px;letter-spacing:0.1em;color:rgba(235,231,223,0.3);text-transform:uppercase;margin-bottom:14px;">Daily visitors</div>
+        <div style="font-family:var(--sans);font-size:14px;letter-spacing:0.1em;color:rgba(235,231,223,0.3);text-transform:uppercase;margin-bottom:14px;">Daily visitors</div>
         <svg width="100%" viewBox="0 0 260 150" fill="none">
           <line x1="0" y1="140" x2="260" y2="140" stroke="rgba(255,248,220,0.07)" stroke-width="1"/>
           <rect x="14" y="30" width="32" height="110" rx="3" fill="#10B981" opacity="1"/>
@@ -777,25 +775,15 @@ h3 { font-family: var(--serif); font-size: 26px; font-weight: 500; margin-bottom
       </div>
     </div>
 
-    <!-- ROW 3: Newsletter Insight Callout -->
-    <div class="fade-up" style="margin-top:8px;background:rgba(245,158,11,0.06);border:1px solid rgba(245,158,11,0.2);border-radius:8px;padding:8px 16px;display:flex;align-items:center;gap:12px;flex-shrink:0;">
-      <div style="flex-shrink:0;">
-        <div style="font-family:var(--sans);font-size:14px;font-weight:600;letter-spacing:0.12em;color:var(--gold);text-transform:uppercase;">AI NEWSLETTER</div>
-        <div style="font-family:var(--sans);font-size:14px;color:rgba(245,158,11,0.5);margin-top:2px;">Sent Monday</div>
-      </div>
-      <div style="width:1px;height:32px;background:rgba(245,158,11,0.2);flex-shrink:0;"></div>
-      <div style="flex:1;">
-        <div style="font-family:var(--sans);font-size:18px;font-weight:700;color:var(--gold);margin-bottom:6px;">This is what $150/month buys:</div>
-        <span style="font-family:var(--serif);font-size:28px;color:rgba(245,158,11,0.3);line-height:0;vertical-align:middle;margin-right:4px;">"</span><span style="font-family:var(--serif);font-size:22px;font-weight:400;color:var(--text);font-style:italic;line-height:1.4;">Double down on Reels — they drove 3x more profile visits than carousels over the last 14 days.</span>
-        <div style="font-family:var(--sans);font-size:16px;font-weight:700;color:#1A7A4A;margin-top:6px;">She acted on it. Engagement jumped the next day.</div>
-      </div>
-      <div style="flex-shrink:0;"><span style="font-family:var(--sans);font-size:14px;font-weight:600;color:var(--gold);background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.25);border-radius:4px;padding:4px 10px;">Creator acted on this</span></div>
+    <!-- Bottom callout -->
+    <div class="fade-up" style="margin-top:10px;text-align:center;flex-shrink:0;">
+      <div style="font-family:var(--sans);font-size:18px;font-weight:700;color:var(--text);">One client. Six days. All real numbers — not projections.</div>
     </div>
   </div>
 
   <!-- Bottom strip -->
   <div class="fade-up" style="position:absolute;bottom:0;left:0;right:0;height:40px;background:var(--surface);display:flex;align-items:center;justify-content:center;">
-    <div style="font-family:var(--sans);font-size:16px;font-weight:400;letter-spacing:0.08em;color:rgba(235,231,223,0.25);">One client. Six days. Proof of concept. Now we scale.</div>
+    <div style="font-family:var(--sans);font-size:14px;font-weight:400;letter-spacing:0.08em;color:rgba(235,231,223,0.25);">All data pulled live from mandibagley.com</div>
   </div>
 </div>
 
