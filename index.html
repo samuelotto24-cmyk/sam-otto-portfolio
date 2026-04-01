@@ -552,6 +552,133 @@
 
 
 
+    /* ── Hero Lead Engine card — below phone ── */
+    .hero-sys-leads {
+      position: absolute;
+      z-index: 4;
+      bottom: -20px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      opacity: 0;
+      animation: sysLeadsIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) 3.65s forwards;
+      background: rgba(23,21,18,0.94);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(16,185,129,0.18);
+      border-radius: 14px;
+      padding: 12px 16px;
+      width: 220px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.03), 0 0 20px rgba(16,185,129,0.06);
+    }
+    @keyframes sysLeadsIn {
+      from { opacity: 0; transform: translateX(-50%) translateY(20px) scale(0.9); }
+      to   { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      .hero-sys-leads {
+        animation: sysLeadsIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) 3.65s forwards,
+                   sysIdleLeads 4.8s ease-in-out 4.8s infinite;
+      }
+    }
+    @keyframes sysIdleLeads {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50%      { transform: translateX(-50%) translateY(-5px); }
+    }
+    .hero-leads-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .hero-leads-icon {
+      width: 24px; height: 24px;
+      border-radius: 7px;
+      background: rgba(16,185,129,0.12);
+      border: 1px solid rgba(16,185,129,0.25);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--rose);
+      font-size: 11px;
+    }
+    /* Mini pipeline dots */
+    .hero-leads-pipeline {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      margin-bottom: 10px;
+    }
+    .hero-leads-dot {
+      width: 22px; height: 22px;
+      border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 9px;
+      border: 1px solid var(--border-mid);
+      position: relative;
+      color: var(--text-muted);
+      background: rgba(255,255,255,0.03);
+      transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+    }
+    .hero-leads-dot.lit {
+      background: rgba(16,185,129,0.15);
+      border-color: rgba(16,185,129,0.4);
+      color: var(--rose-light);
+      box-shadow: 0 0 8px rgba(16,185,129,0.2);
+    }
+    .hero-leads-wire {
+      width: 14px; height: 1px;
+      background: var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-leads-wire::after {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%; width: 100%; height: 100%;
+      background: var(--rose);
+      box-shadow: 0 0 4px var(--rose);
+      transition: left 0.3s ease;
+    }
+    .hero-leads-wire.lit::after { left: 0; }
+    .hero-leads-counter {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .hero-leads-stat {
+      font-size: 10px;
+      color: var(--text-muted);
+    }
+    .hero-leads-stat strong {
+      color: var(--cream);
+      font-size: 14px;
+      font-weight: 700;
+      display: block;
+      line-height: 1.1;
+    }
+    .hero-leads-badge {
+      font-size: 9px;
+      font-weight: 700;
+      color: var(--rose);
+      background: var(--rose-glow);
+      border: 1px solid rgba(16,185,129,0.25);
+      padding: 2px 8px;
+      border-radius: 50px;
+      letter-spacing: 0.06em;
+    }
+
+    @media (max-width: 768px) {
+      .hero-sys-leads {
+        width: 180px;
+        padding: 10px 12px;
+        bottom: -15px;
+      }
+      .hero-leads-dot { width: 18px; height: 18px; font-size: 8px; }
+      .hero-leads-wire { width: 10px; }
+      .hero-leads-stat strong { font-size: 12px; }
+    }
+
     /* ── STATS BAR ── */
     #stats {
       padding: 28px 0;
@@ -3688,6 +3815,7 @@
     position: absolute;
     top: 12px;
     right: 14px;
+    z-index: 10;
     font-size: 10px;
     font-weight: 700;
     letter-spacing: 0.08em;
@@ -4540,7 +4668,7 @@
       <div class="hero-copy">
         <div class="hero-label">Your growth machine</div>
         <h1 class="hero-title">You built the audience.<br><em>I build the platform behind it.</em></h1>
-        <p class="hero-sub">A custom website, private analytics dashboard, and AI strategist — designed around the brand you've already created.</p>
+        <p class="hero-sub">A custom website, private analytics, AI strategist, and automated lead capture — designed around the brand you've already created. No manual work.</p>
         <div class="hero-actions">
           <a href="#contact" class="btn-rose btn-hero-cta"><span class="btn-rose-outline" aria-hidden="true"></span><i class="fa-solid fa-paper-plane"></i> Let's Build Yours</a>
           <a href="javascript:void(0)" class="btn-ghost" onclick="openQuiz()"><i class="fa-solid fa-wand-magic-sparkles"></i> Build My Demo</a>
@@ -4609,6 +4737,27 @@
           <div class="sys-card-body">
             <div class="sys-ai-line"><span class="sys-ai-dot"></span>Post Tues 7pm — your highest click window</div>
             <div class="sys-ai-line"><span class="sys-ai-dot"></span>Reels drive 3x more page visits than carousels</div>
+          </div>
+        </div>
+
+        <!-- Lead Engine module — appears below -->
+        <div class="hero-sys-leads" id="heroLeadsCard">
+          <div class="hero-leads-label">
+            <div class="hero-leads-icon"><i class="fa-solid fa-bolt"></i></div>
+            Lead Engine
+          </div>
+          <div class="hero-leads-pipeline" id="heroLeadsPipeline">
+            <div class="hero-leads-dot" data-step="0"><i class="fa-brands fa-instagram"></i></div>
+            <div class="hero-leads-wire" data-step="0"></div>
+            <div class="hero-leads-dot" data-step="1"><i class="fa-solid fa-paper-plane"></i></div>
+            <div class="hero-leads-wire" data-step="1"></div>
+            <div class="hero-leads-dot" data-step="2"><i class="fa-solid fa-file-lines"></i></div>
+            <div class="hero-leads-wire" data-step="2"></div>
+            <div class="hero-leads-dot" data-step="3"><i class="fa-solid fa-envelope"></i></div>
+          </div>
+          <div class="hero-leads-counter">
+            <div class="hero-leads-stat"><strong id="heroLeadsNum">0</strong> leads today</div>
+            <span class="hero-leads-badge">AUTO</span>
           </div>
         </div>
 
@@ -6422,92 +6571,169 @@
   })();
   </script>
 
-  <!-- ── ENGAGEMENT ENGINE ANIMATION ── -->
+  <!-- ── ENGAGEMENT ENGINE ANIMATION (loops continuously) ── -->
   <script>
   (function() {
     var engine = document.getElementById('layer-engine');
     if (!engine) return;
 
-    var animated = false;
+    var steps = [
+      document.getElementById('es1'),
+      document.getElementById('es2'),
+      document.getElementById('es3'),
+      document.getElementById('es4')
+    ];
+    var arrows = [
+      document.getElementById('ea1'),
+      document.getElementById('ea2'),
+      document.getElementById('ea3')
+    ];
+    var stats = [
+      document.getElementById('estat1'),
+      document.getElementById('estat2'),
+      document.getElementById('estat3'),
+      document.getElementById('estat4')
+    ];
+    var comment = document.getElementById('engineComment');
+    var conversion = document.getElementById('engineConversion');
+
+    var comments = [
+      { avatar: 'S', user: '@sarah.k', keyword: 'MEAL' },
+      { avatar: 'J', user: '@jake_runs', keyword: 'MEAL' },
+      { avatar: 'M', user: '@michelle.t', keyword: 'MEAL' },
+      { avatar: 'R', user: '@rachelwellness', keyword: 'MEAL' },
+      { avatar: 'D', user: '@danielfitco', keyword: 'MEAL' }
+    ];
+    var commentIdx = 0;
+    var leadCount = 0;
+    var targets = [142, 89, 67, 51];
 
     function countUp(el, target, duration) {
-      var start = 0;
+      var startVal = parseInt(el.textContent) || 0;
       var startTime = null;
       function step(ts) {
         if (!startTime) startTime = ts;
         var progress = Math.min((ts - startTime) / duration, 1);
         var eased = 1 - Math.pow(1 - progress, 3);
-        el.textContent = Math.round(eased * target);
+        el.textContent = Math.round(startVal + (target - startVal) * eased);
         if (progress < 1) requestAnimationFrame(step);
       }
       requestAnimationFrame(step);
     }
 
-    function runAnimation() {
-      if (animated) return;
-      animated = true;
+    function resetAll() {
+      comment.classList.remove('active');
+      conversion.classList.remove('active');
+      steps.forEach(function(s) { s.classList.remove('active'); });
+      arrows.forEach(function(a) { a.classList.remove('active'); });
+      stats.forEach(function(s) { s.classList.remove('active'); });
+      stats.forEach(function(s) {
+        var fill = s.querySelector('.engine-stat-fill');
+        if (fill) fill.style.width = '0%';
+        var counter = s.querySelector('.counting');
+        if (counter) counter.textContent = '0';
+      });
+    }
 
-      var steps = [
-        document.getElementById('es1'),
-        document.getElementById('es2'),
-        document.getElementById('es3'),
-        document.getElementById('es4')
-      ];
-      var arrows = [
-        document.getElementById('ea1'),
-        document.getElementById('ea2'),
-        document.getElementById('ea3')
-      ];
-      var stats = [
-        document.getElementById('estat1'),
-        document.getElementById('estat2'),
-        document.getElementById('estat3'),
-        document.getElementById('estat4')
-      ];
-      var comment = document.getElementById('engineComment');
-      var conversion = document.getElementById('engineConversion');
+    function runCycle() {
+      // Swap comment content
+      var c = comments[commentIdx % comments.length];
+      commentIdx++;
+      comment.querySelector('.engine-comment-avatar').textContent = c.avatar;
+      comment.querySelector('.engine-comment-text').innerHTML =
+        '<strong>' + c.user + '</strong> — <span class="engine-comment-keyword">' + c.keyword + '</span>';
 
       // Comment slides in
-      setTimeout(function() { comment.classList.add('active'); }, 200);
+      setTimeout(function() { comment.classList.add('active'); }, 100);
 
       // Steps and arrows cascade
       steps.forEach(function(s, i) {
         setTimeout(function() {
           s.classList.add('active');
           if (arrows[i]) {
-            setTimeout(function() { arrows[i].classList.add('active'); }, 200);
+            setTimeout(function() { arrows[i].classList.add('active'); }, 180);
           }
-        }, 500 + i * 350);
+        }, 400 + i * 300);
       });
 
-      // Stats count up after flow completes
-      var statsDelay = 500 + steps.length * 350 + 300;
+      // Stats count up
+      var statsDelay = 400 + steps.length * 300 + 250;
       stats.forEach(function(stat, i) {
         setTimeout(function() {
           stat.classList.add('active');
           var counter = stat.querySelector('.counting');
-          if (counter) countUp(counter, parseInt(counter.dataset.target), 800);
+          if (counter) countUp(counter, targets[i], 700);
           var fill = stat.querySelector('.engine-stat-fill');
           if (fill) fill.style.width = fill.dataset.width;
-        }, statsDelay + i * 150);
+        }, statsDelay + i * 120);
       });
 
-      // Conversion badge pops in last
+      // Conversion badge
+      var badgeDelay = statsDelay + stats.length * 120 + 250;
+      setTimeout(function() { conversion.classList.add('active'); }, badgeDelay);
+
+      // Hold for a beat, then fade out and restart
+      var holdTime = badgeDelay + 2200;
       setTimeout(function() {
-        conversion.classList.add('active');
-      }, statsDelay + stats.length * 150 + 300);
+        resetAll();
+        setTimeout(runCycle, 600);
+      }, holdTime);
     }
 
+    // Start when scrolled into view
     var obs = new IntersectionObserver(function(entries) {
       entries.forEach(function(entry) {
         if (entry.isIntersecting) {
-          runAnimation();
+          runCycle();
           obs.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.3 });
+    }, { threshold: 0.2 });
 
     obs.observe(engine);
+  })();
+  </script>
+
+  <!-- ── HERO LEAD ENGINE CARD — looping pipeline ── -->
+  <script>
+  (function() {
+    var card = document.getElementById('heroLeadsCard');
+    if (!card) return;
+
+    var dots = card.querySelectorAll('.hero-leads-dot');
+    var wires = card.querySelectorAll('.hero-leads-wire');
+    var numEl = document.getElementById('heroLeadsNum');
+    var count = 0;
+    var step = 0;
+    var totalSteps = 4; // 4 dots
+
+    function tick() {
+      // Light up current step
+      if (step < totalSteps) {
+        dots[step].classList.add('lit');
+        if (step > 0) wires[step - 1].classList.add('lit');
+      }
+      step++;
+
+      if (step <= totalSteps) {
+        setTimeout(tick, 400);
+      } else {
+        // Pipeline complete — increment counter, pulse
+        count++;
+        numEl.textContent = count;
+
+        // Hold lit state, then reset for next cycle
+        setTimeout(function() {
+          dots.forEach(function(d) { d.classList.remove('lit'); });
+          wires.forEach(function(w) { w.classList.remove('lit'); });
+          step = 0;
+          setTimeout(tick, 500);
+        }, 1200);
+      }
+    }
+
+    // Start after hero entrance completes (~4.5s)
+    setTimeout(tick, 4500);
   })();
   </script>
 
