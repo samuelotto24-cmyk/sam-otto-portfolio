@@ -9,7 +9,7 @@
   ],
   "functions": {
     "api/generate-mockup.mjs": {
-      "includeFiles": "../creator-template.html,../creator-template-dark.html"
+      "includeFiles": "creator-template*.html"
     }
   }
 }
