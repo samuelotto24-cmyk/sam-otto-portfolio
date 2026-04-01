@@ -7,14 +7,24 @@ const templateCache = {};
 function getTemplate(variant) {
   const key = variant || 'light';
   if (!templateCache[key]) {
-    const filenames = key === 'dark'
-      ? ['creator-template-dark.html', '../creator-template-dark/index.html']
-      : ['creator-template.html', '../creator-template/index.html'];
-    for (const f of filenames) {
+    const base = key === 'dark' ? 'creator-template-dark.html' : 'creator-template.html';
+    const searchPaths = [
+      join(process.cwd(), base),
+      join(process.cwd(), '..', base),
+      join(__dirname, '..', '..', base),
+      join(__dirname, '..', base),
+      '/var/task/' + base,
+      '/var/task/user/' + base,
+    ];
+    for (const p of searchPaths) {
       try {
-        templateCache[key] = readFileSync(join(process.cwd(), f), 'utf8');
+        templateCache[key] = readFileSync(p, 'utf8');
+        console.log('Template found at:', p);
         break;
       } catch (e) { /* try next */ }
+    }
+    if (!templateCache[key]) {
+      console.error('Template not found. Searched:', searchPaths.join(', '));
     }
   }
   return templateCache[key] || null;
