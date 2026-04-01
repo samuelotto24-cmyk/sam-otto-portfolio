@@ -3,6 +3,25 @@ import { sql } from './lib/db.mjs';
 import { buildMockupHtml } from './lib/build-mockup-html.mjs';
 import crypto from 'crypto';
 
+async function persistImage(url, hash, filename) {
+  try {
+    const resp = await fetch(url, {
+      headers: { 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36' },
+    });
+    if (!resp.ok) return null;
+    const buffer = Buffer.from(await resp.arrayBuffer());
+    const contentType = resp.headers.get('content-type') || 'image/jpeg';
+    const blob = await put('preview-assets/' + hash + '/' + filename, buffer, {
+      access: 'public',
+      contentType,
+    });
+    return blob.url;
+  } catch (e) {
+    console.error('Failed to persist image:', filename, e.message);
+    return null;
+  }
+}
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
@@ -15,7 +34,16 @@ export default async function handler(req, res) {
 
   const hash = crypto.randomBytes(8).toString('hex');
 
-  const html = buildMockupHtml({ name, niche, photo, colors, sells, followers, copy, handle, postImages, template });
+  // Persist all images to Vercel Blob so they don't expire
+  const [persistedPhoto, ...persistedPosts] = await Promise.all([
+    photo ? persistImage(photo, hash, 'profile.jpg') : Promise.resolve(null),
+    ...(postImages || []).map((url, i) => persistImage(url, hash, 'post-' + i + '.jpg')),
+  ]);
+
+  const permanentPhoto = persistedPhoto || photo;
+  const permanentPostImages = persistedPosts.filter(Boolean);
+
+  const html = buildMockupHtml({ name, niche, photo: permanentPhoto, colors, sells, followers, copy, handle, postImages: permanentPostImages, template });
   const finalHtml = html.replace(/HASH_PLACEHOLDER/g, hash);
 
   const blob = await put('previews/' + hash + '.html', finalHtml, {

@@ -107,7 +107,7 @@ function buildFromTemplate(html, d) {
     },
     photoStrip: {
       enabled: d.postImages.length >= 3,
-      photos: d.postImages.map(function(url) { return '/api/proxy-image?url=' + encodeURIComponent(url); }),
+      photos: d.postImages,
       speed: '18s',
     },
     youtube: { enabled: false, headline: 'Watch My Latest', channelUrl: '', videoId: '' },
@@ -150,24 +150,21 @@ function buildFromTemplate(html, d) {
 
   html = html.substring(0, configStart) + configScript + '\n' + html.substring(endScript);
 
-  // Inject profile photo
+  // Inject profile photo (already a permanent blob URL or original URL)
   if (d.photo) {
-    const proxiedPhoto = '/api/proxy-image?url=' + encodeURIComponent(d.photo);
-    // Replace all image src references to hero.jpg and about.jpg with the proxied profile photo
-    html = html.replace(/src="assets\/hero\.jpg"/g, 'src="' + proxiedPhoto + '"');
-    html = html.replace(/src="assets\/about\.jpg"/g, 'src="' + proxiedPhoto + '"');
-    // Also handle any CSS background-image references
+    html = html.replace(/src="assets\/hero\.jpg"/g, 'src="' + d.photo + '"');
+    html = html.replace(/src="assets\/about\.jpg"/g, 'src="' + d.photo + '"');
     html = html.replace('</head>', `<style>
-      .hero-photo img, .about-photo img { content: url('${proxiedPhoto}') !important; }
-      .hero-photo, .about-photo { background-image: url('${proxiedPhoto}'); background-size: cover; background-position: center; }
+      .hero-photo img, .about-photo img { content: url('${d.photo}') !important; }
+      .hero-photo, .about-photo { background-image: url('${d.photo}'); background-size: cover; background-position: center; }
     </style></head>`);
   }
 
   // Disable tracking
   html = html.replace(/fetch\(['"]\/api\/track['"]/g, '/* preview */ void(0) && fetch("/api/track"');
 
-  // Preview banner
-  const banner = `<div style="position:fixed;top:0;left:0;right:0;z-index:99999;background:${d.accent};color:#fff;text-align:center;padding:10px 20px;font-family:system-ui;font-size:13px;font-weight:600;letter-spacing:0.02em;box-shadow:0 2px 12px rgba(0,0,0,0.2)">This is a preview of what your site could look like · <a href="https://bysamotto.com/#contact" style="color:#fff;text-decoration:underline;margin-left:8px">Build mine →</a></div><div style="height:40px"></div>`;
+  // Preview banner (hidden in iframe mode via JS below)
+  const banner = `<div id="previewBanner" style="position:fixed;top:0;left:0;right:0;z-index:99999;background:${d.accent};color:#fff;text-align:center;padding:10px 20px;font-family:system-ui;font-size:13px;font-weight:600;letter-spacing:0.02em;box-shadow:0 2px 12px rgba(0,0,0,0.2)">This is a preview of what your site could look like · <a href="https://bysamotto.com/#contact" style="color:#fff;text-decoration:underline;margin-left:8px">Build mine →</a></div><div id="previewBannerSpacer" style="height:40px"></div>`;
   html = html.replace('<body>', '<body>' + banner);
 
   // Append the 4-layer showcase
@@ -201,7 +198,7 @@ ${buildLayersSection(d)}
 
 function buildLayersSection(d) {
   return `
-<div style="background:#0C0809;color:#F5EBE6;font-family:'DM Sans',system-ui">
+<div id="previewLayers" style="background:#0C0809;color:#F5EBE6;font-family:'DM Sans',system-ui">
   <div style="padding:80px 24px;max-width:800px;margin:0 auto;text-align:center">
     <div style="font-size:11px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:${d.accent};margin-bottom:16px">Layer 02 — Your Analytics</div>
     <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:32px">
@@ -264,6 +261,7 @@ function buildLayersSection(d) {
 var isOwner=document.cookie.includes('preview_owner=HASH_PLACEHOLDER');
 var isGated=document.body.dataset.gated==='true';
 if(isGated&&!isOwner){document.getElementById('blurGate').style.display='flex'}
+if(window!==window.top){var _l=document.getElementById('previewLayers');if(_l)_l.style.display='none';var _g=document.getElementById('blurGate');if(_g)_g.style.display='none';var _b=document.getElementById('previewBanner');if(_b)_b.style.display='none';var _s=document.getElementById('previewBannerSpacer');if(_s)_s.style.display='none'}
 function unlockPreview(){var e=document.getElementById('gateEmail').value;if(!e)return;fetch('/api/preview-unlock',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({hash:'HASH_PLACEHOLDER',email:e})}).then(function(r){return r.json()}).then(function(){document.getElementById('blurGate').style.display='none'})}
 </script>`;
 }
