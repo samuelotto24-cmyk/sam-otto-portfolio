@@ -3474,6 +3474,246 @@
     color: var(--rose-light);
   }
 
+  /* ── Layer 5: Engagement Engine animated flow ── */
+  .layer-engine-preview {
+    background: var(--dark);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+    padding: 24px 20px 20px;
+    position: relative;
+  }
+  .layer-engine-preview::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 70% 50% at 50% 100%, rgba(16,185,129,0.04) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  /* Flow pipeline */
+  .engine-flow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    position: relative;
+    margin-bottom: 20px;
+  }
+  .engine-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    opacity: 0;
+    transform: translateY(10px) scale(0.9);
+    transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    z-index: 2;
+  }
+  .engine-step.active {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  .engine-step-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    border: 1px solid var(--border-mid);
+    position: relative;
+    overflow: hidden;
+  }
+  .engine-step-icon::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.06) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .engine-step:nth-child(1) .engine-step-icon { background: linear-gradient(135deg, #833AB4, #FD1D1D, #F77737); }
+  .engine-step:nth-child(3) .engine-step-icon { background: rgba(16,185,129,0.15); color: var(--rose); border-color: rgba(16,185,129,0.3); }
+  .engine-step:nth-child(5) .engine-step-icon { background: rgba(16,185,129,0.15); color: var(--rose); border-color: rgba(16,185,129,0.3); }
+  .engine-step:nth-child(7) .engine-step-icon { background: rgba(16,185,129,0.15); color: var(--rose); border-color: rgba(16,185,129,0.3); }
+  .engine-step-label {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+
+  /* Arrows between steps */
+  .engine-arrow {
+    width: 32px;
+    height: 2px;
+    position: relative;
+    flex-shrink: 0;
+    opacity: 0;
+    z-index: 1;
+  }
+  .engine-arrow.active { opacity: 1; }
+  .engine-arrow-line {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 0%;
+    height: 2px;
+    background: linear-gradient(90deg, var(--rose), var(--rose-light));
+    border-radius: 2px;
+    transform: translateY(-50%);
+    transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 0 8px rgba(16,185,129,0.3);
+  }
+  .engine-arrow.active .engine-arrow-line { width: 100%; }
+  .engine-arrow-head {
+    position: absolute;
+    right: -1px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-top: 4px solid transparent;
+    border-bottom: 4px solid transparent;
+    border-left: 5px solid var(--rose-light);
+    opacity: 0;
+    transition: opacity 0.2s ease 0.3s;
+  }
+  .engine-arrow.active .engine-arrow-head { opacity: 1; }
+
+  /* Comment bubble */
+  .engine-comment {
+    background: var(--dark-card);
+    border: 1px solid var(--border-mid);
+    border-radius: 10px;
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+    opacity: 0;
+    transform: translateX(-12px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+  }
+  .engine-comment.active {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  .engine-comment-avatar {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    color: #fff;
+    font-weight: 700;
+  }
+  .engine-comment-text {
+    font-size: 12px;
+    color: var(--text-sub);
+  }
+  .engine-comment-text strong {
+    color: var(--text);
+    font-weight: 600;
+  }
+  .engine-comment-keyword {
+    color: var(--rose-light);
+    font-weight: 700;
+  }
+
+  /* Stats bar */
+  .engine-stats {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 14px;
+    border-top: 1px solid var(--border);
+  }
+  .engine-stat {
+    text-align: center;
+    flex: 1;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+  }
+  .engine-stat.active {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .engine-stat-num {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--cream);
+    display: block;
+    line-height: 1.2;
+    font-family: var(--sans);
+  }
+  .engine-stat-num .counting {
+    display: inline-block;
+  }
+  .engine-stat-label {
+    font-size: 9px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-top: 2px;
+    display: block;
+  }
+  .engine-stat-bar {
+    width: 100%;
+    height: 3px;
+    background: rgba(255,255,255,0.04);
+    border-radius: 3px;
+    margin-top: 6px;
+    overflow: hidden;
+  }
+  .engine-stat-fill {
+    height: 100%;
+    border-radius: 3px;
+    background: linear-gradient(90deg, var(--rose), var(--rose-light));
+    width: 0%;
+    transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* Conversion badge */
+  .engine-conversion {
+    position: absolute;
+    top: 12px;
+    right: 14px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--rose);
+    background: var(--rose-glow);
+    border: 1px solid rgba(16,185,129,0.25);
+    padding: 3px 10px;
+    border-radius: 50px;
+    opacity: 0;
+    transform: scale(0.8);
+    transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .engine-conversion.active {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  @media (max-width: 768px) {
+    .engine-flow { gap: 0; }
+    .engine-step-icon { width: 32px; height: 32px; font-size: 13px; border-radius: 9px; }
+    .engine-step-label { font-size: 7px; }
+    .engine-arrow { width: 18px; }
+    .engine-stat-num { font-size: 15px; }
+    .engine-comment { padding: 6px 10px; }
+  }
+
   /* ══════════════════════════════════════════════════
      MOBILE-ONLY CONDENSING — desktop untouched
      ══════════════════════════════════════════════════ */
@@ -4313,6 +4553,8 @@
           <span class="trust-sep"></span>
           <span class="hero-trust-item">AI-powered strategy</span>
           <span class="trust-sep"></span>
+          <span class="hero-trust-item">Automated lead capture</span>
+          <span class="trust-sep"></span>
           <span class="hero-trust-item">Live in 72 hours</span>
           <span class="trust-sep"></span>
           <span class="hero-trust-item">One flat price</span>
@@ -4468,6 +4710,71 @@
           <div class="layer-num">04</div>
           <h3 class="layer-name">Your Weekly Briefing</h3>
           <p class="layer-desc">Every Monday, an AI-written strategy email lands in your inbox — your numbers, your wins, and exactly what to do next. No login required.</p>
+        </div>
+      </div>
+
+      <div class="layer-card" id="layer-engine">
+        <div class="layer-engine-preview">
+          <span class="engine-conversion" id="engineConversion">36% CONVERSION</span>
+
+          <!-- Fake comment bubble -->
+          <div class="engine-comment" id="engineComment">
+            <div class="engine-comment-avatar">S</div>
+            <div class="engine-comment-text"><strong>@sarah.k</strong> — <span class="engine-comment-keyword">MEAL</span></div>
+          </div>
+
+          <!-- Animated pipeline flow -->
+          <div class="engine-flow">
+            <div class="engine-step" id="es1">
+              <div class="engine-step-icon"><i class="fa-brands fa-instagram" style="color:#fff;font-size:18px"></i></div>
+              <span class="engine-step-label">Comment</span>
+            </div>
+            <div class="engine-arrow" id="ea1"><div class="engine-arrow-line"></div><div class="engine-arrow-head"></div></div>
+            <div class="engine-step" id="es2">
+              <div class="engine-step-icon"><i class="fa-solid fa-paper-plane"></i></div>
+              <span class="engine-step-label">Auto-DM</span>
+            </div>
+            <div class="engine-arrow" id="ea2"><div class="engine-arrow-line"></div><div class="engine-arrow-head"></div></div>
+            <div class="engine-step" id="es3">
+              <div class="engine-step-icon"><i class="fa-solid fa-file-lines"></i></div>
+              <span class="engine-step-label">Capture</span>
+            </div>
+            <div class="engine-arrow" id="ea3"><div class="engine-arrow-line"></div><div class="engine-arrow-head"></div></div>
+            <div class="engine-step" id="es4">
+              <div class="engine-step-icon"><i class="fa-solid fa-envelope"></i></div>
+              <span class="engine-step-label">Email</span>
+            </div>
+          </div>
+
+          <!-- Funnel stats -->
+          <div class="engine-stats">
+            <div class="engine-stat" id="estat1">
+              <span class="engine-stat-num"><span class="counting" data-target="142">0</span></span>
+              <span class="engine-stat-label">Comments</span>
+              <div class="engine-stat-bar"><div class="engine-stat-fill" data-width="100%"></div></div>
+            </div>
+            <div class="engine-stat" id="estat2">
+              <span class="engine-stat-num"><span class="counting" data-target="89">0</span></span>
+              <span class="engine-stat-label">DMs</span>
+              <div class="engine-stat-bar"><div class="engine-stat-fill" data-width="63%"></div></div>
+            </div>
+            <div class="engine-stat" id="estat3">
+              <span class="engine-stat-num"><span class="counting" data-target="67">0</span></span>
+              <span class="engine-stat-label">Clicks</span>
+              <div class="engine-stat-bar"><div class="engine-stat-fill" data-width="47%"></div></div>
+            </div>
+            <div class="engine-stat" id="estat4">
+              <span class="engine-stat-num"><span class="counting" data-target="51">0</span></span>
+              <span class="engine-stat-label">Emails</span>
+              <div class="engine-stat-bar"><div class="engine-stat-fill" data-width="36%"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="layer-copy">
+          <div class="layer-num">05</div>
+          <h3 class="layer-name">Your Lead Engine</h3>
+          <p class="layer-desc">Every comment becomes a customer. Set a keyword, and the system turns Instagram commenters into email leads — DMs, capture pages, funnels — all automatic. No extra tools. No monthly fees.</p>
         </div>
       </div>
 
@@ -6112,6 +6419,95 @@
     }, { threshold: 0.15 });
 
     cards.forEach(function(card) { observer.observe(card); });
+  })();
+  </script>
+
+  <!-- ── ENGAGEMENT ENGINE ANIMATION ── -->
+  <script>
+  (function() {
+    var engine = document.getElementById('layer-engine');
+    if (!engine) return;
+
+    var animated = false;
+
+    function countUp(el, target, duration) {
+      var start = 0;
+      var startTime = null;
+      function step(ts) {
+        if (!startTime) startTime = ts;
+        var progress = Math.min((ts - startTime) / duration, 1);
+        var eased = 1 - Math.pow(1 - progress, 3);
+        el.textContent = Math.round(eased * target);
+        if (progress < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    }
+
+    function runAnimation() {
+      if (animated) return;
+      animated = true;
+
+      var steps = [
+        document.getElementById('es1'),
+        document.getElementById('es2'),
+        document.getElementById('es3'),
+        document.getElementById('es4')
+      ];
+      var arrows = [
+        document.getElementById('ea1'),
+        document.getElementById('ea2'),
+        document.getElementById('ea3')
+      ];
+      var stats = [
+        document.getElementById('estat1'),
+        document.getElementById('estat2'),
+        document.getElementById('estat3'),
+        document.getElementById('estat4')
+      ];
+      var comment = document.getElementById('engineComment');
+      var conversion = document.getElementById('engineConversion');
+
+      // Comment slides in
+      setTimeout(function() { comment.classList.add('active'); }, 200);
+
+      // Steps and arrows cascade
+      steps.forEach(function(s, i) {
+        setTimeout(function() {
+          s.classList.add('active');
+          if (arrows[i]) {
+            setTimeout(function() { arrows[i].classList.add('active'); }, 200);
+          }
+        }, 500 + i * 350);
+      });
+
+      // Stats count up after flow completes
+      var statsDelay = 500 + steps.length * 350 + 300;
+      stats.forEach(function(stat, i) {
+        setTimeout(function() {
+          stat.classList.add('active');
+          var counter = stat.querySelector('.counting');
+          if (counter) countUp(counter, parseInt(counter.dataset.target), 800);
+          var fill = stat.querySelector('.engine-stat-fill');
+          if (fill) fill.style.width = fill.dataset.width;
+        }, statsDelay + i * 150);
+      });
+
+      // Conversion badge pops in last
+      setTimeout(function() {
+        conversion.classList.add('active');
+      }, statsDelay + stats.length * 150 + 300);
+    }
+
+    var obs = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          runAnimation();
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.3 });
+
+    obs.observe(engine);
   })();
   </script>
 
