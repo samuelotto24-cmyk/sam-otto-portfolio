@@ -522,32 +522,32 @@
       to   { width: 72%; }
     }
 
-    /* ── Idle float after entrance ── */
+    /* ── Idle float after entrance — unified gentle breathe ── */
     @media (prefers-reduced-motion: no-preference) {
       .hero-sys-phone {
         animation: sysPhoneLand 0.9s cubic-bezier(0.16, 1, 0.3, 1) 2.8s forwards,
-                   sysIdleFloat 4s ease-in-out 4.1s infinite;
+                   sysIdleFloat 6s ease-in-out 4.5s infinite;
       }
       .hero-sys-analytics {
         animation: sysCardLeft 0.8s cubic-bezier(0.16, 1, 0.3, 1) 3.25s forwards,
-                   sysIdleCardL 5s ease-in-out 4.4s infinite;
+                   sysIdleCardL 6s ease-in-out 4.5s infinite;
       }
       .hero-sys-ai {
         animation: sysCardRight 0.8s cubic-bezier(0.16, 1, 0.3, 1) 3.45s forwards,
-                   sysIdleCardR 4.5s ease-in-out 4.6s infinite;
+                   sysIdleCardR 6s ease-in-out 4.5s infinite;
       }
     }
     @keyframes sysIdleFloat {
       0%, 100% { transform: translateY(0); }
-      50%      { transform: translateY(-8px); }
+      50%      { transform: translateY(-4px); }
     }
     @keyframes sysIdleCardL {
       0%, 100% { transform: translateY(-70%) translateX(0); }
-      50%      { transform: translateY(calc(-70% - 6px)) translateX(2px); }
+      50%      { transform: translateY(calc(-70% - 4px)) translateX(0); }
     }
     @keyframes sysIdleCardR {
       0%, 100% { transform: translateY(-35%) translateX(0); }
-      50%      { transform: translateY(calc(-35% - 7px)) translateX(-2px); }
+      50%      { transform: translateY(calc(-35% - 4px)) translateX(0); }
     }
 
 
@@ -577,12 +577,12 @@
     @media (prefers-reduced-motion: no-preference) {
       .hero-sys-leads {
         animation: sysLeadsIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) 3.65s forwards,
-                   sysIdleLeads 4.8s ease-in-out 4.8s infinite;
+                   sysIdleLeads 6s ease-in-out 4.5s infinite;
       }
     }
     @keyframes sysIdleLeads {
       0%, 100% { transform: translateX(-50%) translateY(0); }
-      50%      { transform: translateX(-50%) translateY(-5px); }
+      50%      { transform: translateX(-50%) translateY(-4px); }
     }
     .hero-leads-label {
       font-size: 11px;
@@ -2573,11 +2573,11 @@
       @media (prefers-reduced-motion: no-preference) {
         .hero-sys-analytics {
           animation: sysCardLeftMob 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.65s forwards,
-                     sysIdleCardLMob 5s ease-in-out 1.8s infinite;
+                     sysIdleCardLMob 6s ease-in-out 2s infinite;
         }
         .hero-sys-ai {
           animation: sysCardRightMob 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.85s forwards,
-                     sysIdleCardRMob 4.5s ease-in-out 2s infinite;
+                     sysIdleCardRMob 6s ease-in-out 2s infinite;
         }
       }
       .stats-row { flex-wrap: wrap; }
@@ -2751,11 +2751,11 @@
   }
   @keyframes sysIdleCardLMob {
     0%, 100% { transform: translateY(-70%) translateX(0); }
-    50%      { transform: translateY(calc(-70% - 5px)) translateX(2px); }
+    50%      { transform: translateY(calc(-70% - 3px)) translateX(0); }
   }
   @keyframes sysIdleCardRMob {
     0%, 100% { transform: translateY(-35%) translateX(0); }
-    50%      { transform: translateY(calc(-35% - 5px)) translateX(-2px); }
+    50%      { transform: translateY(calc(-35% - 3px)) translateX(0); }
   }
 
   /* ── Intro particle overlay ── */
