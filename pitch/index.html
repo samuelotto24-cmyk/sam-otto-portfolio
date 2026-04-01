@@ -227,24 +227,36 @@ h3 { font-family: var(--serif); font-size: 56px; font-weight: 500; line-height: 
 <!-- ═══ SLIDE 4: SOLUTION ═══ -->
 <div class="slide" data-slide="3" data-splash="Solution">
   <div class="section-title-splash"><div class="splash-text"></div></div>
-  <div class="slide-content">
-    <div style="display:flex;gap:60px;align-items:center;width:100%;">
-      <!-- Left: Text -->
-      <div style="flex:1;">
+  <div class="slide-content" style="padding:60px 100px;">
+    <div style="display:flex;gap:48px;align-items:center;width:100%;">
+      <!-- Left: Text (narrower) -->
+      <div style="flex:0 0 38%;">
         <div class="slide-label fade-up">solution</div>
-        <div class="fade-up" style="font-family:var(--serif);font-size:72px;font-weight:500;color:var(--text);line-height:1.1;margin-bottom:16px;">One platform.<br><span class="accent">Total growth engine.</span></div>
-        <div class="fade-up" style="display:flex;flex-direction:column;gap:16px;margin-top:40px;">
-          <div style="font-size:28px;color:var(--text-sub);display:flex;align-items:center;gap:16px;"><span style="color:var(--accent);font-size:32px;">🌐</span> Custom website with tracked links</div>
-          <div style="font-size:28px;color:var(--text-sub);display:flex;align-items:center;gap:16px;"><span style="color:var(--accent);font-size:32px;">📊</span> Unified analytics across all platforms</div>
-          <div style="font-size:28px;color:var(--text-sub);display:flex;align-items:center;gap:16px;"><span style="color:var(--accent);font-size:32px;">🤖</span> AI strategist that reads your data</div>
-          <div style="font-size:28px;color:var(--text-sub);display:flex;align-items:center;gap:16px;"><span style="color:var(--accent);font-size:32px;">📬</span> Weekly briefings with next moves</div>
+        <div class="fade-up" style="font-family:var(--serif);font-size:64px;font-weight:500;color:var(--text);line-height:1.1;margin-bottom:36px;">One platform.<br><span class="accent">Total growth engine.</span></div>
+        <div class="fade-up" style="display:flex;flex-direction:column;gap:12px;margin-top:24px;">
+          <div style="border-left:4px solid var(--accent);padding:12px 20px;background:rgba(16,185,129,0.04);border-radius:0 10px 10px 0;">
+            <div style="font-size:26px;font-weight:600;color:var(--text);">🌐 Custom Website</div>
+            <div style="font-size:18px;color:var(--text-muted);margin-top:2px;">Tracked links & brand codes</div>
+          </div>
+          <div style="border-left:4px solid var(--purple);padding:12px 20px;background:rgba(124,106,247,0.04);border-radius:0 10px 10px 0;">
+            <div style="font-size:26px;font-weight:600;color:var(--text);">📊 Unified Analytics</div>
+            <div style="font-size:18px;color:var(--text-muted);margin-top:2px;">IG, TikTok, YouTube — one view</div>
+          </div>
+          <div style="border-left:4px solid var(--gold);padding:12px 20px;background:rgba(245,158,11,0.04);border-radius:0 10px 10px 0;">
+            <div style="font-size:26px;font-weight:600;color:var(--text);">🤖 AI Strategist</div>
+            <div style="font-size:18px;color:var(--text-muted);margin-top:2px;">Reads your data, tells you what to post</div>
+          </div>
+          <div style="border-left:4px solid var(--blue);padding:12px 20px;background:rgba(79,142,247,0.04);border-radius:0 10px 10px 0;">
+            <div style="font-size:26px;font-weight:600;color:var(--text);">📬 Weekly Briefings</div>
+            <div style="font-size:18px;color:var(--text-muted);margin-top:2px;">Every Monday: insights + next moves</div>
+          </div>
         </div>
-        <div class="fade-up" style="font-size:24px;color:var(--accent);font-weight:600;margin-top:36px;">Live in 72 hours. Done for you.</div>
+        <div class="fade-up" style="font-size:22px;color:var(--accent);font-weight:600;margin-top:28px;">Live in 72 hours. Done for you.</div>
       </div>
-      <!-- Right: Video -->
+      <!-- Right: Video (larger) -->
       <div class="fade-up" style="flex:1;">
-        <div class="video-wrap">
-          <video muted loop playsinline autoplay id="demoVideo" preload="auto"><source src="/pitch/solution-video.mp4" type="video/mp4"></video>
+        <div class="video-wrap" style="box-shadow:0 12px 60px rgba(16,185,129,0.12),0 4px 20px rgba(0,0,0,0.5);">
+          <video muted loop playsinline autoplay id="demoVideo" preload="auto" style="display:block;width:100%;"><source src="/pitch/solution-video.mp4" type="video/mp4"></video>
         </div>
       </div>
     </div>
@@ -256,34 +268,55 @@ h3 { font-family: var(--serif); font-size: 56px; font-weight: 500; line-height: 
   <div class="section-title-splash"><div class="splash-text"></div></div>
   <div class="slide-content" style="align-items:center;">
     <div class="slide-label fade-up">competitor approach</div>
-    <div style="display:flex;flex-direction:column;gap:24px;width:100%;max-width:1400px;">
-      <!-- Row 1 -->
-      <div class="fade-up" style="display:flex;align-items:center;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:32px 40px;gap:40px;">
-        <div style="flex:0 0 120px;font-size:20px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em;">01</div>
-        <div style="flex:1;">
-          <div style="font-size:36px;font-weight:700;color:var(--text);margin-bottom:4px;">Link Tools</div>
-          <div style="font-size:22px;color:var(--text-muted);">Linktree · Beacons · Koji</div>
+    <div style="display:flex;gap:28px;width:100%;max-width:1500px;">
+
+      <!-- Card 1: Link Tools -->
+      <div class="fade-up" style="flex:1;background:var(--surface);border:1px solid var(--border);border-top:4px solid #39E09B;border-radius:16px;padding:36px 32px;display:flex;flex-direction:column;">
+        <div style="display:flex;gap:10px;margin-bottom:20px;">
+          <span style="background:rgba(57,224,155,0.1);border:1px solid rgba(57,224,155,0.25);border-radius:6px;padding:6px 14px;font-size:18px;font-weight:600;color:#39E09B;">Linktree</span>
+          <span style="background:rgba(91,95,199,0.1);border:1px solid rgba(91,95,199,0.25);border-radius:6px;padding:6px 14px;font-size:18px;font-weight:600;color:#5B5FC7;">Beacons</span>
+          <span style="background:rgba(255,248,220,0.04);border:1px solid rgba(255,248,220,0.12);border-radius:6px;padding:6px 14px;font-size:18px;font-weight:600;color:var(--text-muted);">Koji</span>
         </div>
-        <div style="font-size:28px;font-weight:600;color:#C0392B;">Links go somewhere.<br>Revenue doesn't.</div>
-      </div>
-      <!-- Row 2 -->
-      <div class="fade-up" style="display:flex;align-items:center;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:32px 40px;gap:40px;">
-        <div style="flex:0 0 120px;font-size:20px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em;">02</div>
-        <div style="flex:1;">
-          <div style="font-size:36px;font-weight:700;color:var(--text);margin-bottom:4px;">Store Tools</div>
-          <div style="font-size:22px;color:var(--text-muted);">Stan Store · Gumroad</div>
+        <div style="font-family:var(--serif);font-size:40px;font-weight:600;color:var(--text);margin-bottom:16px;">Link Tools</div>
+        <div style="display:flex;flex-direction:column;gap:10px;flex:1;">
+          <div style="display:flex;align-items:center;gap:10px;font-size:20px;color:rgba(192,57,43,0.8);"><span style="font-size:24px;">✕</span> No analytics</div>
+          <div style="display:flex;align-items:center;gap:10px;font-size:20px;color:rgba(192,57,43,0.8);"><span style="font-size:24px;">✕</span> No AI strategy</div>
+          <div style="display:flex;align-items:center;gap:10px;font-size:20px;color:rgba(192,57,43,0.8);"><span style="font-size:24px;">✕</span> No attribution</div>
         </div>
-        <div style="font-size:28px;font-weight:600;color:#C0392B;">Selling without knowing<br>what's actually selling.</div>
+        <div style="margin-top:20px;padding-top:16px;border-top:1px solid rgba(255,248,220,0.06);font-family:var(--serif);font-size:26px;font-weight:600;color:#C0392B;">Links go somewhere. Revenue doesn't.</div>
       </div>
-      <!-- Row 3 -->
-      <div class="fade-up" style="display:flex;align-items:center;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:32px 40px;gap:40px;">
-        <div style="flex:0 0 120px;font-size:20px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em;">03</div>
-        <div style="flex:1;">
-          <div style="font-size:36px;font-weight:700;color:var(--text);margin-bottom:4px;">Analytics Tools</div>
-          <div style="font-size:22px;color:var(--text-muted);">IG Insights · YouTube Studio · Sprout</div>
+
+      <!-- Card 2: Store Tools -->
+      <div class="fade-up" style="flex:1;background:var(--surface);border:1px solid var(--border);border-top:4px solid #5865F2;border-radius:16px;padding:36px 32px;display:flex;flex-direction:column;">
+        <div style="display:flex;gap:10px;margin-bottom:20px;">
+          <span style="background:rgba(88,101,242,0.1);border:1px solid rgba(88,101,242,0.25);border-radius:6px;padding:6px 14px;font-size:18px;font-weight:600;color:#5865F2;">Stan Store</span>
+          <span style="background:rgba(255,144,232,0.1);border:1px solid rgba(255,144,232,0.25);border-radius:6px;padding:6px 14px;font-size:18px;font-weight:600;color:#FF90E8;">Gumroad</span>
         </div>
-        <div style="font-size:28px;font-weight:600;color:#C0392B;">Looking backward.<br>Going nowhere.</div>
+        <div style="font-family:var(--serif);font-size:40px;font-weight:600;color:var(--text);margin-bottom:16px;">Store Tools</div>
+        <div style="display:flex;flex-direction:column;gap:10px;flex:1;">
+          <div style="display:flex;align-items:center;gap:10px;font-size:20px;color:rgba(192,57,43,0.8);"><span style="font-size:24px;">✕</span> No website</div>
+          <div style="display:flex;align-items:center;gap:10px;font-size:20px;color:rgba(192,57,43,0.8);"><span style="font-size:24px;">✕</span> No unified analytics</div>
+          <div style="display:flex;align-items:center;gap:10px;font-size:20px;color:rgba(192,57,43,0.8);"><span style="font-size:24px;">✕</span> No cross-platform view</div>
+        </div>
+        <div style="margin-top:20px;padding-top:16px;border-top:1px solid rgba(255,248,220,0.06);font-family:var(--serif);font-size:26px;font-weight:600;color:#C0392B;">Selling without knowing what's selling.</div>
       </div>
+
+      <!-- Card 3: Analytics Tools -->
+      <div class="fade-up" style="flex:1;background:var(--surface);border:1px solid var(--border);border-top:4px solid var(--purple);border-radius:16px;padding:36px 32px;display:flex;flex-direction:column;">
+        <div style="display:flex;gap:10px;margin-bottom:20px;">
+          <span style="background:rgba(255,0,80,0.08);border:1px solid rgba(255,0,80,0.2);border-radius:6px;padding:6px 14px;font-size:18px;font-weight:600;color:#E1306C;">IG Insights</span>
+          <span style="background:rgba(255,0,0,0.08);border:1px solid rgba(255,0,0,0.2);border-radius:6px;padding:6px 14px;font-size:18px;font-weight:600;color:#FF0000;">YouTube</span>
+          <span style="background:rgba(89,203,89,0.08);border:1px solid rgba(89,203,89,0.2);border-radius:6px;padding:6px 14px;font-size:18px;font-weight:600;color:#59CB59;">Sprout</span>
+        </div>
+        <div style="font-family:var(--serif);font-size:40px;font-weight:600;color:var(--text);margin-bottom:16px;">Analytics Tools</div>
+        <div style="display:flex;flex-direction:column;gap:10px;flex:1;">
+          <div style="display:flex;align-items:center;gap:10px;font-size:20px;color:rgba(192,57,43,0.8);"><span style="font-size:24px;">✕</span> Siloed — nothing connects</div>
+          <div style="display:flex;align-items:center;gap:10px;font-size:20px;color:rgba(192,57,43,0.8);"><span style="font-size:24px;">✕</span> Backward-looking only</div>
+          <div style="display:flex;align-items:center;gap:10px;font-size:20px;color:rgba(192,57,43,0.8);"><span style="font-size:24px;">✕</span> No action plan</div>
+        </div>
+        <div style="margin-top:20px;padding-top:16px;border-top:1px solid rgba(255,248,220,0.06);font-family:var(--serif);font-size:26px;font-weight:600;color:#C0392B;">Looking backward. Going nowhere.</div>
+      </div>
+
     </div>
   </div>
 </div>
