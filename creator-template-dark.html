@@ -1,0 +1,2470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Open Graph / Twitter meta — injected dynamically from CONFIG.og below -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title"       id="ogTitle"       content="" />
+  <meta property="og:description" id="ogDesc"        content="" />
+  <meta property="og:image"       id="ogImage"       content="" />
+  <meta property="og:url"         id="ogUrl"         content="" />
+  <meta name="twitter:card"                          content="summary_large_image" />
+  <meta name="twitter:title"      id="twTitle"       content="" />
+  <meta name="twitter:description" id="twDesc"       content="" />
+  <meta name="twitter:image"      id="twImage"       content="" />
+
+  <!-- Font Awesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- GSAP + ScrollTrigger -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <!-- Lenis smooth scroll -->
+  <!-- Lenis removed — was breaking scroll with GSAP ScrollTrigger -->
+
+  <script>
+    /* Prevent flash of un-styled content and browser scroll-jump on hash */
+    if (history.scrollRestoration) history.scrollRestoration = 'manual';
+    if (window.location.hash) history.replaceState(null, '', window.location.pathname);
+  </script>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       ╔══════════════════════════════════════════════════════╗
+       ║              CLIENT CONFIGURATION                    ║
+       ║  This is the only section you need to edit           ║
+       ║  for each new client. Fill everything in here.       ║
+       ╚══════════════════════════════════════════════════════╝
+       ═══════════════════════════════════════════════════════════════ -->
+  <script>
+  const CONFIG = {
+
+    // ── Brand ────────────────────────────────────────────────────────
+    name:    'Creator Name',
+    handle:  '@creatorhandle',
+    tagline: 'Fitness · Content · Lifestyle',
+
+    // ── Colors ───────────────────────────────────────────────────────
+    // Dark/gritty palette — adjust accent to match client's brand
+    colors: {
+      bg:      '#0F0A09',   // dark, almost black with warm undertone
+      accent:  '#8C3632',   // muted blood red — change per client
+      text:    '#E8DDD7',   // warm off-white
+      muted:   '#7A6A64',   // muted warm gray
+      surface: '#1A1210',   // dark card surface
+      border:  'rgba(140,54,50,0.2)',   // subtle accent border
+    },
+
+    // ── Display Font ─────────────────────────────────────────────────
+    // Options: 'bebas' (bold uppercase) | 'cormorant' | 'playfair' | 'dm-serif'
+    displayFont: 'bebas',
+
+    // ── Hero ─────────────────────────────────────────────────────────
+    hero: {
+      greetings: {
+        morning:   'Morning. Time to put in work.',
+        afternoon: "Let's get after it.",
+        evening:   'Evening grind. No days off.',
+        night:     "Still up? Same. Let's go.",
+      },
+    },
+
+    // ── Social Links ─────────────────────────────────────────────────
+    // Leave as empty string '' to hide that button entirely
+    social: {
+      tiktok:        'https://tiktok.com/@handle',
+      instagram:     'https://instagram.com/handle',
+      instagram_alt: '',
+      youtube:       'https://youtube.com/@handle',
+      snapchat:      '',
+      twitch:        '',
+      soundcloud:    '',
+      twitter:       '',
+      pinterest:     '',
+    },
+
+    // ── Quick Links (icon row below follow buttons) ───────────────────
+    quickLinks: [
+      { label: 'YouTube',  icon: 'fa-brands fa-youtube', href: '#watch'    },
+      { label: 'Codes',    icon: 'fa-solid fa-tag',      href: '#partners' },
+      { label: 'About',    icon: 'fa-solid fa-user',     href: '#about'    },
+      { label: 'Newsletter', icon: 'fa-solid fa-envelope', href: '#newsletter' },
+    ],
+
+    // ── About ─────────────────────────────────────────────────────────
+    about: {
+      enabled:  true,
+      headline: "What's good — I'm [Name].",
+      body:     'Two to three sentences about who this person is. Keep it real and personal. What do they do, why do they do it.',
+      stats: [
+        { value: '100K+', label: 'Followers' },
+        { value: 'Daily',  label: 'Content' },
+        { value: '3',     label: 'Platforms' },
+      ],
+    },
+
+    // ── Programs ──────────────────────────────────────────────────────
+    programs: {
+      enabled:     false,
+      headline:    '',
+      subheadline: '',
+      items: [],
+    },
+
+    // ── Photo Strip ───────────────────────────────────────────────────
+    // Add 8–12 portrait/lifestyle photos to /assets/ and list filenames here
+    photoStrip: {
+      enabled: true,
+      photos: [
+        'assets/strip-1.jpg',
+        'assets/strip-2.jpg',
+        'assets/strip-3.jpg',
+        'assets/strip-4.jpg',
+        'assets/strip-5.jpg',
+        'assets/strip-6.jpg',
+      ],
+      speed: '18s',   // lower = faster scroll
+    },
+
+    // ── YouTube ───────────────────────────────────────────────────────
+    youtube: {
+      enabled:    true,
+      headline:   'Watch The Latest',
+      channelUrl: 'https://youtube.com/@handle',
+      videoId:    'YOUTUBE_VIDEO_ID',
+    },
+
+    // ── Partner Codes ─────────────────────────────────────────────────
+    partners: {
+      enabled:     true,
+      headline:    'My Codes',
+      subheadline: 'Brands I actually use.',
+      items: [
+        { brand: 'Brand One',   code: 'CODE10',  discount: 'Use my code', href: 'https://brand.com' },
+        { brand: 'Brand Two',   code: 'CREATOR', discount: 'Use my code', href: 'https://brand2.com' },
+        { brand: 'Brand Three', code: 'SAVE20',  discount: 'Use my code', href: 'https://brand3.com' },
+      ],
+    },
+
+    // ── Newsletter ────────────────────────────────────────────────────
+    newsletter: {
+      enabled:              true,
+      headline:             "Don't Miss It",
+      subheadline:          'New content, new codes, new stuff — straight to your inbox.',
+      buttonText:           'Sign Me Up',
+      confirmText:          "You're in. \u{1F91D}",
+      beehiivPublicationId: '',   // from Beehiiv Settings → Publication ID
+      // Set BEEHIIV_API_KEY and BEEHIIV_PUBLICATION_ID in Vercel env vars
+    },
+
+    // ── Support / Tips ────────────────────────────────────────────────
+    support: {
+      enabled:  true,
+      headline: 'Support My Work',
+      links: [
+        { label: 'Venmo',    href: 'https://venmo.com/u/handle', icon: 'fa-solid fa-heart' },
+        { label: 'Cash App', href: 'https://cash.app/$handle', icon: 'fa-solid fa-dollar-sign' },
+      ],
+    },
+
+    // ── Contact ───────────────────────────────────────────────────────
+    contact: {
+      enabled:    false,
+      headline:   'Business Inquiries',
+      email:      'hello@domain.com',
+      buttonText: 'Send an Email',
+    },
+
+    // ── Social Proof Ticker ───────────────────────────────────────────
+    ticker: {
+      enabled: true,
+      messages: [
+        '\u{1F525} Someone just used the code',
+        '\u{1F4AA} New subscriber just joined',
+        '\u{1F3A5} New video dropping soon',
+        '\u{1F3CB}\u{FE0F} Another code redemption',
+      ],
+    },
+
+    // ── Open Graph ────────────────────────────────────────────────────
+    og: {
+      title:       'Creator Name',
+      description: 'Your tagline here.',
+      image:       'https://yourdomain.com/assets/hero.jpg',
+      url:         'https://yourdomain.com',
+    },
+
+    // ── Dashboard ─────────────────────────────────────────────────────
+    // The client uses this password to log in to /dashboard
+    // Also set DASHBOARD_PASSWORD in Vercel environment variables
+    dashboard: {
+      password: 'Password2024',
+    },
+
+  };
+  // ╔══════════════════════════════════════════════════════╗
+  // ║  END OF CONFIG                                       ║
+  // ║  Do not edit below this line unless you know         ║
+  // ║  what you are doing.                                 ║
+  // ╚══════════════════════════════════════════════════════╝
+  </script>
+
+  <style>
+    /* ============================================================
+       TEMPLATE 2 — DARK GRITTY GYM AESTHETIC
+       All colors come from CSS vars set by JS
+       ============================================================ */
+    :root {
+      --bg:      #0F0A09;
+      --accent:  #8C3632;
+      --text:    #E8DDD7;
+      --muted:   #7A6A64;
+      --surface: #1A1210;
+      --border:  rgba(140,54,50,0.2);
+
+      --display-font: 'Bebas Neue', sans-serif;
+      --body-font:    'DM Sans', system-ui, -apple-system, sans-serif;
+
+      --max-w:  1100px;
+      --px:     clamp(20px, 5vw, 52px);
+      --py:     clamp(56px, 7vw, 88px);
+      --ease:   0.25s ease;
+    }
+
+    /* ── RESET ─────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+    body {
+      font-family: var(--body-font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+      font-size: 16px;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Film grain overlay (static) */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 9998;
+      pointer-events: none;
+      opacity: 0.04;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-size: 128px 128px;
+    }
+
+    /* Film grain (animated) */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.04;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-size: 180px 180px;
+      animation: grain 0.5s steps(2) infinite;
+    }
+    @keyframes grain {
+      0%, 100% { background-position: 0 0; }
+      25%       { background-position: 50% 20%; }
+      50%       { background-position: 20% 60%; }
+      75%       { background-position: 80% 40%; }
+    }
+
+    img  { max-width: 100%; display: block; }
+    a    { color: inherit; text-decoration: none; }
+    ul   { list-style: none; }
+
+    .inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 var(--px);
+    }
+
+    section { padding: var(--py) 0; }
+
+    .section-hidden { display: none !important; }
+
+    /* ── FADE UP ───────────────────────────────────────── */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(26px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+    .fade-up.visible { opacity: 1; transform: none; }
+
+    /* ── LOADER ────────────────────────────────────────── */
+    #loader {
+      position: fixed;
+      inset: 0;
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+      transition: opacity 0.5s ease;
+    }
+    #loader.hidden { opacity: 0; pointer-events: none; }
+
+    .loader-name {
+      font-family: var(--display-font);
+      font-size: clamp(36px, 8vw, 72px);
+      font-weight: 400;
+      color: var(--text);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      opacity: 0;
+      transform: translateY(12px);
+      animation: loaderIn 0.7s 0.2s cubic-bezier(0.16,1,0.3,1) forwards;
+    }
+    @keyframes loaderIn {
+      to { opacity: 1; transform: none; }
+    }
+
+    .loader-bar-wrap {
+      width: 120px;
+      height: 2px;
+      background: rgba(255,255,255,0.1);
+      margin-top: 24px;
+      overflow: hidden;
+    }
+    .loader-bar {
+      height: 100%;
+      width: 0%;
+      background: var(--accent);
+      animation: loaderBar 1s 0.4s cubic-bezier(0.16,1,0.3,1) forwards;
+    }
+    @keyframes loaderBar {
+      to { width: 100%; }
+    }
+
+    /* ============================================================
+       HERO — full-bleed background image
+       ============================================================ */
+    #hero {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      min-height: 600px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 0 var(--px) clamp(80px, 12vw, 160px);
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+    .hero-bg img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+    }
+
+    /* dark gradient overlay — strong enough to read text */
+    .hero-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(15,10,9,0.2) 0%,
+        rgba(15,10,9,0.3) 30%,
+        rgba(15,10,9,0.75) 60%,
+        rgba(15,10,9,0.95) 85%,
+        rgba(15,10,9,1) 100%
+      );
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: var(--max-w);
+      visibility: hidden;
+    }
+
+    .hero-watermark {
+      font-family: var(--display-font);
+      font-size: clamp(48px, 10vw, 100px);
+      color: rgba(255,255,255,0.06);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      line-height: 1;
+      margin-bottom: 40px;
+      white-space: nowrap;
+    }
+
+    .hero-greeting {
+      display: none;
+    }
+
+    .hero-name {
+      font-family: var(--display-font);
+      font-size: clamp(60px, 12vw, 120px);
+      font-weight: 400;
+      color: #fff;
+      letter-spacing: 0.06em;
+      line-height: 0.9;
+      text-transform: uppercase;
+      text-shadow: 0 4px 30px rgba(0,0,0,0.7), 0 2px 8px rgba(0,0,0,0.5);
+    }
+
+    .hero-tagline {
+      font-family: var(--body-font);
+      font-size: clamp(12px, 1.4vw, 15px);
+      font-weight: 500;
+      color: var(--muted);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-top: 12px;
+    }
+
+    .hero-socials {
+      display: flex;
+      gap: 16px;
+      margin-top: 20px;
+    }
+    .hero-socials a {
+      color: var(--muted);
+      font-size: 18px;
+      transition: color var(--ease);
+    }
+    .hero-socials a:hover {
+      color: var(--text);
+    }
+
+    /* ============================================================
+       SOCIAL BAR — full-width strip below hero
+       ============================================================ */
+    #socialBar {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 0;
+    }
+
+    .social-bar-inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 var(--px);
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .social-bar-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 22px;
+      font-family: var(--body-font);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text);
+      transition: background var(--ease), border-color var(--ease), color var(--ease), transform var(--ease);
+      cursor: pointer;
+    }
+    .social-bar-btn:hover {
+      border-color: var(--accent);
+      color: #fff;
+      transform: translateY(-1px);
+    }
+    .social-bar-btn i { font-size: 15px; }
+
+    .social-bar-btn.featured {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+      padding: 12px 28px;
+      font-size: 14px;
+    }
+    .social-bar-btn.featured:hover {
+      background: #A04440;
+      transform: translateY(-1px);
+    }
+
+    /* ============================================================
+       YOUTUBE — big embed
+       ============================================================ */
+    #watch {
+      background: var(--bg);
+    }
+
+    .youtube-wrap {
+      text-align: left;
+    }
+
+    .youtube-wrap .section-heading {
+      font-family: var(--display-font);
+      font-size: clamp(36px, 6vw, 56px);
+      color: var(--text);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 28px;
+    }
+
+    .youtube-embed {
+      max-width: 900px;
+      aspect-ratio: 16 / 9;
+      background: #000;
+      border: 2px solid var(--border);
+      overflow: hidden;
+      position: relative;
+    }
+    .youtube-embed iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+
+    /* ============================================================
+       BRAND CODES — horizontal bar/shelf
+       ============================================================ */
+    #partners {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: clamp(28px, 4vw, 44px) 0;
+    }
+
+    .codes-bar {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 var(--px);
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+    }
+
+    .code-item {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding: 24px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      min-height: 220px;
+      justify-content: flex-start;
+    }
+
+    .code-brand {
+      font-family: var(--display-font);
+      font-size: clamp(20px, 3vw, 28px);
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      text-transform: uppercase;
+    }
+
+    .code-value {
+      font-family: var(--display-font);
+      font-size: clamp(32px, 5vw, 48px);
+      color: var(--accent);
+      letter-spacing: 0.1em;
+    }
+
+    .code-discount {
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+    }
+
+    .code-copy-btn {
+      font-family: var(--body-font);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text);
+      background: var(--accent);
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+      transition: all var(--ease);
+      align-self: flex-start;
+    }
+    .code-copy-btn:hover {
+      opacity: 0.8;
+    }
+    .code-copy-btn.copied {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* ============================================================
+       PHOTO GRID — 2-row masonry-ish
+       ============================================================ */
+    #photoGrid {
+      background: var(--bg);
+    }
+
+    .photo-grid {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 var(--px);
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: auto auto;
+      gap: 4px;
+    }
+
+    .photo-grid-item {
+      overflow: hidden;
+      position: relative;
+      background: var(--surface);
+    }
+    .photo-grid-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: saturate(0.7);
+      transition: filter 0.4s ease, transform 0.4s ease;
+    }
+    .photo-grid-item:hover img {
+      filter: saturate(1);
+      transform: scale(1.04);
+    }
+
+    /* Span 2 columns for certain items */
+    .photo-grid-item.wide {
+      grid-column: span 2;
+    }
+    .photo-grid-item { aspect-ratio: 1/1; }
+    .photo-grid-item.wide { aspect-ratio: 2/1; }
+
+    @media (max-width: 600px) {
+      .photo-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .photo-grid-item.wide {
+        grid-column: span 2;
+      }
+    }
+
+    /* ============================================================
+       ABOUT — asymmetric layout
+       ============================================================ */
+    #about {
+      background: var(--bg);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Cycling background photos */
+    .about-bg-cycle {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .about-bg-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      filter: saturate(0.5) brightness(0.3);
+      opacity: 0;
+      transition: opacity 2s ease-in-out;
+    }
+    .about-bg-img.active {
+      opacity: 0.65;
+    }
+
+    .about-layout {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 var(--px);
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: clamp(40px, 6vw, 80px);
+      align-items: start;
+      position: relative;
+      z-index: 1;
+    }
+
+    .about-left {
+      text-align: left;
+    }
+
+    .about-headline {
+      font-family: var(--display-font);
+      font-size: clamp(32px, 5vw, 48px);
+      color: var(--text);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      line-height: 1;
+      margin-bottom: 16px;
+    }
+
+    .about-body {
+      font-size: 16px;
+      line-height: 1.8;
+      color: var(--muted);
+    }
+
+    .about-stats {
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+      padding-top: 10px;
+    }
+
+    .stat-item {
+      text-align: left;
+    }
+    .stat-value {
+      font-family: var(--display-font);
+      font-size: clamp(36px, 5vw, 52px);
+      color: var(--text);
+      letter-spacing: 0.04em;
+      line-height: 1;
+    }
+    .stat-label {
+      font-family: var(--body-font);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    @media (max-width: 680px) {
+      .about-layout {
+        grid-template-columns: 1fr;
+      }
+      .about-stats {
+        flex-direction: row;
+        gap: 32px;
+        flex-wrap: wrap;
+      }
+    }
+
+    /* ============================================================
+       NEWSLETTER — minimal inline
+       ============================================================ */
+    #newsletter {
+      background: var(--bg);
+    }
+
+    .newsletter-inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 var(--px);
+    }
+
+    .newsletter-heading {
+      font-family: var(--display-font);
+      font-size: clamp(32px, 5vw, 48px);
+      color: var(--text);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .newsletter-form {
+      display: flex;
+      gap: 0;
+      max-width: 500px;
+    }
+
+    .newsletter-input {
+      flex: 1;
+      padding: 12px 16px;
+      background: transparent;
+      border: 1px solid var(--border);
+      border-right: none;
+      color: var(--text);
+      font-family: var(--body-font);
+      font-size: 14px;
+      outline: none;
+      transition: border-color var(--ease);
+    }
+    .newsletter-input::placeholder {
+      color: var(--muted);
+    }
+    .newsletter-input:focus {
+      border-color: var(--accent);
+    }
+
+    .newsletter-submit {
+      padding: 12px 24px;
+      background: var(--accent);
+      border: 1px solid var(--accent);
+      color: #fff;
+      font-family: var(--body-font);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background var(--ease);
+    }
+    .newsletter-submit:hover {
+      background: #A04440;
+    }
+
+    .newsletter-confirm {
+      display: none;
+      font-size: 14px;
+      color: var(--accent);
+      margin-top: 12px;
+    }
+
+    /* ============================================================
+       SUPPORT — tiny footer-like
+       ============================================================ */
+    #support {
+      background: var(--bg);
+      padding: clamp(24px, 3vw, 40px) 0;
+    }
+
+    .support-inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 var(--px);
+      display: flex;
+      gap: 24px;
+      align-items: center;
+    }
+
+    .support-label {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .support-link {
+      font-size: 13px;
+      color: var(--muted);
+      transition: color var(--ease);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .support-link:hover {
+      color: var(--accent);
+    }
+
+    /* ============================================================
+       FOOTER — minimal
+       ============================================================ */
+    #footer {
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+      padding: 32px var(--px);
+      text-align: left;
+    }
+
+    .footer-inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .footer-name {
+      font-family: var(--display-font);
+      font-size: 20px;
+      color: var(--text);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .footer-copy {
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .footer-copy a {
+      color: var(--muted);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      transition: color var(--ease);
+    }
+    .footer-copy a:hover { color: var(--accent); }
+
+    /* ============================================================
+       TICKER — social proof
+       ============================================================ */
+    #ticker {
+      position: fixed;
+      bottom: 24px;
+      left: 24px;
+      z-index: 8000;
+      pointer-events: none;
+    }
+
+    .ticker-bubble {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text);
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+    .ticker-bubble.show {
+      opacity: 1;
+      transform: none;
+    }
+
+    .ticker-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.4; }
+    }
+
+    /* ── COPY TOAST ────────────────────────────────────── */
+    .copy-toast {
+      position: fixed;
+      bottom: 80px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--surface);
+      border: 1px solid var(--accent);
+      color: var(--text);
+      padding: 10px 24px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 9000;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    .copy-toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* ── SNAP FLOAT ────────────────────────────────────── */
+    #snapFloat {
+      display: none;
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 8000;
+    }
+    .snap-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      background: #FFFC00;
+      color: #000;
+      font-size: 22px;
+      transition: transform var(--ease);
+    }
+    .snap-btn:hover { transform: scale(1.08); }
+
+    /* ── DIVIDER ───────────────────────────────────────── */
+    .divider {
+      height: 1px;
+      background: var(--border);
+      max-width: var(--max-w);
+      margin: 0 auto;
+    }
+
+    /* ── PROGRAMS (hidden but needed for JS) ───────────── */
+    #programs { display: none; }
+
+    /* ── CONTACT (hidden but needed for JS) ────────────── */
+    #contact { display: none; }
+
+    /* ── TWITCH ICON FIX ───────────────────────────────── */
+    .fa-twitch { color: inherit; }
+
+    /* ── PARALLAX SECTIONS ─────────────────────────────── */
+    .parallax-section {
+      overflow: hidden;
+    }
+    .parallax-section .parallax-img {
+      transform: scale(1.3);
+      will-change: transform;
+    }
+
+    /* ── BRAND CODE CARDS WITH BACKGROUNDS ─────────────── */
+    .code-item {
+      position: relative;
+      overflow: hidden;
+      min-height: 180px;
+    }
+    .code-item::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: var(--code-bg, none);
+      background-size: cover;
+      background-position: center;
+      filter: saturate(0.3) brightness(0.2);
+      z-index: 0;
+    }
+    .code-item > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── STAT COUNT-UP ─────────────────────────────────── */
+    .stat-value.counting {
+      transition: none;
+    }
+
+    /* ── EMBER SPARKS CANVAS ─────────────────────────── */
+    #emberCanvas {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 1;
+    }
+
+    /* ── AMBIENT GRADIENT SHIFT ──────────────────────── */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background: radial-gradient(ellipse 80% 60% at 20% 80%, rgba(140,54,50,0.08) 0%, transparent 60%),
+                  radial-gradient(ellipse 60% 50% at 80% 20%, rgba(89,38,36,0.06) 0%, transparent 50%);
+      animation: ambientShift 12s ease-in-out infinite alternate;
+    }
+    @keyframes ambientShift {
+      0% {
+        background: radial-gradient(ellipse 80% 60% at 20% 80%, rgba(140,54,50,0.1) 0%, transparent 60%),
+                    radial-gradient(ellipse 60% 50% at 80% 20%, rgba(89,38,36,0.05) 0%, transparent 50%);
+      }
+      33% {
+        background: radial-gradient(ellipse 70% 70% at 70% 70%, rgba(140,54,50,0.08) 0%, transparent 55%),
+                    radial-gradient(ellipse 50% 40% at 30% 30%, rgba(179,69,64,0.07) 0%, transparent 50%);
+      }
+      66% {
+        background: radial-gradient(ellipse 60% 50% at 50% 50%, rgba(89,38,36,0.1) 0%, transparent 50%),
+                    radial-gradient(ellipse 80% 60% at 10% 60%, rgba(140,54,50,0.06) 0%, transparent 60%);
+      }
+      100% {
+        background: radial-gradient(ellipse 90% 70% at 80% 90%, rgba(140,54,50,0.09) 0%, transparent 65%),
+                    radial-gradient(ellipse 50% 50% at 20% 10%, rgba(89,38,36,0.07) 0%, transparent 45%);
+      }
+    }
+
+    /* ── NAME GLITCH ON HOVER ────────────────────────── */
+    .hero-name {
+      position: relative;
+      cursor: default;
+    }
+    .hero-name:hover {
+      animation: glitch 0.3s ease forwards;
+    }
+    @keyframes glitch {
+      0% { transform: translate(0); text-shadow: 0 4px 30px rgba(0,0,0,0.7), 0 2px 8px rgba(0,0,0,0.5); }
+      10% { transform: translate(-3px, 2px); text-shadow: 3px 0 #8C3632, -3px 0 #592624; }
+      20% { transform: translate(3px, -1px); text-shadow: -3px 0 #8C3632, 3px 0 #592624; }
+      30% { transform: translate(-2px, -2px); text-shadow: 2px 2px #8C3632, -2px -2px #592624; }
+      40% { transform: translate(2px, 1px); text-shadow: -2px 0 #8C3632, 2px 0 #592624; }
+      50% { transform: translate(-1px, 2px); text-shadow: 1px -1px #8C3632, -1px 1px #592624; }
+      60% { transform: translate(0); text-shadow: 0 4px 30px rgba(0,0,0,0.7), 0 2px 8px rgba(0,0,0,0.5); }
+      100% { transform: translate(0); text-shadow: 0 4px 30px rgba(0,0,0,0.7), 0 2px 8px rgba(0,0,0,0.5); }
+    }
+
+    /* ── PULSE GLOW ON BRAND CODES ───────────────────── */
+    .code-item {
+      animation: codePulse 3s ease-in-out infinite;
+    }
+    .code-item:nth-child(2) { animation-delay: 1s; }
+    .code-item:nth-child(3) { animation-delay: 2s; }
+    @keyframes codePulse {
+      0%, 100% { box-shadow: 0 0 0 rgba(140,54,50,0); border-color: var(--border); }
+      50% { box-shadow: 0 0 30px rgba(140,54,50,0.25), inset 0 0 30px rgba(140,54,50,0.08); border-color: rgba(140,54,50,0.5); }
+    }
+
+    /* ── MARQUEE TEXT STRIP ───────────────────────────── */
+    .marquee-strip {
+      overflow: hidden;
+      white-space: nowrap;
+      padding: 20px 0;
+      border-top: 1px solid rgba(140,54,50,0.15);
+      border-bottom: 1px solid rgba(140,54,50,0.15);
+    }
+    .marquee-track {
+      display: inline-flex;
+      animation: marqueeScroll 20s linear infinite;
+    }
+    .marquee-track span {
+      font-family: var(--display-font);
+      font-size: clamp(40px, 8vw, 72px);
+      color: rgba(255,255,255,0.06);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0 16px;
+    }
+    .marquee-sep {
+      color: rgba(140,54,50,0.15) !important;
+      font-size: clamp(30px, 6vw, 50px) !important;
+    }
+    @keyframes marqueeScroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* ── CURSOR TRAIL CANVAS ─────────────────────────── */
+    #cursorCanvas {
+      position: fixed;
+      inset: 0;
+      z-index: 9997;
+      pointer-events: none;
+    }
+    @media (hover: none) {
+      #cursorCanvas { display: none; }
+    }
+
+    /* ── SOUNDCLOUD WIDGET ───────────────────────────── */
+    .sc-float {
+      position: fixed;
+      bottom: 24px;
+      left: 24px;
+      z-index: 9990;
+    }
+    .sc-toggle {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: #FF5500;
+      font-size: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+    }
+    .sc-toggle:hover {
+      transform: scale(1.1);
+      border-color: #FF5500;
+    }
+    .sc-player {
+      position: absolute;
+      bottom: 56px;
+      left: 0;
+      width: 300px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+    }
+    .sc-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border);
+    }
+    @media (max-width: 480px) {
+      .sc-player { width: calc(100vw - 48px); }
+      .sc-float { bottom: 16px; left: 16px; }
+    }
+
+    /* ── STICKY HEADER ON SCROLL ─────────────────────── */
+    .sticky-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 9995;
+      background: rgba(15,10,9,0.95);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(140,54,50,0.15);
+      padding: 10px 24px;
+      transform: translateY(-100%);
+      transition: transform 0.3s ease;
+    }
+    .sticky-nav.visible {
+      transform: translateY(0);
+    }
+    .sticky-nav-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .sticky-nav-name {
+      font-family: var(--display-font);
+      font-size: 18px;
+      color: var(--text);
+      letter-spacing: 0.08em;
+    }
+    .sticky-nav-links {
+      display: flex;
+      gap: 16px;
+    }
+    .sticky-nav-links a {
+      color: var(--muted);
+      font-size: 15px;
+      transition: color 0.2s;
+      text-decoration: none;
+    }
+    .sticky-nav-links a:hover {
+      color: var(--accent);
+    }
+    /* ── BRAND CODE UPGRADES ────────────────────────── */
+    .code-tagline {
+      font-family: var(--body-font);
+      font-size: 12px;
+      color: var(--muted);
+      font-style: italic;
+    }
+    .code-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: auto;
+    }
+    .code-shop-btn {
+      font-family: var(--body-font);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      padding: 10px 20px;
+      border: 1px solid var(--border);
+      transition: all 0.2s;
+    }
+    .code-shop-btn:hover {
+      border-color: var(--accent);
+      color: var(--text);
+    }
+
+    /* ── YOUTUBE THUMBNAIL ROW ───────────────────────── */
+    .yt-thumbs {
+      display: flex;
+      gap: 10px;
+      margin-top: 16px;
+      justify-content: center;
+    }
+    .yt-thumb {
+      width: 140px;
+      aspect-ratio: 16/9;
+      cursor: pointer;
+      overflow: hidden;
+      border: 2px solid transparent;
+      transition: border-color 0.2s, transform 0.2s;
+      opacity: 0.6;
+    }
+    .yt-thumb:hover, .yt-thumb.active {
+      border-color: var(--accent);
+      opacity: 1;
+      transform: scale(1.05);
+    }
+    .yt-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    @media (max-width: 600px) {
+      .yt-thumb { width: 100px; }
+    }
+
+    /* ── FOOTER UPGRADE ──────────────────────────────── */
+    .footer-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 24px;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+    .footer-business a:hover {
+      color: var(--accent) !important;
+    }
+    .footer-socials {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 16px;
+    }
+    .footer-socials a {
+      color: var(--muted);
+      font-size: 16px;
+      transition: color 0.2s;
+      text-decoration: none;
+    }
+    .footer-socials a:hover { color: var(--text); }
+
+    /* ── MOBILE RESPONSIVE ───────────────────────────── */
+    /* ══════════════════════════════════════════
+       MOBILE — everything visible, no hidden scroll
+       ══════════════════════════════════════════ */
+    @media (max-width: 768px) {
+      /* Global */
+      section { padding: clamp(20px, 3vw, 28px) 0 !important; }
+      .inner { padding: 0 14px !important; }
+      #cursorCanvas { display: none !important; }
+
+      /* Hero — fill the space, show more of the photo */
+      #hero { min-height: 90vh !important; height: auto !important; }
+      .hero-bg img { object-fit: cover !important; object-position: center 20% !important; }
+      .hero-content { padding: 0 16px 40px !important; }
+      .hero-name { font-size: clamp(32px, 9vw, 48px) !important; }
+      .hero-watermark {
+        font-size: clamp(28px, 7vw, 44px) !important;
+        margin-bottom: 16px !important;
+        text-align: center !important;
+        color: rgba(255,255,255,0.1) !important;
+      }
+      .hero-greeting { display: none !important; }
+      .hero-tagline { font-size: 10px !important; margin-top: 8px !important; }
+      .hero-socials { gap: 10px !important; margin-top: 12px !important; }
+      .hero-socials a { font-size: 15px !important; }
+
+      /* Social bar — ALL visible, wrap into grid */
+      #socialBar { padding: 10px 0 !important; }
+      .social-bar-inner {
+        display: grid !important;
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 6px !important;
+        padding: 0 14px !important;
+      }
+      .social-bar-btn {
+        font-size: 11px !important;
+        padding: 8px 6px !important;
+        justify-content: center !important;
+        text-align: center !important;
+      }
+      .social-bar-btn i { margin-right: 4px; }
+
+      /* YouTube */
+      .youtube-embed { margin: 0 -14px; }
+      .section-heading { font-size: clamp(22px, 5vw, 28px) !important; }
+      .yt-thumbs { gap: 4px; justify-content: center !important; flex-wrap: wrap; }
+      .yt-thumb { width: 80px; }
+
+      /* Marquee — smaller */
+      .marquee-track span { font-size: clamp(20px, 4vw, 28px) !important; padding: 0 8px !important; }
+      .marquee-strip { padding: 10px 0 !important; }
+
+      /* Brand codes — ALL visible, stacked compact */
+      .codes-bar {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 8px !important;
+      }
+      .code-item {
+        min-height: auto !important;
+        padding: 16px !important;
+        display: grid !important;
+        grid-template-columns: 1fr auto !important;
+        grid-template-rows: auto auto !important;
+        gap: 4px 12px !important;
+        align-items: center !important;
+        min-width: 0 !important;
+      }
+      .code-brand { font-size: 18px !important; grid-column: 1; grid-row: 1; }
+      .code-tagline { grid-column: 1; grid-row: 2; font-size: 10px !important; }
+      .code-value { font-size: 24px !important; grid-column: 2; grid-row: 1 / 3; align-self: center; }
+      .code-actions { grid-column: 1 / -1; grid-row: 3; display: flex !important; gap: 6px !important; margin-top: 8px !important; }
+      .code-copy-btn, .code-shop-btn { flex: 1 !important; text-align: center !important; padding: 8px 10px !important; font-size: 10px !important; }
+      /* Hide brand code background images on mobile — too busy */
+      .code-item::before { display: none !important; }
+
+      /* Cash App / Venmo */
+      #partners > div:last-child { gap: 6px !important; }
+      #partners > div:last-child a { font-size: 11px !important; padding: 8px 12px !important; flex: 1 !important; justify-content: center !important; }
+
+      /* Photo dividers — shorter */
+      .parallax-section { height: 15vh !important; min-height: 100px !important; }
+
+      /* About — single column */
+      .about-layout { grid-template-columns: 1fr !important; gap: 16px !important; }
+      .about-headline { font-size: clamp(24px, 6vw, 32px) !important; }
+      .about-body { font-size: 13px !important; }
+      .about-stats { flex-direction: row !important; justify-content: center !important; gap: 20px !important; }
+      .stat-value { font-size: 22px !important; }
+      .stat-label { font-size: 8px !important; }
+
+      /* Newsletter — clean, compact */
+      .newsletter-inner { padding: 0 14px !important; }
+      .newsletter-heading { font-size: clamp(20px, 5vw, 28px) !important; margin-bottom: 4px !important; }
+      .newsletter-inner > p { font-size: 11px !important; margin-bottom: 12px !important; }
+      .newsletter-form { flex-direction: column !important; gap: 8px !important; }
+      .newsletter-input { width: 100% !important; padding: 10px 14px !important; font-size: 14px !important; }
+      .newsletter-submit { width: 100% !important; padding: 10px !important; font-size: 12px !important; }
+
+      /* Footer — fully centered */
+      footer { padding: 24px 14px !important; }
+      .footer-inner { text-align: center !important; padding: 0 !important; display: flex !important; flex-direction: column !important; align-items: center !important; }
+      .footer-top { flex-direction: column !important; align-items: center !important; text-align: center !important; gap: 16px !important; width: 100% !important; }
+      .footer-name { text-align: center !important; }
+      .footer-business { text-align: center !important; }
+      .footer-socials { justify-content: center !important; flex-wrap: wrap !important; }
+      .footer-copy { text-align: center !important; }
+
+      /* Sticky nav */
+      .sticky-nav { padding: 8px 14px !important; }
+      .sticky-nav-name { font-size: 12px !important; }
+      .sticky-nav-links { gap: 10px !important; }
+      .sticky-nav-links a { font-size: 12px !important; }
+
+      /* SoundCloud */
+      .sc-float { bottom: 14px !important; left: 14px !important; }
+      .sc-toggle { width: 36px !important; height: 36px !important; font-size: 14px !important; }
+
+      /* Embers */
+      #emberCanvas { opacity: 0.4 !important; }
+    }
+
+    @media (max-width: 480px) {
+      .hero-name { font-size: clamp(26px, 8vw, 40px) !important; }
+      .hero-watermark { font-size: clamp(20px, 5.5vw, 32px) !important; }
+      .social-bar-inner { grid-template-columns: repeat(3, 1fr) !important; gap: 4px !important; }
+      .social-bar-btn { font-size: 10px !important; padding: 6px 4px !important; }
+      .code-brand { font-size: 16px !important; }
+      .code-value { font-size: 20px !important; }
+      .marquee-track span { font-size: 18px !important; }
+      .about-stats { gap: 14px !important; }
+      .stat-value { font-size: 18px !important; }
+    }
+  </style>
+
+</head>
+<body>
+
+<!-- EMBER SPARKS -->
+<canvas id="emberCanvas"></canvas>
+<canvas id="cursorCanvas"></canvas>
+
+<div class="sticky-nav" id="stickyNav">
+  <div class="sticky-nav-inner">
+    <span class="sticky-nav-name">STEF MEYERS</span>
+    <div class="sticky-nav-links">
+      <a href="https://www.instagram.com/stefmeyers_" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+      <a href="https://www.tiktok.com/@stefmeyers" target="_blank"><i class="fa-brands fa-tiktok"></i></a>
+      <a href="https://www.youtube.com/channel/UCNNHmCaQhlRhlOQe-jLixgA?sub_confirmation=1" target="_blank"><i class="fa-brands fa-youtube"></i></a>
+      <a href="https://www.snapchat.com/add/stef.meyers" target="_blank"><i class="fa-brands fa-snapchat"></i></a>
+      <a href="https://www.twitch.tv/stefmeyerss" target="_blank"><i class="fa-brands fa-twitch"></i></a>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE LOADER — SM initials -->
+<div id="pageLoader" style="position:fixed;inset:0;z-index:99999;background:#0F0A09;display:flex;align-items:center;justify-content:center;transition:opacity 0.3s ease">
+  <div style="text-align:center">
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:clamp(60px,15vw,120px);color:#E8DDD7;letter-spacing:0.1em;line-height:1">SM</div>
+    <div style="width:40px;height:3px;background:#8C3632;margin:12px auto 0"></div>
+  </div>
+</div>
+<script>
+// Failsafe: loader ALWAYS disappears no matter what
+setTimeout(function(){var l=document.getElementById('pageLoader');if(l){l.style.opacity='0';setTimeout(function(){l.remove()},300)}},500);
+</script>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="loader-name" id="loaderName">STEF MEYERS</div>
+  <div class="loader-bar-wrap">
+    <div class="loader-bar"></div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════
+     HERO — full-bleed background
+     ═════════════════════════════════════════ -->
+<section id="hero">
+  <div class="hero-bg">
+    <img src="assets/hero-gym.jpg" alt="" />
+  </div>
+
+  <div class="hero-content" id="heroContent">
+    <div class="hero-watermark">CODE: STEF EVERYWHERE</div>
+    <p class="hero-greeting" id="heroGreeting"></p>
+    <h1 class="hero-name" id="heroName">STEF MEYERS</h1>
+    <p class="hero-tagline" id="heroTagline"></p>
+
+    <div class="hero-socials" id="heroSocials">
+      <!-- injected by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- ═════════════════════════════════════════
+     SOCIAL BAR
+     ═════════════════════════════════════════ -->
+<div id="socialBar">
+  <div class="social-bar-inner" id="socialBarInner">
+    <!-- injected by JS -->
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════
+     YOUTUBE
+     ═════════════════════════════════════════ -->
+<section id="watch">
+  <div class="inner youtube-wrap fade-up">
+    <h2 class="section-heading" id="youtubeHeadline">WATCH THE LATEST</h2>
+    <div class="youtube-embed" id="youtubeEmbed">
+      <!-- iframe injected by JS -->
+    </div>
+    <div class="yt-thumbs" id="ytThumbs"></div>
+  </div>
+</section>
+
+<!-- Marquee text strip before codes -->
+<div class="marquee-strip">
+  <div class="marquee-track">
+    <span>STEF MEYERS</span><span class="marquee-sep">&middot;</span>
+    <span>CODE: STEF</span><span class="marquee-sep">&middot;</span>
+    <span>FITNESS</span><span class="marquee-sep">&middot;</span>
+    <span>CONTENT</span><span class="marquee-sep">&middot;</span>
+    <span>NO DAYS OFF</span><span class="marquee-sep">&middot;</span>
+    <span>STEF MEYERS</span><span class="marquee-sep">&middot;</span>
+    <span>CODE: STEF</span><span class="marquee-sep">&middot;</span>
+    <span>FITNESS</span><span class="marquee-sep">&middot;</span>
+    <span>CONTENT</span><span class="marquee-sep">&middot;</span>
+    <span>NO DAYS OFF</span><span class="marquee-sep">&middot;</span>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════
+     BRAND CODES
+     ═════════════════════════════════════════ -->
+<div id="partners">
+  <div class="codes-bar" id="codesBar">
+    <!-- injected by JS -->
+  </div>
+  <div style="display:flex;gap:16px;justify-content:center;margin-top:20px;padding:0 var(--px)">
+    <a href="https://cash.app/$StefMeyers" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:8px;padding:10px 20px;background:var(--surface);border:1px solid var(--border);text-decoration:none;color:var(--text);font-family:var(--body-font);font-size:13px;font-weight:600;letter-spacing:0.06em;transition:border-color 0.2s" onmouseover="this.style.borderColor='#00D632'" onmouseout="this.style.borderColor='var(--border)'"><i class="fa-solid fa-dollar-sign" style="color:#00D632"></i> Cash App</a>
+    <a href="https://account.venmo.com/u/StefMeyers" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:8px;padding:10px 20px;background:var(--surface);border:1px solid var(--border);text-decoration:none;color:var(--text);font-family:var(--body-font);font-size:13px;font-weight:600;letter-spacing:0.06em;transition:border-color 0.2s" onmouseover="this.style.borderColor='#3D95CE'" onmouseout="this.style.borderColor='var(--border)'"><i class="fa-solid fa-heart" style="color:#3D95CE"></i> Venmo</a>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════
+     PHOTO DIVIDER — gym shot between sections
+     ═════════════════════════════════════════ -->
+<div class="parallax-section" style="position:relative;height:40vh;min-height:250px;overflow:hidden">
+  <img src="assets/post-5.jpg" alt="" class="parallax-img" style="width:100%;height:130%;object-fit:cover;object-position:center;filter:saturate(0.5) brightness(0.25)">
+  <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">
+    <span style="font-family:var(--display-font);font-size:clamp(36px,8vw,80px);color:rgba(255,255,255,0.35);letter-spacing:0.25em;text-transform:uppercase;text-shadow:0 2px 20px rgba(0,0,0,0.5)">No Days Off</span>
+  </div>
+  <div style="position:absolute;top:0;left:0;right:0;height:80px;background:linear-gradient(to bottom,var(--bg),transparent)"></div>
+  <div style="position:absolute;bottom:0;left:0;right:0;height:80px;background:linear-gradient(to top,var(--bg),transparent)"></div>
+</div>
+
+<!-- ═════════════════════════════════════════
+     ABOUT
+     ═════════════════════════════════════════ -->
+<section id="about">
+  <!-- Cycling background photos -->
+  <div class="about-bg-cycle">
+    <img src="assets/carousel-1.jpg" alt="" class="about-bg-img active" />
+    <img src="assets/carousel-2.jpg" alt="" class="about-bg-img" />
+    <img src="assets/carousel-3.jpg" alt="" class="about-bg-img" />
+    <img src="assets/carousel-4.jpg" alt="" class="about-bg-img" />
+    <img src="assets/carousel-5.jpg" alt="" class="about-bg-img" />
+  </div>
+  <div class="about-layout">
+    <div class="about-left fade-up">
+      <h2 class="about-headline" id="aboutHeadline"></h2>
+      <p class="about-body" id="aboutBody"></p>
+    </div>
+    <div class="about-stats" id="aboutStats">
+      <!-- injected by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- ═════════════════════════════════════════
+     NEWSLETTER
+     ═════════════════════════════════════════ -->
+<section id="newsletter">
+  <div class="newsletter-inner fade-up">
+    <h2 class="newsletter-heading" id="newsletterHeadline"></h2>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:16px;letter-spacing:0.04em">New videos, exclusive codes, and content drops — straight to your inbox. No spam, just the good stuff.</p>
+    <form class="newsletter-form" id="newsletterForm" onsubmit="return false;">
+      <input type="email" class="newsletter-input" id="newsletterEmail" placeholder="your@email.com" autocomplete="email" />
+      <button type="submit" class="newsletter-submit" id="newsletterBtn">SIGN ME UP</button>
+    </form>
+    <p class="newsletter-confirm" id="newsletterConfirm"></p>
+  </div>
+</section>
+
+<!-- ═════════════════════════════════════════
+     SUPPORT
+     ═════════════════════════════════════════ -->
+<!-- Support moved up next to brand codes -->
+
+<!-- ═════════════════════════════════════════
+     PROGRAMS (hidden — needed for JS)
+     ═════════════════════════════════════════ -->
+<section id="programs">
+  <div id="programsHeadline"></div>
+  <div id="programsSub"></div>
+  <div id="programGrid"></div>
+</section>
+
+<!-- ═════════════════════════════════════════
+     CONTACT (hidden — needed for JS)
+     ═════════════════════════════════════════ -->
+<section id="contact">
+  <div id="contactHeadline"></div>
+  <div id="contactEmail"></div>
+  <div id="contactBtn"></div>
+</section>
+
+<!-- SOUNDCLOUD WIDGET -->
+<!-- SoundCloud link button -->
+<a href="https://soundcloud.com/stefmeyers" target="_blank" rel="noopener" class="sc-float" style="text-decoration:none">
+  <div class="sc-toggle" title="SoundCloud">
+    <i class="fa-brands fa-soundcloud"></i>
+  </div>
+</a>
+
+<!-- ═════════════════════════════════════════
+     FOOTER
+     ═════════════════════════════════════════ -->
+<footer id="footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-name" id="footerName">STEF MEYERS</div>
+      <div class="footer-business">
+        <span style="font-size:11px;color:var(--muted);letter-spacing:0.08em;text-transform:uppercase;display:block;margin-bottom:6px">Business Inquiries</span>
+        <a href="mailto:stefmeyersbusiness@gmail.com" style="color:var(--text);font-size:14px;text-decoration:none;transition:color 0.2s">stefmeyersbusiness@gmail.com</a>
+      </div>
+    </div>
+    <div class="footer-socials">
+      <a href="https://www.instagram.com/stefmeyers_" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+      <a href="https://www.tiktok.com/@stefmeyers" target="_blank"><i class="fa-brands fa-tiktok"></i></a>
+      <a href="https://www.youtube.com/channel/UCNNHmCaQhlRhlOQe-jLixgA" target="_blank"><i class="fa-brands fa-youtube"></i></a>
+      <a href="https://www.snapchat.com/add/stef.meyers" target="_blank"><i class="fa-brands fa-snapchat"></i></a>
+      <a href="https://www.twitch.tv/stefmeyerss" target="_blank"><i class="fa-brands fa-twitch"></i></a>
+      <a href="https://soundcloud.com/stefmeyers" target="_blank"><i class="fa-brands fa-soundcloud"></i></a>
+    </div>
+    <p class="footer-copy" id="footerCopy"></p>
+    <a href="https://bysamotto.com" target="_blank" rel="noopener noreferrer" style="display:inline-block;margin-top:16px;padding:10px 18px;background:var(--surface);border:1px solid var(--border);transition:border-color 0.2s" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'">
+      <img src="assets/bysamotto-logo.png" alt="Built by Sam Otto — Creator Platforms" height="32" style="display:block;filter:invert(1) brightness(0.9)" />
+    </a>
+  </div>
+</footer>
+
+<!-- TICKER -->
+<div id="ticker">
+  <div class="ticker-bubble" id="tickerBubble">
+    <div class="ticker-dot"></div>
+    <span id="tickerText"></span>
+  </div>
+</div>
+
+<!-- SNAP FLOAT -->
+<div id="snapFloat">
+  <a href="#" class="snap-btn" id="snapBtn" target="_blank" rel="noopener" aria-label="Snapchat">
+    <i class="fa-brands fa-snapchat"></i>
+  </a>
+</div>
+
+<!-- COPY TOAST -->
+<div class="copy-toast" id="copyToast">Code copied!</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     MAIN SCRIPT — reads CONFIG and builds the entire page
+     ═══════════════════════════════════════════════════════════════ -->
+<script>
+(function () {
+  'use strict';
+
+  /* ── 1. Font injection ────────────────────────────────────────── */
+  const FONTS = {
+    'cormorant':           { family: "'Cormorant Garamond', serif", url: "Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500" },
+    'playfair':            { family: "'Playfair Display', serif",   url: "Playfair+Display:ital,wght@0,400;0,500;0,600;1,400" },
+    'dm-serif':            { family: "'DM Serif Display', serif",   url: "DM+Serif+Display:ital@0;1" },
+    'libre-baskerville':   { family: "'Libre Baskerville', serif",  url: "Libre+Baskerville:ital,wght@0,400;0,700;1,400" },
+    'bebas':               { family: "'Bebas Neue', sans-serif",    url: "Bebas+Neue&display=swap" },
+  };
+
+  const fontKey = CONFIG.displayFont || 'cormorant';
+  const font    = FONTS[fontKey] || FONTS.cormorant;
+
+  // Inject Google Fonts link
+  const fontLink = document.createElement('link');
+  fontLink.rel  = 'stylesheet';
+  fontLink.href = `https://fonts.googleapis.com/css2?family=${font.url}&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap`;
+  document.head.appendChild(fontLink);
+
+  const preconnect1 = document.createElement('link');
+  preconnect1.rel = 'preconnect';
+  preconnect1.href = 'https://fonts.googleapis.com';
+  document.head.insertBefore(preconnect1, fontLink);
+
+  const preconnect2 = document.createElement('link');
+  preconnect2.rel = 'preconnect';
+  preconnect2.href = 'https://fonts.gstatic.com';
+  preconnect2.crossOrigin = 'anonymous';
+  document.head.insertBefore(preconnect2, fontLink);
+
+  /* ── 2. CSS variable injection ────────────────────────────────── */
+  const r = document.documentElement.style;
+  r.setProperty('--bg',           CONFIG.colors.bg);
+  r.setProperty('--accent',       CONFIG.colors.accent);
+  r.setProperty('--text',         CONFIG.colors.text);
+  r.setProperty('--muted',        CONFIG.colors.muted);
+  r.setProperty('--surface',      CONFIG.colors.surface);
+  r.setProperty('--border',       CONFIG.colors.border);
+  r.setProperty('--display-font', font.family);
+
+  /* ── 3. OG meta tags ──────────────────────────────────────────── */
+  function setMeta(id, val) {
+    const el = document.getElementById(id);
+    if (el) el.setAttribute('content', val);
+  }
+  setMeta('ogTitle',  CONFIG.og.title);
+  setMeta('ogDesc',   CONFIG.og.description);
+  setMeta('ogImage',  CONFIG.og.image);
+  setMeta('ogUrl',    CONFIG.og.url);
+  setMeta('twTitle',  CONFIG.og.title);
+  setMeta('twDesc',   CONFIG.og.description);
+  setMeta('twImage',  CONFIG.og.image);
+  document.title = CONFIG.name;
+
+  const metaDesc = document.createElement('meta');
+  metaDesc.name = 'description';
+  metaDesc.content = CONFIG.og.description;
+  document.head.appendChild(metaDesc);
+
+  /* ── 4. Loader ────────────────────────────────────────────────── */
+  document.getElementById('loaderName').textContent = CONFIG.name;
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      const loader = document.getElementById('loader');
+      loader.classList.add('hidden');
+      setTimeout(() => { loader.style.display = 'none'; }, 500);
+    }, 1100);
+  });
+
+  /* ── 5. Hero ──────────────────────────────────────────────────── */
+  document.getElementById('heroName').textContent    = CONFIG.name.toUpperCase();
+  document.getElementById('heroTagline').textContent = CONFIG.tagline;
+
+  // Time-based greeting
+  const hour = new Date().getHours();
+  let greetKey = 'night';
+  if (hour >= 5  && hour < 12) greetKey = 'morning';
+  if (hour >= 12 && hour < 17) greetKey = 'afternoon';
+  if (hour >= 17 && hour < 21) greetKey = 'evening';
+  document.getElementById('heroGreeting').textContent = CONFIG.hero.greetings[greetKey] || '';
+
+  // Hero social icons (just icons, no text)
+  const heroSocialMeta = [
+    { key: 'instagram',  icon: 'fa-brands fa-instagram' },
+    { key: 'tiktok',     icon: 'fa-brands fa-tiktok' },
+    { key: 'youtube',    icon: 'fa-brands fa-youtube' },
+    { key: 'snapchat',   icon: 'fa-brands fa-snapchat' },
+    { key: 'twitch',     icon: 'fa-brands fa-twitch' },
+    { key: 'soundcloud', icon: 'fa-brands fa-soundcloud' },
+  ];
+
+  const heroSocials = document.getElementById('heroSocials');
+  heroSocialMeta.forEach(meta => {
+    const url = CONFIG.social[meta.key];
+    if (!url) return;
+    const a = document.createElement('a');
+    a.href = url;
+    a.target = '_blank';
+    a.rel = 'noopener';
+    a.innerHTML = `<i class="${meta.icon}"></i>`;
+    heroSocials.appendChild(a);
+  });
+
+  /* ── 6. Social Bar ────────────────────────────────────────────── */
+  const socialBarInner = document.getElementById('socialBarInner');
+  const socialBarItems = [
+    { key: 'youtube',    icon: 'fa-brands fa-youtube',    label: 'YouTube',    featured: true },
+    { key: 'instagram',  icon: 'fa-brands fa-instagram',  label: 'Instagram',  featured: false },
+    { key: 'tiktok',     icon: 'fa-brands fa-tiktok',     label: 'TikTok',     featured: false },
+    { key: 'snapchat',   icon: 'fa-brands fa-snapchat',   label: 'Snapchat',   featured: false },
+    { key: 'twitch',     icon: 'fa-brands fa-twitch',     label: 'Twitch',     featured: false },
+    { key: 'soundcloud', icon: 'fa-brands fa-soundcloud', label: 'SoundCloud', featured: false },
+  ];
+
+  socialBarItems.forEach(item => {
+    const url = CONFIG.social[item.key];
+    if (!url) return;
+    const a = document.createElement('a');
+    a.href = url;
+    a.className = 'social-bar-btn tracked' + (item.featured ? ' featured' : '');
+    a.dataset.trackKey = item.key;
+    a.target = '_blank';
+    a.rel = 'noopener';
+    a.innerHTML = `<i class="${item.icon}"></i> ${item.label}`;
+    socialBarInner.appendChild(a);
+  });
+
+  /* ── 7. About ─────────────────────────────────────────────────── */
+  if (!CONFIG.about.enabled) {
+    document.getElementById('about').classList.add('section-hidden');
+  } else {
+    document.getElementById('aboutHeadline').textContent = CONFIG.about.headline;
+    document.getElementById('aboutBody').textContent     = CONFIG.about.body;
+
+    const statsEl = document.getElementById('aboutStats');
+    CONFIG.about.stats.forEach(stat => {
+      const div = document.createElement('div');
+      div.className = 'stat-item fade-up';
+      div.innerHTML = `
+        <div class="stat-value">${stat.value}</div>
+        <div class="stat-label">${stat.label}</div>`;
+      statsEl.appendChild(div);
+    });
+  }
+
+  /* ── 8. Programs (hidden) ─────────────────────────────────────── */
+  if (!CONFIG.programs.enabled) {
+    document.getElementById('programs').classList.add('section-hidden');
+  } else {
+    document.getElementById('programsHeadline').textContent = CONFIG.programs.headline;
+    document.getElementById('programsSub').textContent      = CONFIG.programs.subheadline;
+  }
+
+  /* ── 9. YouTube ───────────────────────────────────────────────── */
+  if (!CONFIG.youtube.enabled) {
+    document.getElementById('watch').classList.add('section-hidden');
+  } else {
+    document.getElementById('youtubeHeadline').textContent = CONFIG.youtube.headline.toUpperCase();
+
+    if (CONFIG.youtube.videoId && CONFIG.youtube.videoId !== 'YOUTUBE_VIDEO_ID') {
+      const embedEl = document.getElementById('youtubeEmbed');
+      const iframe  = document.createElement('iframe');
+      iframe.dataset.src = `https://www.youtube.com/embed/${CONFIG.youtube.videoId}?rel=0&modestbranding=1`;
+      iframe.src = `https://www.youtube.com/embed/${CONFIG.youtube.videoId}?rel=0&modestbranding=1`;
+      iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+      iframe.allowFullscreen = true;
+      iframe.loading = 'lazy';
+      iframe.id = 'ytIframe';
+      embedEl.appendChild(iframe);
+
+      // Autoplay on scroll into view
+      const ytObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          const ytIframe = document.getElementById('ytIframe');
+          if (!ytIframe) return;
+          const baseSrc = ytIframe.dataset.src;
+          if (entry.isIntersecting) {
+            if (!ytIframe.src.includes('autoplay=1')) {
+              ytIframe.src = baseSrc + '&autoplay=1&mute=1';
+            }
+          }
+        });
+      }, { threshold: 0.4 });
+      ytObserver.observe(embedEl);
+    } else {
+      document.getElementById('youtubeEmbed').style.display = 'none';
+    }
+  }
+
+  /* ── 9b. YouTube thumbnail row ─────────────────────────────────── */
+  (function() {
+    var ytThumbIds = ['qKyJRhgsjxs'];
+    var thumbsEl = document.getElementById('ytThumbs');
+    if (thumbsEl && CONFIG.youtube.enabled) {
+      ytThumbIds.forEach(function(vid, i) {
+        var thumb = document.createElement('div');
+        thumb.className = 'yt-thumb' + (i === 0 ? ' active' : '');
+        thumb.innerHTML = '<img src="https://img.youtube.com/vi/' + vid + '/mqdefault.jpg" alt="" />';
+        thumb.onclick = function() {
+          var iframe = document.querySelector('#youtubeEmbed iframe');
+          if (iframe) iframe.src = 'https://www.youtube.com/embed/' + vid + '?rel=0&modestbranding=1';
+          document.querySelectorAll('.yt-thumb').forEach(function(t) { t.classList.remove('active'); });
+          thumb.classList.add('active');
+        };
+        thumbsEl.appendChild(thumb);
+      });
+    }
+  })();
+
+  /* ── 10. Partner Codes ────────────────────────────────────────── */
+  if (!CONFIG.partners.enabled) {
+    document.getElementById('partners').classList.add('section-hidden');
+  } else {
+    const bar = document.getElementById('codesBar');
+    const codeBgImages = ['assets/post-1.jpg', 'assets/post-7.jpg', 'assets/brand-blvd.jpg'];
+    const codeTaglines = ['My go-to gym wear. Every day.', 'What I take daily. No exceptions.', 'The frames. For degenerates, by degenerates.'];
+    CONFIG.partners.items.forEach((partner, idx) => {
+      const item = document.createElement('div');
+      item.className = 'code-item';
+      // Set background image via inline style on the ::before pseudo-element
+      const bgImg = codeBgImages[idx] || '';
+      if (bgImg) {
+        item.style.setProperty('--code-bg', 'url(' + bgImg + ')');
+      }
+      item.innerHTML = `
+        <span class="code-brand">${partner.brand}</span>
+        <span class="code-tagline">${codeTaglines[idx] || ''}</span>
+        <span class="code-value">${partner.code}</span>
+        <div class="code-actions">
+          <button class="code-copy-btn" data-code="${partner.code}">COPY CODE</button>
+          <a href="${partner.href}" target="_blank" rel="noopener" class="code-shop-btn">SHOP NOW &rarr;</a>
+        </div>`;
+      bar.appendChild(item);
+    });
+
+    // Copy handler
+    bar.addEventListener('click', e => {
+      const btn = e.target.closest('.code-copy-btn');
+      if (!btn) return;
+      const code = btn.dataset.code;
+      navigator.clipboard.writeText(code).then(() => {
+        showToast(`"${code}" copied!`);
+        btn.textContent = 'COPIED \u2713';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.textContent = 'COPY';
+          btn.classList.remove('copied');
+        }, 2000);
+      }).catch(() => {});
+    });
+  }
+
+  /* ── 11. Photo Grid — removed, photos used as section backgrounds ── */
+
+  /* ── 12. Newsletter ───────────────────────────────────────────── */
+  if (!CONFIG.newsletter.enabled) {
+    document.getElementById('newsletter').classList.add('section-hidden');
+  } else {
+    document.getElementById('newsletterHeadline').textContent = CONFIG.newsletter.headline.toUpperCase();
+    document.getElementById('newsletterBtn').textContent      = CONFIG.newsletter.buttonText.toUpperCase();
+    document.getElementById('newsletterConfirm').textContent  = CONFIG.newsletter.confirmText;
+
+    document.getElementById('newsletterForm').addEventListener('submit', async () => {
+      const emailEl = document.getElementById('newsletterEmail');
+      const email   = emailEl.value.trim();
+      if (!email) return;
+      const btn = document.getElementById('newsletterBtn');
+      btn.textContent = 'SENDING...';
+      btn.disabled = true;
+      try {
+        const res = await fetch('/api/subscribe', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email }),
+        });
+        const data = await res.json();
+        if (data.ok) {
+          document.getElementById('newsletterForm').style.display = 'none';
+          document.getElementById('newsletterConfirm').style.display = 'block';
+        } else {
+          btn.textContent = 'TRY AGAIN';
+          btn.disabled = false;
+        }
+      } catch {
+        btn.textContent = 'TRY AGAIN';
+        btn.disabled = false;
+      }
+    });
+  }
+
+  /* ── 13. Support (moved inline near brand codes) ─────────────── */
+  var supportEl = document.getElementById('support');
+  if (supportEl) {
+    if (!CONFIG.support.enabled) {
+      supportEl.classList.add('section-hidden');
+    } else {
+      var grid = document.getElementById('supportGrid');
+      if (grid) {
+        grid.style.display = 'flex';
+        grid.style.gap = '16px';
+        CONFIG.support.links.forEach(function(link) {
+          var a = document.createElement('a');
+          a.href = link.href;
+          a.className = 'support-link tracked';
+          a.dataset.trackKey = 'support_' + link.label.toLowerCase().replace(/\s+/g, '_');
+          a.target = '_blank';
+          a.rel = 'noopener';
+          a.textContent = link.label;
+          grid.appendChild(a);
+        });
+      }
+    }
+  }
+
+  /* ── 14. Contact (hidden) ─────────────────────────────────────── */
+  var contactEl = document.getElementById('contact');
+  if (contactEl && !CONFIG.contact.enabled) {
+    contactEl.classList.add('section-hidden');
+  }
+
+  /* ── 15. Footer ───────────────────────────────────────────────── */
+  document.getElementById('footerName').textContent = CONFIG.name.toUpperCase();
+  document.getElementById('footerCopy').innerHTML = `&copy; ${new Date().getFullYear()} ${CONFIG.name} &middot; Built by <a href="https://bysamotto.com" target="_blank" rel="noopener">Sam Otto</a>`;
+
+  /* ── 16. Ticker ───────────────────────────────────────────────── */
+  if (!CONFIG.ticker.enabled || !CONFIG.ticker.messages.length) {
+    document.getElementById('ticker').style.display = 'none';
+  } else {
+    const messages = CONFIG.ticker.messages;
+    const bubble   = document.getElementById('tickerBubble');
+    const text     = document.getElementById('tickerText');
+    let idx = 0;
+
+    function showTicker() {
+      text.textContent = messages[idx % messages.length];
+      bubble.classList.add('show');
+      setTimeout(() => {
+        bubble.classList.remove('show');
+        idx++;
+        setTimeout(showTicker, 4500 + Math.random() * 3000);
+      }, 4000);
+    }
+
+    setTimeout(showTicker, 6000 + Math.random() * 4000);
+  }
+
+  /* ── 17. Snap Float ───────────────────────────────────────────── */
+  if (CONFIG.social.snapchat) {
+    const snapFloat = document.getElementById('snapFloat');
+    snapFloat.style.display = 'block';
+    document.getElementById('snapBtn').href = CONFIG.social.snapchat;
+  }
+
+  /* ── 18. Copy toast helper ────────────────────────────────────── */
+  function showToast(msg) {
+    const toast = document.getElementById('copyToast');
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2200);
+  }
+
+  /* ── 19. Scroll reveal ────────────────────────────────────────── */
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.fade-up').forEach(el => revealObserver.observe(el));
+
+  /* ── 20. GSAP hero entrance ───────────────────────────────────── */
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      if (typeof gsap === 'undefined') return;
+
+      const heroContent = document.getElementById('heroContent');
+      heroContent.style.visibility = 'visible';
+
+      gsap.registerPlugin(ScrollTrigger);
+
+      // Name slam in — fast
+      gsap.from('#heroName', {
+        y: 40,
+        opacity: 0,
+        duration: 0.6,
+        ease: 'power3.out',
+        delay: 0.3,
+      });
+
+      // Greeting fade
+      gsap.from('#heroGreeting', {
+        y: 10,
+        opacity: 0,
+        duration: 0.4,
+        ease: 'power2.out',
+        delay: 0.5,
+      });
+
+      // Tagline
+      gsap.from('#heroTagline', {
+        y: 10,
+        opacity: 0,
+        duration: 0.4,
+        ease: 'power2.out',
+        delay: 0.6,
+      });
+
+      // Social icons stagger
+      gsap.from('.hero-socials a', {
+        y: 8,
+        opacity: 0,
+        duration: 0.3,
+        ease: 'power2.out',
+        delay: 0.7,
+        stagger: 0.05,
+      });
+
+      // Parallax on hero bg
+      gsap.to('.hero-bg img', {
+        yPercent: 20,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: '#hero',
+          start: 'top top',
+          end: 'bottom top',
+          scrub: true,
+        },
+      });
+
+    }, 300);
+  });
+
+  /* ── 20b. Page Loader (SM initials) — fast ─────────────────────── */
+  setTimeout(function() {
+    var loader = document.getElementById('pageLoader');
+    if (loader) {
+      loader.style.opacity = '0';
+      setTimeout(function() { loader.remove(); }, 250);
+    }
+  }, 200);
+
+  /* ── 20c. Lenis removed — was breaking scroll ─────────────────── */
+
+  /* ── 20d. Parallax on photo dividers ─────────────────────────── */
+  window.addEventListener('load', function() {
+    setTimeout(function() {
+      if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+      gsap.utils.toArray('.parallax-img').forEach(function(img) {
+        gsap.to(img, {
+          yPercent: -20,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: img.parentElement,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: true,
+          }
+        });
+      });
+    }, 1300);
+  });
+
+  /* ── 20e. Stats count-up animation ───────────────────────────── */
+  (function() {
+    function easeOutQuart(t) { return 1 - Math.pow(1 - t, 4); }
+
+    function animateCountUp(el, target, suffix, duration) {
+      var start = performance.now();
+      function update(now) {
+        var elapsed = now - start;
+        var progress = Math.min(elapsed / duration, 1);
+        var eased = easeOutQuart(progress);
+        var current = Math.round(eased * target);
+        el.textContent = current + suffix;
+        if (progress < 1) requestAnimationFrame(update);
+      }
+      requestAnimationFrame(update);
+    }
+
+    // Wait for stats to be injected by the about section code above
+    setTimeout(function() {
+      var statValues = document.querySelectorAll('#aboutStats .stat-value');
+      if (!statValues.length) return;
+
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (!entry.isIntersecting) return;
+          observer.disconnect();
+
+          statValues.forEach(function(el) {
+            var raw = el.textContent.trim();
+            // Parse "100K+" → target=100, suffix="K+"
+            // Parse "3" → target=3, suffix=""
+            // "Daily" → skip (not a number)
+            var match = raw.match(/^(\d+)(.*)/);
+            if (!match) return; // skip text-only like "Daily"
+
+            var target = parseInt(match[1], 10);
+            var suffix = match[2] || '';
+            el.textContent = '0' + suffix;
+            animateCountUp(el, target, suffix, 1500);
+          });
+        });
+      }, { threshold: 0.3 });
+
+      var aboutStats = document.getElementById('aboutStats');
+      if (aboutStats) observer.observe(aboutStats);
+    }, 100);
+  })();
+
+  /* ── 20f. Ember sparks ────────────────────────────────────────── */
+  (function() {
+    var canvas = document.getElementById('emberCanvas');
+    if (!canvas) return;
+    var ctx = canvas.getContext('2d');
+    var embers = [];
+    var MAX = 60;
+
+    function resize() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    function Ember() {
+      this.reset();
+    }
+    Ember.prototype.reset = function() {
+      this.x = Math.random() * canvas.width;
+      this.y = canvas.height + 10;
+      this.size = Math.random() * 4 + 1;
+      this.speedY = -(Math.random() * 0.8 + 0.3);
+      this.speedX = (Math.random() - 0.5) * 0.3;
+      this.opacity = Math.random() * 0.8 + 0.3;
+      this.life = 0;
+      this.maxLife = Math.random() * 400 + 200;
+      // Red/orange ember colors
+      this.r = 140 + Math.round(Math.random() * 80);
+      this.g = 30 + Math.round(Math.random() * 40);
+      this.b = 20 + Math.round(Math.random() * 20);
+    };
+    Ember.prototype.update = function() {
+      this.x += this.speedX + Math.sin(this.life * 0.02) * 0.15;
+      this.y += this.speedY;
+      this.life++;
+      this.opacity *= 0.998;
+      if (this.life > this.maxLife || this.y < -10 || this.opacity < 0.01) {
+        this.reset();
+      }
+    };
+    Ember.prototype.draw = function() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(' + this.r + ',' + this.g + ',' + this.b + ',' + this.opacity + ')';
+      ctx.shadowColor = 'rgba(' + this.r + ',' + this.g + ',' + this.b + ',' + (this.opacity * 0.5) + ')';
+      ctx.shadowBlur = this.size * 8;
+      ctx.fill();
+      ctx.shadowBlur = 0;
+    };
+
+    for (var i = 0; i < MAX; i++) {
+      var e = new Ember();
+      e.y = Math.random() * canvas.height; // spread initial positions
+      e.life = Math.random() * 200;
+      embers.push(e);
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      embers.forEach(function(e) { e.update(); e.draw(); });
+      requestAnimationFrame(animate);
+    }
+    animate();
+  })();
+
+  /* ── 20g. Cursor trail (desktop only) ────────────────────────── */
+  (function() {
+    var canvas = document.getElementById('cursorCanvas');
+    if (!canvas || !window.matchMedia('(hover: hover)').matches) return;
+    var ctx = canvas.getContext('2d');
+    var trail = [];
+    var MAX_TRAIL = 20;
+    var mouseX = 0, mouseY = 0;
+
+    function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+    resize();
+    window.addEventListener('resize', resize);
+
+    document.addEventListener('mousemove', function(e) {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      trail.push({ x: mouseX, y: mouseY, alpha: 0.5, size: 4 });
+      if (trail.length > MAX_TRAIL) trail.shift();
+    });
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      trail.forEach(function(dot, i) {
+        dot.alpha *= 0.92;
+        dot.size *= 0.97;
+        if (dot.alpha < 0.01) return;
+        ctx.beginPath();
+        ctx.arc(dot.x, dot.y, dot.size, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(140, 54, 50, ' + dot.alpha + ')';
+        ctx.shadowColor = 'rgba(140, 54, 50, ' + (dot.alpha * 0.5) + ')';
+        ctx.shadowBlur = dot.size * 3;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      });
+      trail = trail.filter(function(d) { return d.alpha > 0.01; });
+      requestAnimationFrame(draw);
+    }
+    requestAnimationFrame(draw);
+  })();
+
+  /* ── 20h. SoundCloud toggle ──────────────────────────────────── */
+  window.toggleSC = function() {
+    var player = document.getElementById('scPlayer');
+    player.style.display = player.style.display === 'none' ? 'block' : 'none';
+  };
+
+  /* ── 20i. Sticky header on scroll ────────────────────────────── */
+  (function() {
+    var nav = document.getElementById('stickyNav');
+    var hero = document.getElementById('hero');
+    if (!nav || !hero) return;
+    var obs = new IntersectionObserver(function(entries) {
+      if (entries[0].isIntersecting) {
+        nav.classList.remove('visible');
+      } else {
+        nav.classList.add('visible');
+      }
+    }, { threshold: 0 });
+    obs.observe(hero);
+  })();
+
+  /* ── 20g. About section cycling backgrounds ──────────────────── */
+  (function() {
+    var imgs = document.querySelectorAll('.about-bg-img');
+    if (imgs.length < 2) return;
+    var current = 0;
+    setInterval(function() {
+      imgs[current].classList.remove('active');
+      current = (current + 1) % imgs.length;
+      imgs[current].classList.add('active');
+    }, 4000);
+  })();
+
+  /* ── 21. Analytics tracking ───────────────────────────────────── */
+  (function() {
+    const ua = navigator.userAgent;
+    const device = /Mobi|Android/i.test(ua) ? (/Tablet|iPad/i.test(ua) ? 'tablet' : 'mobile') : 'desktop';
+    const browser = /Firefox/i.test(ua) ? 'Firefox' : /Edg/i.test(ua) ? 'Edge' : /Chrome/i.test(ua) ? 'Chrome' : /Safari/i.test(ua) ? 'Safari' : 'Other';
+    const os = /iPhone|iPad|iPod/i.test(ua) ? 'iOS' : /Android/i.test(ua) ? 'Android' : /Windows/i.test(ua) ? 'Windows' : /Mac/i.test(ua) ? 'macOS' : /Linux/i.test(ua) ? 'Linux' : 'Other';
+    const screenSize = window.screen.width + 'x' + window.screen.height;
+    const language = (navigator.language || '').split('-')[0];
+
+    var returning = false;
+    try {
+      if (document.cookie.includes('_vid=')) {
+        returning = true;
+      } else {
+        var vid = Math.random().toString(36).slice(2) + Date.now().toString(36);
+        document.cookie = '_vid=' + vid + ';path=/;max-age=31536000;SameSite=Lax';
+      }
+    } catch(e) {}
+
+    function parseRef(r) {
+      if (!r) return null;
+      try {
+        var h = new URL(r).hostname.replace(/^www\./, '').replace(/^l\./, '');
+        var map = {
+          'instagram.com':'Instagram','tiktok.com':'TikTok','youtube.com':'YouTube',
+          'google.com':'Google','facebook.com':'Facebook','t.co':'Twitter/X',
+          'twitter.com':'Twitter/X','pinterest.com':'Pinterest','snapchat.com':'Snapchat',
+          'linktr.ee':'Linktree','reddit.com':'Reddit','beacons.ai':'Beacons',
+        };
+        return map[h] || null;
+      } catch(e) { return null; }
+    }
+
+    var refSource = parseRef(document.referrer) || 'Direct';
+    try { sessionStorage.setItem('_src', refSource); } catch(e) {}
+
+    function track(payload) {
+      try {
+        fetch('/api/track', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        }).catch(function(){});
+      } catch(e) {}
+    }
+
+    track({
+      type: 'pageview',
+      referrer: document.referrer,
+      device: device,
+      browser: browser,
+      os: os,
+      screen: screenSize,
+      language: language,
+      returning: returning,
+    });
+
+    var scrollFired = {};
+    function checkScroll() {
+      var scrollTop = window.scrollY || document.documentElement.scrollTop;
+      var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      if (docHeight <= 0) return;
+      var pct = Math.round((scrollTop / docHeight) * 100);
+      [25, 50, 75, 100].forEach(function(threshold) {
+        if (pct >= threshold && !scrollFired[threshold]) {
+          scrollFired[threshold] = true;
+          track({ type: 'scroll', depth: threshold });
+        }
+      });
+    }
+    var scrollTimer;
+    window.addEventListener('scroll', function() {
+      clearTimeout(scrollTimer);
+      scrollTimer = setTimeout(checkScroll, 200);
+    }, { passive: true });
+
+    var sessionStart = Date.now();
+    var durationSent = false;
+    function sendDuration() {
+      if (durationSent) return;
+      durationSent = true;
+      var ms = Date.now() - sessionStart;
+      if (ms < 1000) return;
+      navigator.sendBeacon('/api/track', JSON.stringify({ type: 'duration', ms: ms }));
+    }
+    document.addEventListener('visibilitychange', function() {
+      if (document.visibilityState === 'hidden') sendDuration();
+    });
+    window.addEventListener('pagehide', sendDuration);
+
+    document.addEventListener('click', function(e) {
+      var el = e.target.closest('.tracked[data-track-key]');
+      if (!el) return;
+      var key = el.dataset.trackKey;
+      if (!key) return;
+      var src = 'Direct';
+      try { src = sessionStorage.getItem('_src') || 'Direct'; } catch(e) {}
+      track({ type: 'click', link: key, source: src });
+    });
+  })();
+
+})();
+</script>
+
+</body>
+</html>

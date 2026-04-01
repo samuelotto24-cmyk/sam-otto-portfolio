@@ -2,27 +2,26 @@ import { readFileSync } from 'fs';
 import { join } from 'path';
 import { scaleAnalytics, formatNum } from './scale-analytics.mjs';
 
-// Read the creator template once at cold start
-let templateHtml = null;
-function getTemplate() {
-  if (!templateHtml) {
-    const paths = [
-      join(process.cwd(), 'creator-template.html'),
-      join(process.cwd(), '..', 'creator-template', 'index.html'),
-      '/var/task/creator-template.html',
-    ];
-    for (const p of paths) {
+// Read templates once at cold start
+const templateCache = {};
+function getTemplate(variant) {
+  const key = variant || 'light';
+  if (!templateCache[key]) {
+    const filenames = key === 'dark'
+      ? ['creator-template-dark.html', '../creator-template-dark/index.html']
+      : ['creator-template.html', '../creator-template/index.html'];
+    for (const f of filenames) {
       try {
-        templateHtml = readFileSync(p, 'utf8');
+        templateCache[key] = readFileSync(join(process.cwd(), f), 'utf8');
         break;
       } catch (e) { /* try next */ }
     }
   }
-  return templateHtml;
+  return templateCache[key] || null;
 }
 
 export function buildMockupHtml(data) {
-  const { name, niche, photo, colors, sells, followers, copy, handle, postImages } = data;
+  const { name, niche, photo, colors, sells, followers, copy, handle, postImages, template: templateChoice } = data;
   const analytics = scaleAnalytics(followers);
 
   const accent = pickAccentColor(colors);
@@ -39,7 +38,7 @@ export function buildMockupHtml(data) {
   const followerLabel = formatNum(followers || 10000);
 
   // Try to use the real creator template
-  let template = getTemplate();
+  let template = getTemplate(templateChoice);
 
   if (template) {
     return buildFromTemplate(template, {

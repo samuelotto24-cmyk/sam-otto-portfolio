@@ -8,14 +8,14 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { name, email, handle, followers, niche, sells, colors, photo, copy, postImages } = req.body || {};
+  const { name, email, handle, followers, niche, sells, colors, photo, copy, postImages, template } = req.body || {};
   if (!name || !email) {
     return res.status(400).json({ error: 'Name and email are required' });
   }
 
   const hash = crypto.randomBytes(8).toString('hex');
 
-  const html = buildMockupHtml({ name, niche, photo, colors, sells, followers, copy, handle, postImages });
+  const html = buildMockupHtml({ name, niche, photo, colors, sells, followers, copy, handle, postImages, template });
   const finalHtml = html.replace(/HASH_PLACEHOLDER/g, hash);
 
   const blob = await put('previews/' + hash + '.html', finalHtml, {

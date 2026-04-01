@@ -3884,6 +3884,10 @@
   color: var(--rose-light);
 }
 
+/* Vibe picker cards */
+.vibe-card:hover { transform: scale(1.02); }
+.vibe-card.selected { border-color: var(--rose) !important; transform: scale(1.03); box-shadow: 0 0 20px rgba(16,185,129,0.2); }
+
 /* Loading animation */
 .quiz-loading {
   display: none;
@@ -6173,7 +6177,35 @@
         </div>
         <div style="background:var(--dark-card);border:1px solid var(--border);border-radius:10px;padding:12px 16px;font-size:11px;color:var(--text-muted);line-height:1.55;text-align:center;margin-bottom:24px">This is a simplified demo. Your finished platform will be fully custom — designed around your exact vision, your real data, and your goals.</div>
       </div>
-      <button class="quiz-next" onclick="quizNext(1)">Let's build it <i class="fa-solid fa-arrow-right"></i></button>
+      <button class="quiz-next" onclick="quizNext('vibe')">Let's build it <i class="fa-solid fa-arrow-right"></i></button>
+    </div>
+
+    <!-- Step Vibe: Pick A or B -->
+    <div class="quiz-step" data-step="vibe">
+      <div class="quiz-question">Pick your vibe.</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:500px;margin:0 auto 16px">
+        <div class="vibe-card" onclick="selectVibe('light', this)" style="cursor:pointer;border:2px solid var(--border);border-radius:14px;overflow:hidden;transition:border-color 0.2s,transform 0.2s">
+          <div style="height:120px;background:linear-gradient(135deg,#FAF7F2,#E8DDD7);display:flex;align-items:center;justify-content:center">
+            <span style="font-family:'Cormorant Garamond',serif;font-size:28px;color:#2D1810;font-weight:500">Clean & Elegant</span>
+          </div>
+          <div style="padding:12px;text-align:center">
+            <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px">Template A</div>
+            <div style="font-size:11px;color:var(--text-muted)">Light, warm, centered. Great for lifestyle, beauty, food.</div>
+          </div>
+        </div>
+        <div class="vibe-card" onclick="selectVibe('dark', this)" style="cursor:pointer;border:2px solid var(--border);border-radius:14px;overflow:hidden;transition:border-color 0.2s,transform 0.2s">
+          <div style="height:120px;background:linear-gradient(135deg,#0F0A09,#1A1210);display:flex;align-items:center;justify-content:center">
+            <span style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:#E8DDD7;letter-spacing:0.08em">DARK & GRITTY</span>
+          </div>
+          <div style="padding:12px;text-align:center">
+            <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px">Template B</div>
+            <div style="font-size:11px;color:var(--text-muted)">Dark, bold, full-bleed. Great for fitness, gaming, streetwear.</div>
+          </div>
+        </div>
+      </div>
+      <div style="font-size:11px;color:var(--text-muted);text-align:center;max-width:400px;margin:0 auto 20px;line-height:1.5">These are just starting points. Your finished site has <strong style="color:var(--text)">infinite customization</strong> — layout, colors, animations, sections, everything is built from scratch around your exact vision.</div>
+      <button class="quiz-back" onclick="quizNext(0)"><i class="fa-solid fa-arrow-left"></i> Back</button>
+      <button class="quiz-next" id="qVibeNext" onclick="quizNext(1)" disabled>Next <i class="fa-solid fa-arrow-right"></i></button>
     </div>
 
     <!-- Step 1: Name -->
@@ -6314,7 +6346,14 @@
 
 <script>
 // ── Quiz Controller ──
-var quizData = { name: '', handle: '', followers: 0, niche: '', sells: [], colors: [], photo: '', email: '', postImages: [] };
+var quizData = { name: '', handle: '', followers: 0, niche: '', sells: [], colors: [], photo: '', email: '', postImages: [], template: 'light' };
+
+function selectVibe(template, el) {
+  quizData.template = template;
+  document.querySelectorAll('.vibe-card').forEach(function(c) { c.classList.remove('selected'); });
+  el.classList.add('selected');
+  document.getElementById('qVibeNext').disabled = false;
+}
 
 function openQuiz() {
   document.getElementById('quizOverlay').classList.add('open');
@@ -6347,7 +6386,8 @@ function quizNext(step) {
   if (target) target.classList.add('active');
 
   // Update progress bar
-  document.getElementById('quizProgress').style.width = (step / 7 * 100) + '%';
+  var progressMap = { 0: 0, 'vibe': 7, 1: 14, 2: 28, 3: 42, 4: 56, 5: 70, 6: 85 };
+  document.getElementById('quizProgress').style.width = (progressMap[step] || 0) + '%';
 
   // Pre-populate niche if detected
   if (step === 3 && quizData.niche) {
@@ -6541,7 +6581,8 @@ function submitQuiz() {
         colors: quizData.colors,
         photo: quizData.photo,
         copy: copyResult.success ? copyResult.copy : {},
-        postImages: quizData.postImages
+        postImages: quizData.postImages,
+        template: quizData.template
       })
     });
   })
@@ -6768,7 +6809,8 @@ document.addEventListener('keydown', function(e) {
   if (!active) return;
   var step = parseInt(active.dataset.step);
 
-  if (step === 0) quizNext(1);
+  if (step === 0) quizNext('vibe');
+  else if (step === 'vibe' && quizData.template) quizNext(1);
   else if (step === 1) quizNext(2);
   else if (step === 2) scrapeProfile();
   else if (step === 6) submitQuiz();
