@@ -3,6 +3,12 @@ import { join } from 'path';
 import { scaleAnalytics, formatNum } from './scale-analytics.mjs';
 
 // Read templates once at cold start
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
 const templateCache = {};
 function getTemplate(variant) {
   const key = variant || 'light';
@@ -10,21 +16,15 @@ function getTemplate(variant) {
     const base = key === 'dark' ? 'creator-template-dark.html' : 'creator-template.html';
     const searchPaths = [
       join(process.cwd(), base),
-      join(process.cwd(), '..', base),
       join(__dirname, '..', '..', base),
-      join(__dirname, '..', base),
       '/var/task/' + base,
       '/var/task/user/' + base,
     ];
     for (const p of searchPaths) {
       try {
         templateCache[key] = readFileSync(p, 'utf8');
-        console.log('Template found at:', p);
         break;
       } catch (e) { /* try next */ }
-    }
-    if (!templateCache[key]) {
-      console.error('Template not found. Searched:', searchPaths.join(', '));
     }
   }
   return templateCache[key] || null;
