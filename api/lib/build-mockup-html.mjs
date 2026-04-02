@@ -150,15 +150,17 @@ function buildFromTemplate(html, d) {
 
   html = html.substring(0, configStart) + configScript + '\n' + html.substring(endScript);
 
-  // Inject profile photo (already a permanent blob URL or original URL)
+  // Inject profile photo into all hero/about image tags
   if (d.photo) {
-    html = html.replace(/src="assets\/hero\.jpg"/g, 'src="' + d.photo + '"');
-    html = html.replace(/src="assets\/about\.jpg"/g, 'src="' + d.photo + '"');
-    html = html.replace('</head>', `<style>
-      .hero-photo img, .about-photo img { content: url('${d.photo}') !important; }
-      .hero-photo, .about-photo { background-image: url('${d.photo}'); background-size: cover; background-position: center; }
-    </style></head>`);
+    html = html.replace(/src="assets\/hero[^"]*\.jpg"/g, 'src="' + d.photo + '"');
+    html = html.replace(/src="assets\/about[^"]*\.jpg"/g, 'src="' + d.photo + '"');
   }
+
+  // Replace onerror handlers that delete broken images — use placeholder instead
+  html = html.replace(/onerror="this\.parentElement\.remove\(\)"/g,
+    'onerror="this.src=\'https://placehold.co/400x400/1a1a1a/666?text=\';this.onerror=null"');
+  html = html.replace(/onerror="this\.parentElement\.removeChild\(this\)"/g,
+    'onerror="this.src=\'https://placehold.co/400x400/1a1a1a/666?text=\';this.onerror=null"');
 
   // Disable tracking
   html = html.replace(/fetch\(['"]\/api\/track['"]/g, '/* preview */ void(0) && fetch("/api/track"');

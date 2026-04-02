@@ -5,9 +5,13 @@ import crypto from 'crypto';
 
 async function persistImage(url, hash, filename) {
   try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 10000);
     const resp = await fetch(url, {
       headers: { 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36' },
+      signal: controller.signal,
     });
+    clearTimeout(timeout);
     if (!resp.ok) return null;
     const buffer = Buffer.from(await resp.arrayBuffer());
     const contentType = resp.headers.get('content-type') || 'image/jpeg';
