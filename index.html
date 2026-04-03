@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="facebook-domain-verification" content="a0zu67wmcrn5gsf3u0rswen64gpzn1" />
   <title>Sam Otto — Custom Creator Pages, Built to Convert</title>
   <meta name="description" content="Sam Otto builds complete creator platforms from scratch — a custom website, private analytics, and an AI strategist. Designed around your brand. Done for you. Live in 72 hours." />
 
@@ -725,16 +726,16 @@
 
     /* ── WEEKLY RECAP ── */
     #recap {
-      padding: clamp(32px, 4vw, 56px) 0;
+      padding: clamp(24px, 3vw, 40px) 0;
       border-top: 1px solid var(--border);
       border-bottom: 1px solid var(--border);
       background: var(--dark);
     }
     .recap-layout {
-      display: flex; flex-direction: column; align-items: center;
-      gap: 24px; text-align: center;
+      display: grid; grid-template-columns: 1fr 1fr;
+      align-items: center; gap: 32px;
     }
-    .recap-copy { max-width: 500px; }
+    .recap-copy { max-width: 500px; text-align: left; }
     .recap-title {
       font-family: var(--serif);
       font-size: clamp(24px, 3.5vw, 36px);
@@ -981,7 +982,8 @@
     }
     .rc-cta:hover { background: var(--rose-light); }
     @media (max-width: 768px) {
-      .recap-layout { grid-template-columns: 1fr; gap: 32px; text-align: center; }
+      .recap-layout { grid-template-columns: 1fr; gap: 24px; text-align: center; }
+      .recap-copy { text-align: center; }
       .recap-list li { text-align: left; }
       .recap-card { max-width: 360px; margin: 0 auto; padding: 22px 18px; }
       .rc-plat-val { font-size: 14px; }
@@ -1312,6 +1314,7 @@
       border-top: 1px solid rgba(16,185,129,0.25);
       border-bottom: 1px solid rgba(16,185,129,0.25);
       overflow: hidden;
+      padding: clamp(20px, 3vw, 36px) 0;
     }
     /* Full-width ambient glow at top of section */
     #work::before {
@@ -2241,11 +2244,71 @@
     #contact {
       text-align: center;
       position: relative; overflow: hidden;
+      background: #050505;
+      padding: clamp(48px, 6vw, 80px) 0;
     }
     .contact-bg {
       position: absolute; inset: 0;
-      background: radial-gradient(ellipse 65% 85% at 50% 50%, rgba(16,185,129,0.13) 0%, transparent 65%);
-      pointer-events: none;
+      pointer-events: none; overflow: hidden;
+    }
+    .aurora-ribbon {
+      position: absolute;
+      width: 200%; height: 60%;
+      left: -50%;
+      background: linear-gradient(90deg,
+        transparent 0%,
+        rgba(255,255,255,0.03) 10%,
+        rgba(255,255,255,0.08) 20%,
+        rgba(200,180,255,0.06) 30%,
+        rgba(255,255,255,0.1) 40%,
+        rgba(255,200,220,0.05) 50%,
+        rgba(255,255,255,0.08) 60%,
+        rgba(180,220,255,0.06) 70%,
+        rgba(255,255,255,0.04) 85%,
+        transparent 100%
+      );
+      filter: blur(40px);
+      border-radius: 50%;
+    }
+    .aurora-ribbon-1 {
+      top: 10%;
+      animation: aurora1 12s ease-in-out infinite;
+      opacity: 0.7;
+    }
+    .aurora-ribbon-2 {
+      top: 35%;
+      animation: aurora2 16s ease-in-out infinite;
+      opacity: 0.5;
+      filter: blur(50px);
+    }
+    .aurora-ribbon-3 {
+      top: 55%;
+      animation: aurora3 14s ease-in-out infinite;
+      opacity: 0.4;
+      filter: blur(60px);
+      height: 40%;
+    }
+    @keyframes aurora1 {
+      0%   { transform: translateX(-10%) rotate(-3deg) scaleY(1); }
+      25%  { transform: translateX(5%) rotate(2deg) scaleY(1.3); }
+      50%  { transform: translateX(15%) rotate(-1deg) scaleY(0.8); }
+      75%  { transform: translateX(-5%) rotate(3deg) scaleY(1.2); }
+      100% { transform: translateX(-10%) rotate(-3deg) scaleY(1); }
+    }
+    @keyframes aurora2 {
+      0%   { transform: translateX(10%) rotate(2deg) scaleY(1); }
+      30%  { transform: translateX(-8%) rotate(-4deg) scaleY(1.4); }
+      60%  { transform: translateX(12%) rotate(1deg) scaleY(0.7); }
+      100% { transform: translateX(10%) rotate(2deg) scaleY(1); }
+    }
+    @keyframes aurora3 {
+      0%   { transform: translateX(5%) rotate(-1deg) scaleY(1); }
+      35%  { transform: translateX(-12%) rotate(3deg) scaleY(1.5); }
+      65%  { transform: translateX(8%) rotate(-2deg) scaleY(0.9); }
+      100% { transform: translateX(5%) rotate(-1deg) scaleY(1); }
+    }
+    #contactParticles {
+      position: absolute; inset: 0; pointer-events: none; z-index: 0;
     }
     .contact-inner { position: relative; z-index: 1; }
     .contact-label {
@@ -5228,7 +5291,12 @@
 
   <!-- CONTACT -->
   <section id="contact">
-    <div class="contact-bg"></div>
+    <canvas id="contactParticles"></canvas>
+    <div class="contact-bg">
+      <div class="aurora-ribbon aurora-ribbon-1"></div>
+      <div class="aurora-ribbon aurora-ribbon-2"></div>
+      <div class="aurora-ribbon aurora-ribbon-3"></div>
+    </div>
     <div class="inner contact-inner">
       <div class="fade-up">
         <span class="contact-label">Get Started</span>
@@ -6986,120 +7054,214 @@ function submitQuiz() {
     delay += 2500;
   });
 
-  // First: generate AI copy
-  fetch('/api/generate-copy', {
+  // Save lead data to backend (non-blocking)
+  fetch('/api/contact', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       name: quizData.name,
+      email: quizData.email,
+      handle: quizData.handle,
+      followers: quizData.followers,
       niche: quizData.niche,
       sells: quizData.sells,
-      followers: quizData.followers
+      source: 'quiz'
     })
-  })
-  .then(function(r) { return r.json(); })
-  .then(function(copyResult) {
-    // Then: generate mockup with the copy
-    return fetch('/api/generate-mockup', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        name: quizData.name,
-        email: quizData.email,
-        handle: quizData.handle,
-        followers: quizData.followers,
-        niche: quizData.niche,
-        sells: quizData.sells,
-        colors: quizData.colors,
-        photo: quizData.photo,
-        copy: copyResult.success ? copyResult.copy : {},
-        postImages: quizData.postImages,
-        template: quizData.template
-      })
-    });
-  })
-  .then(function(r) { return r.json(); })
-  .then(function(result) {
-    if (result.success) {
-      // Show inline preview instead of redirecting
-      setTimeout(function() {
-        showInlinePreview(result.previewUrl);
-      }, 2000);
-    }
-  })
-  .catch(function(err) {
-    console.error('Quiz submission failed:', err);
-    alert('Something went wrong. Please try again.');
-    closeQuiz();
-  });
+  }).catch(function() {});
+
+  // Show inline preview after cinematic loading
+  setTimeout(function() {
+    showInlinePreview();
+  }, delay + 1000);
 }
 
-function showInlinePreview(previewUrl) {
-  // Hide generating animation, switch to preview mode
+function showInlinePreview() {
   document.getElementById('quizGenerating').classList.remove('show');
   document.getElementById('quizOverlay').classList.add('preview-mode');
 
-  // Build the inline preview
   var preview = document.getElementById('quizPreview');
   var accent = quizData.colors.length ? pickMostVibrant(quizData.colors) : '#10B981';
   var fmtFollowers = formatFollowers(quizData.followers);
+  var firstName = quizData.name.split(' ')[0];
+  var domain = quizData.name.toLowerCase().replace(/\s+/g, '') + '.com';
 
-  // Scale analytics
+  // Scale analytics based on their real follower count
   var f = quizData.followers || 10000;
   var views = Math.round(f * (0.2 + Math.random() * 0.4));
   var eng = (3 + Math.random() * 5).toFixed(1);
+  var linkClicks = Math.round(f * (0.03 + Math.random() * 0.05));
   var rev = f >= 1000000 ? 3000 + Math.round(Math.random() * 5000) : f >= 100000 ? 1500 + Math.round(Math.random() * 3000) : 500 + Math.round(Math.random() * 1500);
+  var fmtNum = function(n) { return n >= 1000000 ? (n/1000000).toFixed(1) + 'M' : n >= 1000 ? (n/1000).toFixed(1) + 'K' : n.toString(); };
 
+  // Niche-specific content suggestions
+  var nicheSuggestions = {
+    fitness: ['Workout routine reel', 'Meal prep carousel', 'Transformation story'],
+    beauty: ['Get ready with me', 'Product review reel', 'Skincare routine'],
+    food: ['Recipe walkthrough', 'Meal prep timelapse', 'Taste test reel'],
+    lifestyle: ['Day in my life', 'Haul video', 'Morning routine'],
+  };
+  var niche = (quizData.niche || 'lifestyle').split(' ')[0].toLowerCase().replace('·','').trim();
+  var suggestions = nicheSuggestions[niche] || nicheSuggestions.lifestyle;
+
+  // Build a realistic site mockup using their data
+  var proxyImg = function(url) { return '/api/proxy-image?url=' + encodeURIComponent(url); };
+  var heroImg = quizData.postImages.length ? quizData.postImages[0] : '';
+  var gridImgs = quizData.postImages.slice(1, 7);
+
+  // ── Build the preview ──
   preview.innerHTML = ''
+
     // Header
     + '<div class="preview-header">'
-    + '<div class="preview-header-label">Demo Preview</div>'
-    + '<h2 class="preview-header-title">Here\'s a taste of what I\'d build for you, <em style="color:' + accent + '">' + quizData.name + '</em></h2>'
-
-    // Bold disclaimer box
-    + '<div style="background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.2);border-radius:14px;padding:20px 24px;margin-top:20px;text-align:left;max-width:560px;margin-left:auto;margin-right:auto">'
-    + '<div style="font-size:14px;font-weight:700;color:var(--rose-light);margin-bottom:8px">This is a demo, not your finished site.</div>'
-    + '<div style="font-size:13px;color:var(--text-sub);line-height:1.65">The images, text, and data below are generated for illustration only. <strong style="color:var(--text)">Your actual site will be completely custom</strong> — designed around your brand, your content, and exactly what you want. I don\'t use templates. Every site I build is a one-of-one, tailored to your specific vision and goals.</div>'
-    + '<div style="font-size:12px;color:var(--text-muted);margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.06);line-height:1.5"><strong style="color:var(--text-sub)">💻 Best viewed on desktop.</strong> This demo is optimized for larger screens. Your finished site will be fully responsive — professionally designed and formatted for both mobile and desktop.</div>'
-    + '</div>'
+    + '<div class="preview-header-label">Your Preview</div>'
+    + '<h2 class="preview-header-title">Here\'s what your platform would look like, <em style="color:' + accent + '">' + firstName + '</em></h2>'
+    + '<div style="font-size:13px;color:var(--text-sub);max-width:500px;margin:12px auto 0;line-height:1.6">Everything below is personalized from your profile. Your finished platform would be fully custom — designed around your brand, built from scratch.</div>'
     + '</div>'
 
-    // Browser frame with scrollable iframe
-    + '<div class="preview-browser">'
-    + '<div class="preview-browser-chrome">'
-    + '<div class="preview-browser-dots"><span style="background:#ff5f57"></span><span style="background:#febc2e"></span><span style="background:#28c840"></span></div>'
-    + '<div class="preview-browser-url">🔒 ' + quizData.name.toLowerCase().replace(/\s+/g, '') + '.com</div>'
-    + '<div style="font-size:9px;color:var(--text-muted);margin-left:auto;letter-spacing:0.06em;text-transform:uppercase">Demo Preview</div>'
-    + '</div>'
-    + '<div class="preview-browser-body">'
-    + '<iframe src="' + previewUrl + '" loading="eager"></iframe>'
-    + '</div>'
-    + '<div class="preview-browser-cta"><div style="font-size:11px;color:var(--text-muted);opacity:0.6">↕ Scroll to explore · <strong style="color:var(--rose-light);opacity:1">Illustration only</strong> — your real site will be fully custom-designed</div></div>'
-    + '</div>'
+    // ── Two-column: Mockup + Video ──
+    + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:900px;margin:0 auto 32px;align-items:start">'
 
-    // Photo grid from their Instagram
-    + (quizData.postImages.length ? (
-      '<div style="max-width:700px;margin:0 auto 32px">'
-      + '<div style="font-size:11px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--rose);margin-bottom:8px;text-align:center">YOUR CONTENT · PULLED FROM INSTAGRAM</div>'
-      + '<div style="font-size:11px;color:var(--text-muted);text-align:center;margin-bottom:12px">These photos would be featured throughout your finished site</div>'
-      + '<div style="display:grid;grid-template-columns:repeat(' + Math.min(quizData.postImages.length, 4) + ',1fr);gap:6px;border-radius:12px;overflow:hidden">'
-      + quizData.postImages.slice(0, 8).map(function(url) {
-          return '<img src="/api/proxy-image?url=' + encodeURIComponent(url) + '" style="width:100%;aspect-ratio:1;object-fit:cover;display:block" onerror="this.parentElement.removeChild(this)">';
-        }).join('')
+      // LEFT: Site mockup — realistic website preview
+      + '<div>'
+      + '<div style="font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:' + accent + ';margin-bottom:10px">YOUR CUSTOM SITE</div>'
+      + '<div style="background:#0a0a0a;border:1px solid rgba(255,255,255,0.1);border-radius:14px;overflow:hidden">'
+
+        // Browser chrome
+        + '<div style="display:flex;align-items:center;gap:6px;padding:8px 12px;border-bottom:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.02)">'
+        + '<span style="width:7px;height:7px;border-radius:50%;background:#ff5f57"></span>'
+        + '<span style="width:7px;height:7px;border-radius:50%;background:#febc2e"></span>'
+        + '<span style="width:7px;height:7px;border-radius:50%;background:#28c840"></span>'
+        + '<span style="flex:1;text-align:center;font-size:9px;color:rgba(255,255,255,0.25)">🔒 ' + domain + '</span>'
+        + '</div>'
+
+        // Nav bar
+        + '<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 16px;border-bottom:1px solid rgba(255,255,255,0.04)">'
+        + '<div style="font-family:\'Cormorant Garamond\',serif;font-size:14px;font-weight:600;color:#f0f0f0">' + firstName + '</div>'
+        + '<div style="display:flex;gap:12px;font-size:8px;color:rgba(255,255,255,0.3);letter-spacing:0.06em;text-transform:uppercase">'
+        + '<span>About</span><span>Content</span><span>Shop</span><span style="color:' + accent + ';font-weight:700">Contact</span></div>'
+        + '</div>'
+
+        // Hero with background image
+        + '<div style="position:relative;padding:32px 20px 28px;text-align:center;overflow:hidden;min-height:140px">'
+        + (heroImg ? '<div style="position:absolute;inset:0;background:url(\'' + proxyImg(heroImg) + '\') center/cover;opacity:0.2;filter:blur(2px)"></div>' : '')
+        + '<div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,10,10,0.3) 0%,rgba(10,10,10,0.95) 100%)"></div>'
+        + '<div style="position:relative">'
+        + (quizData.photo ? '<img src="' + proxyImg(quizData.photo) + '" style="width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid ' + accent + ';margin:0 auto 8px;display:block" onerror="this.style.display=\'none\'">' : '')
+        + '<div style="font-family:\'Cormorant Garamond\',serif;font-size:20px;font-weight:500;color:#f0f0f0;line-height:1.2">' + quizData.name + '</div>'
+        + '<div style="font-size:10px;color:rgba(255,255,255,0.4);margin-top:4px">' + (quizData.niche || 'Creator') + '</div>'
+        + '<div style="display:inline-block;margin-top:10px;padding:6px 16px;border-radius:50px;background:' + accent + ';color:#0a0a0a;font-size:9px;font-weight:700;letter-spacing:0.04em">EXPLORE</div>'
+        + '</div></div>'
+
+        // Stats bar
+        + '<div style="display:flex;justify-content:center;gap:20px;padding:12px 16px;border-bottom:1px solid rgba(255,255,255,0.04)">'
+        + '<div style="text-align:center"><div style="font-family:\'Cormorant Garamond\',serif;font-size:16px;font-weight:600;color:#f0f0f0">' + fmtFollowers + '</div><div style="font-size:7px;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:0.08em">Followers</div></div>'
+        + '<div style="width:1px;background:rgba(255,255,255,0.06)"></div>'
+        + '<div style="text-align:center"><div style="font-family:\'Cormorant Garamond\',serif;font-size:16px;font-weight:600;color:#f0f0f0">' + fmtNum(linkClicks) + '</div><div style="font-size:7px;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:0.08em">Link Clicks</div></div>'
+        + '<div style="width:1px;background:rgba(255,255,255,0.06)"></div>'
+        + '<div style="text-align:center"><div style="font-family:\'Cormorant Garamond\',serif;font-size:16px;font-weight:600;color:#f0f0f0">' + eng + '%</div><div style="font-size:7px;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:0.08em">Engagement</div></div>'
+        + '</div>'
+
+        // Content grid section
+        + (gridImgs.length > 0 ? (
+          '<div style="padding:14px 16px">'
+          + '<div style="font-size:8px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:8px">LATEST CONTENT</div>'
+          + '<div style="display:grid;grid-template-columns:repeat(' + Math.min(gridImgs.length, 3) + ',1fr);gap:4px;border-radius:6px;overflow:hidden">'
+          + gridImgs.slice(0, 6).map(function(url) {
+              return '<img src="' + proxyImg(url) + '" style="width:100%;aspect-ratio:1;object-fit:cover;display:block" onerror="this.style.display=\'none\'">';
+            }).join('')
+          + '</div></div>'
+        ) : '')
+
+        // Brand codes section
+        + '<div style="padding:10px 16px 14px;border-top:1px solid rgba(255,255,255,0.04)">'
+        + '<div style="font-size:8px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:6px">DISCOUNT CODES</div>'
+        + '<div style="display:flex;gap:6px">'
+        + '<div style="flex:1;padding:6px 8px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:6px;text-align:center;font-size:9px;font-weight:700;color:' + accent + '">CODE15</div>'
+        + '<div style="flex:1;padding:6px 8px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:6px;text-align:center;font-size:9px;font-weight:700;color:' + accent + '">SAVE20</div>'
+        + '</div></div>'
+
       + '</div>'
-      + '<div style="font-size:10px;color:var(--text-muted);text-align:center;margin-top:8px;opacity:0.5">Demo only · Final site will include professional photo direction</div>'
       + '</div>'
-    ) : '')
 
-    // CTA
+      // RIGHT: Video placeholder — UPLOAD HERE
+      + '<div>'
+      + '<div style="font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:' + accent + ';margin-bottom:10px">SEE IT IN ACTION</div>'
+      + '<div id="previewVideo1" style="background:#0a0a0a;border:2px dashed rgba(255,255,255,0.15);border-radius:14px;aspect-ratio:9/16;max-height:420px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px">'
+      + '<div style="font-size:28px;opacity:0.3">🎬</div>'
+      + '<div style="font-size:12px;color:rgba(255,255,255,0.25);font-weight:500">UPLOAD VIDEO HERE</div>'
+      + '<div style="font-size:10px;color:rgba(255,255,255,0.15)">Site walkthrough recording</div>'
+      + '</div>'
+      + '</div>'
+
+    + '</div>'
+
+    // ── Dashboard + Hub Preview ──
+    + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:900px;margin:0 auto 32px;align-items:start">'
+
+      // LEFT: Analytics dashboard mockup
+      + '<div>'
+      + '<div style="font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:' + accent + ';margin-bottom:10px">YOUR ANALYTICS DASHBOARD</div>'
+      + '<div style="background:#0a0a0a;border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:20px;overflow:hidden">'
+
+        // Stats row
+        + '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px">'
+        + '<div style="text-align:center;padding:12px;background:rgba(255,255,255,0.03);border-radius:8px">'
+        + '<div style="font-family:\'Cormorant Garamond\',serif;font-size:22px;font-weight:600;color:#f0f0f0">' + fmtFollowers + '</div>'
+        + '<div style="font-size:9px;text-transform:uppercase;letter-spacing:0.08em;color:rgba(255,255,255,0.35);margin-top:2px">Followers</div></div>'
+        + '<div style="text-align:center;padding:12px;background:rgba(255,255,255,0.03);border-radius:8px">'
+        + '<div style="font-family:\'Cormorant Garamond\',serif;font-size:22px;font-weight:600;color:#f0f0f0">' + eng + '%</div>'
+        + '<div style="font-size:9px;text-transform:uppercase;letter-spacing:0.08em;color:rgba(255,255,255,0.35);margin-top:2px">Engagement</div></div>'
+        + '<div style="text-align:center;padding:12px;background:rgba(255,255,255,0.03);border-radius:8px">'
+        + '<div style="font-family:\'Cormorant Garamond\',serif;font-size:22px;font-weight:600;color:#f0f0f0">' + fmtNum(views) + '</div>'
+        + '<div style="font-size:9px;text-transform:uppercase;letter-spacing:0.08em;color:rgba(255,255,255,0.35);margin-top:2px">Weekly Views</div></div>'
+        + '</div>'
+
+        // AI Strategist preview
+        + '<div style="background:rgba(124,106,247,0.08);border:1px solid rgba(124,106,247,0.2);border-radius:10px;padding:14px;margin-bottom:12px">'
+        + '<div style="font-size:9px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#7C6AF7;margin-bottom:6px">AI STRATEGIST</div>'
+        + '<div style="font-size:12px;color:rgba(255,255,255,0.6);line-height:1.5;font-style:italic">"Your reels are outperforming carousels 3:1 this week. Double down on short-form — your audience is responding."</div>'
+        + '</div>'
+
+        // Planner preview
+        + '<div style="display:flex;gap:6px">'
+        + suggestions.map(function(s, i) {
+            var days = ['MON', 'WED', 'FRI'];
+            return '<div style="flex:1;background:rgba(245,158,11,0.06);border:1px solid rgba(245,158,11,0.15);border-radius:8px;padding:8px;text-align:center">'
+            + '<div style="font-size:8px;font-weight:700;letter-spacing:0.1em;color:rgba(245,158,11,0.5)">' + days[i] + '</div>'
+            + '<div style="font-size:10px;color:rgba(255,255,255,0.5);margin-top:4px;line-height:1.3">' + s + '</div></div>';
+          }).join('')
+        + '</div>'
+
+      + '</div>'
+      + '</div>'
+
+      // RIGHT: Hub video placeholder — UPLOAD HERE
+      + '<div>'
+      + '<div style="font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:' + accent + ';margin-bottom:10px">YOUR PRIVATE HUB</div>'
+      + '<div id="previewVideo2" style="background:#0a0a0a;border:2px dashed rgba(255,255,255,0.15);border-radius:14px;aspect-ratio:9/16;max-height:420px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px">'
+      + '<div style="font-size:28px;opacity:0.3">🎬</div>'
+      + '<div style="font-size:12px;color:rgba(255,255,255,0.25);font-weight:500">UPLOAD VIDEO HERE</div>'
+      + '<div style="font-size:10px;color:rgba(255,255,255,0.15)">Hub dashboard recording</div>'
+      + '</div>'
+      + '</div>'
+
+    + '</div>'
+
+    // ── Revenue Estimate ──
+    + '<div style="max-width:500px;margin:0 auto 32px;background:rgba(16,185,129,0.06);border:1px solid rgba(16,185,129,0.2);border-radius:14px;padding:24px;text-align:center">'
+    + '<div style="font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#10B981;margin-bottom:8px">ESTIMATED MONTHLY VALUE</div>'
+    + '<div style="font-family:\'Cormorant Garamond\',serif;font-size:36px;font-weight:600;color:#f0f0f0">$' + rev.toLocaleString() + '<span style="font-size:16px;color:rgba(255,255,255,0.4)">/mo</span></div>'
+    + '<div style="font-size:12px;color:rgba(255,255,255,0.4);margin-top:6px;line-height:1.5">Based on ' + fmtFollowers + ' followers — from brand deals, affiliate codes, and automated lead capture. Most creators leave this money on the table.</div>'
+    + '</div>'
+
+    // ── CTA ──
     + '<div class="preview-cta">'
-    + '<h3 class="preview-cta-title">Imagine this, but built entirely around you.</h3>'
-    + '<div class="preview-cta-sub">This demo is just a starting point. Your finished platform will be designed from scratch — your aesthetic, your content, your goals. No templates. No recycled layouts. A complete one-of-one build, live within 72 hours.</div>'
+    + '<h3 class="preview-cta-title">This could be live in 72 hours.</h3>'
+    + '<div class="preview-cta-sub">Everything you just saw — the custom site, the analytics dashboard, the AI strategist, the automated lead engine — built entirely around your brand. One-of-one. No templates.</div>'
     + '<div class="preview-cta-buttons">'
-    + '<a class="preview-cta-primary" href="#contact" onclick="closeQuiz()">Build mine →</a>'
+    + '<a class="preview-cta-primary" href="#contact" onclick="closeQuiz()">Let\'s build it →</a>'
     + '<a class="preview-cta-secondary" href="#contact" onclick="closeQuiz()">Book a call →</a>'
     + '</div>'
-    + '<div class="preview-expiry">This demo expires in 7 days · Check your email for the link</div>'
     + '</div>';
 
   preview.classList.add('show');
@@ -7140,6 +7302,73 @@ document.addEventListener('keydown', function(e) {
   else if (step === 2) scrapeProfile();
   else if (step === 6) submitQuiz();
 });
+
+/* ── Contact Section White Particles ── */
+(function() {
+  var canvas = document.getElementById('contactParticles');
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var particles = [];
+  var count = 40;
+
+  function resize() {
+    var section = document.getElementById('contact');
+    if (!section) return;
+    canvas.width = section.offsetWidth;
+    canvas.height = section.offsetHeight;
+  }
+
+  function init() {
+    resize();
+    particles = [];
+    for (var i = 0; i < count; i++) {
+      particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        r: Math.random() * 2 + 0.5,
+        vx: (Math.random() - 0.5) * 0.3,
+        vy: (Math.random() - 0.5) * 0.3,
+        o: Math.random() * 0.12 + 0.04,
+      });
+    }
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for (var i = 0; i < particles.length; i++) {
+      var p = particles[i];
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < 0) p.x = canvas.width;
+      if (p.x > canvas.width) p.x = 0;
+      if (p.y < 0) p.y = canvas.height;
+      if (p.y > canvas.height) p.y = 0;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(255,255,255,' + p.o + ')';
+      ctx.fill();
+    }
+    // Draw faint connections
+    for (var i = 0; i < particles.length; i++) {
+      for (var j = i + 1; j < particles.length; j++) {
+        var dx = particles[i].x - particles[j].x;
+        var dy = particles[i].y - particles[j].y;
+        var dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 120) {
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.strokeStyle = 'rgba(255,255,255,' + (0.06 * (1 - dist / 120)) + ')';
+          ctx.stroke();
+        }
+      }
+    }
+    requestAnimationFrame(draw);
+  }
+
+  window.addEventListener('resize', resize);
+  init();
+  draw();
+})();
 </script>
 
 </body>
