@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>bysamotto — Pitch Deck</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #090907;
+  --surface: #0E0D0B;
+  --border: rgba(255,248,220,0.09);
+  --accent: #10B981;
+  --accent-glow: rgba(16,185,129,0.14);
+  --accent-border: rgba(16,185,129,0.25);
+  --blue: #4F8EF7;
+  --purple: #7C6AF7;
+  --gold: #F59E0B;
+  --red: #EF4444;
+  --text: #EBE7DF;
+  --text-sub: rgba(235,231,223,0.72);
+  --text-muted: rgba(235,231,223,0.42);
+  --serif: 'Cormorant Garamond', Georgia, serif;
+  --sans: 'DM Sans', system-ui, sans-serif;
+}
+
+html, body { height: 100%; overflow: hidden; background: var(--bg); color: var(--text); font-family: var(--sans); -webkit-font-smoothing: antialiased; }
+
+/* ── Scale-to-fit canvas ── */
+.deck-canvas {
+  position: absolute;
+  width: 1920px;
+  height: 1080px;
+  top: 50%;
+  left: 50%;
+  transform-origin: center center;
+  transform: translate(-50%, -50%) scale(1);
+  overflow: hidden;
+}
+
+/* ── Gradient Mesh ── */
+.mesh { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+.mesh-layer { position: absolute; width: 200%; height: 200%; filter: blur(80px); }
+.mesh-1 { top: -50%; left: -30%; background: radial-gradient(ellipse at 25% 25%, rgba(16,185,129,0.18) 0%, transparent 50%), radial-gradient(ellipse at 75% 60%, rgba(16,185,129,0.10) 0%, transparent 45%); animation: drift1 20s ease-in-out infinite alternate; }
+.mesh-2 { top: -40%; left: -40%; width: 180%; height: 180%; filter: blur(100px); background: radial-gradient(ellipse at 60% 30%, rgba(16,185,129,0.07) 0%, transparent 50%); animation: drift2 28s ease-in-out infinite alternate; }
+@keyframes drift1 { 0% { transform: translate(0,0) scale(1); } 100% { transform: translate(-5%,3%) scale(1.05); } }
+@keyframes drift2 { 0% { transform: translate(0,0); } 100% { transform: translate(4%,-3%) scale(1.03); } }
+
+/* ── Slides ── */
+.slide { position: absolute; inset: 0; z-index: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 80px 120px; opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.23,1,0.32,1); pointer-events: none; width: 1920px; height: 1080px; }
+.slide.active { opacity: 1; transform: translateY(0); pointer-events: auto; }
+.slide.exit-up { opacity: 0; transform: translateY(-30px); }
+
+/* ── Typography ── */
+.slide-label { font-size: 28px; letter-spacing: 0.12em; text-transform: lowercase; color: var(--text-muted); font-weight: 700; margin-bottom: 24px; }
+h1 { font-family: var(--serif); font-size: 120px; font-weight: 600; line-height: 1.05; }
+h2 { font-family: var(--serif); font-size: 88px; font-weight: 600; line-height: 1.1; }
+h3 { font-family: var(--serif); font-size: 56px; font-weight: 500; line-height: 1.2; }
+.sub { font-size: 28px; color: var(--text-sub); line-height: 1.6; }
+.accent { color: var(--accent); }
+.muted { color: var(--text-muted); }
+.red { color: #C0392B; }
+
+/* ── Section splash ── */
+.section-title-splash { position: absolute; inset: 0; z-index: 5; display: flex; align-items: center; justify-content: center; pointer-events: none; opacity: 0; }
+.section-title-splash .splash-text { font-family: var(--serif); font-size: 140px; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em; opacity: 0; }
+.section-title-splash.playing { opacity: 1; }
+.section-title-splash.playing .splash-text { animation: splashIn 0.7s cubic-bezier(0.23, 1, 0.32, 1) forwards; }
+@keyframes splashIn {
+  0% { opacity: 0; transform: scale(1.2); filter: blur(6px); }
+  30% { opacity: 1; transform: scale(1); filter: blur(0); }
+  60% { opacity: 1; }
+  100% { opacity: 0; transform: scale(0.7) translateY(-30px); filter: blur(3px); }
+}
+.slide-content { opacity: 0; transition: opacity 0.5s ease; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; }
+.slide-content.revealed { opacity: 1; }
+
+/* ── Fade-up children ── */
+.slide.active .fade-up { opacity: 0; transform: translateY(20px); animation: fadeUp 0.6s ease forwards; }
+.slide.active .fade-up:nth-child(1) { animation-delay: 0.1s; }
+.slide.active .fade-up:nth-child(2) { animation-delay: 0.2s; }
+.slide.active .fade-up:nth-child(3) { animation-delay: 0.3s; }
+.slide.active .fade-up:nth-child(4) { animation-delay: 0.4s; }
+.slide.active .fade-up:nth-child(5) { animation-delay: 0.5s; }
+.slide.active .fade-up:nth-child(6) { animation-delay: 0.6s; }
+@keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+
+/* ── Cards ── */
+.card { background: rgba(14,13,11,0.75); backdrop-filter: blur(20px); border: 1px solid var(--border); border-radius: 16px; padding: 36px; }
+
+/* ── Comparison grid ── */
+.comp-grid { display: grid; grid-template-columns: 200px repeat(5, 1fr); gap: 0; width: 100%; }
+.comp-cell { display: flex; align-items: center; justify-content: center; padding: 20px 16px; border-bottom: 1px solid rgba(255,248,220,0.06); font-size: 22px; }
+.comp-cell.header { font-size: 18px; font-weight: 600; color: var(--text-muted); letter-spacing: 0.04em; text-transform: uppercase; border-bottom: 2px solid rgba(255,248,220,0.12); }
+.comp-cell.label { justify-content: flex-start; font-size: 20px; font-weight: 600; color: var(--text-sub); }
+.comp-cell.winner { color: var(--accent); font-weight: 700; }
+.comp-cell.winner.label { color: var(--accent); font-size: 24px; }
+.check { color: var(--accent); font-size: 32px; }
+.cross { color: var(--red); font-size: 32px; opacity: 0.5; }
+
+/* ── Video ── */
+.video-wrap { border-radius: 16px; overflow: hidden; border: 1px solid var(--border); box-shadow: 0 8px 40px rgba(0,0,0,0.4); }
+.video-wrap video { display: block; width: 100%; }
+
+/* ── Bottom bar ── */
+.bottom-bar { position: absolute; bottom: 0; left: 0; right: 0; z-index: 10; padding: 14px 40px; display: flex; justify-content: space-between; align-items: center; font-size: 16px; color: var(--text-muted); background: rgba(9,9,7,0.8); backdrop-filter: blur(12px); border-top: 1px solid var(--border); }
+.slide-counter { font-weight: 600; color: var(--accent); }
+.progress-bar { position: absolute; top: 0; left: 0; height: 3px; background: var(--accent); z-index: 10; transition: width 0.4s ease; }
+
+/* ── Present button ── */
+.present-btn { position: absolute; bottom: 70px; right: 40px; z-index: 20; display: flex; align-items: center; gap: 8px; padding: 12px 24px; background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.35); border-radius: 8px; color: var(--accent); font-family: var(--sans); font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.25s ease; backdrop-filter: blur(8px); }
+.present-btn:hover { background: rgba(16,185,129,0.22); border-color: var(--accent); }
+.present-btn .kbd { font-size: 12px; font-weight: 700; padding: 2px 6px; border-radius: 4px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); color: rgba(235,231,223,0.5); margin-left: 4px; }
+
+/* ── Fullscreen ── */
+:fullscreen .present-btn, :-webkit-full-screen .present-btn, .is-fullscreen .present-btn { display: none; }
+:fullscreen .bottom-bar, :-webkit-full-screen .bottom-bar, .is-fullscreen .bottom-bar { opacity: 0; transition: opacity 0.3s; }
+:fullscreen .bottom-bar:hover, :-webkit-full-screen .bottom-bar:hover, .is-fullscreen .bottom-bar:hover { opacity: 1; }
+:fullscreen, :fullscreen * { cursor: none; }
+:fullscreen.cursor-active, :fullscreen.cursor-active * { cursor: default; }
+
+/* ── Bar chart animation ── */
+@keyframes growBar { from { width: 0%; } to { width: var(--bar-width); } }
+@keyframes drawLine { from { stroke-dashoffset: 600; } to { stroke-dashoffset: 0; } }
+</style>
+</head>
+<body>
+
+<div class="deck-canvas" id="deckCanvas">
+
+<!-- Gradient Mesh -->
+<div class="mesh">
+  <div class="mesh-layer mesh-1"></div>
+  <div class="mesh-layer mesh-2"></div>
+</div>
+
+<!-- Progress Bar -->
+<div class="progress-bar" id="progress"></div>
+
+<!-- ═══ SLIDE 1: TITLE ═══ -->
+<div class="slide active" data-slide="0">
+  <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;height:100%;">
+    <div class="fade-up" style="font-family:var(--sans);font-size:140px;font-weight:700;color:var(--text);letter-spacing:-0.03em;line-height:1;">bysamotto</div>
+    <div class="fade-up" style="width:80px;height:3px;background:var(--accent);margin:40px 0;"></div>
+    <div class="fade-up" style="font-family:var(--sans);font-size:32px;font-weight:400;color:var(--text-sub);letter-spacing:0.04em;">the growth engine for creators</div>
+    <div class="fade-up" style="position:absolute;bottom:100px;font-size:20px;letter-spacing:0.2em;text-transform:uppercase;color:var(--text-muted);">Canyon Challenge · Grand Canyon University · 2026</div>
+  </div>
+</div>
+
+<!-- ═══ SLIDE 2: PROBLEM ═══ -->
+<div class="slide" data-slide="1" data-splash="Problem">
+  <div class="section-title-splash"><div class="splash-text"></div></div>
+  <div class="slide-content" style="align-items:center;text-align:center;">
+    <div class="slide-label fade-up">problem</div>
+
+    <div class="fade-up" style="margin-bottom:72px;">
+      <div style="font-family:var(--serif);font-size:72px;font-weight:600;color:var(--text);line-height:1.15;">Creators spend <span style="color:#C0392B;">$1,146/mo</span> on tools.</div>
+      <div style="font-family:var(--serif);font-size:72px;font-weight:600;color:#C0392B;line-height:1.15;">Not one drives growth.</div>
+    </div>
+
+    <div style="display:flex;gap:100px;justify-content:center;margin-bottom:80px;">
+      <div class="fade-up" style="text-align:center;">
+        <div style="font-family:var(--serif);font-size:80px;font-weight:700;color:#C0392B;">15</div>
+        <div style="font-size:24px;color:var(--text-muted);">tools</div>
+      </div>
+      <div class="fade-up" style="text-align:center;">
+        <div style="font-family:var(--serif);font-size:80px;font-weight:700;color:#C0392B;">$0</div>
+        <div style="font-size:24px;color:var(--text-muted);">attributed</div>
+      </div>
+      <div class="fade-up" style="text-align:center;">
+        <div style="font-family:var(--serif);font-size:80px;font-weight:700;color:#C0392B;">0</div>
+        <div style="font-size:24px;color:var(--text-muted);">strategy</div>
+      </div>
+    </div>
+
+    <div class="fade-up" style="font-family:var(--serif);font-size:44px;font-weight:500;color:var(--text);">They built the audience. <span class="accent">Nobody built them the engine.</span></div>
+  </div>
+</div>
+
+<!-- ═══ SLIDE 3: TARGET MARKET ═══ -->
+<div class="slide" data-slide="2" data-splash="Market">
+  <div class="section-title-splash"><div class="splash-text"></div></div>
+  <!-- Background visual: massive dollar sign watermark -->
+  <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;z-index:0;">
+    <div style="font-family:var(--serif);font-size:800px;font-weight:700;color:rgba(16,185,129,0.04);line-height:1;user-select:none;">$</div>
+  </div>
+  <!-- Background circles representing creator scale -->
+  <div style="position:absolute;inset:0;pointer-events:none;z-index:0;overflow:hidden;">
+    <div style="position:absolute;width:600px;height:600px;border-radius:50%;border:1px solid rgba(16,185,129,0.08);top:50%;left:50%;transform:translate(-50%,-50%);"></div>
+    <div style="position:absolute;width:900px;height:900px;border-radius:50%;border:1px solid rgba(16,185,129,0.05);top:50%;left:50%;transform:translate(-50%,-50%);"></div>
+    <div style="position:absolute;width:1200px;height:1200px;border-radius:50%;border:1px solid rgba(16,185,129,0.03);top:50%;left:50%;transform:translate(-50%,-50%);"></div>
+  </div>
+  <div class="slide-content" style="align-items:center;text-align:center;position:relative;z-index:1;">
+    <div class="slide-label fade-up">target market</div>
+    <div class="fade-up" style="font-family:var(--serif);font-size:120px;font-weight:700;color:var(--accent);line-height:1;">1.8M</div>
+    <div class="fade-up" style="font-size:36px;color:var(--text-sub);margin-bottom:48px;">mid-tier creators (10K–500K followers)</div>
+    <div class="fade-up" style="font-size:30px;color:var(--text-sub);margin-bottom:8px;">each spending <span style="color:var(--text);font-weight:600;">$1,146/mo</span> on disconnected tools</div>
+    <div class="fade-up" style="font-family:var(--serif);font-size:160px;font-weight:700;color:var(--text);line-height:1;margin-top:32px;">$24B/yr</div>
+    <div class="fade-up" style="font-size:30px;color:var(--text-sub);">spent with no strategy, no attribution, no growth</div>
+    <div class="fade-up" style="font-size:22px;color:var(--text-muted);margin-top:40px;font-style:italic;">stuck between hobby and empire</div>
+  </div>
+</div>
+
+<!-- ═══ SLIDE 4: SOLUTION ═══ -->
+<div class="slide" data-slide="3" data-splash="Solution">
+  <div class="section-title-splash"><div class="splash-text"></div></div>
+  <div class="slide-content" style="padding:60px 100px;">
+    <div style="display:flex;gap:48px;align-items:center;width:100%;">
+      <!-- Left: Text (narrower) -->
+      <div style="flex:0 0 38%;">
+        <div class="slide-label fade-up">solution</div>
+        <div class="fade-up" style="font-family:var(--serif);font-size:64px;font-weight:500;color:var(--text);line-height:1.1;margin-bottom:36px;">One platform.<br><span class="accent">Total growth engine.</span></div>
+        <div class="fade-up" style="display:flex;flex-direction:column;gap:12px;margin-top:24px;">
+          <div style="border-left:4px solid var(--accent);padding:12px 20px;background:rgba(16,185,129,0.04);border-radius:0 10px 10px 0;">
+            <div style="font-size:26px;font-weight:600;color:var(--text);">🌐 Custom Website</div>
+            <div style="font-size:18px;color:var(--text-muted);margin-top:2px;">Tracked links & brand codes</div>
+          </div>
+          <div style="border-left:4px solid var(--purple);padding:12px 20px;background:rgba(124,106,247,0.04);border-radius:0 10px 10px 0;">
+            <div style="font-size:26px;font-weight:600;color:var(--text);">📊 Unified Analytics</div>
+            <div style="font-size:18px;color:var(--text-muted);margin-top:2px;">IG, TikTok, YouTube — one view</div>
+          </div>
+          <div style="border-left:4px solid var(--gold);padding:12px 20px;background:rgba(245,158,11,0.04);border-radius:0 10px 10px 0;">
+            <div style="font-size:26px;font-weight:600;color:var(--text);">🤖 AI Strategist</div>
+            <div style="font-size:18px;color:var(--text-muted);margin-top:2px;">Reads your data, tells you what to post</div>
+          </div>
+          <div style="border-left:4px solid var(--blue);padding:12px 20px;background:rgba(79,142,247,0.04);border-radius:0 10px 10px 0;">
+            <div style="font-size:26px;font-weight:600;color:var(--text);">📬 Weekly Briefings</div>
+            <div style="font-size:18px;color:var(--text-muted);margin-top:2px;">Every Monday: insights + next moves</div>
+          </div>
+        </div>
+        <div class="fade-up" style="font-size:22px;color:var(--accent);font-weight:600;margin-top:28px;">Live in 72 hours. Done for you.</div>
+      </div>
+      <!-- Right: Video (larger) -->
+      <div class="fade-up" style="flex:1;">
+        <div class="video-wrap" style="box-shadow:0 12px 60px rgba(16,185,129,0.12),0 4px 20px rgba(0,0,0,0.5);">
+          <video muted loop playsinline autoplay id="demoVideo" preload="auto" style="display:block;width:100%;"><source src="/pitch/solution-video.mp4" type="video/mp4"></video>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SLIDE 5: COMPARISON GRID ═══ -->
+<div class="slide" data-slide="4">
+  <div class="slide-content" style="align-items:center;">
+    <div class="comp-grid fade-up" style="max-width:1400px;">
+      <!-- Header row -->
+      <div class="comp-cell header" style="justify-content:flex-start;"></div>
+      <div class="comp-cell header">Custom Site</div>
+      <div class="comp-cell header">Analytics</div>
+      <div class="comp-cell header">AI Strategy</div>
+      <div class="comp-cell header">Attribution</div>
+      <div class="comp-cell header">Growth Engine</div>
+      <!-- Linktree -->
+      <div class="comp-cell label">Linktree</div>
+      <div class="comp-cell"><span class="cross">✕</span></div>
+      <div class="comp-cell"><span class="cross">✕</span></div>
+      <div class="comp-cell"><span class="cross">✕</span></div>
+      <div class="comp-cell"><span class="cross">✕</span></div>
+      <div class="comp-cell" style="font-size:24px;color:var(--text-muted);">Fair</div>
+      <!-- Stan Store -->
+      <div class="comp-cell label">Stan Store</div>
+      <div class="comp-cell"><span class="cross">✕</span></div>
+      <div class="comp-cell"><span class="cross">✕</span></div>
+      <div class="comp-cell"><span class="cross">✕</span></div>
+      <div class="comp-cell"><span class="cross">✕</span></div>
+      <div class="comp-cell" style="font-size:24px;color:var(--text-muted);">Fair</div>
+      <!-- Metricool -->
+      <div class="comp-cell label">Metricool</div>
+      <div class="comp-cell"><span class="cross">✕</span></div>
+      <div class="comp-cell"><span class="check">✓</span></div>
+      <div class="comp-cell"><span class="cross">✕</span></div>
+      <div class="comp-cell"><span class="cross">✕</span></div>
+      <div class="comp-cell" style="font-size:24px;color:var(--text-muted);">Good</div>
+      <!-- bysamotto -->
+      <div class="comp-cell winner label">bysamotto</div>
+      <div class="comp-cell winner"><span class="check">✓</span></div>
+      <div class="comp-cell winner"><span class="check">✓</span></div>
+      <div class="comp-cell winner"><span class="check">✓</span></div>
+      <div class="comp-cell winner"><span class="check">✓</span></div>
+      <div class="comp-cell winner" style="font-family:var(--serif);font-size:36px;font-weight:700;">VERY.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SLIDE 6: PROOF — MANDI BAGLEY ═══ -->
+<div class="slide" data-slide="5" data-splash="Proof">
+  <div class="section-title-splash"><div class="splash-text"></div></div>
+  <div class="slide-content" style="padding:60px 100px;">
+    <div style="display:flex;gap:56px;align-items:center;width:100%;">
+
+      <!-- Left: Mandi + funnel image -->
+      <div style="flex:1;display:flex;flex-direction:column;align-items:flex-start;">
+        <div class="fade-up" style="font-size:20px;color:var(--text-muted);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:8px;">case study</div>
+        <div class="fade-up" style="font-family:var(--sans);font-size:32px;font-weight:600;color:var(--text);margin-bottom:4px;">Mandi Bagley</div>
+        <div class="fade-up" style="font-size:20px;color:var(--text-muted);margin-bottom:32px;">1M+ followers · 64M TikTok likes</div>
+        <div class="fade-up" style="width:100%;">
+          <img src="/pitch/mandi-funnel.png" style="width:100%;border-radius:16px;border:1px solid var(--border);box-shadow:0 12px 60px rgba(0,0,0,0.5);">
+        </div>
+      </div>
+
+      <!-- Right: Numbers stacked -->
+      <div style="flex:0 0 44%;display:flex;flex-direction:column;justify-content:center;">
+        <div class="fade-up" style="margin-bottom:20px;">
+          <div style="font-family:var(--serif);font-size:110px;font-weight:700;color:#C0392B;line-height:1;">$0</div>
+          <div style="font-size:22px;color:var(--text-muted);margin-top:-2px;">revenue tracked — before</div>
+        </div>
+
+        <div class="fade-up" style="margin-bottom:20px;">
+          <div style="font-family:var(--serif);font-size:110px;font-weight:700;color:var(--accent);line-height:1;">11,224</div>
+          <div style="font-size:22px;color:var(--text-muted);margin-top:-2px;">visitors driven to her platform</div>
+        </div>
+
+        <div class="fade-up" style="margin-bottom:20px;">
+          <div style="font-family:var(--serif);font-size:110px;font-weight:700;color:var(--gold);line-height:1;">787</div>
+          <div style="font-size:22px;color:var(--text-muted);margin-top:-2px;">converted to revenue</div>
+        </div>
+
+        <div class="fade-up" style="display:flex;gap:32px;margin-top:16px;margin-bottom:24px;">
+          <div style="text-align:center;">
+            <div style="font-family:var(--serif);font-size:36px;font-weight:600;color:var(--accent);">61%</div>
+            <div style="font-size:18px;color:var(--text-muted);">from Instagram</div>
+          </div>
+          <div style="width:1px;background:rgba(255,248,220,0.1);"></div>
+          <div style="text-align:center;">
+            <div style="font-family:var(--serif);font-size:36px;font-weight:600;color:var(--accent);">3 days</div>
+            <div style="font-size:18px;color:var(--text-muted);">to launch</div>
+          </div>
+          <div style="width:1px;background:rgba(255,248,220,0.1);"></div>
+          <div style="text-align:center;">
+            <div style="font-family:var(--serif);font-size:36px;font-weight:600;color:var(--accent);">Live</div>
+            <div style="font-size:18px;color:var(--text-muted);">AI active</div>
+          </div>
+        </div>
+
+        <div class="fade-up" style="font-size:24px;color:var(--text-muted);font-style:italic;">Real data. Not projections.</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SLIDE 7: BUSINESS MODEL ═══ -->
+<div class="slide" data-slide="6" data-splash="Revenue">
+  <div class="section-title-splash"><div class="splash-text"></div></div>
+  <div class="slide-content">
+    <div style="display:flex;gap:60px;align-items:center;width:100%;">
+      <!-- Left: Tiers -->
+      <div style="flex:1;">
+        <div class="slide-label fade-up">business model</div>
+
+        <!-- Brand Site tier -->
+        <div class="fade-up" style="background:rgba(255,248,220,0.02);border:1px solid var(--border);border-radius:16px;padding:32px;margin-bottom:20px;">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:16px;">
+            <div style="font-size:32px;font-weight:700;color:var(--text);">Brand Site</div>
+            <div><span style="font-family:var(--serif);font-size:36px;font-weight:600;color:var(--text);">$400–500</span> <span style="font-size:20px;color:var(--text-muted);">setup</span> <span style="font-size:28px;font-weight:600;color:var(--text-sub);margin-left:8px;">+ $49/mo</span></div>
+          </div>
+          <div style="font-size:22px;color:var(--text-muted);line-height:1.6;">Custom website · Tracked links · Brand code tracking · Basic analytics</div>
+        </div>
+
+        <!-- Full Platform tier -->
+        <div class="fade-up" style="background:rgba(16,185,129,0.06);border:1px solid var(--accent-border);border-radius:16px;padding:32px;position:relative;">
+          <div style="position:absolute;top:16px;right:24px;background:var(--accent);color:#090907;font-size:14px;font-weight:700;padding:4px 12px;border-radius:20px;letter-spacing:0.06em;">FLAGSHIP</div>
+          <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:16px;">
+            <div style="font-size:32px;font-weight:700;color:var(--accent);">Full Platform</div>
+            <div><span style="font-family:var(--serif);font-size:36px;font-weight:600;color:var(--text);">$1,500–2,000</span> <span style="font-size:20px;color:var(--text-muted);">setup</span> <span style="font-size:28px;font-weight:600;color:var(--accent);margin-left:8px;">+ $150/mo</span></div>
+          </div>
+          <div style="font-size:22px;color:var(--text-sub);line-height:1.6;">Everything in Brand Site, plus:<br>AI Strategist · Content Planner · Unified Dashboard (IG, TikTok, YouTube)<br>Weekly AI Briefings · Lead Tracking · Caption Generator · Automations</div>
+        </div>
+      </div>
+
+      <!-- Right: Margin -->
+      <div class="fade-up" style="flex:0 0 400px;text-align:center;">
+        <div style="font-family:var(--serif);font-size:160px;font-weight:700;color:var(--accent);line-height:1;">85%</div>
+        <div style="font-size:28px;color:var(--text-sub);margin-bottom:40px;">gross margin</div>
+        <!-- Simple bar chart -->
+        <div style="display:flex;align-items:flex-end;justify-content:center;gap:40px;height:200px;">
+          <div style="text-align:center;">
+            <div style="font-size:24px;font-weight:600;color:var(--text-muted);margin-bottom:8px;">$22</div>
+            <div style="width:100px;height:40px;background:rgba(192,57,43,0.3);border-radius:8px 8px 0 0;"></div>
+            <div style="font-size:18px;color:var(--text-muted);margin-top:8px;">cost</div>
+          </div>
+          <div style="text-align:center;">
+            <div style="font-size:24px;font-weight:600;color:var(--accent);margin-bottom:8px;">$150</div>
+            <div style="width:100px;height:180px;background:var(--accent);border-radius:8px 8px 0 0;opacity:0.8;"></div>
+            <div style="font-size:18px;color:var(--text-muted);margin-top:8px;">revenue</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SLIDE 8: GO-TO-MARKET ═══ -->
+<div class="slide" data-slide="7" data-splash="Growth">
+  <div class="section-title-splash"><div class="splash-text"></div></div>
+  <div class="slide-content" style="align-items:center;text-align:center;">
+    <div class="slide-label fade-up">go-to-market</div>
+
+    <!-- Timeline flow -->
+    <div style="display:flex;align-items:center;justify-content:center;gap:0;width:100%;max-width:1500px;margin-bottom:64px;">
+
+      <!-- Phase 1 -->
+      <div class="fade-up" style="flex:1;text-align:center;">
+        <div style="width:80px;height:80px;border-radius:50%;background:rgba(16,185,129,0.12);border:2px solid var(--accent);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-family:var(--serif);font-size:36px;font-weight:700;color:var(--accent);">1</div>
+        <div style="font-family:var(--serif);font-size:44px;font-weight:600;color:var(--text);margin-bottom:12px;">Prove</div>
+        <div style="font-size:22px;color:var(--text-sub);">Direct outreach</div>
+        <div style="font-size:22px;color:var(--text-sub);">Portfolio demos</div>
+        <div style="font-size:20px;color:var(--accent);font-style:italic;margin-top:12px;">mandibagley.com as proof</div>
+      </div>
+
+      <!-- Arrow -->
+      <div class="fade-up" style="flex:0 0 80px;display:flex;align-items:center;justify-content:center;margin-top:-60px;">
+        <svg width="60" height="24" viewBox="0 0 60 24" fill="none"><path d="M0 12h52m0 0l-8-8m8 8l-8 8" stroke="rgba(16,185,129,0.4)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+
+      <!-- Phase 2 -->
+      <div class="fade-up" style="flex:1;text-align:center;">
+        <div style="width:80px;height:80px;border-radius:50%;background:rgba(16,185,129,0.12);border:2px solid var(--accent);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-family:var(--serif);font-size:36px;font-weight:700;color:var(--accent);">2</div>
+        <div style="font-family:var(--serif);font-size:44px;font-weight:600;color:var(--text);margin-bottom:12px;">Multiply</div>
+        <div style="font-size:22px;color:var(--text-sub);">Referral program</div>
+        <div style="font-size:22px;color:var(--text-sub);">Case study library</div>
+        <div style="font-size:20px;color:var(--accent);font-style:italic;margin-top:12px;">every client is a billboard</div>
+      </div>
+
+      <!-- Arrow -->
+      <div class="fade-up" style="flex:0 0 80px;display:flex;align-items:center;justify-content:center;margin-top:-60px;">
+        <svg width="60" height="24" viewBox="0 0 60 24" fill="none"><path d="M0 12h52m0 0l-8-8m8 8l-8 8" stroke="rgba(16,185,129,0.4)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+
+      <!-- Phase 3 -->
+      <div class="fade-up" style="flex:1;text-align:center;">
+        <div style="width:80px;height:80px;border-radius:50%;background:rgba(16,185,129,0.12);border:2px solid var(--accent);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-family:var(--serif);font-size:36px;font-weight:700;color:var(--accent);">3</div>
+        <div style="font-family:var(--serif);font-size:44px;font-weight:600;color:var(--text);margin-bottom:12px;">Automate</div>
+        <div style="font-size:22px;color:var(--text-sub);">Self-serve onboarding</div>
+        <div style="font-size:22px;color:var(--text-sub);">Creator partnerships</div>
+        <div style="font-size:20px;color:var(--accent);font-style:italic;margin-top:12px;">scale without headcount</div>
+      </div>
+
+    </div>
+
+    <div class="fade-up" style="font-family:var(--serif);font-size:36px;font-weight:500;color:var(--text-sub);">Built to compound. <span class="accent">Every client sells the next one.</span></div>
+  </div>
+</div>
+
+<!-- ═══ SLIDE 9: THE ASK ═══ -->
+<div class="slide" data-slide="8" data-splash="Ask">
+  <div class="section-title-splash"><div class="splash-text"></div></div>
+  <div class="slide-content" style="align-items:center;text-align:center;">
+    <div class="slide-label fade-up">the ask</div>
+    <div class="fade-up" style="font-family:var(--serif);font-size:140px;font-weight:700;color:var(--accent);line-height:1;margin-bottom:48px;">$5,000</div>
+
+    <div style="display:flex;gap:40px;justify-content:center;margin-bottom:56px;">
+      <div class="fade-up" style="text-align:center;max-width:300px;">
+        <div style="font-family:var(--serif);font-size:44px;font-weight:600;color:var(--text);">$2,500</div>
+        <div style="font-size:22px;color:var(--text-muted);margin-top:8px;">Client acquisition<br>& lead generation</div>
+      </div>
+      <div style="width:1px;background:rgba(255,248,220,0.1);"></div>
+      <div class="fade-up" style="text-align:center;max-width:300px;">
+        <div style="font-family:var(--serif);font-size:44px;font-weight:600;color:var(--text);">$1,500</div>
+        <div style="font-size:22px;color:var(--text-muted);margin-top:8px;">Automated onboarding<br>tooling</div>
+      </div>
+      <div style="width:1px;background:rgba(255,248,220,0.1);"></div>
+      <div class="fade-up" style="text-align:center;max-width:300px;">
+        <div style="font-family:var(--serif);font-size:44px;font-weight:600;color:var(--text);">$1,000</div>
+        <div style="font-size:22px;color:var(--text-muted);margin-top:8px;">Legal, contracts<br>& terms of service</div>
+      </div>
+    </div>
+
+    <div class="fade-up" style="display:flex;gap:48px;justify-content:center;align-items:baseline;margin-top:8px;">
+      <div style="text-align:center;">
+        <div style="font-family:var(--serif);font-size:56px;font-weight:700;color:var(--text);">20</div>
+        <div style="font-size:20px;color:var(--text-muted);">clients year one</div>
+      </div>
+      <div style="font-family:var(--serif);font-size:36px;color:var(--text-muted);">→</div>
+      <div style="text-align:center;">
+        <div style="font-family:var(--serif);font-size:56px;font-weight:700;color:var(--accent);">$36K</div>
+        <div style="font-size:20px;color:var(--text-muted);">annual recurring revenue</div>
+      </div>
+      <div style="font-family:var(--serif);font-size:36px;color:var(--text-muted);">→</div>
+      <div style="text-align:center;">
+        <div style="font-family:var(--serif);font-size:56px;font-weight:700;color:var(--accent);">7x</div>
+        <div style="font-size:20px;color:var(--text-muted);">return on $5K</div>
+      </div>
+    </div>
+    <div class="fade-up" style="font-size:24px;color:var(--text-muted);margin-top:32px;">Sam Otto, Founder · Tim Blake, Advisor</div>
+  </div>
+</div>
+
+<!-- ═══ SLIDE 10: CLOSING ═══ -->
+<div class="slide" data-slide="9">
+  <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;height:100%;">
+    <div class="fade-up" style="font-family:var(--serif);font-size:52px;font-weight:500;color:var(--text-muted);margin-bottom:32px;">Creators built the audience.</div>
+    <div class="fade-up" style="font-family:var(--sans);font-size:140px;font-weight:700;color:var(--text);letter-spacing:-0.03em;line-height:1;">bysamotto</div>
+    <div class="fade-up" style="width:80px;height:3px;background:var(--accent);margin:40px 0;"></div>
+    <div class="fade-up" style="font-family:var(--serif);font-size:52px;font-weight:600;color:var(--accent);">builds the engine.</div>
+    <div class="fade-up" style="margin-top:56px;display:flex;align-items:center;gap:28px;">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <div style="width:6px;height:6px;border-radius:50%;background:var(--accent);"></div>
+        <div style="font-size:24px;font-weight:600;color:var(--text-muted);">bysamotto.com</div>
+      </div>
+      <div style="width:1px;height:20px;background:rgba(255,248,220,0.12);"></div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <div style="width:6px;height:6px;border-radius:50%;background:var(--accent);"></div>
+        <div style="font-size:24px;color:var(--text-muted);">Sam Otto</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Present Button -->
+<button class="present-btn" id="presentBtn" onclick="enterPresent()" title="Enter presentation mode (fullscreen)">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+  Present <span class="kbd">F</span>
+</button>
+
+<!-- Bottom Bar -->
+<div class="bottom-bar">
+  <div>Sam Otto · bysamotto.com</div>
+  <div class="slide-counter"><span id="slideNum">1</span> / 10</div>
+  <div>← → to navigate</div>
+</div>
+
+</div><!-- /deck-canvas -->
+
+<script>
+// ── Scale deck canvas to fit any screen/display ──
+(function() {
+  var canvas = document.getElementById('deckCanvas');
+  var DESIGN_W = 1920, DESIGN_H = 1080;
+  function scaleCanvas() {
+    var winW = window.innerWidth, winH = window.innerHeight;
+    var scale = Math.min(winW / DESIGN_W, winH / DESIGN_H);
+    canvas.style.transform = 'translate(-50%, -50%) scale(' + scale + ')';
+  }
+  scaleCanvas();
+  window.addEventListener('resize', scaleCanvas);
+  document.addEventListener('fullscreenchange', function() { setTimeout(scaleCanvas, 100); });
+})();
+</script>
+
+<script>
+var current = 0;
+var total = 10;
+var slides = document.querySelectorAll('.slide');
+var splashPlaying = false;
+
+function goTo(n) {
+  if (n < 0 || n >= total || splashPlaying) return;
+  var prev = current;
+  current = n;
+
+  // Splash animation for slides with data-splash
+  var nextSlide = slides[current];
+  var splashAttr = nextSlide.getAttribute('data-splash');
+  if (splashAttr && prev !== current) {
+    var splashEl = nextSlide.querySelector('.section-title-splash');
+    var splashText = splashEl ? splashEl.querySelector('.splash-text') : null;
+    if (splashEl && splashText) {
+      splashPlaying = true;
+      splashText.textContent = splashAttr;
+
+      // Hide previous slide
+      slides[prev].classList.remove('active');
+      slides[prev].classList.add('exit-up');
+
+      // Show splash
+      splashEl.classList.add('playing');
+      nextSlide.classList.add('active');
+
+      // After splash, reveal content
+      setTimeout(function() {
+        splashEl.classList.remove('playing');
+        var content = nextSlide.querySelector('.slide-content');
+        if (content) content.classList.add('revealed');
+        // Animate headlines
+        nextSlide.querySelectorAll('.slide-headline').forEach(function(h, i) {
+          setTimeout(function() { h.classList.add('animate-in'); }, i * 120);
+        });
+        splashPlaying = false;
+      }, 700);
+
+      slides[prev].classList.remove('exit-up');
+      document.getElementById('slideNum').textContent = current + 1;
+      document.getElementById('progress').style.width = ((current + 1) / total * 100) + '%';
+      return;
+    }
+  }
+
+  slides[prev].classList.remove('active');
+  slides[prev].classList.add('exit-up');
+  setTimeout(function() { slides[prev].classList.remove('exit-up'); }, 600);
+
+  nextSlide.classList.add('active');
+  var content = nextSlide.querySelector('.slide-content');
+  if (content) content.classList.add('revealed');
+
+  document.getElementById('slideNum').textContent = current + 1;
+  document.getElementById('progress').style.width = ((current + 1) / total * 100) + '%';
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); goTo(current + 1); }
+  if (e.key === 'ArrowLeft') { e.preventDefault(); goTo(current - 1); }
+  if (e.key === 'f' || e.key === 'F') {
+    if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+    else document.exitFullscreen();
+  }
+});
+
+// Touch support
+var touchStartX = 0;
+document.addEventListener('touchstart', function(e) { touchStartX = e.touches[0].clientX; });
+document.addEventListener('touchend', function(e) {
+  var diff = e.changedTouches[0].clientX - touchStartX;
+  if (Math.abs(diff) > 50) { diff < 0 ? goTo(current + 1) : goTo(current - 1); }
+});
+
+// ── Present mode ──
+function enterPresent() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(function(){});
+  }
+}
+
+// Cursor auto-hide in fullscreen
+var cursorTimer;
+function resetCursorTimer() {
+  document.documentElement.classList.add('cursor-active');
+  clearTimeout(cursorTimer);
+  cursorTimer = setTimeout(function() {
+    if (document.fullscreenElement) {
+      document.documentElement.classList.remove('cursor-active');
+    }
+  }, 3000);
+}
+document.addEventListener('mousemove', resetCursorTimer);
+document.addEventListener('fullscreenchange', function() {
+  if (document.fullscreenElement) {
+    document.body.classList.add('is-fullscreen');
+    resetCursorTimer();
+  } else {
+    document.body.classList.remove('is-fullscreen');
+    document.documentElement.classList.add('cursor-active');
+    clearTimeout(cursorTimer);
+  }
+});
+
+// Init
+document.getElementById('progress').style.width = (1 / total * 100) + '%';
+</script>
+</body>
+</html>
