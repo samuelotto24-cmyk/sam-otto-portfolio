@@ -4533,8 +4533,7 @@
 }
 /* Responsive preview grids */
 @media (max-width: 640px) {
-  .preview-comparison,
-  .preview-capabilities { grid-template-columns: 1fr !important; }
+  .preview-comparison { grid-template-columns: 1fr !important; }
 }
 .preview-share {
   margin-top: 12px;
@@ -7182,7 +7181,7 @@ function showInlinePreview() {
     + '<div class="preview-header">'
     + '<div class="preview-header-label">Your Preview</div>'
     + '<h2 class="preview-header-title">Let\'s compare, <em style="color:' + safeAccent + '">' + firstName + '</em></h2>'
-    + '<div style="font-size:13px;color:var(--text-sub);max-width:520px;margin:12px auto 0;line-height:1.6">On the left is what your followers see right now. On the right is what I\'d build you.</div>'
+    + '<div style="font-size:13px;color:var(--text-sub);max-width:520px;margin:12px auto 0;line-height:1.6">On the left is what your followers see right now. On the right is a simplified demo of what I\'d build you — the real thing is fully custom. Scroll down to see everything that comes with it.</div>'
     + '</div>'
 
     // ── SIDE BY SIDE ──
@@ -7332,73 +7331,86 @@ function showInlinePreview() {
     + '</div>'
 
     // ── TRANSITION ──
-    + '<div style="text-align:center;max-width:600px;margin:0 auto 40px">'
-    + '<div style="font-family:var(--serif);font-size:clamp(20px,3vw,28px);font-weight:500;color:var(--text);line-height:1.2;margin-bottom:8px">And that\'s just the website.</div>'
-    + '<div style="font-size:13px;color:var(--text-sub);line-height:1.6">Your platform also includes a private analytics dashboard, an AI strategist that reads your data, automated lead capture, and a weekly strategy briefing.</div>'
+    + '<div style="text-align:center;max-width:600px;margin:0 auto 48px;padding-top:8px">'
+    + '<div style="font-family:var(--serif);font-size:clamp(22px,3vw,32px);font-weight:500;color:var(--text);line-height:1.2;margin-bottom:8px">And that\'s just the website.</div>'
+    + '<div style="font-size:13px;color:var(--text-sub);line-height:1.6">Here\'s everything else that comes with your platform.</div>'
     + '</div>'
 
-    // ── CAPABILITIES GRID ──
-    + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:900px;margin:0 auto 40px" class="preview-capabilities">'
+    // ── CAPABILITIES FLOW — vertical numbered cards ──
+    + '<div style="max-width:640px;margin:0 auto 48px;display:flex;flex-direction:column;gap:0;position:relative">'
 
-      // Analytics Dashboard
-      + '<div style="background:#0a0a0a;border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:20px;overflow:hidden">'
-      + '<div style="font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:' + safeAccent + ';margin-bottom:12px">YOUR ANALYTICS DASHBOARD</div>'
-      + '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px">'
-      + '<div style="text-align:center;padding:12px;background:rgba(255,255,255,0.03);border-radius:8px"><div style="font-family:\'Cormorant Garamond\',serif;font-size:22px;font-weight:600;color:#f0f0f0">' + fmtFollowers + '</div><div style="font-size:9px;text-transform:uppercase;letter-spacing:0.08em;color:rgba(255,255,255,0.35);margin-top:2px">Followers</div></div>'
-      + '<div style="text-align:center;padding:12px;background:rgba(255,255,255,0.03);border-radius:8px"><div style="font-family:\'Cormorant Garamond\',serif;font-size:22px;font-weight:600;color:#f0f0f0">' + eng + '%</div><div style="font-size:9px;text-transform:uppercase;letter-spacing:0.08em;color:rgba(255,255,255,0.35);margin-top:2px">Engagement</div></div>'
-      + '<div style="text-align:center;padding:12px;background:rgba(255,255,255,0.03);border-radius:8px"><div style="font-family:\'Cormorant Garamond\',serif;font-size:22px;font-weight:600;color:#f0f0f0">' + fmtNum(views) + '</div><div style="font-size:9px;text-transform:uppercase;letter-spacing:0.08em;color:rgba(255,255,255,0.35);margin-top:2px">Weekly Views</div></div>'
-      + '</div>'
-      + '<div style="display:flex;gap:6px">'
-      + ['<i class="fa-brands fa-youtube" style="color:#FF0000"></i> YouTube', '<i class="fa-brands fa-instagram" style="color:#E1306C"></i> Instagram', '<i class="fa-brands fa-tiktok"></i> TikTok'].map(function(p) {
-          return '<div style="flex:1;padding:8px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:8px;text-align:center;font-size:9px;color:rgba(255,255,255,0.5)">' + p + '</div>';
-        }).join('')
-      + '</div>'
-      + '</div>'
+    // Vertical connecting line
+    + '<div style="position:absolute;left:19px;top:40px;bottom:40px;width:2px;background:linear-gradient(180deg,' + safeAccent + ',#7C6AF7,#F59E0B,#10B981);opacity:0.2;border-radius:1px"></div>'
 
-      // AI Strategist
-      + '<div style="background:#0a0a0a;border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:20px;overflow:hidden">'
-      + '<div style="font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#7C6AF7;margin-bottom:12px">YOUR AI STRATEGIST</div>'
-      + '<div style="background:rgba(124,106,247,0.08);border:1px solid rgba(124,106,247,0.15);border-radius:10px;padding:14px;margin-bottom:12px">'
-      + '<div style="font-size:12px;color:rgba(255,255,255,0.6);line-height:1.5;font-style:italic">"Your reels are outperforming carousels 3:1 this week. Double down on short-form — your audience is responding."</div>'
-      + '</div>'
-      + '<div style="display:flex;gap:6px">'
-      + suggestions.map(function(s, i) {
-          var days = ['MON', 'WED', 'FRI'];
-          return '<div style="flex:1;background:rgba(245,158,11,0.06);border:1px solid rgba(245,158,11,0.15);border-radius:8px;padding:8px;text-align:center"><div style="font-size:8px;font-weight:700;letter-spacing:0.1em;color:rgba(245,158,11,0.5)">' + days[i] + '</div><div style="font-size:10px;color:rgba(255,255,255,0.5);margin-top:4px;line-height:1.3">' + s + '</div></div>';
-        }).join('')
-      + '</div>'
-      + '</div>'
+    // ── 1. Analytics Dashboard ──
+    + '<div style="display:flex;gap:20px;align-items:flex-start;padding:24px 0">'
+    + '<div style="flex-shrink:0;width:40px;height:40px;border-radius:50%;background:' + safeAccent + ';display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#fff;position:relative;z-index:1">1</div>'
+    + '<div style="flex:1;background:rgba(16,185,129,0.04);border:1px solid rgba(16,185,129,0.12);border-left:3px solid ' + safeAccent + ';border-radius:0 14px 14px 0;padding:20px">'
+    + '<div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px">Private Analytics Dashboard</div>'
+    + '<div style="font-size:11px;color:var(--text-sub);line-height:1.6;margin-bottom:14px">YouTube, Instagram, TikTok, and your website — all in one private dashboard with live data.</div>'
+    + '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">'
+    + '<div style="text-align:center;padding:10px;background:rgba(255,255,255,0.03);border-radius:8px"><div style="font-family:var(--serif);font-size:20px;font-weight:600;color:var(--text)">' + fmtFollowers + '</div><div style="font-size:8px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em;margin-top:2px">Followers</div></div>'
+    + '<div style="text-align:center;padding:10px;background:rgba(255,255,255,0.03);border-radius:8px"><div style="font-family:var(--serif);font-size:20px;font-weight:600;color:var(--text)">' + eng + '%</div><div style="font-size:8px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em;margin-top:2px">Engagement</div></div>'
+    + '<div style="text-align:center;padding:10px;background:rgba(255,255,255,0.03);border-radius:8px"><div style="font-family:var(--serif);font-size:20px;font-weight:600;color:var(--text)">' + fmtNum(views) + '</div><div style="font-size:8px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em;margin-top:2px">Weekly Views</div></div>'
+    + '</div>'
+    + '</div>'
+    + '</div>'
 
-      // Lead Engine
-      + '<div style="background:#0a0a0a;border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:20px;overflow:hidden">'
-      + '<div style="font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#F59E0B;margin-bottom:12px">YOUR LEAD ENGINE</div>'
-      + '<div style="display:flex;align-items:center;justify-content:space-between;gap:4px;margin-bottom:12px">'
-      + [
-          '<i class="fa-brands fa-instagram"></i><div style="font-size:7px;margin-top:2px">Comment</div>',
-          '<i class="fa-solid fa-paper-plane"></i><div style="font-size:7px;margin-top:2px">Auto-DM</div>',
-          '<i class="fa-solid fa-file-lines"></i><div style="font-size:7px;margin-top:2px">Capture</div>',
-          '<i class="fa-solid fa-envelope"></i><div style="font-size:7px;margin-top:2px">Email</div>'
-        ].map(function(step, i) {
-          return (i > 0 ? '<div style="font-size:8px;color:rgba(255,255,255,0.15)">→</div>' : '')
-            + '<div style="text-align:center;font-size:14px;color:rgba(255,255,255,0.5);padding:10px;background:rgba(245,158,11,0.06);border:1px solid rgba(245,158,11,0.1);border-radius:8px;flex:1">' + step + '</div>';
-        }).join('')
-      + '</div>'
-      + '<div style="text-align:center;font-size:11px;color:rgba(255,255,255,0.4);line-height:1.5">Every comment triggers an auto-DM → capture page → email subscribe. Zero manual work.</div>'
-      + '</div>'
+    // ── 2. AI Strategist ──
+    + '<div style="display:flex;gap:20px;align-items:flex-start;padding:24px 0">'
+    + '<div style="flex-shrink:0;width:40px;height:40px;border-radius:50%;background:#7C6AF7;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#fff;position:relative;z-index:1">2</div>'
+    + '<div style="flex:1;background:rgba(124,106,247,0.04);border:1px solid rgba(124,106,247,0.12);border-left:3px solid #7C6AF7;border-radius:0 14px 14px 0;padding:20px">'
+    + '<div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px">AI Strategist</div>'
+    + '<div style="font-size:11px;color:var(--text-sub);line-height:1.6;margin-bottom:14px">Not ChatGPT. An AI that reads your actual data and tells you exactly what to post, when, and why.</div>'
+    + '<div style="background:rgba(124,106,247,0.08);border:1px solid rgba(124,106,247,0.12);border-radius:10px;padding:12px;margin-bottom:10px">'
+    + '<div style="font-size:11px;color:rgba(255,255,255,0.6);line-height:1.5;font-style:italic">"Your reels are outperforming carousels 3:1 this week. Double down on short-form — your audience is responding."</div>'
+    + '</div>'
+    + '<div style="display:flex;gap:6px">'
+    + suggestions.map(function(s, i) {
+        var days = ['MON', 'WED', 'FRI'];
+        return '<div style="flex:1;background:rgba(124,106,247,0.06);border:1px solid rgba(124,106,247,0.1);border-radius:8px;padding:8px;text-align:center"><div style="font-size:8px;font-weight:700;letter-spacing:0.08em;color:rgba(124,106,247,0.6)">' + days[i] + '</div><div style="font-size:10px;color:var(--text-muted);margin-top:3px;line-height:1.3">' + s + '</div></div>';
+      }).join('')
+    + '</div>'
+    + '</div>'
+    + '</div>'
 
-      // Weekly Briefing
-      + '<div style="background:#0a0a0a;border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:20px;overflow:hidden">'
-      + '<div style="font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#10B981;margin-bottom:12px">YOUR MONDAY BRIEFING</div>'
-      + '<div style="background:rgba(16,185,129,0.06);border:1px solid rgba(16,185,129,0.15);border-radius:10px;padding:14px">'
-      + '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><span style="font-size:9px;font-weight:700;color:#10B981">WEEKLY BRIEFING</span><span style="font-size:9px;color:rgba(255,255,255,0.3)">Every Monday</span></div>'
-      + '<div style="display:flex;gap:10px;margin-bottom:10px">'
-      + '<div style="flex:1;text-align:center"><div style="font-size:14px;font-weight:600;color:#f0f0f0">' + fmtNum(views) + '</div><div style="font-size:7px;color:rgba(255,255,255,0.3)">VIEWS</div></div>'
-      + '<div style="flex:1;text-align:center"><div style="font-size:14px;font-weight:600;color:#f0f0f0">' + eng + '%</div><div style="font-size:7px;color:rgba(255,255,255,0.3)">ENG</div></div>'
-      + '<div style="flex:1;text-align:center"><div style="font-size:14px;font-weight:600;color:#f0f0f0">↑12%</div><div style="font-size:7px;color:rgba(255,255,255,0.3)">GROWTH</div></div>'
-      + '</div>'
-      + '<div style="font-size:10px;color:rgba(255,255,255,0.5);line-height:1.5;border-top:1px solid rgba(255,255,255,0.06);padding-top:8px"><strong style="color:rgba(255,255,255,0.7)">This week:</strong> Post Tuesday 7pm — your highest engagement window.</div>'
-      + '</div>'
-      + '</div>'
+    // ── 3. Lead Engine ──
+    + '<div style="display:flex;gap:20px;align-items:flex-start;padding:24px 0">'
+    + '<div style="flex-shrink:0;width:40px;height:40px;border-radius:50%;background:#F59E0B;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#fff;position:relative;z-index:1">3</div>'
+    + '<div style="flex:1;background:rgba(245,158,11,0.04);border:1px solid rgba(245,158,11,0.12);border-left:3px solid #F59E0B;border-radius:0 14px 14px 0;padding:20px">'
+    + '<div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px">Automated Lead Engine</div>'
+    + '<div style="font-size:11px;color:var(--text-sub);line-height:1.6;margin-bottom:14px">Every comment becomes a customer. Set a keyword and the system handles the rest automatically.</div>'
+    + '<div style="display:flex;align-items:center;gap:0;margin-bottom:10px">'
+    + [
+        { icon: '<i class="fa-brands fa-instagram"></i>', label: 'Comment' },
+        { icon: '<i class="fa-solid fa-paper-plane"></i>', label: 'Auto-DM' },
+        { icon: '<i class="fa-solid fa-file-lines"></i>', label: 'Capture' },
+        { icon: '<i class="fa-solid fa-envelope"></i>', label: 'Email List' }
+      ].map(function(step, i) {
+        return (i > 0 ? '<div style="font-size:10px;color:rgba(245,158,11,0.4);margin:0 2px">→</div>' : '')
+          + '<div style="text-align:center;font-size:14px;color:rgba(245,158,11,0.7);padding:10px 6px;background:rgba(245,158,11,0.06);border:1px solid rgba(245,158,11,0.1);border-radius:8px;flex:1"><div>' + step.icon + '</div><div style="font-size:7px;color:var(--text-muted);margin-top:3px">' + step.label + '</div></div>';
+      }).join('')
+    + '</div>'
+    + '<div style="font-size:10px;color:var(--text-muted);text-align:center;line-height:1.5">Comment → DM → capture page → email subscribe. Zero manual work.</div>'
+    + '</div>'
+    + '</div>'
+
+    // ── 4. Monday Briefing ──
+    + '<div style="display:flex;gap:20px;align-items:flex-start;padding:24px 0">'
+    + '<div style="flex-shrink:0;width:40px;height:40px;border-radius:50%;background:#10B981;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#fff;position:relative;z-index:1">4</div>'
+    + '<div style="flex:1;background:rgba(16,185,129,0.04);border:1px solid rgba(16,185,129,0.12);border-left:3px solid #10B981;border-radius:0 14px 14px 0;padding:20px">'
+    + '<div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px">Monday Briefing</div>'
+    + '<div style="font-size:11px;color:var(--text-sub);line-height:1.6;margin-bottom:14px">Every Monday, an AI-written strategy email lands in your inbox. Your numbers, your wins, your next move.</div>'
+    + '<div style="background:rgba(16,185,129,0.06);border:1px solid rgba(16,185,129,0.1);border-radius:10px;padding:14px">'
+    + '<div style="display:flex;gap:12px;margin-bottom:10px">'
+    + '<div style="flex:1;text-align:center"><div style="font-size:15px;font-weight:600;color:var(--text)">' + fmtNum(views) + '</div><div style="font-size:7px;color:var(--text-muted);margin-top:2px">VIEWS</div></div>'
+    + '<div style="flex:1;text-align:center"><div style="font-size:15px;font-weight:600;color:var(--text)">' + eng + '%</div><div style="font-size:7px;color:var(--text-muted);margin-top:2px">ENG</div></div>'
+    + '<div style="flex:1;text-align:center"><div style="font-size:15px;font-weight:600;color:var(--text)">↑12%</div><div style="font-size:7px;color:var(--text-muted);margin-top:2px">GROWTH</div></div>'
+    + '</div>'
+    + '<div style="font-size:10px;color:var(--text-sub);line-height:1.5;border-top:1px solid rgba(16,185,129,0.1);padding-top:8px"><strong style="color:var(--text)">This week:</strong> Post Tuesday 7pm — your highest engagement window.</div>'
+    + '</div>'
+    + '</div>'
+    + '</div>'
 
     + '</div>'
 
