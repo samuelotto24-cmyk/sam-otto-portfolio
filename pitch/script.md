@@ -75,9 +75,9 @@ Unified analytics — TikTok and YouTube are connected and live, Instagram is pe
 
 An AI strategist. Weekly briefings. And an engagement engine that turns comments into email leads automatically.
 
-*(gesture to screen)* That's her dashboard running right now. That's mandibagley.com — you can pull it up on your phone.
+*(gesture to screen)* That's mandibagley.com — a site I built for a creator with over a million followers. You can pull it up right now.
 
-I didn't outsource this. I wrote every line of code. The whole thing was live in 72 hours.
+I didn't outsource this. I wrote every line of code. The whole thing goes live in 72 hours.
 
 ---
 
@@ -119,7 +119,7 @@ Three days after launch: 11,224 visitors driven to her platform. 787 converted t
 
 *(pause — let judges absorb)*
 
-That's a screenshot from her dashboard. Not a deck mockup.
+That's real data. You can go to mandibagley.com right now on your phone and see it yourself.
 
 ---
 
