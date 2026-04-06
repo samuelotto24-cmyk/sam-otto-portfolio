@@ -6993,7 +6993,8 @@ function confirmProfile(isCorrect) {
   } else {
     document.getElementById('qProfile').classList.remove('show');
     document.getElementById('qHandleBtn').style.display = '';
-    quizNext(3);
+    document.getElementById('qHandle').value = '';
+    document.getElementById('qHandle').focus();
   }
 }
 
@@ -7498,13 +7499,16 @@ document.addEventListener('keydown', function(e) {
 
   var active = overlay.querySelector('.quiz-step.active');
   if (!active) return;
-  var step = parseInt(active.dataset.step);
+  var step = active.dataset.step;
 
-  if (step === 0) quizNext('vibe');
+  if (step === '0') quizNext('vibe');
   else if (step === 'vibe' && quizData.template) quizNext(1);
-  else if (step === 1) quizNext(2);
-  else if (step === 2) scrapeProfile();
-  else if (step === 6) submitQuiz();
+  else if (step === '1') quizNext(2);
+  else if (step === '2') scrapeProfile();
+  else if (step === '3' && quizData.niche) quizNext(4);
+  else if (step === '4') quizNext(5);
+  else if (step === '5') quizNext(6);
+  else if (step === '6') submitQuiz();
 });
 
 /* ── Contact Section White Particles ── */
