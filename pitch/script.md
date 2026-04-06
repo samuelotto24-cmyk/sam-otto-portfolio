@@ -121,11 +121,11 @@ That's real data. You can go to mandibagley.com right now on your phone and see 
 
 *(click)*
 
-Two tiers. Brand Site — custom website with tracked links, $400 setup plus $49 a month. Flagship: Full Platform — everything I just showed you, $1,500 to $2,000 setup plus $150 a month.
+Two tiers. Brand Site — custom website with tracked links, $400 setup plus $49 a month. Flagship: Full Platform — everything I just showed you, $1,200 setup plus $120 a month.
 
-My cost to deliver? $22 per client per month. That's less than my Spotify and gym membership combined.
+My cost to deliver? Sixteen dollars per client per month. That's less than a Spotify subscription.
 
-85% gross margin. The unit economics work from client one.
+87% gross margin. The unit economics work from client one.
 
 ---
 
