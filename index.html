@@ -7341,7 +7341,7 @@ function showInlinePreview() {
     + '<div style="max-width:640px;margin:0 auto 48px;display:flex;flex-direction:column;gap:0;position:relative">'
 
     // Vertical connecting line
-    + '<div style="position:absolute;left:19px;top:40px;bottom:40px;width:2px;background:linear-gradient(180deg,' + safeAccent + ',#7C6AF7,#F59E0B,#10B981);opacity:0.2;border-radius:1px"></div>'
+    + '<div style="position:absolute;left:19px;top:40px;bottom:40px;width:2px;background:linear-gradient(180deg,' + safeAccent + ',#7C6AF7,#F59E0B,#E879F9,#10B981);opacity:0.2;border-radius:1px"></div>'
 
     // ── 1. Analytics Dashboard ──
     + '<div style="display:flex;gap:20px;align-items:flex-start;padding:24px 0">'
@@ -7396,9 +7396,69 @@ function showInlinePreview() {
     + '</div>'
     + '</div>'
 
-    // ── 4. Monday Briefing ──
+    // ── 4. Create & Schedule Posts ──
     + '<div style="display:flex;gap:20px;align-items:flex-start;padding:24px 0">'
-    + '<div style="flex-shrink:0;width:40px;height:40px;border-radius:50%;background:#10B981;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#fff;position:relative;z-index:1">4</div>'
+    + '<div style="flex-shrink:0;width:40px;height:40px;border-radius:50%;background:#E879F9;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#fff;position:relative;z-index:1">4</div>'
+    + '<div style="flex:1;background:rgba(232,121,249,0.04);border:1px solid rgba(232,121,249,0.12);border-left:3px solid #E879F9;border-radius:0 14px 14px 0;padding:20px">'
+    + '<div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px">Create & Schedule Posts</div>'
+    + '<div style="font-size:11px;color:var(--text-sub);line-height:1.6;margin-bottom:14px">Upload photos, get AI-written captions in your voice, auto-generated hashtags based on the algorithm, and post or schedule directly to any platform.</div>'
+
+    // Visual: mock post composer
+    + '<div style="background:rgba(232,121,249,0.04);border:1px solid rgba(232,121,249,0.1);border-radius:10px;padding:14px;margin-bottom:10px">'
+
+    // Photo upload row
+    + '<div style="display:flex;gap:6px;margin-bottom:10px">'
+    + (quizData.postImages.length > 2
+      ? quizData.postImages.slice(0, 3).map(function(url) {
+          return '<div style="flex:1;aspect-ratio:1;border-radius:6px;overflow:hidden;border:1px solid rgba(232,121,249,0.15)"><img src="' + proxyImg(url) + '" style="width:100%;height:100%;object-fit:cover;display:block" onerror="this.parentElement.innerHTML=\'<div style=padding:8px;text-align:center;font-size:8px;color:rgba(232,121,249,0.4)>IMG</div>\'"></div>';
+        }).join('')
+      : '<div style="flex:1;aspect-ratio:1;border-radius:6px;background:rgba(232,121,249,0.06);border:1px dashed rgba(232,121,249,0.2);display:flex;align-items:center;justify-content:center;font-size:16px;opacity:0.4"><i class="fa-solid fa-image"></i></div>'
+        + '<div style="flex:1;aspect-ratio:1;border-radius:6px;background:rgba(232,121,249,0.06);border:1px dashed rgba(232,121,249,0.2);display:flex;align-items:center;justify-content:center;font-size:16px;opacity:0.4"><i class="fa-solid fa-image"></i></div>'
+        + '<div style="flex:1;aspect-ratio:1;border-radius:6px;background:rgba(232,121,249,0.06);border:1px dashed rgba(232,121,249,0.2);display:flex;align-items:center;justify-content:center;font-size:16px;opacity:0.4"><i class="fa-solid fa-plus"></i></div>'
+    )
+    + '</div>'
+
+    // AI caption preview
+    + '<div style="background:rgba(255,255,255,0.03);border:1px solid rgba(232,121,249,0.08);border-radius:8px;padding:10px;margin-bottom:8px">'
+    + '<div style="font-size:8px;font-weight:700;letter-spacing:0.1em;color:rgba(232,121,249,0.5);margin-bottom:4px"><i class="fa-solid fa-wand-magic-sparkles" style="margin-right:3px"></i> AI CAPTION</div>'
+    + '<div style="font-size:10px;color:var(--text-sub);line-height:1.5;font-style:italic">"This one\'s been on repeat all week. If you haven\'t tried it yet, what are you waiting for? Link in bio 👆"</div>'
+    + '</div>'
+
+    // Hashtags
+    + '<div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px">'
+    + ['#' + (niche || 'lifestyle'), '#contentcreator', '#' + firstName.toLowerCase() + 'approved', '#linkinbio'].map(function(tag) {
+        return '<span style="font-size:9px;color:rgba(232,121,249,0.6);background:rgba(232,121,249,0.06);border:1px solid rgba(232,121,249,0.1);padding:3px 8px;border-radius:50px">' + tag + '</span>';
+      }).join('')
+    + '</div>'
+
+    // Platform selector
+    + '<div style="display:flex;gap:8px;margin-bottom:10px">'
+    + [
+        { icon: 'fa-brands fa-instagram', color: '#E1306C', name: 'IG' },
+        { icon: 'fa-brands fa-tiktok', color: '#fff', name: 'TT' },
+        { icon: 'fa-brands fa-youtube', color: '#FF0000', name: 'YT' }
+      ].map(function(p) {
+        return '<div style="flex:1;padding:8px 4px;background:rgba(232,121,249,0.06);border:1px solid rgba(232,121,249,0.12);border-radius:8px;text-align:center;position:relative">'
+          + '<i class="' + p.icon + '" style="font-size:16px;color:' + p.color + '"></i>'
+          + '<div style="font-size:7px;color:var(--text-muted);margin-top:3px">' + p.name + '</div>'
+          + '<div style="position:absolute;top:-3px;right:-3px;width:14px;height:14px;background:#E879F9;border-radius:50%;display:flex;align-items:center;justify-content:center"><i class="fa-solid fa-check" style="font-size:7px;color:#fff"></i></div>'
+          + '</div>';
+      }).join('')
+    + '</div>'
+
+    // Post / Schedule buttons
+    + '<div style="display:flex;gap:6px">'
+    + '<div style="flex:1;padding:8px;background:rgba(232,121,249,0.1);border:1px solid rgba(232,121,249,0.2);border-radius:8px;text-align:center;font-size:10px;font-weight:600;color:#E879F9"><i class="fa-solid fa-paper-plane" style="margin-right:4px"></i> Post Now</div>'
+    + '<div style="flex:1;padding:8px;background:rgba(255,255,255,0.03);border:1px solid rgba(232,121,249,0.1);border-radius:8px;text-align:center;font-size:10px;font-weight:500;color:var(--text-muted)"><i class="fa-regular fa-clock" style="margin-right:4px"></i> Schedule</div>'
+    + '</div>'
+
+    + '</div>'
+    + '</div>'
+    + '</div>'
+
+    // ── 5. Monday Briefing ──
+    + '<div style="display:flex;gap:20px;align-items:flex-start;padding:24px 0">'
+    + '<div style="flex-shrink:0;width:40px;height:40px;border-radius:50%;background:#10B981;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#fff;position:relative;z-index:1">5</div>'
     + '<div style="flex:1;background:rgba(16,185,129,0.04);border:1px solid rgba(16,185,129,0.12);border-left:3px solid #10B981;border-radius:0 14px 14px 0;padding:20px">'
     + '<div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px">Monday Briefing</div>'
     + '<div style="font-size:11px;color:var(--text-sub);line-height:1.6;margin-bottom:14px">Every Monday, an AI-written strategy email lands in your inbox. Your numbers, your wins, your next move.</div>'
