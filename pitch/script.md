@@ -67,17 +67,11 @@ Over 2 million creators in the US in this range — 10K to a million followers. 
 
 So I didn't build another tool. I sat down with Mandi and built the whole system around her.
 
-One platform. Everything a creator needs to turn followers into revenue.
-
-Custom website — not a Linktree, an actual branded site with tracked links and discount codes.
-
-Unified analytics — TikTok and YouTube are connected and live, Instagram is pending one verification from Meta.
-
-An AI strategist. Weekly briefings. And an engagement engine that turns comments into email leads automatically.
-
 *(gesture to screen)* That's mandibagley.com — a site I built for a creator with over a million followers. You can pull it up right now.
 
-I didn't outsource this. I wrote every line of code. The whole thing goes live in 72 hours.
+But that's just the front door. Behind it, she has a full dashboard — unified analytics across TikTok and YouTube, an AI strategist, weekly briefings, and an engagement engine that turns comments into email leads automatically.
+
+One platform. Everything connected. I didn't outsource this. I wrote every line of code.
 
 ---
 
