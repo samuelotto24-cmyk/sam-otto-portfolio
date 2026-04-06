@@ -10,7 +10,7 @@
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:wght@400;500;600&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="assets/favicon.png" />
@@ -7204,70 +7204,130 @@ function showInlinePreview() {
       + '</div>'
       + '</div>'
 
-      // RIGHT: What I'd build
-      + '<div>'
-      + '<div style="font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:' + safeAccent + ';margin-bottom:10px;text-align:center">WHAT I\'D BUILD YOU</div>'
-      + '<div style="background:#0a0a0a;border:1px solid rgba(255,255,255,0.1);border-radius:14px;overflow:hidden">'
+      // RIGHT: What I'd build — magazine-style site mockup
+      + (function() {
+        var isDark = quizData.template === 'dark';
+        // Theme tokens
+        var bg = isDark ? '#0a0908' : '#FAF7F2';
+        var bgCard = isDark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.03)';
+        var bgCardBorder = isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)';
+        var textPrimary = isDark ? '#f0f0f0' : '#2D1810';
+        var textSecondary = isDark ? 'rgba(255,255,255,0.5)' : 'rgba(45,24,16,0.5)';
+        var textMuted = isDark ? 'rgba(255,255,255,0.3)' : 'rgba(45,24,16,0.3)';
+        var borderCol = isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)';
+        var codeBg = isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.05)';
+        var codeBorder = isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.12)';
+        var codeText = isDark ? '#fff' : '#2D1810';
+        var chromeBg = isDark ? 'rgba(255,255,255,0.02)' : 'rgba(0,0,0,0.03)';
+        var chromeBorder = isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)';
+        var chromeUrl = isDark ? 'rgba(255,255,255,0.25)' : 'rgba(0,0,0,0.3)';
+        var nameFont = isDark ? "'Bebas Neue','DM Sans',sans-serif" : "'Cormorant Garamond',Georgia,serif";
+        var nameSize = isDark ? '26px' : '22px';
+        var nameWeight = isDark ? '400' : '500';
+        var nameSpacing = isDark ? '0.08em' : '0';
+        var nameTransform = isDark ? 'text-transform:uppercase;' : '';
+        var heroOverlay = isDark
+          ? 'linear-gradient(180deg,rgba(10,9,8,0.1) 0%,rgba(10,9,8,0.92) 100%)'
+          : 'linear-gradient(180deg,rgba(250,247,242,0.1) 0%,rgba(250,247,242,0.92) 100%)';
+        var heroImgOpacity = isDark ? '0.25' : '0.3';
+        var sectionLabel = isDark ? 'rgba(255,255,255,0.25)' : 'rgba(45,24,16,0.35)';
+        var stripOverlay = isDark ? 'rgba(10,9,8,0.15)' : 'rgba(250,247,242,0.1)';
+        var statsBg = isDark ? 'rgba(255,255,255,0.01)' : 'rgba(0,0,0,0.015)';
+        var statsBorder = isDark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.06)';
+        var divider = isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.08)';
+        var outerBorder = isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)';
 
-        // Browser chrome
-        + '<div style="display:flex;align-items:center;gap:6px;padding:8px 12px;border-bottom:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.02)">'
-        + '<span style="width:7px;height:7px;border-radius:50%;background:#ff5f57"></span>'
-        + '<span style="width:7px;height:7px;border-radius:50%;background:#febc2e"></span>'
-        + '<span style="width:7px;height:7px;border-radius:50%;background:#28c840"></span>'
-        + '<span style="flex:1;text-align:center;font-size:9px;color:rgba(255,255,255,0.25)">🔒 ' + domain + '</span>'
-        + '</div>'
+        var img0 = quizData.postImages.length > 0 ? quizData.postImages[0] : '';
+        var img1 = quizData.postImages.length > 1 ? quizData.postImages[1] : '';
+        var img2 = quizData.postImages.length > 2 ? quizData.postImages[2] : '';
+        var img3 = quizData.postImages.length > 3 ? quizData.postImages[3] : '';
+        var img4 = quizData.postImages.length > 4 ? quizData.postImages[4] : '';
+        var img5 = quizData.postImages.length > 5 ? quizData.postImages[5] : '';
+        var stripImgs = [img1, img2, img3, img4].filter(Boolean);
 
-        // Hero with profile
-        + '<div style="position:relative;padding:24px 20px 16px;text-align:center;overflow:hidden">'
-        + (heroImg ? '<div style="position:absolute;inset:0;background:url(\'' + proxyImg(heroImg) + '\') center/cover;opacity:0.15;filter:blur(3px)"></div>' : '')
-        + '<div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,10,10,0.2) 0%,rgba(10,10,10,0.95) 100%)"></div>'
-        + '<div style="position:relative">'
-        + (quizData.photo ? '<img src="' + proxyImg(quizData.photo) + '" style="width:52px;height:52px;border-radius:50%;object-fit:cover;border:2px solid ' + safeAccent + ';margin:0 auto 8px;display:block" onerror="this.style.display=\'none\'">' : '')
-        + '<div style="font-family:\'Cormorant Garamond\',serif;font-size:20px;font-weight:500;color:#f0f0f0">' + quizData.name + '</div>'
-        + '<div style="font-size:10px;color:rgba(255,255,255,0.45);margin-top:2px">' + (quizData.niche || 'Creator') + ' · ' + fmtFollowers + ' followers</div>'
-        + '<div style="margin-top:10px">' + buildSocials(14) + '</div>'
+        return '<div>'
+        + '<div style="font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:' + safeAccent + ';margin-bottom:10px;text-align:center">WHAT I\'D BUILD YOU</div>'
+        + '<div style="background:' + bg + ';border:1px solid ' + outerBorder + ';border-radius:14px;overflow:hidden">'
 
-        // Affiliate codes
-        + '<div style="display:flex;justify-content:center;gap:6px;margin-top:12px;flex-wrap:wrap">'
-        + codes.slice(0, 3).map(function(c) {
-            return '<div style="padding:5px 12px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:50px;display:flex;align-items:center;gap:5px">'
-              + '<span style="font-size:9px;font-weight:700;color:#fff">' + c.code + '</span>'
-              + '<span style="font-size:7px;color:rgba(255,255,255,0.4)">' + c.brand + '</span></div>';
-          }).join('')
-        + '</div>'
-        + '</div></div>'
+          // Browser chrome
+          + '<div style="display:flex;align-items:center;gap:6px;padding:8px 12px;border-bottom:1px solid ' + chromeBorder + ';background:' + chromeBg + '">'
+          + '<span style="width:7px;height:7px;border-radius:50%;background:#ff5f57"></span>'
+          + '<span style="width:7px;height:7px;border-radius:50%;background:#febc2e"></span>'
+          + '<span style="width:7px;height:7px;border-radius:50%;background:#28c840"></span>'
+          + '<span style="flex:1;text-align:center;font-size:9px;color:' + chromeUrl + '">🔒 ' + domain + '</span>'
+          + '</div>'
 
-        // Links as proper styled cards
-        + '<div style="padding:12px 16px">'
-        + '<div style="display:flex;flex-direction:column;gap:5px">'
-        + theirLinks.slice(0, 5).map(function(l) {
-            return '<div style="padding:10px 14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;font-size:11px;color:#f0f0f0;display:flex;align-items:center;justify-content:space-between">'
-              + '<span style="font-weight:500">' + l.title + '</span>'
-              + '<span style="color:' + safeAccent + ';font-size:12px">→</span></div>';
-          }).join('')
-        + '</div></div>'
+          // ── HERO: Full-bleed photo with name overlay ──
+          + '<div style="position:relative;min-height:180px;overflow:hidden;display:flex;align-items:flex-end;justify-content:center;padding:0 20px 20px">'
+          + (img0 ? '<img src="' + proxyImg(img0) + '" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:' + heroImgOpacity + '" onerror="this.style.display=\'none\'">' : '')
+          + '<div style="position:absolute;inset:0;background:' + heroOverlay + '"></div>'
+          + '<div style="position:relative;text-align:center;padding-top:24px">'
+          + (quizData.photo ? '<img src="' + proxyImg(quizData.photo) + '" style="width:56px;height:56px;border-radius:50%;object-fit:cover;border:2.5px solid ' + safeAccent + ';margin:0 auto 8px;display:block" onerror="this.style.display=\'none\'">' : '')
+          + '<div style="font-family:' + nameFont + ';font-size:' + nameSize + ';font-weight:' + nameWeight + ';color:' + textPrimary + ';letter-spacing:' + nameSpacing + ';' + nameTransform + '">' + quizData.name + '</div>'
+          + '<div style="font-size:10px;color:' + textSecondary + ';margin-top:3px">' + (quizData.niche || 'Creator') + '</div>'
+          + '<div style="margin-top:8px">' + buildSocials(13) + '</div>'
+          + '</div>'
+          + '</div>'
 
-        // Stats bar
-        + '<div style="display:flex;justify-content:center;gap:16px;padding:10px 16px;border-top:1px solid rgba(255,255,255,0.04);background:rgba(255,255,255,0.01)">'
-        + '<div style="text-align:center"><div style="font-family:\'Cormorant Garamond\',serif;font-size:14px;font-weight:600;color:#f0f0f0">' + fmtFollowers + '</div><div style="font-size:7px;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:0.06em">Followers</div></div>'
-        + '<div style="width:1px;background:rgba(255,255,255,0.06)"></div>'
-        + '<div style="text-align:center"><div style="font-family:\'Cormorant Garamond\',serif;font-size:14px;font-weight:600;color:#f0f0f0">' + fmtNum(linkClicks) + '</div><div style="font-size:7px;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:0.06em">Link Clicks</div></div>'
-        + '<div style="width:1px;background:rgba(255,255,255,0.06)"></div>'
-        + '<div style="text-align:center"><div style="font-family:\'Cormorant Garamond\',serif;font-size:14px;font-weight:600;color:#f0f0f0">' + eng + '%</div><div style="font-size:7px;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:0.06em">Engagement</div></div>'
-        + '</div>'
+          // ── ABOUT: Profile photo + bio block ──
+          + '<div style="display:flex;gap:14px;padding:16px 18px;align-items:center;border-top:1px solid ' + borderCol + '">'
+          + (img1 ? '<img src="' + proxyImg(img1) + '" style="width:60px;height:60px;border-radius:10px;object-fit:cover;flex-shrink:0" onerror="this.style.display=\'none\'">' : '')
+          + '<div>'
+          + '<div style="font-size:11px;font-weight:600;color:' + textPrimary + ';margin-bottom:2px">About ' + firstName + '</div>'
+          + '<div style="font-size:10px;color:' + textSecondary + ';line-height:1.5">' + (quizData.niche || 'Creator') + ' · ' + fmtFollowers + ' followers · Building a brand that matters.</div>'
+          + '</div>'
+          + '</div>'
 
-        // Content grid
-        + (gridImgs.length > 0 ? (
-          '<div style="padding:10px 16px 14px">'
-          + '<div style="display:grid;grid-template-columns:repeat(' + Math.min(gridImgs.length, 3) + ',1fr);gap:3px;border-radius:6px;overflow:hidden">'
-          + gridImgs.slice(0, 6).map(function(url) {
-              return '<img src="' + proxyImg(url) + '" style="width:100%;aspect-ratio:1;object-fit:cover;display:block" onerror="this.style.display=\'none\'">';
+          // ── AFFILIATE CODES — prominent section ──
+          + '<div style="padding:14px 18px;border-top:1px solid ' + borderCol + '">'
+          + '<div style="font-size:8px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:' + sectionLabel + ';margin-bottom:8px">MY CODES</div>'
+          + '<div style="display:flex;gap:6px;flex-wrap:wrap">'
+          + codes.slice(0, 3).map(function(c) {
+              return '<div style="padding:7px 14px;background:' + codeBg + ';border:1px solid ' + codeBorder + ';border-radius:50px;display:flex;align-items:center;gap:6px">'
+                + '<span style="font-size:10px;font-weight:700;color:' + codeText + '">' + c.code + '</span>'
+                + '<span style="font-size:8px;color:' + textMuted + '">' + c.brand + '</span></div>';
             }).join('')
-          + '</div></div>'
-        ) : '')
+          + '</div>'
+          + '</div>'
 
-      + '</div>'
-      + '</div>'
+          // ── OFFERING CARDS with photo backgrounds ──
+          + '<div style="padding:14px 18px;border-top:1px solid ' + borderCol + '">'
+          + '<div style="font-size:8px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:' + sectionLabel + ';margin-bottom:8px">EXPLORE</div>'
+          + '<div style="display:flex;flex-direction:column;gap:6px">'
+          + theirLinks.slice(0, 4).map(function(l, i) {
+              var cardImg = quizData.postImages[i + 2] || '';
+              return '<div style="position:relative;padding:14px 16px;border-radius:10px;overflow:hidden;min-height:44px;display:flex;align-items:center;justify-content:space-between">'
+                + (cardImg ? '<img src="' + proxyImg(cardImg) + '" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:' + (isDark ? '0.2' : '0.18') + '" onerror="this.style.display=\'none\'">' : '')
+                + '<div style="position:absolute;inset:0;background:' + (isDark ? 'rgba(10,9,8,0.7)' : 'rgba(250,247,242,0.75)') + '"></div>'
+                + '<span style="position:relative;font-size:12px;font-weight:600;color:' + textPrimary + '">' + l.title + '</span>'
+                + '<span style="position:relative;color:' + safeAccent + ';font-size:14px">→</span></div>';
+            }).join('')
+          + '</div>'
+          + '</div>'
+
+          // ── LIFESTYLE PHOTO STRIP ──
+          + (stripImgs.length >= 2 ? (
+            '<div style="display:grid;grid-template-columns:repeat(' + stripImgs.length + ',1fr);gap:2px;border-top:1px solid ' + borderCol + '">'
+            + stripImgs.map(function(url) {
+                return '<div style="position:relative;aspect-ratio:1;overflow:hidden">'
+                  + '<img src="' + proxyImg(url) + '" style="width:100%;height:100%;object-fit:cover;display:block" onerror="this.parentElement.style.display=\'none\'">'
+                  + '<div style="position:absolute;inset:0;background:' + stripOverlay + '"></div></div>';
+              }).join('')
+            + '</div>'
+          ) : '')
+
+          // ── STATS BAR ──
+          + '<div style="display:flex;justify-content:center;gap:16px;padding:12px 16px;border-top:1px solid ' + statsBorder + ';background:' + statsBg + '">'
+          + '<div style="text-align:center"><div style="font-family:' + nameFont + ';font-size:14px;font-weight:600;color:' + textPrimary + '">' + fmtFollowers + '</div><div style="font-size:7px;color:' + textMuted + ';text-transform:uppercase;letter-spacing:0.06em">Followers</div></div>'
+          + '<div style="width:1px;background:' + divider + '"></div>'
+          + '<div style="text-align:center"><div style="font-family:' + nameFont + ';font-size:14px;font-weight:600;color:' + textPrimary + '">' + fmtNum(linkClicks) + '</div><div style="font-size:7px;color:' + textMuted + ';text-transform:uppercase;letter-spacing:0.06em">Link Clicks</div></div>'
+          + '<div style="width:1px;background:' + divider + '"></div>'
+          + '<div style="text-align:center"><div style="font-family:' + nameFont + ';font-size:14px;font-weight:600;color:' + textPrimary + '">' + eng + '%</div><div style="font-size:7px;color:' + textMuted + ';text-transform:uppercase;letter-spacing:0.06em">Engagement</div></div>'
+          + '</div>'
+
+        + '</div>'
+        + '</div>';
+      })()
 
     + '</div>'
 
