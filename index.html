@@ -4531,6 +4531,11 @@
   color: var(--text-muted);
   margin-top: 16px;
 }
+/* Responsive preview grids */
+@media (max-width: 640px) {
+  .preview-comparison,
+  .preview-capabilities { grid-template-columns: 1fr !important; }
+}
 .preview-share {
   margin-top: 12px;
   font-size: 12px;
@@ -7112,48 +7117,96 @@ function showInlinePreview() {
 
   // Niche-specific content suggestions
   var nicheSuggestions = {
-    fitness: ['Workout routine reel', 'Meal prep carousel', 'Transformation story'],
-    beauty: ['Get ready with me', 'Product review reel', 'Skincare routine'],
+    fitness: ['Workout reel', 'Meal prep carousel', 'Transformation story'],
+    beauty: ['GRWM reel', 'Product review', 'Skincare routine'],
     food: ['Recipe walkthrough', 'Meal prep timelapse', 'Taste test reel'],
     lifestyle: ['Day in my life', 'Haul video', 'Morning routine'],
   };
   var niche = (quizData.niche || 'lifestyle').split(' ')[0].toLowerCase().replace('·','').trim();
   var suggestions = nicheSuggestions[niche] || nicheSuggestions.lifestyle;
 
-  // Build a realistic site mockup using their data
   var proxyImg = function(url) { return '/api/proxy-image?url=' + encodeURIComponent(url); };
   var heroImg = quizData.postImages.length ? quizData.postImages[0] : '';
   var gridImgs = quizData.postImages.slice(1, 7);
 
   // Ensure accent color is readable on dark backgrounds
-  // If it's too dark, brighten it; if it's too desaturated, use a default
   var safeAccent = (function(hex) {
     var r = parseInt(hex.slice(1,3), 16), g = parseInt(hex.slice(3,5), 16), b = parseInt(hex.slice(5,7), 16);
     var lum = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
     if (lum < 0.35) {
-      // Too dark — lighten it
       r = Math.min(255, r + 100); g = Math.min(255, g + 100); b = Math.min(255, b + 100);
       return '#' + [r,g,b].map(function(c) { return c.toString(16).padStart(2,'0'); }).join('');
     }
     return hex;
   })(accent);
 
+  // Get their links (from Linktree scrape or defaults)
+  var theirLinks = (quizData.allLinks || []).filter(function(l) {
+    var u = (l.url || '').toLowerCase();
+    return !u.includes('instagram.com') && !u.includes('tiktok.com') && !u.includes('youtube.com')
+      && !u.includes('twitter.com') && !u.includes('x.com') && !u.includes('snapchat.com');
+  });
+  if (!theirLinks.length) {
+    theirLinks = [
+      { title: 'My Programs' },
+      { title: 'Shop My Favorites' },
+      { title: 'Free Guide' },
+      { title: 'Podcast' },
+      { title: 'Contact Me' },
+    ];
+  }
+
+  // Brand codes
+  var codes = (quizData.brandCodes && quizData.brandCodes.length) ? quizData.brandCodes : [
+    { code: 'YOUR CODE', brand: 'Affiliate' },
+    { code: 'SAVE20', brand: 'Brand Deal' },
+  ];
+
+  // Social icons builder
+  var buildSocials = function(sz) {
+    var s = quizData.social || {};
+    var icons = [];
+    if (s.instagram || !Object.keys(s).length) icons.push('<i class="fa-brands fa-instagram" style="color:#E1306C"></i>');
+    if (s.youtube) icons.push('<i class="fa-brands fa-youtube" style="color:#FF0000"></i>');
+    if (s.tiktok) icons.push('<i class="fa-brands fa-tiktok" style="color:#fff"></i>');
+    if (s.twitter) icons.push('<i class="fa-brands fa-x-twitter" style="color:#ccc"></i>');
+    if (s.spotify) icons.push('<i class="fa-brands fa-spotify" style="color:#1DB954"></i>');
+    if (s.pinterest) icons.push('<i class="fa-brands fa-pinterest" style="color:#E60023"></i>');
+    return '<div style="display:flex;justify-content:center;gap:' + (sz || 10) + 'px;font-size:' + (sz || 14) + 'px">' + icons.join('') + '</div>';
+  };
+
   // ── Build the preview ──
   preview.innerHTML = ''
 
-    // Header
+    // ── HEADER ──
     + '<div class="preview-header">'
     + '<div class="preview-header-label">Your Preview</div>'
-    + '<h2 class="preview-header-title">Here\'s what your platform would look like, <em style="color:' + safeAccent + '">' + firstName + '</em></h2>'
-    + '<div style="font-size:13px;color:var(--text-sub);max-width:500px;margin:12px auto 0;line-height:1.6">Everything below is personalized from your profile. Your finished platform would be fully custom — designed around your brand, built from scratch.</div>'
+    + '<h2 class="preview-header-title">Let\'s compare, <em style="color:' + safeAccent + '">' + firstName + '</em></h2>'
+    + '<div style="font-size:13px;color:var(--text-sub);max-width:520px;margin:12px auto 0;line-height:1.6">On the left is what your followers see right now. On the right is what I\'d build you.</div>'
     + '</div>'
 
-    // ── Two-column: Mockup + Video ──
-    + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:900px;margin:0 auto 32px;align-items:start">'
+    // ── SIDE BY SIDE ──
+    + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:900px;margin:0 auto 48px;align-items:stretch" class="preview-comparison">'
 
-      // LEFT: Site mockup — realistic website preview
+      // LEFT: Their current Linktree
       + '<div>'
-      + '<div style="font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:' + safeAccent + ';margin-bottom:10px">YOUR CUSTOM SITE</div>'
+      + '<div style="font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:10px;text-align:center">WHAT YOUR FOLLOWERS SEE NOW</div>'
+      + '<div style="background:#f3f1ee;border-radius:14px;overflow:hidden;padding:32px 20px;text-align:center;min-height:400px">'
+        + (quizData.photo
+          ? '<img src="' + proxyImg(quizData.photo) + '" style="width:64px;height:64px;border-radius:50%;object-fit:cover;margin:0 auto 10px;display:block" onerror="this.style.display=\'none\'">'
+          : '<div style="width:64px;height:64px;border-radius:50%;background:#ddd;margin:0 auto 10px"></div>')
+        + '<div style="font-size:14px;font-weight:700;color:#1a1a1a">@' + (quizData.handle || 'yourhandle') + '</div>'
+        + '<div style="font-size:11px;color:#888;margin-top:2px;margin-bottom:20px">' + (quizData.niche || 'Creator') + '</div>'
+        + theirLinks.slice(0, 5).map(function(l) {
+            return '<div style="padding:14px 16px;background:#fff;border:1px solid #e0e0e0;border-radius:8px;margin-bottom:8px;font-size:13px;color:#1a1a1a;font-weight:500;cursor:default">' + l.title + '</div>';
+          }).join('')
+        + '<div style="margin-top:20px;font-size:10px;color:#bbb;letter-spacing:0.03em">That\'s it. That\'s the whole page.</div>'
+      + '</div>'
+      + '</div>'
+
+      // RIGHT: What I'd build
+      + '<div>'
+      + '<div style="font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:' + safeAccent + ';margin-bottom:10px;text-align:center">WHAT I\'D BUILD YOU</div>'
       + '<div style="background:#0a0a0a;border:1px solid rgba(255,255,255,0.1);border-radius:14px;overflow:hidden">'
 
         // Browser chrome
@@ -7164,76 +7217,37 @@ function showInlinePreview() {
         + '<span style="flex:1;text-align:center;font-size:9px;color:rgba(255,255,255,0.25)">🔒 ' + domain + '</span>'
         + '</div>'
 
-        // Hero — profile + name + socials + codes all together
+        // Hero with profile
         + '<div style="position:relative;padding:24px 20px 16px;text-align:center;overflow:hidden">'
         + (heroImg ? '<div style="position:absolute;inset:0;background:url(\'' + proxyImg(heroImg) + '\') center/cover;opacity:0.15;filter:blur(3px)"></div>' : '')
         + '<div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,10,10,0.2) 0%,rgba(10,10,10,0.95) 100%)"></div>'
         + '<div style="position:relative">'
+        + (quizData.photo ? '<img src="' + proxyImg(quizData.photo) + '" style="width:52px;height:52px;border-radius:50%;object-fit:cover;border:2px solid ' + safeAccent + ';margin:0 auto 8px;display:block" onerror="this.style.display=\'none\'">' : '')
+        + '<div style="font-family:\'Cormorant Garamond\',serif;font-size:20px;font-weight:500;color:#f0f0f0">' + quizData.name + '</div>'
+        + '<div style="font-size:10px;color:rgba(255,255,255,0.45);margin-top:2px">' + (quizData.niche || 'Creator') + ' · ' + fmtFollowers + ' followers</div>'
+        + '<div style="margin-top:10px">' + buildSocials(14) + '</div>'
 
-          // Profile photo
-          + (quizData.photo ? '<img src="' + proxyImg(quizData.photo) + '" style="width:52px;height:52px;border-radius:50%;object-fit:cover;border:2px solid ' + safeAccent + ';margin:0 auto 8px;display:block" onerror="this.style.display=\'none\'">' : '')
-
-          // Name + niche
-          + '<div style="font-family:\'Cormorant Garamond\',serif;font-size:20px;font-weight:500;color:#f0f0f0">' + quizData.name + '</div>'
-          + '<div style="font-size:10px;color:rgba(255,255,255,0.45);margin-top:2px">' + (quizData.niche || 'Creator') + ' · ' + fmtFollowers + ' followers</div>'
-
-          // Social icons — right under name
-          + (function() {
-            var s = quizData.social || {};
-            var icons = [];
-            if (s.instagram) icons.push('<i class="fa-brands fa-instagram" style="color:#E1306C"></i>');
-            if (s.youtube) icons.push('<i class="fa-brands fa-youtube" style="color:#FF0000"></i>');
-            if (s.tiktok) icons.push('<i class="fa-brands fa-tiktok" style="color:#fff"></i>');
-            if (s.twitter) icons.push('<i class="fa-brands fa-x-twitter" style="color:#ccc"></i>');
-            if (s.spotify) icons.push('<i class="fa-brands fa-spotify" style="color:#1DB954"></i>');
-            if (s.pinterest) icons.push('<i class="fa-brands fa-pinterest" style="color:#E60023"></i>');
-            if (s.snapchat) icons.push('<i class="fa-brands fa-snapchat" style="color:#FFFC00"></i>');
-            if (s.facebook) icons.push('<i class="fa-brands fa-facebook" style="color:#1877F2"></i>');
-            if (!icons.length) icons.push('<i class="fa-brands fa-instagram" style="color:#E1306C"></i>');
-            return '<div style="display:flex;justify-content:center;gap:12px;margin-top:10px;font-size:14px">' + icons.join('') + '</div>';
-          })()
-
-          // Brand codes — prominent, right under socials
-          + (function() {
-            var codes = quizData.brandCodes || [];
-            var pills = codes.length ? codes.slice(0, 3) : [{ code: 'CODE15', brand: 'Brand' }, { code: 'SAVE20', brand: 'Brand' }];
-            return '<div style="display:flex;justify-content:center;gap:6px;margin-top:12px;flex-wrap:wrap">'
-              + pills.map(function(c) {
-                  return '<div style="padding:5px 12px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:50px;display:flex;align-items:center;gap:5px">'
-                    + '<span style="font-size:9px;font-weight:700;color:#fff">' + c.code + '</span>'
-                    + '<span style="font-size:7px;color:rgba(255,255,255,0.4)">' + c.brand + '</span></div>';
-                }).join('')
-              + '</div>';
-          })()
-
+        // Affiliate codes
+        + '<div style="display:flex;justify-content:center;gap:6px;margin-top:12px;flex-wrap:wrap">'
+        + codes.slice(0, 3).map(function(c) {
+            return '<div style="padding:5px 12px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:50px;display:flex;align-items:center;gap:5px">'
+              + '<span style="font-size:9px;font-weight:700;color:#fff">' + c.code + '</span>'
+              + '<span style="font-size:7px;color:rgba(255,255,255,0.4)">' + c.brand + '</span></div>';
+          }).join('')
+        + '</div>'
         + '</div></div>'
 
-        // Links section — prominent, like a Linktree replacement
-        + (function() {
-          var links = (quizData.allLinks || []).filter(function(l) {
-            var u = (l.url || '').toLowerCase();
-            return !u.includes('instagram.com') && !u.includes('tiktok.com') && !u.includes('youtube.com')
-              && !u.includes('twitter.com') && !u.includes('x.com') && !u.includes('snapchat.com');
-          });
-          if (!links.length) {
-            // Placeholder links
-            links = [
-              { title: 'My Programs & Coaching' },
-              { title: 'Shop My Favorites' },
-              { title: 'Free Guides & Resources' },
-            ];
-          }
-          return '<div style="padding:12px 16px">'
-            + '<div style="display:flex;flex-direction:column;gap:5px">'
-            + links.slice(0, 5).map(function(l) {
-                return '<div style="padding:10px 14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;font-size:11px;color:#f0f0f0;display:flex;align-items:center;justify-content:space-between;transition:all 0.15s">'
-                  + '<span style="font-weight:500">' + l.title + '</span>'
-                  + '<span style="color:' + safeAccent + ';font-size:12px">→</span></div>';
-              }).join('')
-            + '</div></div>';
-        })()
+        // Links as proper styled cards
+        + '<div style="padding:12px 16px">'
+        + '<div style="display:flex;flex-direction:column;gap:5px">'
+        + theirLinks.slice(0, 5).map(function(l) {
+            return '<div style="padding:10px 14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;font-size:11px;color:#f0f0f0;display:flex;align-items:center;justify-content:space-between">'
+              + '<span style="font-weight:500">' + l.title + '</span>'
+              + '<span style="color:' + safeAccent + ';font-size:12px">→</span></div>';
+          }).join('')
+        + '</div></div>'
 
-        // Stats bar at bottom
+        // Stats bar
         + '<div style="display:flex;justify-content:center;gap:16px;padding:10px 16px;border-top:1px solid rgba(255,255,255,0.04);background:rgba(255,255,255,0.01)">'
         + '<div style="text-align:center"><div style="font-family:\'Cormorant Garamond\',serif;font-size:14px;font-weight:600;color:#f0f0f0">' + fmtFollowers + '</div><div style="font-size:7px;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:0.06em">Followers</div></div>'
         + '<div style="width:1px;background:rgba(255,255,255,0.06)"></div>'
@@ -7242,7 +7256,7 @@ function showInlinePreview() {
         + '<div style="text-align:center"><div style="font-family:\'Cormorant Garamond\',serif;font-size:14px;font-weight:600;color:#f0f0f0">' + eng + '%</div><div style="font-size:7px;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:0.06em">Engagement</div></div>'
         + '</div>'
 
-        // Content grid — compact at bottom
+        // Content grid
         + (gridImgs.length > 0 ? (
           '<div style="padding:10px 16px 14px">'
           + '<div style="display:grid;grid-template-columns:repeat(' + Math.min(gridImgs.length, 3) + ',1fr);gap:3px;border-radius:6px;overflow:hidden">'
@@ -7255,68 +7269,92 @@ function showInlinePreview() {
       + '</div>'
       + '</div>'
 
-      // RIGHT: Video placeholder — UPLOAD HERE
-      + '<div>'
-      + '<div style="font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:' + safeAccent + ';margin-bottom:10px">SEE IT IN ACTION</div>'
-      + '<div id="previewVideo1" style="background:#0a0a0a;border:2px dashed rgba(255,255,255,0.15);border-radius:14px;aspect-ratio:9/16;max-height:420px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px">'
-      + '<div style="font-size:28px;opacity:0.3">🎬</div>'
-      + '<div style="font-size:12px;color:rgba(255,255,255,0.25);font-weight:500">UPLOAD VIDEO HERE</div>'
-      + '<div style="font-size:10px;color:rgba(255,255,255,0.15)">Site walkthrough recording</div>'
+    + '</div>'
+
+    // ── TRANSITION ──
+    + '<div style="text-align:center;max-width:600px;margin:0 auto 40px">'
+    + '<div style="font-family:var(--serif);font-size:clamp(20px,3vw,28px);font-weight:500;color:var(--text);line-height:1.2;margin-bottom:8px">And that\'s just the website.</div>'
+    + '<div style="font-size:13px;color:var(--text-sub);line-height:1.6">Your platform also includes a private analytics dashboard, an AI strategist that reads your data, automated lead capture, and a weekly strategy briefing.</div>'
+    + '</div>'
+
+    // ── CAPABILITIES GRID ──
+    + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:900px;margin:0 auto 40px" class="preview-capabilities">'
+
+      // Analytics Dashboard
+      + '<div style="background:#0a0a0a;border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:20px;overflow:hidden">'
+      + '<div style="font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:' + safeAccent + ';margin-bottom:12px">YOUR ANALYTICS DASHBOARD</div>'
+      + '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px">'
+      + '<div style="text-align:center;padding:12px;background:rgba(255,255,255,0.03);border-radius:8px"><div style="font-family:\'Cormorant Garamond\',serif;font-size:22px;font-weight:600;color:#f0f0f0">' + fmtFollowers + '</div><div style="font-size:9px;text-transform:uppercase;letter-spacing:0.08em;color:rgba(255,255,255,0.35);margin-top:2px">Followers</div></div>'
+      + '<div style="text-align:center;padding:12px;background:rgba(255,255,255,0.03);border-radius:8px"><div style="font-family:\'Cormorant Garamond\',serif;font-size:22px;font-weight:600;color:#f0f0f0">' + eng + '%</div><div style="font-size:9px;text-transform:uppercase;letter-spacing:0.08em;color:rgba(255,255,255,0.35);margin-top:2px">Engagement</div></div>'
+      + '<div style="text-align:center;padding:12px;background:rgba(255,255,255,0.03);border-radius:8px"><div style="font-family:\'Cormorant Garamond\',serif;font-size:22px;font-weight:600;color:#f0f0f0">' + fmtNum(views) + '</div><div style="font-size:9px;text-transform:uppercase;letter-spacing:0.08em;color:rgba(255,255,255,0.35);margin-top:2px">Weekly Views</div></div>'
+      + '</div>'
+      + '<div style="display:flex;gap:6px">'
+      + ['<i class="fa-brands fa-youtube" style="color:#FF0000"></i> YouTube', '<i class="fa-brands fa-instagram" style="color:#E1306C"></i> Instagram', '<i class="fa-brands fa-tiktok"></i> TikTok'].map(function(p) {
+          return '<div style="flex:1;padding:8px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:8px;text-align:center;font-size:9px;color:rgba(255,255,255,0.5)">' + p + '</div>';
+        }).join('')
+      + '</div>'
+      + '</div>'
+
+      // AI Strategist
+      + '<div style="background:#0a0a0a;border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:20px;overflow:hidden">'
+      + '<div style="font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#7C6AF7;margin-bottom:12px">YOUR AI STRATEGIST</div>'
+      + '<div style="background:rgba(124,106,247,0.08);border:1px solid rgba(124,106,247,0.15);border-radius:10px;padding:14px;margin-bottom:12px">'
+      + '<div style="font-size:12px;color:rgba(255,255,255,0.6);line-height:1.5;font-style:italic">"Your reels are outperforming carousels 3:1 this week. Double down on short-form — your audience is responding."</div>'
+      + '</div>'
+      + '<div style="display:flex;gap:6px">'
+      + suggestions.map(function(s, i) {
+          var days = ['MON', 'WED', 'FRI'];
+          return '<div style="flex:1;background:rgba(245,158,11,0.06);border:1px solid rgba(245,158,11,0.15);border-radius:8px;padding:8px;text-align:center"><div style="font-size:8px;font-weight:700;letter-spacing:0.1em;color:rgba(245,158,11,0.5)">' + days[i] + '</div><div style="font-size:10px;color:rgba(255,255,255,0.5);margin-top:4px;line-height:1.3">' + s + '</div></div>';
+        }).join('')
+      + '</div>'
+      + '</div>'
+
+      // Lead Engine
+      + '<div style="background:#0a0a0a;border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:20px;overflow:hidden">'
+      + '<div style="font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#F59E0B;margin-bottom:12px">YOUR LEAD ENGINE</div>'
+      + '<div style="display:flex;align-items:center;justify-content:space-between;gap:4px;margin-bottom:12px">'
+      + [
+          '<i class="fa-brands fa-instagram"></i><div style="font-size:7px;margin-top:2px">Comment</div>',
+          '<i class="fa-solid fa-paper-plane"></i><div style="font-size:7px;margin-top:2px">Auto-DM</div>',
+          '<i class="fa-solid fa-file-lines"></i><div style="font-size:7px;margin-top:2px">Capture</div>',
+          '<i class="fa-solid fa-envelope"></i><div style="font-size:7px;margin-top:2px">Email</div>'
+        ].map(function(step, i) {
+          return (i > 0 ? '<div style="font-size:8px;color:rgba(255,255,255,0.15)">→</div>' : '')
+            + '<div style="text-align:center;font-size:14px;color:rgba(255,255,255,0.5);padding:10px;background:rgba(245,158,11,0.06);border:1px solid rgba(245,158,11,0.1);border-radius:8px;flex:1">' + step + '</div>';
+        }).join('')
+      + '</div>'
+      + '<div style="text-align:center;font-size:11px;color:rgba(255,255,255,0.4);line-height:1.5">Every comment triggers an auto-DM → capture page → email subscribe. Zero manual work.</div>'
+      + '</div>'
+
+      // Weekly Briefing
+      + '<div style="background:#0a0a0a;border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:20px;overflow:hidden">'
+      + '<div style="font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#10B981;margin-bottom:12px">YOUR MONDAY BRIEFING</div>'
+      + '<div style="background:rgba(16,185,129,0.06);border:1px solid rgba(16,185,129,0.15);border-radius:10px;padding:14px">'
+      + '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><span style="font-size:9px;font-weight:700;color:#10B981">WEEKLY BRIEFING</span><span style="font-size:9px;color:rgba(255,255,255,0.3)">Every Monday</span></div>'
+      + '<div style="display:flex;gap:10px;margin-bottom:10px">'
+      + '<div style="flex:1;text-align:center"><div style="font-size:14px;font-weight:600;color:#f0f0f0">' + fmtNum(views) + '</div><div style="font-size:7px;color:rgba(255,255,255,0.3)">VIEWS</div></div>'
+      + '<div style="flex:1;text-align:center"><div style="font-size:14px;font-weight:600;color:#f0f0f0">' + eng + '%</div><div style="font-size:7px;color:rgba(255,255,255,0.3)">ENG</div></div>'
+      + '<div style="flex:1;text-align:center"><div style="font-size:14px;font-weight:600;color:#f0f0f0">↑12%</div><div style="font-size:7px;color:rgba(255,255,255,0.3)">GROWTH</div></div>'
+      + '</div>'
+      + '<div style="font-size:10px;color:rgba(255,255,255,0.5);line-height:1.5;border-top:1px solid rgba(255,255,255,0.06);padding-top:8px"><strong style="color:rgba(255,255,255,0.7)">This week:</strong> Post Tuesday 7pm — your highest engagement window.</div>'
       + '</div>'
       + '</div>'
 
     + '</div>'
 
-    // ── Dashboard + Hub Preview ──
-    + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:900px;margin:0 auto 32px;align-items:start">'
-
-      // LEFT: Analytics dashboard mockup
-      + '<div>'
-      + '<div style="font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:' + safeAccent + ';margin-bottom:10px">YOUR ANALYTICS DASHBOARD</div>'
-      + '<div style="background:#0a0a0a;border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:20px;overflow:hidden">'
-
-        // Stats row
-        + '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px">'
-        + '<div style="text-align:center;padding:12px;background:rgba(255,255,255,0.03);border-radius:8px">'
-        + '<div style="font-family:\'Cormorant Garamond\',serif;font-size:22px;font-weight:600;color:#f0f0f0">' + fmtFollowers + '</div>'
-        + '<div style="font-size:9px;text-transform:uppercase;letter-spacing:0.08em;color:rgba(255,255,255,0.35);margin-top:2px">Followers</div></div>'
-        + '<div style="text-align:center;padding:12px;background:rgba(255,255,255,0.03);border-radius:8px">'
-        + '<div style="font-family:\'Cormorant Garamond\',serif;font-size:22px;font-weight:600;color:#f0f0f0">' + eng + '%</div>'
-        + '<div style="font-size:9px;text-transform:uppercase;letter-spacing:0.08em;color:rgba(255,255,255,0.35);margin-top:2px">Engagement</div></div>'
-        + '<div style="text-align:center;padding:12px;background:rgba(255,255,255,0.03);border-radius:8px">'
-        + '<div style="font-family:\'Cormorant Garamond\',serif;font-size:22px;font-weight:600;color:#f0f0f0">' + fmtNum(views) + '</div>'
-        + '<div style="font-size:9px;text-transform:uppercase;letter-spacing:0.08em;color:rgba(255,255,255,0.35);margin-top:2px">Weekly Views</div></div>'
-        + '</div>'
-
-        // AI Strategist preview
-        + '<div style="background:rgba(124,106,247,0.08);border:1px solid rgba(124,106,247,0.2);border-radius:10px;padding:14px;margin-bottom:12px">'
-        + '<div style="font-size:9px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#7C6AF7;margin-bottom:6px">AI STRATEGIST</div>'
-        + '<div style="font-size:12px;color:rgba(255,255,255,0.6);line-height:1.5;font-style:italic">"Your reels are outperforming carousels 3:1 this week. Double down on short-form — your audience is responding."</div>'
-        + '</div>'
-
-        // Planner preview
-        + '<div style="display:flex;gap:6px">'
-        + suggestions.map(function(s, i) {
-            var days = ['MON', 'WED', 'FRI'];
-            return '<div style="flex:1;background:rgba(245,158,11,0.06);border:1px solid rgba(245,158,11,0.15);border-radius:8px;padding:8px;text-align:center">'
-            + '<div style="font-size:8px;font-weight:700;letter-spacing:0.1em;color:rgba(245,158,11,0.5)">' + days[i] + '</div>'
-            + '<div style="font-size:10px;color:rgba(255,255,255,0.5);margin-top:4px;line-height:1.3">' + s + '</div></div>';
-          }).join('')
-        + '</div>'
-
-      + '</div>'
-      + '</div>'
-
-      // RIGHT: Hub video placeholder — UPLOAD HERE
-      + '<div>'
-      + '<div style="font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:' + safeAccent + ';margin-bottom:10px">YOUR PRIVATE HUB</div>'
-      + '<div id="previewVideo2" style="background:#0a0a0a;border:2px dashed rgba(255,255,255,0.15);border-radius:14px;aspect-ratio:9/16;max-height:420px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px">'
-      + '<div style="font-size:28px;opacity:0.3">🎬</div>'
-      + '<div style="font-size:12px;color:rgba(255,255,255,0.25);font-weight:500">UPLOAD VIDEO HERE</div>'
-      + '<div style="font-size:10px;color:rgba(255,255,255,0.15)">Hub dashboard recording</div>'
-      + '</div>'
-      + '</div>'
-
+    // ── SEE A REAL ONE — Video ──
+    + '<div style="max-width:700px;margin:0 auto 40px;text-align:center">'
+    + '<div style="font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:' + safeAccent + ';margin-bottom:10px">SEE A REAL ONE</div>'
+    + '<div style="background:#0a0a0a;border:1px solid rgba(255,255,255,0.1);border-radius:14px;overflow:hidden">'
+    + '<div style="display:flex;align-items:center;gap:6px;padding:8px 12px;border-bottom:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.02)">'
+    + '<span style="width:7px;height:7px;border-radius:50%;background:#ff5f57"></span>'
+    + '<span style="width:7px;height:7px;border-radius:50%;background:#febc2e"></span>'
+    + '<span style="width:7px;height:7px;border-radius:50%;background:#28c840"></span>'
+    + '<span style="flex:1;text-align:center;font-size:9px;color:rgba(255,255,255,0.25)">🔒 coachgabemckenney.com</span>'
+    + '</div>'
+    + '<video autoplay muted loop playsinline style="width:100%;display:block"><source src="assets/gabe-desktop.mp4" type="video/mp4"></video>'
+    + '</div>'
+    + '<div style="font-size:11px;color:var(--text-muted);margin-top:8px">A real creator platform, live and maintained.</div>'
     + '</div>'
 
     // ── Revenue Estimate ──
