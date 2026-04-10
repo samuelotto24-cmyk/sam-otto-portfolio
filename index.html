@@ -1017,28 +1017,40 @@
       .recap-sub { font-size: 13px; margin-bottom: 8px; }
       .recap-list { display: none; }
 
-      /* White paper briefing card */
+      /* Paper briefing card — warm off-white like unfolded letter */
       .letter-frame {
-        background: #fff !important;
-        border-color: rgba(0,0,0,0.08) !important;
-        box-shadow: 0 8px 40px rgba(0,0,0,0.25), 0 1px 3px rgba(0,0,0,0.1) !important;
-        border-radius: 16px;
+        background: #F5F0E8 !important;
+        background-image:
+          linear-gradient(180deg, rgba(0,0,0,0.01) 0%, rgba(0,0,0,0.03) 100%),
+          repeating-linear-gradient(0deg, transparent, transparent 28px, rgba(0,0,0,0.015) 28px, rgba(0,0,0,0.015) 29px) !important;
+        border-color: rgba(0,0,0,0.1) !important;
+        box-shadow:
+          0 2px 4px rgba(0,0,0,0.08),
+          0 8px 32px rgba(0,0,0,0.15),
+          inset 0 1px 0 rgba(255,255,255,0.6) !important;
+        border-radius: 4px;
+      }
+      /* Fold lines — make them look like real paper creases */
+      .letter-frame::before, .letter-frame::after {
+        background: linear-gradient(90deg, transparent, rgba(0,0,0,0.06), transparent) !important;
+        opacity: 1 !important;
       }
       .recap-card {
         max-width: 360px; margin: 0 auto; padding: 20px 16px;
         background: transparent;
       }
-      .rc-header { border-bottom-color: rgba(0,0,0,0.08); }
-      .rc-badge { background: #10B981; color: #fff; }
-      .rc-date { color: rgba(0,0,0,0.4); }
-      .rc-plat-val { font-size: 14px; color: #1a1a1a; }
-      .rc-plat-delta { color: #10B981; }
-      .rc-plat-label { color: rgba(0,0,0,0.45); }
-      .rc-plat-icon { background: rgba(0,0,0,0.04); border-color: rgba(0,0,0,0.08); }
-      .rc-section-label { color: rgba(0,0,0,0.5); }
-      .rc-action { color: #333; }
-      .rc-action-dot { background: #10B981 !important; box-shadow: 0 0 6px rgba(16,185,129,0.3) !important; }
-      .rc-cta { background: #10B981; color: #fff; }
+      .rc-header { border-bottom-color: rgba(0,0,0,0.1); }
+      .rc-badge { background: #2D2D2D; color: #F5F0E8; font-weight: 700; }
+      .rc-date { color: rgba(0,0,0,0.35); }
+      .rc-plat-val { font-size: 14px; color: #2D2D2D; }
+      .rc-plat-delta { color: #0D9668; }
+      .rc-plat-label { color: rgba(0,0,0,0.4); }
+      .rc-plat-icon { background: rgba(0,0,0,0.06); border-color: rgba(0,0,0,0.1); }
+      .rc-plat-icon i { filter: drop-shadow(0 1px 1px rgba(0,0,0,0.1)); }
+      .rc-section-label { color: rgba(0,0,0,0.45); }
+      .rc-action { color: #3D3D3D; }
+      .rc-action-dot { background: #2D2D2D !important; box-shadow: none !important; }
+      .rc-cta { background: #2D2D2D; color: #F5F0E8; }
     }
 
     /* ── Shared label style (used outside theatre) ── */
