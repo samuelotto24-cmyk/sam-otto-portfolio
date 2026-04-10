@@ -4561,8 +4561,11 @@
   margin-top: 16px;
 }
 /* Responsive preview grids */
+.preview-intro-mobile { display: none !important; }
 @media (max-width: 640px) {
   .preview-comparison { grid-template-columns: 1fr !important; }
+  .preview-intro-desktop { display: none !important; }
+  .preview-intro-mobile { display: block !important; }
 }
 .preview-share {
   margin-top: 12px;
@@ -7237,7 +7240,8 @@ function showInlinePreview() {
     + '<div class="preview-header">'
     + '<div class="preview-header-label">Your Preview</div>'
     + '<h2 class="preview-header-title">Let\'s compare, <em style="color:' + safeAccent + '">' + firstName + '</em></h2>'
-    + '<div style="font-size:13px;color:var(--text-sub);max-width:520px;margin:12px auto 0;line-height:1.6">On the left is what your followers see right now. On the right is a simplified demo of what I\'d build you — the real thing is fully custom. Scroll down to see everything that comes with it.</div>'
+    + '<div style="font-size:13px;color:var(--text-sub);max-width:520px;margin:12px auto 0;line-height:1.6" class="preview-intro-desktop">On the left is what your followers see right now. On the right is a simplified demo of what I\'d build you — the real thing is fully custom. Scroll down to see everything that comes with it.</div>'
+    + '<div style="font-size:13px;color:var(--text-sub);max-width:520px;margin:12px auto 0;line-height:1.6" class="preview-intro-mobile">First up is what your followers see now. Below it is a demo of what I\'d build you — the real thing is fully custom.</div>'
     + '</div>'
 
     // ── SIDE BY SIDE ──
