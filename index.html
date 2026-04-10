@@ -253,10 +253,10 @@
       opacity: 0;
       animation: heroFadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 2.9s forwards;
     }
-    .hero-sub-mobile { display: none; }
+    .hero-sub-mobile, .desc-mobile { display: none; }
     @media (max-width: 768px) {
-      .hero-sub-desktop { display: none; }
-      .hero-sub-mobile { display: block; }
+      .hero-sub-desktop, .desc-desktop { display: none; }
+      .hero-sub-mobile, .desc-mobile { display: block; }
     }
     .hero-actions {
       display: flex;
@@ -4861,7 +4861,8 @@
         <div class="layer-copy">
           <div class="layer-num">01</div>
           <h3 class="layer-name">Your website. Not a template.</h3>
-          <p class="layer-desc">A completely custom site at yourname.com — your brand, your content, your audience. Not Linktree. Not Beacons. Yours.</p>
+          <p class="layer-desc desc-desktop">A completely custom site at yourname.com — your brand, your content, your audience. Not Linktree. Not Beacons. Yours.</p>
+          <p class="layer-desc desc-mobile">A custom site at yourname.com — your brand, your audience.</p>
         </div>
       </div>
 
@@ -4897,7 +4898,8 @@
         <div class="layer-copy">
           <div class="layer-num">03</div>
           <h3 class="layer-name">Your AI Strategist</h3>
-          <p class="layer-desc">Not ChatGPT. An AI that reads your actual data — views, engagement, audience — and writes captions in your voice, picks your best posting times, and plans your content week. It gets smarter the more you use it.</p>
+          <p class="layer-desc desc-desktop">Not ChatGPT. An AI that reads your actual data — views, engagement, audience — and writes captions in your voice, picks your best posting times, and plans your content week. It gets smarter the more you use it.</p>
+          <p class="layer-desc desc-mobile">Reads your real data, writes captions in your voice, and plans your content week.</p>
         </div>
       </div>
 
@@ -4915,7 +4917,8 @@
         <div class="layer-copy">
           <div class="layer-num">04</div>
           <h3 class="layer-name">Create & Schedule Posts</h3>
-          <p class="layer-desc">Upload photos for a carousel, and your AI writes the caption in your voice with algorithm-optimized hashtags. Set a keyword, and anyone who comments it gets an automatic DM with your link — the lead engine activates right from the post. Then post directly or schedule it for your best engagement window.</p>
+          <p class="layer-desc desc-desktop">Upload photos for a carousel, and your AI writes the caption in your voice with algorithm-optimized hashtags. Set a keyword, and anyone who comments it gets an automatic DM with your link — the lead engine activates right from the post. Then post directly or schedule it for your best engagement window.</p>
+          <p class="layer-desc desc-mobile">AI writes your caption, auto-DMs commenters, then post or schedule it.</p>
         </div>
       </div>
 
@@ -5007,7 +5010,8 @@
         <div class="layer-copy">
           <div class="layer-num">06</div>
           <h3 class="layer-name">Your Lead Engine</h3>
-          <p class="layer-desc">Every comment becomes a customer. Set a keyword, and the system auto-replies, DMs a branded capture page, collects the email, and subscribes them to your newsletter. Zero manual work.</p>
+          <p class="layer-desc desc-desktop">Every comment becomes a customer. Set a keyword, and the system auto-replies, DMs a branded capture page, collects the email, and subscribes them to your newsletter. Zero manual work.</p>
+          <p class="layer-desc desc-mobile">Set a keyword — auto-reply, DM, capture email, subscribe. Zero manual work.</p>
         </div>
       </div>
 
@@ -5225,7 +5229,8 @@
         <div class="recap-copy">
           <span class="platform-label">Weekly Intelligence</span>
           <h2 class="recap-title">A strategist in your inbox,<br><em>every Monday.</em></h2>
-          <p class="recap-sub">You don't have to log in. Your numbers, your wins, and your next move — delivered every week.</p>
+          <p class="recap-sub desc-desktop">You don't have to log in. Your numbers, your wins, and your next move — delivered every week.</p>
+          <p class="recap-sub desc-mobile">Your numbers, wins, and next move — delivered weekly.</p>
           <ul class="recap-list">
             <li>Your growth at a glance — followers, views, engagement, and revenue across YouTube, IG &amp; TikTok</li>
             <li>Two AI-generated action items from your real data — what to post, when, and why</li>
@@ -5352,7 +5357,8 @@
       <div class="fade-up">
         <span class="contact-label">Get Started</span>
         <h2 class="contact-title">Send me your handle.<br>I'll map out <em>your build.</em></h2>
-        <p class="contact-sub">Tell me about your brand — that's it. Everything is custom-built around your audience and your business. I'll respond same day with a breakdown of your build.</p>
+        <p class="contact-sub desc-desktop">Tell me about your brand — that's it. Everything is custom-built around your audience and your business. I'll respond same day with a breakdown of your build.</p>
+        <p class="contact-sub desc-mobile">Tell me about your brand. I'll respond same day with your build breakdown.</p>
         <div class="contact-response">
           <span class="resp-dot"></span>
           Same-day response · Everything custom-built · No commitment needed
