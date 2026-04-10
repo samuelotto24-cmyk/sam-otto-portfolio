@@ -158,6 +158,26 @@
     }
     .nav-link:hover { color: var(--text); background: rgba(255,248,220,0.05); }
     @media (max-width: 560px) { .nav-links { display: none; } }
+    /* Mobile nav: swap CTA to Build My Demo */
+    .nav-cta-demo { display: none; }
+    @media (max-width: 768px) {
+      .nav-cta { display: none; }
+      .nav-cta-demo {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: var(--rose);
+        color: #fff;
+        font-family: var(--sans);
+        font-size: 13px;
+        font-weight: 600;
+        padding: 9px 18px;
+        border-radius: 50px;
+        transition: background var(--ease), transform var(--ease);
+        cursor: pointer;
+      }
+      .nav-cta-demo:hover { background: var(--rose-light); }
+    }
 
     /* ── HERO ── */
     #hero {
@@ -232,6 +252,11 @@
       line-height: 1.65;
       opacity: 0;
       animation: heroFadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 2.9s forwards;
+    }
+    .hero-sub-mobile { display: none; }
+    @media (max-width: 768px) {
+      .hero-sub-desktop { display: none; }
+      .hero-sub-mobile { display: block; }
     }
     .hero-actions {
       display: flex;
@@ -657,9 +682,9 @@
 
     @media (max-width: 768px) {
       .hero-sys-leads {
-        width: 180px;
-        padding: 10px 12px;
-        bottom: -15px;
+        width: 170px;
+        padding: 8px 10px;
+        bottom: -10px;
       }
       .hero-leads-dot { width: 18px; height: 18px; font-size: 8px; }
       .hero-leads-wire { width: 10px; }
@@ -2591,18 +2616,21 @@
     /* ── RESPONSIVE ── */
     @media (max-width: 768px) {
       /* ── Hero ── */
-      .hero-inner { grid-template-columns: 1fr; gap: 28px; }
-      .hero-sub { font-size: 15px; }
-      .hero-trust { flex-wrap: wrap; gap: 6px 10px; justify-content: center; }
-      .hero-trust-item { font-size: 10px; }
-      .trust-sep { display: none; }
+      #hero { min-height: auto; padding-top: 70px; padding-bottom: 20px; }
+      .hero-inner { grid-template-columns: 1fr; gap: 20px; }
+      .hero-copy { text-align: center; }
+      .hero-title { font-size: clamp(32px, 7vw, 44px); margin-bottom: 12px; }
+      .hero-sub { font-size: 14px; max-width: 320px; margin-left: auto; margin-right: auto; margin-bottom: 20px; line-height: 1.5; }
+      .hero-label { display: none; }
+      .hero-actions { display: none; }
+      .hero-trust { display: none; }
 
       /* Mobile system assembly — compact, stacked */
-      .hero-system { min-height: 320px; }
+      .hero-system { min-height: 280px; transform: scale(0.85); transform-origin: top center; margin-bottom: -30px; }
       .hero-phone-shell { width: 140px; }
       .hero-phone-screen { height: 278px; }
       .hero-phone-iframe { transform: scale(0.359); /* 140/390 */ }
-      .hero-sys-card { width: 150px; padding: 14px 16px; }
+      .hero-sys-card { width: 140px; padding: 12px 14px; }
       .hero-sys-analytics {
         left: -10px;
         animation: sysCardLeftMob 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.65s forwards;
@@ -2611,13 +2639,13 @@
         right: -10px;
         animation: sysCardRightMob 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.85s forwards;
       }
-      .sys-card-icon { width: 26px; height: 26px; font-size: 12px; margin-bottom: 8px; }
-      .sys-card-label { font-size: 11px; margin-bottom: 8px; }
-      .sys-metric-val { font-size: 15px; }
+      .sys-card-icon { width: 24px; height: 24px; font-size: 11px; margin-bottom: 6px; }
+      .sys-card-label { font-size: 10px; margin-bottom: 6px; }
+      .sys-metric-val { font-size: 14px; }
       .sys-metric-label { font-size: 9px; }
-      .sys-ai-line { font-size: 10px; }
-      .sys-platforms { margin-top: 8px; gap: 6px; }
-      .sys-platform-badge { width: 24px; height: 24px; font-size: 11px; }
+      .sys-ai-line { font-size: 9px; }
+      .sys-platforms { margin-top: 6px; gap: 5px; }
+      .sys-platform-badge { width: 22px; height: 22px; font-size: 10px; }
       .hero-sys-lines { display: none; }
       /* Mobile — entrance only, no idle float */
       .stats-row { flex-wrap: wrap; }
@@ -2752,20 +2780,21 @@
       .hero-actions { flex-direction: column; align-items: stretch; }
       .hero-actions .btn-rose,
       .hero-actions .btn-ghost { width: 100%; justify-content: center; text-align: center; }
+      /* Shrink system assembly further */
+      .hero-system { transform: scale(0.78); margin-bottom: -40px; }
+      .hero-sys-card { width: 130px; padding: 10px 12px; }
+      .hero-sys-analytics { left: -5px; }
+      .hero-sys-ai { right: -5px; }
       /* Compare cards: stack on very small screens */
       .compare-cards-mobile { grid-template-columns: 1fr; }
       /* Stats strip: 2×2 on small screens */
       .dash-stats-strip { grid-template-columns: repeat(2, 1fr); }
     }
 
-    /* ── 380px: very small phones (iPhone SE, Galaxy A) ── */
+    /* ── 420px: very small phones (iPhone SE, Galaxy A) ── */
     @media (max-width: 420px) {
-      .hero-sys-card { width: 130px; padding: 12px 14px; }
-      .sys-card-metrics { gap: 10px; }
-      .sys-metric-val { font-size: 14px; }
-      .sys-ai-line { font-size: 9px; }
-      .hero-sys-analytics { left: -5px; }
-      .hero-sys-ai { right: -5px; }
+      .hero-title { font-size: clamp(28px, 7vw, 36px); }
+      .hero-system { transform: scale(0.72); margin-bottom: -50px; }
     }
     @media (max-width: 380px) {
       /* Ownership: stack back to 1-col but make each item a compact row */
@@ -4693,6 +4722,7 @@
       <a href="javascript:void(0)" class="nav-link" onclick="openQuiz()" style="color:var(--rose)">Build My Demo</a>
     </div>
     <a href="#contact" class="nav-cta">Work with Sam</a>
+    <a href="javascript:void(0)" class="nav-cta-demo" onclick="openQuiz()"><i class="fa-solid fa-wand-magic-sparkles"></i> Build My Demo</a>
   </nav>
 
   <!-- HERO -->
@@ -4705,7 +4735,8 @@
       <div class="hero-copy">
         <div class="hero-label">Done-for-you creator platforms</div>
         <h1 class="hero-title">You make the content.<br><em>Your link in bio should do the rest.</em></h1>
-        <p class="hero-sub">I replace your link page with a complete platform — custom site, live analytics, AI strategy, and automated lead capture. Built to convert your audience into revenue.</p>
+        <p class="hero-sub hero-sub-desktop">I replace your link page with a complete platform — custom site, live analytics, AI strategy, and automated lead capture. Built to convert your audience into revenue.</p>
+        <p class="hero-sub hero-sub-mobile">Custom site, analytics, AI strategy & lead capture — all in one platform.</p>
         <div class="hero-actions">
           <a href="#contact" class="btn-rose btn-hero-cta"><span class="btn-rose-outline" aria-hidden="true"></span><i class="fa-solid fa-paper-plane"></i> Let's Build Yours</a>
           <a href="javascript:void(0)" class="btn-ghost" onclick="openQuiz()"><i class="fa-solid fa-wand-magic-sparkles"></i> Build My Demo</a>
