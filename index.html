@@ -1011,11 +1011,34 @@
     }
     .rc-cta:hover { background: var(--rose-light); }
     @media (max-width: 768px) {
-      .recap-layout { grid-template-columns: 1fr; gap: 24px; text-align: center; }
+      .recap-layout { grid-template-columns: 1fr; gap: 16px; text-align: center; }
       .recap-copy { text-align: center; }
-      .recap-list li { text-align: left; }
-      .recap-card { max-width: 360px; margin: 0 auto; padding: 22px 18px; }
-      .rc-plat-val { font-size: 14px; }
+      .recap-title { font-size: clamp(22px, 5vw, 30px); margin-bottom: 6px; }
+      .recap-sub { font-size: 13px; margin-bottom: 8px; }
+      .recap-list { display: none; }
+
+      /* White paper briefing card */
+      .letter-frame {
+        background: #fff !important;
+        border-color: rgba(0,0,0,0.08) !important;
+        box-shadow: 0 8px 40px rgba(0,0,0,0.25), 0 1px 3px rgba(0,0,0,0.1) !important;
+        border-radius: 16px;
+      }
+      .recap-card {
+        max-width: 360px; margin: 0 auto; padding: 20px 16px;
+        background: transparent;
+      }
+      .rc-header { border-bottom-color: rgba(0,0,0,0.08); }
+      .rc-badge { background: #10B981; color: #fff; }
+      .rc-date { color: rgba(0,0,0,0.4); }
+      .rc-plat-val { font-size: 14px; color: #1a1a1a; }
+      .rc-plat-delta { color: #10B981; }
+      .rc-plat-label { color: rgba(0,0,0,0.45); }
+      .rc-plat-icon { background: rgba(0,0,0,0.04); border-color: rgba(0,0,0,0.08); }
+      .rc-section-label { color: rgba(0,0,0,0.5); }
+      .rc-action { color: #333; }
+      .rc-action-dot { background: #10B981 !important; box-shadow: 0 0 6px rgba(16,185,129,0.3) !important; }
+      .rc-cta { background: #10B981; color: #fff; }
     }
 
     /* ── Shared label style (used outside theatre) ── */
@@ -6537,14 +6560,33 @@
     }, 7000);
 
     // ── Force autoplay on all videos (iOS safari workaround) ──
-    document.querySelectorAll('video').forEach(function(v) {
-      v.play().catch(function() {});
-    });
-    document.addEventListener('touchstart', function() {
+    function forcePlayVideos() {
       document.querySelectorAll('video').forEach(function(v) {
-        if (v.paused) v.play().catch(function() {});
+        v.muted = true;
+        v.playsInline = true;
+        v.setAttribute('playsinline', '');
+        v.setAttribute('muted', '');
+        v.play().catch(function() {});
       });
-    }, { once: true });
+    }
+    forcePlayVideos();
+    // Retry after intro animation ends
+    setTimeout(forcePlayVideos, 3000);
+    setTimeout(forcePlayVideos, 5000);
+    // Also on first touch
+    document.addEventListener('touchstart', forcePlayVideos, { once: true });
+    // Also when videos enter viewport
+    if ('IntersectionObserver' in window) {
+      var vidObs = new IntersectionObserver(function(entries) {
+        entries.forEach(function(e) {
+          if (e.isIntersecting && e.target.paused) {
+            e.target.muted = true;
+            e.target.play().catch(function() {});
+          }
+        });
+      }, { threshold: 0.25 });
+      document.querySelectorAll('video').forEach(function(v) { vidObs.observe(v); });
+    }
 
   </script>
 
